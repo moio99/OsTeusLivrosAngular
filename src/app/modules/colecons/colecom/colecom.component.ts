@@ -1,0 +1,190 @@
+import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { first } from 'rxjs';
+import { ColeconsService } from 'src/app/core/services/api/colecons.service';
+import { LivrosService } from 'src/app/core/services/api/livros.service';
+import { DadosPaginasService } from 'src/app/core/services/flow/dados-paginas.service';
+import { ListadoLivros, ListadoLivrosData } from '../../livros/listado-livros/listado-livros.interface';
+import { Colecom, ColecomData, Parametros } from './colecom.interface';
+import { LayoutService } from 'src/app/core/services/flow/layout.service';
+import { InformacomPeTipo } from 'src/app/shared/enums/estadisticasTipos';
+
+@Component({
+  selector: 'omla-colecom',
+  templateUrl: './colecom.component.html',
+  styleUrls: ['./colecom.component.scss']
+})
+export class ColecomComponent implements OnInit {
+
+  engadir = 'Engadir'; guardar = 'Guardar';
+  modo = this.engadir;
+  dadosDaColecom: Colecom | undefined = {
+    id: 0,
+    nome: '',
+    isbn: '',
+    web: '',
+    comentario: ''
+  };
+  dadosLivrosDaColecom: ListadoLivros[] = [];
+
+  colecomForm = new FormGroup({
+    nome: new FormControl('', [Validators.required, Validators.maxLength(150)]),
+    isbn: new FormControl('', [Validators.maxLength(20)]),
+    web: new FormControl('', [Validators.maxLength(150)]),
+    comentario: new FormControl('', Validators.maxLength(50000))
+  });
+  get cf() { return this.colecomForm.controls; }
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location,
+    private layoutService: LayoutService,
+    private coleconsService: ColeconsService,
+    private livrosService: LivrosService,
+    private dadosPaginas: DadosPaginasService) { }
+
+  ngOnInit(): void {
+    this.route.queryParams
+      .subscribe(params => {
+        let parametros = <Parametros>params;
+        if (parametros.id == 0)
+          this.modo = this.engadir;
+        else {
+          this.modo = this.guardar;
+          this.obterDadosDaColecom(parametros.id);
+        }
+      }
+    );
+  }
+
+  private obterDadosDaColecom(id: number): void {
+    this.coleconsService
+      .getColecom(id)
+      .pipe(first())
+      .subscribe({
+        next: (v) => this.dadosDaColecom = this.dadosObtidos(v),
+        error: (e) => { console.error(e),
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados da coleçom.'}); },
+        complete: () => this.obterLivros(id)
+    });
+  }
+
+  private dadosObtidos(data: object): Colecom  | undefined {
+    let resultados: Colecom | undefined;
+    const dados = <ColecomData>data;
+    if (dados.colecom.length > 0) {
+      resultados = dados.colecom[0];
+      if (resultados != undefined) {
+        this.cf.nome.setValue(dados.colecom[0].nome);
+        this.cf.isbn.setValue(dados.colecom[0].isbn);
+        this.cf.web.setValue(dados.colecom[0].web);
+        this.cf.comentario.setValue(dados.colecom[0].comentario);
+      }
+    }
+    else{
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados da coleçom'});
+      resultados = undefined;
+    }
+    return resultados
+  }
+
+  private obterLivros(id: number): void {
+    console.debug('completada a obtençom dos dados da coleçom')
+    this.livrosService
+      .getLivrosPorColecom(id)
+      .pipe(first())
+      .subscribe({
+        next: (v) => this.dadosLivrosDaColecom = this.dadosLivrosObtidos(v),
+        error: (e) => { console.error(e),
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os Livros da coleçom.'}); },
+        complete: () => console.debug('completada a obtençom dos livros da coleçom')
+    });
+  }
+
+  private dadosLivrosObtidos(data: object): ListadoLivros[] {
+    let resultados: ListadoLivros[];
+    const dados = <ListadoLivrosData>data;
+    if (dados != null) {
+      console.debug('quantidade: ' + dados.meta.quantidade + ' ' + dados.data);
+      console.debug(dados.data);
+      resultados = dados.data;
+    } else {
+      resultados = [];
+      console.debug('Nom se obtiverom dados');
+    }
+    return resultados
+  }
+
+  onSubmit(event: any) {
+    if (this.cf.nome.status === 'VALID'  && this.cf.isbn.status === 'VALID'
+      && this.cf.web.status === 'VALID'  && this.cf.comentario.status === 'VALID') {
+
+      const colecom: Colecom = {
+        id: Number(this.dadosDaColecom?.id),
+        nome: String(this.cf.nome.value).trim(),
+        isbn: (this.cf.isbn.value == null) ? null : String(this.cf.isbn.value).trim(),
+        web: (this.cf.web.value == null) ? null : String(this.cf.web.value).trim(),
+        comentario: (this.cf.comentario.value == null) ? null : String(this.cf.comentario.value).trim()
+      };
+
+      if (event.submitter.value === this.engadir) {
+        this.coleconsService
+          .postColecom(colecom)
+          .pipe(first())
+          .subscribe({
+            next: (v) => {console.debug(v), this.gestionarRetroceso(v, colecom)},
+            error: (e) => {
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a coleçom.'});
+              console.error(e) },
+            complete: () => { this.modo = this.guardar;
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Coleçom engadida.'});
+              console.debug('post completado'); }
+        });
+      }
+      else {
+        this.coleconsService
+          .putColecom(colecom)
+          .pipe(first())
+          .subscribe({
+            next: (v) => {console.debug(v), this.gestionarRetroceso(v, colecom)},
+            error: (e) => {
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar a coleçom.'});
+              console.error(e) },
+            complete: () => {
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Coleçom guardada.'});
+              console.debug('put completado') }
+        });
+      }
+    }
+  }
+
+  private gestionarRetroceso(data: object, colecom: Colecom) {
+    const dados = <ListadoLivrosData>data;
+    if (dados) {
+      colecom.id = dados.meta.id;
+      let novoDado = this.dadosPaginas.getNovoDado();
+      if (novoDado) {
+        novoDado.elemento = colecom;
+        this.layoutService.amosarInfo(undefined);
+        this.location.back();
+      }
+    }
+  }
+
+  onCancelar() {
+    this.dadosPaginas.setNovoDado(undefined);
+    this.layoutService.amosarInfo(undefined);
+    this.location.back();
+  }
+
+  onIrPagina(rota: string, id: number): void{
+    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
+    this.layoutService.amosarInfo(undefined);
+    this.router.navigateByUrl(rota + '?id=' + id);
+    // this.router.navigate([rota], {relativeTo: id});
+    // this.router.navigate([rota], {dadoQueVai: id});
+  }
+}

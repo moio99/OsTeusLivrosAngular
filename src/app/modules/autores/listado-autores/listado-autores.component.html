@@ -1,0 +1,41 @@
+<h3>Listado de Autores
+  <span *ngIf="filtroPaisOuNacionalidade">{{filtroPaisOuNacionalidade}}</span>{{tipoOrdeacom}}
+  <span *ngIf="inverso">inverso</span>
+</h3>
+
+<div class="botoneira">
+  <ul>
+    <li><a routerLink="porNacionalidade">Por Nacionalidade</a></li>
+    <li><a routerLink="porPais">Por Pais</a></li>
+    <li>
+      <button class="botom-novo-resgistro" (click)="onIrPagina('autores/autor', 0)">
+        Novo Autor
+      </button>
+    </li>
+  </ul>
+</div>
+
+<table *ngIf="this.listadoDados.length > 0" class="taboas-listado">
+  <tr>
+    <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna
+      [nome]="this.nomeAlfabetico"
+      [actual]="this.tipoOrdeacom"
+      [inverso]="this.inverso"></omla-orde-coluna></th>
+    <th (click)="ordeNumeroLivros()">Livros<omla-orde-coluna
+      [nome]="this.numeroLivros"
+      [actual]="this.tipoOrdeacom"
+      [inverso]="this.inverso"></omla-orde-coluna></th>
+    <th (click)="ordeNumeroLivrosLidos()">Lidos<omla-orde-coluna
+      [nome]="this.numeroLivrosLidos"
+      [actual]="this.tipoOrdeacom"
+      [inverso]="this.inverso"></omla-orde-coluna></th>
+  </tr>
+  <tr *ngFor="let entrada of this.listadoDados" class="listado-accom">
+    <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.nome}}</td>
+    <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLivros}}</td>
+    <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>
+    <td (click)="onBorrarElemento(entrada.id, entrada.nome, entrada.quantidadeLivros)">
+      <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+    </td>
+  </tr>
+</table>

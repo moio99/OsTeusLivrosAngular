@@ -1,0 +1,4 @@
+
+ng serve --proxy-config proxy.conf.json
+
+ng add @angular/material

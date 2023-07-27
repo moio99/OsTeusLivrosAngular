@@ -1,0 +1,12 @@
+
+<div class="estrelas">
+  <div *ngFor="let estrela of estrelas">
+    <omla-estrela
+      [numero]="estrela.numero"
+      (simulacomEvent)="onSimulacom($event)"
+      (estavelecerPontuacomEvent)="onEstavelecerPontuacom($event)"
+      [simulandoPontuacom]="estrelaSimulando"
+      [estavelecerNonovaPontuacom]="novaPontuacom"></omla-estrela>
+  </div>
+  {{numeroActual}}
+</div>

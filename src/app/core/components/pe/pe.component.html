@@ -1,0 +1,26 @@
+<div [@amosarOcultarMensagem]="visivel ? 'amosando' : 'ocultando'" class="contido">
+  <div class="contido__marco info" *ngIf="tipo == tipos.Info">
+    <div class="contido__informacom">
+      <img src="../../../../assets/images/informacom.png" alt="{{mensagem}}">
+      <span>{{mensagem}}</span>
+    </div>
+  </div>
+  <div class="contido__marco sucesso" *ngIf="tipo == tipos.Sucesso">
+    <div class="contido__informacom">
+      <img src="../../../../assets/images/sucesso.png" alt="{{mensagem}}">
+      <span>{{mensagem}}</span>
+    </div>
+  </div>
+  <div class="contido__marco aviso" *ngIf="tipo == tipos.Aviso">
+    <div class="contido__informacom">
+      <img src="../../../../assets/images/aviso.png" alt="{{mensagem}}">
+      <span>{{mensagem}}</span>
+    </div>
+  </div>
+  <div class="contido__marco erro" *ngIf="tipo == tipos.Erro">
+    <div class="contido__informacom">
+      <img src="../../../../assets/images/erro.png" alt="{{mensagem}}">
+      <span>{{mensagem}}</span>
+    </div>
+  </div>
+</div>

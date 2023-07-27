@@ -1,0 +1,55 @@
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Estrela } from './estrelas-pontuacom.interface';
+
+@Component({
+  selector: 'omla-estrelas-pontuacom',
+  templateUrl: './estrelas-pontuacom.component.html',
+  styleUrls: ['./estrelas-pontuacom.component.scss']
+})
+export class EstrelasPontuacomComponent implements OnInit {
+
+  estrelas: Estrela[] = [];
+  estrelaSimulando?: Estrela = undefined;
+  novaPontuacom?: number = undefined;
+
+  //@Input() pontuacom: number | undefined;
+  @Input('pontuacom')
+  set pontuacom(data: number | undefined) {
+    this.novaPontuacom = data;
+    this.numeroActual = data ? data : 0;
+  }
+  @Output() public numero = new EventEmitter<number | undefined>();
+
+  numeroActual = 0;
+
+  constructor() { }
+
+  ngOnInit(): void {
+    for(let i = 1; i < 11; i++){
+      let estrela = { numero: i, marcada: (this.pontuacom != undefined && i <= this.pontuacom) };
+      this.estrelas.push(estrela);
+    }
+    this.novaPontuacom = this.pontuacom;
+    this.numeroActual = (this.pontuacom != undefined) ? this.pontuacom : 0;
+  }
+
+  onSimulacom(estrelaDados: Estrela) {
+    this.estrelaSimulando = estrelaDados;
+    if (estrelaDados != undefined)
+      this.numeroActual = estrelaDados.numero;
+    else {
+      if (this.novaPontuacom)
+        this.numeroActual = this.novaPontuacom;
+    }
+  }
+
+  onEstavelecerPontuacom(numero: any) {
+    this.pontuacom = numero;
+    this.estrelas.forEach(estrela => {
+      estrela.marcada = (estrela.numero <= numero);
+    });
+    this.novaPontuacom = numero;
+
+    this.numero.emit(numero);
+  }
+}

@@ -1,0 +1,27 @@
+
+.botoneira {
+  a:hover {
+    cursor: pointer;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    > *:not(:last-child) {
+      // > *  para todos os filhos
+      margin-right: 8px;
+    }
+  }
+  li {
+    display: inline-block;
+  }
+  li:hover {
+    cursor: pointer;
+  }
+}
+
+th {
+  min-width: 80px;
+}
