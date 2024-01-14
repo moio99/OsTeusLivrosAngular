@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { first, map, Observable, startWith } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LivrosService } from 'src/app/core/services/api/livros.service';
-import { Autor, Livro, LivroData, Outros, Parametros } from './livro.interface';
+import { Autor, Livro, LivroData, Outros, Parametros, datasUltimosAnos } from './livro.interface';
 import { FormGroup, FormControl, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { OutrosService } from 'src/app/core/services/api/outros.service';
 import { Genero, SimpleObjet } from 'src/app/shared/models/outros';
@@ -238,16 +238,55 @@ export class LivroComponent implements OnInit {
           );
       }
 
-      if (idLivro == 0 && dados.ultimaLeitura) {
+      /* if (idLivro == 0 && dados.ultimaLeitura) {
         let dateConvert = new DateConvert();
         let data = dateConvert.getDateFromMySQL(dados.ultimaLeitura);
         console.log('ultima Leitura anterior:', data);
         const dias = this.getDiasDendeUltimaLeitura(data);
         this.lf.diasLeitura.setValue(dias.toString());
+      } */
+
+      if (idLivro == 0 && dados.ultimasLeituras && dados.ultimasLeituras.length > 0) {
+        this.setDiasDendeUltimaLeitura(dados.ultimasLeituras);
       }
     }
     else
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados', duracom: 10});
+  }
+
+  /**
+   * Calcula os días pasados dende a última leitura
+   * @param dados Matriz coas datas do ano actual e do anterior para colher a data mais recente e calcuar a partir dela.
+   */
+  private setDiasDendeUltimaLeitura(dados: datasUltimosAnos[]) {
+    let dateConvert = new DateConvert();
+
+    let maiorData: EngadirEditarData = { day: 0, month: 0, year: 0 };
+    dados.forEach(function (value) {
+      let iterado = dateConvert.getDateFromMySQL(value.dataDoLivro);
+      if (iterado.year > maiorData.year) {
+        //console.log('id do maior ANO: ' + value.id, maiorData);
+        maiorData = dateConvert.getDateFromMySQL(value.dataDoLivro);
+      }
+      else if (iterado.year = maiorData.year) {
+        if (iterado.month > maiorData.month) {
+          //console.log('id do maior MES: ' + value.id, maiorData, iterado);
+          maiorData = dateConvert.getDateFromMySQL(value.dataDoLivro);
+        }
+        else if (iterado.month = maiorData.month) {
+          if (iterado.day > maiorData.day) {
+            //console.log('id do maior DIA: ' + value.id, maiorData, iterado);
+            maiorData = dateConvert.getDateFromMySQL(value.dataDoLivro);
+          }
+        }
+      }
+    });
+
+    maiorData.day = maiorData.day + 1;
+    //console.log('ultimas Leituras:', dados);
+    //console.log('maior data', maiorData);
+    const dias = this.getDiasDendeUltimaLeitura(maiorData);
+    this.lf.diasLeitura.setValue(dias.toString());
   }
 
   private getDiasDendeUltimaLeitura(data: EngadirEditarData): number {
@@ -257,7 +296,6 @@ export class LivroComponent implements OnInit {
 
     dataMin.setDate(dataMin.getDate() + 1);       // 1 para que nom conte o dia inicial.
     while (dataMin.getTime() < dataMax.getTime()) {
-      console.log(dataMin.getDate(), resultado)
       resultado++;
       dataMin.setDate(dataMin.getDate() + 1);     // getDay() funciona mal.
     }

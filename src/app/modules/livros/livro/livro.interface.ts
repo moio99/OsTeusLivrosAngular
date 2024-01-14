@@ -47,6 +47,12 @@ export interface Autor {
   nome: string;
 }
 
+
+export interface datasUltimosAnos {
+  dataDoLivro: string;
+  id: string;
+}
+
 export interface Outros {
   nacionalidades: { data: Nacionalidade[], meta: { quantidade:number } },
   paises: { data: Pais[], meta: { quantidade:number } },
@@ -57,5 +63,6 @@ export interface Outros {
   colecons: { data: Colecom[], meta: { quantidade:number } },
   idiomas: { data: Idioma[], meta: { quantidade:number } },
   seriesLivro: { data: SerieLivro[], meta: { quantidade:number } }
-  ultimaLeitura: string
+  ultimaLeitura: string,
+  ultimasLeituras: datasUltimosAnos[]
 }

@@ -40,6 +40,7 @@ export class DateConvert {
   }
 
   public getDateFromMySQL(value: string): EngadirEditarData {
+
     let addEditDate: EngadirEditarData = { day: 0, month: 0, year: 0 };
     if (value != null && value != undefined
       && value !== '' && value.length > 4) {
