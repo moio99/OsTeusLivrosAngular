@@ -27,6 +27,11 @@ export class BibliotecasService {
       + '/Biblioteca?id=' + id);
   }
 
+  getBibliotecaPorNome(nome: string) {
+    return this.http.get(environment.apiUrl + this.rotaIntermedia
+      + '/BibliotecaPorNome?nome=' + nome);
+  }
+
   postBiblioteca(biblioteca: Biblioteca) {
     console.debug('engadindo');
     return this.http.post(environment.apiUrl + this.rotaIntermedia

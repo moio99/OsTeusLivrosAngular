@@ -63,6 +63,11 @@ export class LivrosService {
       + '/Livro?id=' + id);
   }
 
+  getLivroPorTitulo(titulo: string) {
+    return this.http.get(environment.apiUrl + this.rotaIntermedia
+      + '/LivroPorTitulo?titulo=' + titulo);
+  }
+
 
   postLivro(livro: Livro) {
     console.debug('engadindo');

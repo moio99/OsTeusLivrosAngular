@@ -122,6 +122,27 @@ export class EditorialComponent implements OnInit {
     if (this.ef.nome.status === 'VALID' && this.ef.direicom.status === 'VALID'
       && this.ef.web.status === 'VALID' && this.ef.comentario.status === 'VALID') {
 
+      let editorialRepetido: EditorialData;
+      this.editoriaisService
+        .getEditorialPorNome(String(this.ef.nome.value).trim())
+        .pipe(first())
+        .subscribe({
+          next: (v) => editorialRepetido = <EditorialData>v,
+          error: (e) => { console.error(e),
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados da editorial.'}); },
+          complete: () => this.guardarEditorial(event, editorialRepetido)
+      });
+    }
+  }
+
+  guardarEditorial(event: any, editorialRepetido: EditorialData) {
+    if (editorialRepetido != undefined && editorialRepetido.meta.quantidade > 0 && (
+      (event.submitter.value === this.engadir)
+      ||
+      (event.submitter.value !== this.engadir && editorialRepetido.meta.id != this.dadosDaEditorial?.id))) { // se está actualizando os ids deben ser inguais
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome da editorial já existe na base de dados'});
+    }
+    else {
       const editorial: Editorial = {
         id: Number(this.dadosDaEditorial?.id),
         nome: String(this.ef.nome.value),

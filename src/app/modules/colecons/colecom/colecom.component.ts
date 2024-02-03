@@ -121,7 +121,27 @@ export class ColecomComponent implements OnInit {
   onSubmit(event: any) {
     if (this.cf.nome.status === 'VALID'  && this.cf.isbn.status === 'VALID'
       && this.cf.web.status === 'VALID'  && this.cf.comentario.status === 'VALID') {
+        let colecomRepetido: ColecomData;
+        this.coleconsService
+          .getColecomPorNome(String(this.cf.nome.value).trim())
+          .pipe(first())
+          .subscribe({
+            next: (v) => colecomRepetido = <ColecomData>v,
+            error: (e) => { console.error(e),
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados da coleçom.'}); },
+            complete: () => this.guardarColecom(event, colecomRepetido)
+        });
+    }
+  }
 
+  guardarColecom(event: any, colecomRepetido: ColecomData) {
+    if (colecomRepetido != undefined && colecomRepetido.meta.quantidade > 0 && (
+      (event.submitter.value === this.engadir)
+      ||
+      (event.submitter.value !== this.engadir && colecomRepetido.meta.id != this.dadosDaColecom?.id))) { // se está actualizando os ids deben ser inguais
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome da coleçom já existe na base de dados'});
+    }
+    else {
       const colecom: Colecom = {
         id: Number(this.dadosDaColecom?.id),
         nome: String(this.cf.nome.value).trim(),

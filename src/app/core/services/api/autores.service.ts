@@ -36,6 +36,11 @@ export class AutoresService {
       + '/Autor?id=' + id);
   }
 
+  getAutorPorNome(nome: string) {
+    return this.http.get(environment.apiUrl + this.rotaIntermedia
+      + '/AutorPorNome?nome=' + nome);
+  }
+
   postAutor(autor: Autor) {
     console.debug('engadindo');
     return this.http.post(environment.apiUrl + this.rotaIntermedia

@@ -27,6 +27,11 @@ export class ColeconsService {
       + '/Colecom?id=' + id);
   }
 
+  getColecomPorNome(nome: string) {
+    return this.http.get(environment.apiUrl + this.rotaIntermedia
+      + '/ColecomPorNome?nome=' + nome);
+  }
+
   postColecom(colecom: Colecom) {
     console.debug('engadindo');
     return this.http.post(environment.apiUrl + this.rotaIntermedia

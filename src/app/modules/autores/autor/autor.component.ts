@@ -312,6 +312,28 @@ export class AutorComponent implements OnInit {
       && this.af.dataNacemento.status === 'VALID' && this.af.dataDefuncom.status === 'VALID'
       && this.af.premios.status === 'VALID' && this.af.web.status === 'VALID') {
 
+      let autorRepetido: AutorData;
+      this.autoresService
+        .getAutorPorNome(String(this.af.nome.value).trim())
+        .pipe(first())
+        .subscribe({
+          next: (v) => autorRepetido = <AutorData>v,
+          error: (e) => { console.error(e),
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor.'}); },
+          complete: () => this.guardarAutor(event, autorRepetido)
+      });
+    }
+  }
+
+  guardarAutor(event: any, autorRepetido: AutorData) {
+    if (autorRepetido != undefined && autorRepetido.meta.quantidade > 0 && (
+      (event.submitter.value === this.engadir)
+      ||
+      (event.submitter.value !== this.engadir && autorRepetido.meta.id != this.dadosDoAutor?.id))) { // se está actualizando os ids deben ser inguais
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome do autor já existe na base de dados'});
+    }
+    else {
+
       let dateConvert = new DateConvert();
       let dN = dateConvert.getDate(this.af.dataNacemento.value);
       let dD = dateConvert.getDate(this.af.dataDefuncom.value);
@@ -364,7 +386,6 @@ export class AutorComponent implements OnInit {
         });
       }
     }
-
   }
 
   private gestionarRetroceso(data: object, autor: Autor) {

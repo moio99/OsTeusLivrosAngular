@@ -27,6 +27,11 @@ export class EditoriaisService {
       + '/Editorial?id=' + id);
   }
 
+  getEditorialPorNome(nome: string) {
+    return this.http.get(environment.apiUrl + this.rotaIntermedia
+      + '/EditorialPorNome?nome=' + nome);
+  }
+
   postEditorial(editorial: Editorial) {
     console.debug('engadindo');
     return this.http.post(environment.apiUrl + this.rotaIntermedia

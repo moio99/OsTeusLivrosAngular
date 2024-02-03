@@ -134,6 +134,28 @@ export class BibliotecaComponent implements OnInit {
       && this.bf.localidade.status === 'VALID' && this.bf.telefone.status === 'VALID'
       && this.bf.dataAsociamento.status === 'VALID' && this.bf.dataRenovacom.status === 'VALID'
       && this.bf.comentario.status === 'VALID') {
+      let bibliotecaRepetida: BibliotecaData;
+
+      this.bibliotecasService
+        .getBibliotecaPorNome(String(this.bf.nome.value).trim())
+        .pipe(first())
+        .subscribe({
+          next: (v) => bibliotecaRepetida = <BibliotecaData>v,
+          error: (e) => { console.error(e),
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados da biblioteca.'}); },
+          complete: () => this.guardarBiblioteca(event, bibliotecaRepetida)
+      });
+    }
+  }
+
+  guardarBiblioteca(event: any, bibliotecaRepetida: BibliotecaData) {
+    if (bibliotecaRepetida != undefined && bibliotecaRepetida.meta.quantidade > 0 && (
+      (event.submitter.value === this.engadir)
+      ||
+      (event.submitter.value !== this.engadir && bibliotecaRepetida.meta.id != this.dadosDaBiblioteca?.id))) { // se está actualizando os ids deben ser inguais
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome da biblioteca já existe na base de dados'});
+    }
+    else {
 
       let dateConvert = new DateConvert();
       let dA = dateConvert.getDate(this.bf.dataAsociamento.value);

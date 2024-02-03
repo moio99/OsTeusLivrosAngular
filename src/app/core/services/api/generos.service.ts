@@ -27,6 +27,11 @@ export class GenerosService {
       + '/Genero?id=' + id);
   }
 
+  getGeneroPorNome(nome: string) {
+    return this.http.get(environment.apiUrl + this.rotaIntermedia
+      + '/GeneroPorNome?nome=' + nome);
+  }
+
   getGeneroNome(id: number) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/GeneroNome?id=' + id);

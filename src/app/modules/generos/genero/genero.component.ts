@@ -51,13 +51,13 @@ export class GeneroComponent implements OnInit {
           this.modo = this.engadir;
         else {
           this.modo = this.guardar;
-          this.obterDadosDaGenero(parametros.id);
+          this.obterDadosDoGenero(parametros.id);
         }
       }
     );
   }
 
-  private obterDadosDaGenero(id: number): void {
+  private obterDadosDoGenero(id: number): void {
     this.generosService
       .getGenero(id)
       .pipe(first())
@@ -116,7 +116,27 @@ export class GeneroComponent implements OnInit {
 
   onSubmit(event: any) {
     if (this.gf.nome.status === 'VALID' && this.gf.comentario.status === 'VALID') {
+      let generoRepetido: GeneroData;
+      this.generosService
+        .getGeneroPorNome(String(this.gf.nome.value).trim())
+        .pipe(first())
+        .subscribe({
+          next: (v) => generoRepetido = <GeneroData>v,
+          error: (e) => { console.error(e),
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do género.'}); },
+          complete: () => this.guardarGenero(event, generoRepetido)
+      });
+    }
+  }
 
+  guardarGenero(event: any, generoRepetido: GeneroData) {
+    if (generoRepetido != undefined && generoRepetido.meta.quantidade > 0 && (
+      (event.submitter.value === this.engadir)
+      ||
+      (event.submitter.value !== this.engadir && generoRepetido.meta.id != this.dadosDoGenero?.id))) { // se está actualizando os ids deben ser inguais
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome do género já existe na base de dados'});
+    }
+    else {
       const genero: Genero = {
         id: Number(this.dadosDoGenero?.id),
         nome: String(this.gf.nome.value).trim(),
@@ -151,6 +171,7 @@ export class GeneroComponent implements OnInit {
               console.debug('put completado') }
         });
       }
+
     }
   }
 

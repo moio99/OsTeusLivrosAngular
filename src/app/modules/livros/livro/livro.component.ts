@@ -598,7 +598,27 @@ export class LivroComponent implements OnInit {
 
   onSubmit(event: any) {
     if (this.livroForm.valid) {
+      let livroRepetido: LivroData;
+      this.livrosService
+        .getLivroPorTitulo(String(this.lf.titulo.value).trim())
+        .pipe(first())
+        .subscribe({
+          next: (v) => livroRepetido = <LivroData>v,
+          error: (e) => { console.error(e),
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro.'}); },
+          complete: () => this.guardarLivro(event, livroRepetido)
+      });
+    }
+  }
 
+  guardarLivro(event: any, livroRepetido: LivroData) {
+    if (livroRepetido != undefined && livroRepetido.meta.quantidade > 0 && (
+      (event.submitter.value === this.engadir)
+      ||
+      (event.submitter.value !== this.engadir && livroRepetido.meta.id != this.dadosDoLivro?.id))) { // se está actualizando os ids deben ser inguais
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O título do livro já existe na base de dados'});
+    }
+    else {
       let livro = this.setDadosLivro();
 
       if (event.submitter.value === this.engadir) {
@@ -630,7 +650,6 @@ export class LivroComponent implements OnInit {
         });
       }
     }
-
   }
 
   setDadosLivro(): Livro {
