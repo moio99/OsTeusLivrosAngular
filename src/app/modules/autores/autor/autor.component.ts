@@ -366,7 +366,8 @@ export class AutorComponent implements OnInit {
             error: (e) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o autor.'});
               console.error(e) },
-            complete: () => { this.modo = this.guardar;
+            complete: () => {
+              this.modo = this.guardar;
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor engadido.'});
               console.debug('post completado'); }
         });
@@ -392,6 +393,7 @@ export class AutorComponent implements OnInit {
     const dados = <ListadoLivrosData>data;
     if (dados) {
       autor.id = dados.meta.id;
+      this.dadosDoAutor = autor;
       let novoDado = this.dadosPaginas.getNovoDado();
       if (novoDado) {
         novoDado.elemento = autor;

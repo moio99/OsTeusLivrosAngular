@@ -181,7 +181,8 @@ export class BibliotecaComponent implements OnInit {
             error: (e) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a biblioteca.'});
               console.error(e) },
-            complete: () => { this.modo = this.guardar;
+            complete: () => {
+              this.modo = this.guardar;
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca engadida.'});
               console.debug('post completado'); }
         });
@@ -207,6 +208,7 @@ export class BibliotecaComponent implements OnInit {
     const dados = <ListadoLivrosData>data;
     if (dados) {
       biblioteca.id = dados.meta.id;
+      this.dadosDaBiblioteca = biblioteca;
       let novoDado = this.dadosPaginas.getNovoDado();
       if (novoDado) {
         novoDado.elemento = biblioteca;

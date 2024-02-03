@@ -626,11 +626,12 @@ export class LivroComponent implements OnInit {
           .postLivro(livro)
           .pipe(first())
           .subscribe({
-            next: (v) => console.debug(v),
+            next: (v) => {console.debug(v), this.gestionarExito(v, livro)},
             error: (e) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o livro.', duracom: 10});
               console.error(e) },
-            complete: () => { this.modo = this.guardar;
+            complete: () => {
+              this.modo = this.guardar;
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro engadido.'});
               console.debug('post completado'); }
         });
@@ -640,7 +641,7 @@ export class LivroComponent implements OnInit {
           .putLivro(livro)
           .pipe(first())
           .subscribe({
-            next: (v) => console.debug(v),
+            next: (v) => {console.debug(v), this.gestionarExito(v, livro)},
             error: (e) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar o livro.', duracom: 10});
               console.error(e) },
@@ -714,5 +715,13 @@ export class LivroComponent implements OnInit {
     };
 
     return livro;
+  }
+
+  private gestionarExito(data: object, livro: Livro) {
+    if (data) {
+      let info = <{idResult: number}>data;
+      livro.id = info.idResult;
+      this.dadosDoLivro = livro;
+    }
   }
 }

@@ -160,7 +160,8 @@ export class EditorialComponent implements OnInit {
             error: (e) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a editorial.'});
               console.error(e) },
-            complete: () => { this.modo = this.guardar;
+            complete: () => {
+              this.modo = this.guardar;
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Editorial engadida.'});
               console.debug('post completado'); }
         });
@@ -186,6 +187,7 @@ export class EditorialComponent implements OnInit {
     const dados = <ListadoLivrosData>data;
     if (dados) {
       editorial.id = dados.meta.id;
+      this.dadosDaEditorial = editorial;
       let novoDado = this.dadosPaginas.getNovoDado();
       if (novoDado) {
         novoDado.elemento = editorial;

@@ -152,7 +152,8 @@ export class GeneroComponent implements OnInit {
             error: (e) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o género.'});
               console.error(e) },
-            complete: () => { this.modo = this.guardar;
+            complete: () => {
+              this.modo = this.guardar;
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género engadido.'});
               console.debug('post completado'); }
         });
@@ -179,6 +180,7 @@ export class GeneroComponent implements OnInit {
     const dados = <ListadoLivrosData>data;
     if (dados) {
       genero.id = dados.meta.id;
+      this.dadosDoGenero = genero;
       let novoDado = this.dadosPaginas.getNovoDado();
       if (novoDado) {
         novoDado.elemento = genero;

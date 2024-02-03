@@ -159,7 +159,8 @@ export class ColecomComponent implements OnInit {
             error: (e) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a coleçom.'});
               console.error(e) },
-            complete: () => { this.modo = this.guardar;
+            complete: () => {
+              this.modo = this.guardar;
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Coleçom engadida.'});
               console.debug('post completado'); }
         });
@@ -188,6 +189,7 @@ export class ColecomComponent implements OnInit {
       let novoDado = this.dadosPaginas.getNovoDado();
       if (novoDado) {
         novoDado.elemento = colecom;
+        this.dadosDaColecom = colecom;
         this.layoutService.amosarInfo(undefined);
         this.location.back();
       }
