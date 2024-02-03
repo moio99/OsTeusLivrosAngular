@@ -1,7 +1,9 @@
-
-<img
-  [src]="imagemAmosar"
+<div
+  class="imagem-estrela"
   (mouseover)="entrouORato()"
   (mouseout)="saiuORato()"
-  (mousedown)="ratoPicou()"
-  alt="{{numero}}">
+  (mousedown)="ratoPicou()">
+  <img [ngClass]="{'imagem': numero % 1 != 0}"
+    [src]="imagemAmosar"
+    alt="{{numero}}">
+</div>

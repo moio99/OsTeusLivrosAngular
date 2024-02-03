@@ -10,7 +10,6 @@ export class EstrelasPontuacomComponent implements OnInit {
 
   cantidade: number = 10;
   estrelas: Estrela[] = [];
-  estrelasMedias: Estrela[] = [];
   estrelaSimulando?: Estrela = undefined;
   novaPontuacom?: number = undefined;
 
@@ -30,11 +29,15 @@ export class EstrelasPontuacomComponent implements OnInit {
     for(let i = 1; i < this.cantidade + 1; i++){
       let estrela = { numero: i, marcada: (this.pontuacom != undefined && i <= this.pontuacom) };
       this.estrelas.push(estrela);
+      if (i < this.cantidade) {
+        let estrelaMedia = { numero: i + 0.5, marcada: (this.pontuacom != undefined && i <= this.pontuacom) };
+        this.estrelas.push(estrelaMedia);
+      }
     }
-    for(let i = 1; i < this.cantidade; i++){
+    /* for(let i = 1; i < this.cantidade; i++){
       let estrela = { numero: i + 0.5, marcada: (this.pontuacom != undefined && i <= this.pontuacom) };
       this.estrelasMedias.push(estrela);
-    }
+    } */
     this.novaPontuacom = this.pontuacom;
     this.numeroActual = (this.pontuacom != undefined) ? this.pontuacom : 0;
   }
