@@ -1,4 +1,21 @@
 
 .estrelas {
   display: flex;
+  .bloco-estrelas{
+    .enteiros {
+      display: flex;
+    }
+    .decimais {
+      display: flex;
+      margin-left: 15px;
+    }
+  }
+  .bloco-numero {
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+  }
+  .estrela:not(:first-child) {
+    margin-left: 10px;
+  }
 }

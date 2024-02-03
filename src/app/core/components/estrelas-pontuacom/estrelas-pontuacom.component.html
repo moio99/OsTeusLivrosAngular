@@ -1,12 +1,29 @@
 
 <div class="estrelas">
-  <div *ngFor="let estrela of estrelas">
-    <omla-estrela
-      [numero]="estrela.numero"
-      (simulacomEvent)="onSimulacom($event)"
-      (estavelecerPontuacomEvent)="onEstavelecerPontuacom($event)"
-      [simulandoPontuacom]="estrelaSimulando"
-      [estavelecerNonovaPontuacom]="novaPontuacom"></omla-estrela>
+  <div class="bloco-estrelas">
+    <div class="enteiros">
+      <div *ngFor="let estrela of estrelas" class="estrela">
+        <omla-estrela
+          [numero]="estrela.numero"
+          (simulacomEvent)="onSimulacom($event)"
+          (estavelecerPontuacomEvent)="onEstavelecerPontuacom($event)"
+          [simulandoPontuacom]="estrelaSimulando"
+          [estavelecerNonovaPontuacom]="novaPontuacom"></omla-estrela>
+      </div>
+    </div>
+    <div class="decimais">
+      <div *ngFor="let estrela of estrelasMedias" class="estrela">
+        <omla-estrela
+          [numero]="estrela.numero"
+          (simulacomEvent)="onSimulacom($event)"
+          (estavelecerPontuacomEvent)="onEstavelecerPontuacom($event)"
+          [simulandoPontuacom]="estrelaSimulando"
+          [estavelecerNonovaPontuacom]="novaPontuacom"></omla-estrela>
+      </div>
+    </div>
+
   </div>
-  {{numeroActual}}
+  <div class="bloco-numero">
+    {{numeroActual}}
+  </div>
 </div>
