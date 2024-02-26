@@ -16,6 +16,7 @@ export interface ListadoLivros {
   tituloOriginal: string;
   paginas: number;
   dataFimLeitura: Date;
+  lido: boolean;
   idAutor: number;
   nomeAutor: string;
   autores: Autores[];

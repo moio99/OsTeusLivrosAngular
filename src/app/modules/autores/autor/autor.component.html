@@ -116,11 +116,13 @@
   <tr>
     <th>Titulo</th>
     <th>TituloOriginal</th>
+    <th>Lido</th>
     <th>Autor</th>
   </tr>
   <tr *ngFor="let entrada of this.dadosLivrosDoAutor" class="listado-accom">
     <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
     <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
+    <td>{{entrada.lido ? 'Si' : 'Nom'}}</td>
     <td>{{entrada.nomeAutor}}</td>
   </tr>
 </table>
