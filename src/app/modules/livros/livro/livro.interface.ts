@@ -12,31 +12,31 @@ export interface LivroData {
 export interface Livro {
   id: number;
   titulo: string;
-  tituloOriginal: string | null,
+  tituloOriginal: string | null;
 
-  idBiblioteca: number | null,
+  idBiblioteca: number | null;
   biblioteca: string;
-  idEditorial: number | null,
+  idEditorial: number | null;
   editorial: string;
-  idColecom: number | null,
+  idColecom: number | null;
   colecom: string;
-  isbn: string | null,
-  paginas: string | null,
-  paginasLidas: string | null,
-  lido: boolean,
-  diasLeitura: string | null,
-  dataFimLeitura: string,
-  idIdioma: number | null,
-  idIdiomaOriginal: number | null,
-  dataCriacom: string,
-  dataEdicom: string,
-  numeroEdicom: string | null,
+  isbn: string | null;
+  paginas: string | null;
+  paginasLidas: string | null;
+  lido: boolean;
+  diasLeitura: string | null;
+  dataFimLeitura: string;
+  idIdioma: number | null;
+  idIdiomaOriginal: number | null;
+  dataCriacom: string;
+  dataEdicom: string;
+  numeroEdicom: string | null;
   electronico: boolean
   somSerie: boolean;
-  idSerie: number | null,
-  premios: string | null,
-  descricom: string | null,
-  comentario: string | null,
+  idSerie: number | null;
+  premios: string | null;
+  descricom: string | null;
+  comentario: string | null;
   pontuacom?: number;
   autores: Autor[];
   generos: Genero[];

@@ -22,6 +22,7 @@ export class ListadoLivrosComponent implements OnInit {
   ordeTituloAlfabetico = ', título alfabético';
   ordeAutorAlfabetico = ', autor alfabético';
   ordePaginas = ', páginas';
+  ordeRelecturas = ', relecturas';
   tituloUltimaLectura = ', última lectura';
   tipoOrdeacom = this.ordeTituloAlfabetico;
   inverso = false;
@@ -162,6 +163,13 @@ export class ListadoLivrosComponent implements OnInit {
     this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.paginas, b.paginas, this.inverso, false));
   }
 
+  setOrdeRelecturas() {
+    this.inverso = (this.tipoOrdeacom == this.ordeRelecturas) ? !this.inverso : false;
+    this.tipoOrdeacom = this.ordeRelecturas;
+
+    this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.quantidadeRelecturas, b.quantidadeRelecturas, this.inverso, false));
+  }
+
   setOrdeUltmaLectura() {
     this.inverso = (this.tipoOrdeacom == this.tituloUltimaLectura) ? !this.inverso : false;
     this.tipoOrdeacom = this.tituloUltimaLectura;
@@ -183,25 +191,32 @@ export class ListadoLivrosComponent implements OnInit {
     // this.router.navigate([rota], {dadoQueVai: id});
   }
 
-  onBorrarElemento(id: number, nome: string, livrosSerie: number) {
+  onBorrarElemento(id: number, nome: string, livrosSerie: number, relecturas: number) {
     if (livrosSerie == undefined || livrosSerie == 0) {
-      if(confirm("Está certo de querer borrar o livro " + nome + "?")) {
-        this.livrosService
-              .borrarLivro(id)
-              .pipe(first())
-              .subscribe({
-                next: (v) => console.debug(v),
-                error: (e) => { console.error(e),
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o livro.'}); },
-                complete: () => { console.debug('Borrado feito'); this.obterDadosDoListado();
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro borrado.'}); }
-            });
+      if (relecturas == undefined || relecturas == 0) {
+        if(confirm("Está certo de querer borrar o livro " + nome + "?")) {
+          this.livrosService
+                .borrarLivro(id)
+                .pipe(first())
+                .subscribe({
+                  next: (v) => console.debug(v),
+                  error: (e) => { console.error(e),
+                    this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o livro.'}); },
+                  complete: () => { console.debug('Borrado feito'); this.obterDadosDoListado();
+                    this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro borrado.'}); }
+              });
+        }
+      }
+      else {
+        let aviso = 'Nom se pode borrar o livro ' + nome + ' mentres tenha relecturas asociadas ' + relecturas;
+        this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: aviso});
+        alert(aviso);
       }
     }
     else {
-      let pergunta = 'Nom se pode borrar o livro ' + nome + ' mentres seja o primeiro dumha serie de ' + livrosSerie + ' livros';
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: pergunta});
-      alert(pergunta);
+      let aviso = 'Nom se pode borrar o livro ' + nome + ' mentres seja o primeiro dumha serie de ' + livrosSerie + ' livros';
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: aviso});
+      alert(aviso);
     }
   }
 }

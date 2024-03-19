@@ -21,6 +21,7 @@ export interface ListadoLivros {
   nomeAutor: string;
   autores: Autores[];
   quantidadeSerie: number;
+  quantidadeRelecturas: number;
 }
 
 export interface Autores {

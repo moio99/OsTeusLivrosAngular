@@ -39,6 +39,15 @@ export class DateConvert {
     return addEditDate;
   }
 
+  /**
+   * Dolta a data no formato dd/MM/yyyy
+   * @param value Objeto con la fecha en formato string o mat-datepicker.
+   */
+  public getDateString(value: any, separador: string) {
+    let data = this.getDate(value);
+    return data.day + separador + data.month + separador + data.year;
+  }
+
   public getDateFromMySQL(value: string): EngadirEditarData {
 
     let addEditDate: EngadirEditarData = { day: 0, month: 0, year: 0 };

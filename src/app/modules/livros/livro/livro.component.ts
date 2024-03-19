@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { first, map, Observable, startWith } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LivrosService } from 'src/app/core/services/api/livros.service';
 import { Autor, Livro, LivroData, Outros, Parametros, datasUltimosAnos } from './livro.interface';
-import { FormGroup, FormControl, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormControl, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { OutrosService } from 'src/app/core/services/api/outros.service';
 import { Genero, SimpleObjet } from 'src/app/shared/models/outros';
 import { DateConvert } from 'src/app/shared/classes/date-convert';
@@ -15,6 +15,8 @@ import { DadosComplentarios, InformacomPeTipo } from 'src/app/shared/enums/estad
 import { LayoutService } from 'src/app/core/services/flow/layout.service';
 import { Title } from '@angular/platform-browser';
 import { EngadirEditarData } from 'src/app/shared/models/datas';
+import { ListadoRelecturas, Relectura, RelecturaData, RelecturasData } from './relectura.interface';
+import { RelecturasService } from 'src/app/core/services/api/relecturas.service';
 
 export enum MultiGestom {
   autores = 1,
@@ -29,9 +31,13 @@ export enum MultiGestom {
 export class LivroComponent implements OnInit {
 
   idLivro: number = 0;
+  dadosDoLivro: Livro | undefined;
+  dadosDaRelectura: Relectura | undefined;
   nomePagina = 'livro';
   engadir = 'Engadir'; guardar = 'Guardar';
+  modoRelectura = false;
   modo = this.engadir;
+  modoSalvadoRelectura = this.modo;
   multiGestom = MultiGestom;
   dadosComplentarios = DadosComplentarios;
   totalAutores: SimpleObjet[] = [];
@@ -49,8 +55,8 @@ export class LivroComponent implements OnInit {
   idiomasOriginais: Observable<SimpleObjet[]> | undefined;
   seriesLivrosCombo: SimpleObjet[] = [];
   seriesLivro: Observable<SimpleObjet[]> | undefined;
-
-  dadosDoLivro: Livro | undefined;
+  dadosRelecturas: ListadoRelecturas[] = [];
+  diasLeitura = 0;
 
   rex1000000 = '([1-1][0-0]{6,6}|[0-9]{1,6})';
   rex1000 = '([1-1][0-0]{3,3}|[0-9]{1,3})';
@@ -86,6 +92,7 @@ export class LivroComponent implements OnInit {
     comentario: new FormControl('', { validators: [Validators.maxLength(50000)] }),
   });
   get lf() { return this.livroForm.controls; }
+  pontuacomEstrelas: number | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -95,6 +102,7 @@ export class LivroComponent implements OnInit {
     private fb: FormBuilder,
     private outrosService: OutrosService,
     private livrosService: LivrosService,
+    private relecturasService: RelecturasService,
     private dialog: MatDialog,
     private dadosPaginas: DadosPaginasService ) { }
 
@@ -110,25 +118,25 @@ export class LivroComponent implements OnInit {
           id = parametros.id;
           this.modo = this.guardar;
         }
-        this.obterDadosOutros(parametros.id);
+        this.obterDados(parametros.id);
       }
     );
     this.idLivro = id;
   }
 
-  private obterDadosOutros(idLivro: number): void {
+  private obterDados(idLivro: number): void {
     this.outrosService
       .getTodo()
       .pipe(first())
       .subscribe({
-        next: (v) => this.dadosOutrosObtidos(v, idLivro),
+        next: (v) => this.dadosOutrosObtidos(v),
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados', duracom: 10}); },
-        complete: () => this.obterDadosDoLivro(idLivro)
+        complete: () => this.obterDadosRelecturas(idLivro)
     });
   }
 
-  private dadosOutrosObtidos(data: object, idLivro: number) {
+  private dadosOutrosObtidos(data: object) {
     const dados = <Outros>data;
     if (dados != null) {
 
@@ -246,7 +254,7 @@ export class LivroComponent implements OnInit {
         this.lf.diasLeitura.setValue(dias.toString());
       } */
 
-      if (idLivro == 0 && dados.ultimasLeituras && dados.ultimasLeituras.length > 0) {
+      if (dados.ultimasLeituras && dados.ultimasLeituras.length > 0) {
         this.setDiasDendeUltimaLeitura(dados.ultimasLeituras);
       }
     }
@@ -285,8 +293,10 @@ export class LivroComponent implements OnInit {
     maiorData.day = maiorData.day + 1;
     //console.log('ultimas Leituras:', dados);
     //console.log('maior data', maiorData);
-    const dias = this.getDiasDendeUltimaLeitura(maiorData);
-    this.lf.diasLeitura.setValue(dias.toString());
+    this.diasLeitura = this.getDiasDendeUltimaLeitura(maiorData);
+    if (this.modo === this.engadir) {
+      this.lf.diasLeitura.setValue(this.diasLeitura.toString());
+    }
   }
 
   private getDiasDendeUltimaLeitura(data: EngadirEditarData): number {
@@ -312,6 +322,208 @@ export class LivroComponent implements OnInit {
 
     return listadoSimple.filter(option => option.value.toLowerCase().includes(filterValue));
   }
+
+  //#region Relecturas
+  onGestomNovaRelectura() {
+    this.dadosDoLivro = this.setDadosLivro();
+    this.lf.dataFimLeiturata.setValue('');
+    this.lf.diasLeitura.setValue(this.diasLeitura.toString());
+    this.modoSalvadoRelectura = this.modo;
+    this.modo = this.engadir;
+    this.modoRelectura = true;
+  }
+
+  onCancelarNovaRelectura() {
+    this.setDadosLivroForm();
+    this.modo = this.modoSalvadoRelectura;
+    this.modoRelectura = false;
+  }
+
+  private obterDadosRelecturas(idLivro: number): void {
+    this.relecturasService
+      .getRelecturas(idLivro)
+      .pipe(first())
+      .subscribe({
+        next: (v) => this.dadosRelecturasObtidos(v),
+        error: (e) => { console.error(e),
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados das relecturas', duracom: 10}); },
+        complete: () => this.obterDadosDoLivro(idLivro)
+    });
+  }
+
+  private dadosRelecturasObtidos(dadosChegando: object) {
+    const dados = <RelecturasData>dadosChegando;
+    if (dados && dados.data.length > 0) {
+      this.dadosRelecturas = dados.data;
+    }
+    else
+      this.dadosRelecturas = [];
+  }
+
+  onEditarRelectura(idRelectura: number){
+    this.relecturasService
+      .getRelectura(idRelectura)
+      .pipe(first())
+      .subscribe({
+        next: (v) => this.amosarDadosRelectura(v),
+        error: (e) => { console.error(e),
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a relectura.'}); },
+        complete: () => console.debug('completada a obtençom da relectura do livro')
+    });
+  }
+
+  private amosarDadosRelectura(dadosChegando: object) {
+    const dados = <RelecturaData>dadosChegando;
+    if (dados && dados.data.length > 0) {
+      this.dadosDaRelectura = <Relectura>dados.data[0];
+
+      if (this.dadosDaRelectura) {
+        this.onGestomNovaRelectura();
+        this.modo = this.guardar;
+        this.setDadosRelecturaForm();
+      }
+      else
+        this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados da relectura', duracom: 10});
+    }
+  }
+
+  /**
+   * Estavelece os dados no formulario
+   */
+  private setDadosRelecturaForm() {
+    if (this.dadosDaRelectura) {
+      this.lf.titulo.setValue(this.dadosDaRelectura.titulo);
+      this.setCombo(this.dadosDaRelectura.idBiblioteca, this.bibliotecasCombo, this.lf.idBiblioteca);
+      this.setCombo(this.dadosDaRelectura.idEditorial, this.editoriaisCombo, this.lf.idEditorial);
+      this.setCombo(this.dadosDaRelectura.idColecom, this.coleconsCombo, this.lf.idColecom);
+      this.lf.isbn.setValue(this.dadosDaRelectura.isbn);
+      this.lf.paginas.setValue(this.dadosDaRelectura.paginas);
+      this.lf.paginasLidas.setValue(this.dadosDaRelectura.paginasLidas);
+      this.lf.lido.setValue(this.dadosDaRelectura.lido);
+      this.lf.diasLeitura.setValue(this.dadosDaRelectura.diasLeitura);
+      this.setData(this.dadosDaRelectura.dataFimLeitura, this.lf.dataFimLeiturata);
+      this.setCombo(this.dadosDaRelectura.idIdioma, this.idiomasCombo, this.lf.idioma);
+      this.lf.numeroEdicom.setValue(this.dadosDaRelectura.numeroEdicom);
+      this.lf.electronico.setValue(this.dadosDaRelectura.electronico);
+      this.setData(this.dadosDaRelectura.dataEdicom, this.lf.dataEdicom);
+      this.lf.somSerie.setValue(this.dadosDaRelectura.somSerie);
+      this.setCombo(this.dadosDaRelectura.idSerie, this.seriesLivrosCombo, this.lf.serie);
+      this.lf.comentario.setValue(this.dadosDaRelectura.comentario);
+      this.pontuacomEstrelas = this.dadosDaRelectura?.pontuacom;
+    }
+  }
+
+  guardarRelectura(event: any) {
+    let relectura = this.setDadosRelectura();
+
+    if (event.submitter.value === this.engadir) {
+      this.relecturasService
+        .postRelectura(relectura)
+        .pipe(first())
+        .subscribe({
+          next: (v) => {console.debug(v), this.gestionarExitoRelectura(v, relectura)},
+          error: (e) => {
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a relectura.', duracom: 10});
+            console.error(e) },
+          complete: () => {
+            this.modo = this.guardar;
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura engadida.'});
+            console.debug('post completado'); }
+      });
+    }
+    else {
+      this.relecturasService
+        .putRelectura(relectura)
+        .pipe(first())
+        .subscribe({
+          next: (v) => {console.debug(v), this.gestionarExitoRelectura(v, relectura)},
+          error: (e) => {
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar a relectura.', duracom: 10});
+            console.error(e) },
+          complete: () => {
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura guardada.'});
+            console.debug('put completado') }
+      });
+    }
+  }
+
+  setDadosRelectura(): Relectura {
+    let dateConvert = new DateConvert();
+    let dFL = dateConvert.getDate(this.lf.dataFimLeiturata.value);
+    let dE = dateConvert.getDate(this.lf.dataEdicom.value);
+
+    let biblioteca = this.bibliotecasCombo.find(option => option.value === this.lf.idBiblioteca.value);
+    let editorial = this.editoriaisCombo.find(option => option.value === this.lf.idEditorial.value);
+    let colecom = this.coleconsCombo.find(option => option.value === this.lf.idColecom.value);
+    let idioma = this.idiomasCombo.find(option => option.value === this.lf.idioma.value);
+    let serie = this.seriesLivrosCombo.find(option => option.value === this.lf.serie.value);
+
+    let relectura: Relectura = {
+      id: (this.dadosDaRelectura) ? this.dadosDaRelectura.id : 0,
+      idLivro: this.dadosDoLivro!.id,
+      titulo: String(this.lf.titulo.value),
+      idBiblioteca: (biblioteca) ? biblioteca.id : null,
+      idEditorial: (editorial) ? editorial.id : null,
+      idColecom: (colecom) ? colecom.id : null,
+      isbn: (this.lf.isbn.value) ? String(this.lf.isbn.value) : null,
+      paginas: (this.lf.paginas.value) ? String(this.lf.paginas.value) : null,
+      paginasLidas: (!this.lf.paginasLidas.value) ? null : String(this.lf.paginasLidas.value),
+      lido: (!this.lf.lido.value) ? false : this.lf.lido.value,
+      diasLeitura: (this.lf.diasLeitura.value) ? String(this.lf.diasLeitura.value) : null,
+      dataFimLeitura: (dFL.year > 0) ? dFL.year + '-' + dFL.month + '-' + dFL.day : '',
+      idIdioma: (idioma) ? idioma.id : null,
+      dataEdicom: (dE.year > 0) ? dE.year + '-' + dE.month + '-' + dE.day : '',
+      numeroEdicom: (this.lf.numeroEdicom.value) ? String(this.lf.numeroEdicom.value) : null,
+      electronico: (!this.lf.electronico.value) ? false : this.lf.electronico.value,
+      somSerie: (!this.lf.somSerie.value) ? false : this.lf.somSerie.value,
+      idSerie: (serie) ? serie.id : null,
+      comentario: (this.lf.comentario.value) ? String(this.lf.comentario.value) : null,
+      pontuacom: this.dadosDoLivro?.pontuacom,
+      // nom necesarios
+      biblioteca: '',
+      editorial: '',
+      colecom: '',
+    };
+
+    return relectura;
+  }
+
+  private gestionarExitoRelectura(data: object, relectura: Relectura) {
+    if (data) {
+      let info = <{idResult: number}>data;
+      relectura.id = info.idResult;
+      this.dadosDaRelectura = relectura;
+      this.obterDadosRelecturas(this.idLivro);
+
+      this.setDadosLivroForm();
+      this.modo = this.modoSalvadoRelectura;
+      this.modoRelectura = false;
+    }
+  }
+
+  onBorrarRelectura(relectura: ListadoRelecturas) {
+    let pergunta = "Está certo de querer borrar a relectura " + relectura.titulo;
+    if (relectura.dataFimLeitura) {
+      let dateConvert = new DateConvert();
+      pergunta += " do día " + dateConvert.getDateString(relectura.dataFimLeitura, '/') + "?";
+    }
+    else
+      pergunta += "?";
+    if(confirm(pergunta)) {
+      this.relecturasService
+            .borrarRelectura(relectura.id)
+            .pipe(first())
+            .subscribe({
+              next: (v) => console.debug(v),
+              error: (e) => { console.error(e),
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a relectura.'}); },
+              complete: () => { console.debug('Borrado feito');
+                this.obterDadosRelecturas(this.idLivro);
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura borrada.'}); }
+          });
+    }
+  }
+  //#endregion
 
   private obterDadosDoLivro(id: number): void {
     let livro = this.dadosPaginas.getDadosPagina(id, this.nomePagina);
@@ -369,6 +581,7 @@ export class LivroComponent implements OnInit {
       this.lf.premios.setValue(this.dadosDoLivro.premios);
       this.lf.descricom.setValue(this.dadosDoLivro.descricom);
       this.lf.comentario.setValue(this.dadosDoLivro.comentario);
+      this.pontuacomEstrelas = this.dadosDoLivro?.pontuacom;      // TODO: nom funciona, nom volta a ponher as estrelas do livro
     }
     else
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados do livro', duracom: 10});
@@ -594,20 +807,26 @@ export class LivroComponent implements OnInit {
   onNovaPontuacom(pontuacom: number | undefined) {
     if (this.dadosDoLivro)
       this.dadosDoLivro.pontuacom = pontuacom;
+    this.pontuacomEstrelas = pontuacom;
   }
 
   onSubmit(event: any) {
-    if (this.livroForm.valid) {
-      let livroRepetido: LivroData;
-      this.livrosService
-        .getLivroPorTitulo(String(this.lf.titulo.value).trim())
-        .pipe(first())
-        .subscribe({
-          next: (v) => livroRepetido = <LivroData>v,
-          error: (e) => { console.error(e),
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro.'}); },
-          complete: () => this.guardarLivro(event, livroRepetido)
-      });
+    if (this.modoRelectura) {
+      this.guardarRelectura(event);
+    }
+    else {
+      if (this.livroForm.valid) {
+        let livroRepetido: LivroData;
+        this.livrosService
+          .getLivroPorTitulo(String(this.lf.titulo.value).trim())
+          .pipe(first())
+          .subscribe({
+            next: (v) => livroRepetido = <LivroData>v,
+            error: (e) => { console.error(e),
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro.'}); },
+            complete: () => this.guardarLivro(event, livroRepetido)
+        });
+      }
     }
   }
 
