@@ -9,4 +9,5 @@ export interface Estadisticas {
   nome: string;
   quantidade: number;
   quantidadePaginas: number;
+  quantidadeRelecturas: number;
 }

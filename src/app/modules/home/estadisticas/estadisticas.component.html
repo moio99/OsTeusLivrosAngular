@@ -10,12 +10,14 @@
     <tr>
       <th>Idioma</th>
       <th>Quantidade</th>
+      <th>Relecturas</th>
       <th>Páginas</th>
     </tr>
     <tr *ngFor="let entrada of this.resultadoIdiomas; last as isLast" class="listado-accom">
       <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">{{entrada.nome}}<span *ngIf="isLast" id="taboaAnos"></span></td>
       <!-- <td><a routerLink="/listadoLivros">{{entrada.nome}}</a></td> -->
       <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">{{entrada.quantidade}}</td>
+      <td>{{entrada.quantidadeRelecturas}}</td>
       <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas">{{entrada.quantidadePaginas}}</td>
     </tr>
   </table>
@@ -40,6 +42,7 @@
             [inverso]="this.inversoAnos"></omla-orde-coluna>
         </div>
       </th>
+      <th>Relecturas</th>
       <th (click)="setOrdePaginasAnos()">
         <div style="display: flex;">
           Páginas
@@ -53,6 +56,7 @@
     <tr *ngFor="let entrada of this.resultadoAnos; last as isLast" class="listado-accom">
       <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">{{entrada.nome}}<span *ngIf="isLast" id="taboaGenero"></span></td>
       <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">{{entrada.quantidade}}</td>
+      <td>{{entrada.quantidadeRelecturas}}</td>
       <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas">{{entrada.quantidadePaginas}}</td>
     </tr>
   </table>
@@ -69,6 +73,7 @@
             [inverso]="this.inversoGeneros"></omla-orde-coluna>
         </div>
       </th>
+      <th>Relecturas</th>
       <th (click)="setOrdePaginasGeneros()">
         <div style="display: flex;">
           Páginas
@@ -82,6 +87,7 @@
     <tr *ngFor="let entrada of this.resultadoGeneros" class="listado-accom">
       <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)">{{entrada.nome}}</td>
       <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)">{{entrada.quantidade}}</td>
+      <td>{{entrada.quantidadeRelecturas}}</td>
       <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas">{{entrada.quantidadePaginas}}</td>
     </tr>
   </table>
