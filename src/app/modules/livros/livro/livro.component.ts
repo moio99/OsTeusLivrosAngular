@@ -7,9 +7,9 @@ import { FormControl, Validators, FormBuilder, ValidatorFn, AbstractControl, Val
 import { OutrosService } from 'src/app/core/services/api/outros.service';
 import { Genero, SimpleObjet } from 'src/app/shared/models/outros';
 import { DateConvert } from 'src/app/shared/classes/date-convert';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MultiDados, MultiSelecomDialogComponent } from 'src/app/core/components/multi-selecom-dialog/multi-selecom-dialog.component';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 import { DadosPaginasService } from 'src/app/core/services/flow/dados-paginas.service';
 import { DadosComplentarios, InformacomPeTipo } from 'src/app/shared/enums/estadisticasTipos';
 import { LayoutService } from 'src/app/core/services/flow/layout.service';

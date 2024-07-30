@@ -4,12 +4,12 @@ import { LivroComponent } from './livro/livro.component';
 import { ListadoLivrosComponent } from './listado-livros/listado-livros.component';
 import { CoreModule } from 'src/app/core/core.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { MatNativeDateModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [

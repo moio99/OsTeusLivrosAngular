@@ -4,7 +4,7 @@ import { ListadoBibliotecasComponent } from './listado-bibliotecas/listado-bibli
 import { BibliotecaComponent } from './biblioteca/biblioteca.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MatNativeDateModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';

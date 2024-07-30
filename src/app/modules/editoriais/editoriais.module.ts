@@ -4,7 +4,7 @@ import { ListadoEditoriaisComponent } from './listado-editoriais/listado-editori
 import { EditorialComponent } from './editorial/editorial.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { CoreModule } from 'src/app/core/core.module';
 import { Routes, RouterModule } from '@angular/router';
 

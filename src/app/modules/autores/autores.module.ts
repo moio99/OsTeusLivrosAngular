@@ -5,10 +5,10 @@ import { ListadoAutoresComponent } from './listado-autores/listado-autores.compo
 //import { AppRoutingModule } from 'src/app/app-routing.module';
 import { PorTiposComponent } from './listado-autores/por-tipos/por-tipos.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { CoreModule } from 'src/app/core/core.module';
 import { RouterModule, Routes } from '@angular/router';

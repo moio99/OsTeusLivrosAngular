@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { GeneroComponent } from './genero/genero.component';
 import { ListadoGenerosComponent } from './listado-generos/listado-generos.component';
 import { CoreModule } from 'src/app/core/core.module';

@@ -7,7 +7,7 @@ import { CoreModule } from './core/core.module';
 import { EditoriaisModule } from './modules/editoriais/editoriais.module';
 import { HomeModule } from './modules/home/home.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { ColeconsModule } from './modules/colecons/colecons.module';
 import { AppRoutingModule } from './app-routing.module';
 import { MatIconModule } from '@angular/material/icon';
