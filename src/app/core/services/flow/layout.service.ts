@@ -1,10 +1,6 @@
-import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { InformacomPe } from 'src/app/shared/models/outros';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class LayoutService {
 
 	private abrirMenu$ = new Subject<void>();

@@ -1,12 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { Autor } from 'src/app/modules/livros/livro/livro.interface';
 import { ListadosAutoresTipos } from 'src/app/shared/enums/estadisticasTipos';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class AutoresService {
 
   private rotaIntermedia = '/Autores';

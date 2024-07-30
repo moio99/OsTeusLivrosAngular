@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { DadosComplentarios } from 'src/app/shared/enums/estadisticasTipos';
 
 export interface DadosPagina {
@@ -12,9 +11,6 @@ export interface NovoDado {
   elemento: any;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
 export class DadosPaginasService {
 
   private dados: DadosPagina[] = [];

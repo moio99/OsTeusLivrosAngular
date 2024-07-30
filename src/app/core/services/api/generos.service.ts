@@ -1,11 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { Genero } from 'src/app/shared/models/outros';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class GenerosService {
 
   private rotaIntermedia = '/Generos';

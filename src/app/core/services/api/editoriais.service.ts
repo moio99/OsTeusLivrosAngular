@@ -1,11 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { Editorial } from 'src/app/modules/editoriais/editorial/editorial.interface';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class EditoriaisService {
 
   private rotaIntermedia = '/Editoriais';

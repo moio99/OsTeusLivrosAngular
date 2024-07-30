@@ -1,11 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { Relectura } from 'src/app/modules/livros/livro/relectura.interface';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class RelecturasService {
 
   private rotaIntermedia = '/Relecturas';
