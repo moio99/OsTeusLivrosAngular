@@ -19,7 +19,7 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="titulo-original" *ngIf="!modoRelectura && modo !== engadir">
+    <div class="titulo-original" *ngIf="!modoRelectura">
       <mat-form-field>
         <mat-label>Título original</mat-label>
         <input matInput [formControl]="lf.tituloOriginal" maxlength="100">
@@ -29,7 +29,7 @@
       </mat-form-field>
     </div>
 
-    <div class="autor" *ngIf="!modoRelectura && modo !== engadir">
+    <div class="autor" *ngIf="!modoRelectura">
       <div class="lista-etiqueta">
         <div>
           Autor<span *ngIf="autoresLivro.length > 1">es</span>:
@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <div class="genero" *ngIf="!modoRelectura && modo !== engadir">
+    <div class="genero" *ngIf="!modoRelectura">
       <div class="lista-etiqueta">
         <div>
           Género<span *ngIf="generosLivro.length > 1">s</span>:
@@ -197,7 +197,7 @@
         </mat-autocomplete>
       </mat-form-field>
     </div>
-    <div class="idioma-original" *ngIf="!modoRelectura && modo !== engadir">
+    <div class="idioma-original" *ngIf="!modoRelectura">
       <mat-form-field>
         <input type="text"
               placeholder="Idioma Original:"
@@ -212,7 +212,7 @@
         </mat-autocomplete>
       </mat-form-field>
     </div>
-    <div class="data-criacom" *ngIf="!modoRelectura && modo !== engadir">
+    <div class="data-criacom" *ngIf="!modoRelectura">
       <mat-form-field class="margin-input-search">
         <mat-label>Data de criaçom</mat-label>
         <input matInput [matDatepicker]="fDateCri" [formControl]="lf.dataCriacom">
@@ -271,7 +271,7 @@
       </mat-form-field>
     </div>
     <div class="serie-check"></div>
-    <div class="premios" *ngIf="!modoRelectura && modo !== engadir">
+    <div class="premios" *ngIf="!modoRelectura">
       <mat-form-field>
         <mat-label>Prémios:</mat-label>
         <textarea matInput [formControl]="lf.premios" rows="4"></textarea>
@@ -280,7 +280,7 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="descricom" *ngIf="!modoRelectura && modo !== engadir">
+    <div class="descricom" *ngIf="!modoRelectura">
       <mat-form-field>
         <mat-label>Descriçom:</mat-label>
         <textarea matInput [formControl]="lf.descricom" rows="4"></textarea>
@@ -309,7 +309,7 @@
   <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{this.modo}}">
     {{this.modo}}
   </button>
-  <button type="button" mat-icon-button (click)="onGestomNovaRelectura()" *ngIf="!modoRelectura && modo !== engadir">
+  <button type="button" mat-icon-button (click)="onGestomNovaRelectura()" *ngIf="!modoRelectura">
     Nova relectura
   </button>
   <button type="button" mat-icon-button (click)="onCancelarNovaRelectura()" *ngIf="modoRelectura">

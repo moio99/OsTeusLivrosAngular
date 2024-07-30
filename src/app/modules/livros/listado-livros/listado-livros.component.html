@@ -59,7 +59,7 @@
       </ul>
     </td>
     <td (click)="onIrPagina('livros/livro', entrada.id)">{{entrada.paginas || '---'}}</td>
-    <td (click)="onIrPagina('livros/livro', entrada.id)">{{entrada.quantidadeRelecturas}}</td>
+    <td (click)="onIrPagina('livros/livro', entrada.id)">{{entrada.quantidadeRelecturas || '0'}}</td>
     <td>{{entrada.dataFimLeitura ? (entrada.dataFimLeitura | date:'dd/MM/yyyy') : '---'}}</td>
     <td (click)="onBorrarElemento(entrada.id, entrada.titulo, entrada.quantidadeSerie, entrada.quantidadeRelecturas)">
       <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
