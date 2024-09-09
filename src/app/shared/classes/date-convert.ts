@@ -7,7 +7,7 @@ export class DateConvert {
     * @param date fecha en formato yyyyMMddHHmmss.
     */
   public ConvertStringToDate(date: string): Date | null {
-    if (date.length == 14) {
+    if (date.length === 14) {
       var d = new Date();
       d.setUTCFullYear(+date.substring(0, 4));
       d.setUTCMonth((+date.substring(4, 6) -1));

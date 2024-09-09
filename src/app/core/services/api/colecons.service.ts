@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { Colecom } from 'src/app/modules/colecons/colecom/colecom.interface';
-import { environment } from 'src/environments/environment';
+import { Colecom } from '../../models/colecom.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ColeconsService {
 
@@ -22,7 +22,7 @@ export class ColeconsService {
       + '/ColeconsCosLivros');
   }
 
-  getColecom(id: number) {
+  getColecom(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Colecom?id=' + id);
   }
@@ -44,7 +44,7 @@ export class ColeconsService {
       + '/Colecom', colecom);
   }
 
-  borrarColecom(id: number) {
+  borrarColecom(id: string) {
     console.debug(id);
     return this.http.delete(environment.apiUrl + this.rotaIntermedia
       + '/Colecom?id=' + id);

@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OutrosService {
 
@@ -28,7 +28,7 @@ export class OutrosService {
     return this.http.get(environment.apiUrl + this.rotaIntermedia + '/PaisNome?id=' + id);
   }
 
-  getIdiomaNome(id: number) {
+  getIdiomaNome(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia + '/IdiomaNome?id=' + id);
   }
 

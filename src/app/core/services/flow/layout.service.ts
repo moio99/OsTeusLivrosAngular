@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { InformacomPe } from 'src/app/shared/models/outros';
+import { InformacomPe } from '../../../shared/models/outros.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LayoutService {
 

@@ -1,0 +1,161 @@
+import { Component, OnInit, signal  } from '@angular/core';
+import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { EstadisticasService } from '../../../core/services/api/estadisticas.service';
+import { LayoutService } from '../../../core/services/flow/layout.service';
+import { Ordeacom } from '../../../shared/classes/ordeacom';
+import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
+import { Estadisticas, EstadisticasData } from '../../../core/models/estadisticas.interface';
+
+@Component({
+  selector: 'omla-estadisticas',
+  standalone: true,
+  imports: [OrdeColunaComponent],
+  templateUrl: './estadisticas.component.html',
+  styleUrls: ['./estadisticas.component.scss']
+})
+export class EstadisticasComponent implements OnInit {
+
+  tipos = EstadisticasTipo;
+  anosSignal = signal<Estadisticas[]>([]);
+  idiomasSignal = signal<Estadisticas[]>([]);
+  generosSignal = signal<Estadisticas[]>([]);
+
+  ordeAnos = 'ordeAnos';
+  ordeQuantidadeAnos = 'ordeQuantidadeAnos';
+  ordePaginasAnos = 'ordePaginasAnos';
+  tipoOrdeacomAnos = this.ordeAnos;
+  inversoAnos = true;
+
+  ordeQuantidadeGeneros = 'ordeQuantidadeGeneros';
+  ordePaginasGeneros = 'ordePaginasGeneros';
+  tipoOrdeacomGeneros = this.ordeQuantidadeGeneros;
+  inversoGeneros = true;
+
+  constructor(
+    private router: Router,
+    private estadisticasService: EstadisticasService,
+    private layoutService: LayoutService) { }
+
+  ngOnInit(): void {
+    this.layoutService.amosarInfo(undefined);
+    this.obterEstadisticas();
+  }
+
+  private obterEstadisticas(): void {
+    this.estadisticasService
+      .getEstadisticas(EstadisticasTipo.Idioma)
+      .pipe(first())
+      .subscribe({
+        next: (v) => this.idiomasSignal.update(() => this.dadosObtidos(v)),
+        error: (e) => { console.error(e),
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+            mensagem: 'Nom se puiderom obter as estadísticas por idiomas.'}); },
+        complete: () => console.info('completado por Idiomas')
+    });
+    this.estadisticasService
+      .getEstadisticas(EstadisticasTipo.Ano)
+      .pipe(first())
+      .subscribe({
+        next: (v) => this.anosSignal.update(() => this.dadosObtidos(v)),
+        error: (e) => { console.error(e),
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+            mensagem: 'Nom se puiderom obter as estadísticas por anos.'}); },
+        complete: () => console.info('completado por Anos')
+    });
+    this.estadisticasService
+      .getEstadisticas(EstadisticasTipo.Genero)
+      .pipe(first())
+      .subscribe({
+        next: (v) => this.generosSignal.update(() => this.dadosObtidos(v)),
+        error: (e) => { console.error(e),
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+            mensagem: 'Nom se puiderom obter as estadísticas por géneros.'}); },
+        complete: () => console.info('completado por Genero')
+    });
+  }
+
+  private dadosObtidos(data: object): Estadisticas[] {
+    let resultados: Estadisticas[];
+    const dados = <EstadisticasData>data;
+    if (dados != null) {
+      console.debug(dados.data);
+      resultados = dados.data;
+    } else {
+      resultados = [];
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
+      console.debug('Nom se obtiverom dados');
+    }
+    return resultados
+  }
+
+  setOrdeAnos() {
+    this.inversoAnos = (this.tipoOrdeacomAnos === this.ordeAnos) ? !this.inversoAnos : false;
+    this.tipoOrdeacomAnos = this.ordeAnos;
+
+    this.anosSignal.update(listadoAnos => {
+      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inversoAnos, false));
+      return listadoAnos;
+    });
+  }
+
+  setOrdeQuantidadeAnos() {
+    this.inversoAnos = (this.tipoOrdeacomAnos === this.ordeQuantidadeAnos) ? !this.inversoAnos : false;
+    this.tipoOrdeacomAnos = this.ordeQuantidadeAnos;
+
+    this.anosSignal.update(listadoAnos => {
+      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.quantidade, b.quantidade, this.inversoAnos, false));
+      return listadoAnos;
+    });
+  }
+
+  setOrdePaginasAnos() {
+    this.inversoAnos = (this.tipoOrdeacomAnos === this.ordePaginasAnos) ? !this.inversoAnos : false;
+    this.tipoOrdeacomAnos = this.ordePaginasAnos;
+
+    this.anosSignal.update(listadoAnos => {
+      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.quantidadePaginas, b.quantidadePaginas, this.inversoAnos, false));
+      return listadoAnos;
+    });
+  }
+
+  setOrdeQuantidadeGeneros() {
+    this.inversoGeneros = (this.tipoOrdeacomGeneros === this.ordeQuantidadeGeneros) ? !this.inversoGeneros : false;
+    this.tipoOrdeacomGeneros = this.ordeQuantidadeGeneros;
+
+    this.generosSignal.update(listadoGeneros => {
+      listadoGeneros.sort((a,b) => new Ordeacom().ordear(a.quantidade, b.quantidade, this.inversoGeneros, false));
+      return listadoGeneros;
+    });
+  }
+
+  setOrdePaginasGeneros() {
+    this.inversoGeneros = (this.tipoOrdeacomGeneros === this.ordePaginasGeneros) ? !this.inversoGeneros : false;
+    this.tipoOrdeacomGeneros = this.ordePaginasGeneros;
+
+    this.generosSignal.update(listadoGeneros => {
+      listadoGeneros.sort((a,b) => new Ordeacom().ordear(a.quantidadePaginas, b.quantidadePaginas, this.inversoGeneros, false));
+      return listadoGeneros;
+    });
+  }
+
+  scrollAoElemento(elementId: string): void {
+    const elemento = document.getElementById(elementId);
+    elemento?.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  }
+
+  /**
+   * Navega a umha página.
+   * @param rota
+   * @param tipo
+   * @param id
+   */
+  onGoListadoLivros(rota: string, tipo: EstadisticasTipo, id: number): void{
+    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
+    this.layoutService.amosarInfo(undefined);
+    this.router.navigateByUrl(rota + '?tipo=' + tipo + '&id=' + id);
+    // this.router.navigate([rota], {relativeTo: id});
+    // this.router.navigate([rota], {dadoQueVai: id});
+  }
+}

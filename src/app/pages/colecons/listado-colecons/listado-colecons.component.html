@@ -1,0 +1,22 @@
+<h3>Listado de Coleçons</h3>
+<button class="botom-novo-resgistro" (click)="onIrPagina('/colecons/colecom', '0')">
+  Nova Coleçom
+</button>
+
+<h1 *ngIf="tipoListado.length > 0">Listado {{this.tipoListado}}</h1>
+
+<table *ngIf="this.listadoDados.length > 0" class="taboas-listado">
+  <tr>
+    <th>Nome</th>
+    <th>web</th>
+    <th>Livros</th>
+  </tr>
+  <tr *ngFor="let entrada of this.listadoDados" class="listado-accom">
+    <td (click)="onIrPagina('/colecons/colecom', entrada.id)">{{entrada.nome}}</td>
+    <td (click)="onIrPagina('/colecons/colecom', entrada.id)">{{entrada.web || '---'}}</td>
+    <td (click)="onIrPagina('/colecons/colecom', entrada.id)">{{entrada.quantidadeLivros}}</td>
+    <td (click)="onBorrarElemento(entrada.id, entrada.nome, entrada.quantidadeLivros)">
+      <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+    </td>
+  </tr>
+</table>

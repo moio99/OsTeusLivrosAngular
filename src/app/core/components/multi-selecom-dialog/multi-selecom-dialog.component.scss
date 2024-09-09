@@ -1,12 +1,9 @@
 $ancho-caixa: 200px;
 
 .contedor-dialogo {
-  display: flex;
-  flex-direction: column;
 
   .boton-fechar {
     position: relative;
-    top: -10px;
     justify-content: end;
     display: flex;
   }
@@ -83,7 +80,6 @@ $ancho-caixa: 200px;
   }
 
 }
-
 
 @media (max-width: 650px) {   // Actua com umha resoluçom por debaixo de 651px
   .menu-movel {

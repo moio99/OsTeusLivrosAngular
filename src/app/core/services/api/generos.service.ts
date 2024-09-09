@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { Genero } from 'src/app/shared/models/outros';
-import { environment } from 'src/environments/environment';
+import { Genero } from '../../models/genero.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GenerosService {
 
@@ -22,7 +22,7 @@ export class GenerosService {
       + '/GenerosCosLivros');
   }
 
-  getGenero(id: number) {
+  getGenero(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Genero?id=' + id);
   }
@@ -32,7 +32,7 @@ export class GenerosService {
       + '/GeneroPorNome?nome=' + nome);
   }
 
-  getGeneroNome(id: number) {
+  getGeneroNome(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/GeneroNome?id=' + id);
   }
@@ -49,7 +49,7 @@ export class GenerosService {
       + '/Genero', genero);
   }
 
-  borrarGenero(id: number) {
+  borrarGenero(id: string) {
     console.debug(id);
     return this.http.delete(environment.apiUrl + this.rotaIntermedia
       + '/Genero?id=' + id);

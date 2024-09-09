@@ -1,7 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SimpleObjet } from 'src/app/shared/models/outros';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { SimpleObjet } from '../../../shared/models/outros.model';
+import { FiltroListDragPipe } from '../../../shared/pipes/filtro-list-drag.pipe';
+import { CommonModule } from '@angular/common';
 
 // https://stackblitz.com/edit/angular-htpgvx?file=src%2Fapp%2Fapp.component.ts
 
@@ -12,6 +14,8 @@ export interface MultiDados {
 
 @Component({
   selector: 'omla-multi-selecom-dialog',
+  standalone: true,
+  imports: [ CommonModule, DragDropModule, FiltroListDragPipe ],
   templateUrl: './multi-selecom-dialog.component.html',
   styleUrls: ['./multi-selecom-dialog.component.scss']
 })

@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { Livro } from 'src/app/modules/livros/livro/livro.interface';
-import { environment } from 'src/environments/environment';
+import { Livro } from '../../models/livro.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LivrosService {
 
@@ -23,42 +23,47 @@ export class LivrosService {
       + '/UltimaLectura');
   }
 
-  getListadoLivrosPorIdioma(idioma: number) {
+  getListadoLivrosPorIdioma(idioma: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorIdioma?Idioma=' + idioma);
   }
 
-  getListadoLivrosPorAno(ano: number) {
+  getListadoLivrosPorAno(ano: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorAno?Ano=' + ano);
   }
 
-  getLivrosPorAutor(id: number) {
+  getLivrosPorAutor(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorAutor?id=' + id);
   }
 
-  getListadoLivrosPorGenero(id: number) {
+  getListadoLivrosPorGenero(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorGenero?Genero=' + id);
   }
 
-  getLivrosPorEditorial(id: number) {
+  getLivrosPorEditorial(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorEditorial?id=' + id);
   }
 
-  getLivrosPorBiblioteca(id: number) {
+  getLivrosPorBiblioteca(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorBiblioteca?id=' + id);
   }
 
-  getLivrosPorColecom(id: number) {
+  getLivrosPorColecom(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorColecom?id=' + id);
   }
 
-  getLivro(id: number) {
+  getListadoLivrosPorEstiloLiterario(id: string) {
+    return this.http.get(environment.apiUrl + this.rotaIntermedia
+      + '/PorEstiloLiterario?id=' + id);
+  }
+
+  getLivro(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Livro?id=' + id);
   }
@@ -81,7 +86,7 @@ export class LivrosService {
       + '/Livro', livro);
   }
 
-  borrarLivro(id: number) {
+  borrarLivro(id: string) {
     console.debug(id);
     return this.http.delete(environment.apiUrl + this.rotaIntermedia
       + '/Livro?id=' + id);

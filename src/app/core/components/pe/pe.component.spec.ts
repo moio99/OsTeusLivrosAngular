@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PeComponent } from './pe.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('PeComponent', () => {
   let component: PeComponent;
@@ -8,7 +8,8 @@ describe('PeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PeComponent ]
+      // declarations: [ PeComponent ]  nom é standalone
+      imports: [ PeComponent, NoopAnimationsModule ],
     })
     .compileComponents();
 

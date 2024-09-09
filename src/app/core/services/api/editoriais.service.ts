@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { Editorial } from 'src/app/modules/editoriais/editorial/editorial.interface';
-import { environment } from 'src/environments/environment';
+import { Editorial } from '../../models/editorial.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EditoriaisService {
 
@@ -22,7 +22,7 @@ export class EditoriaisService {
       + '/EditoriaisCosLivros');
   }
 
-  getEditorial(id: number) {
+  getEditorial(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Editorial?id=' + id);
   }
@@ -44,7 +44,7 @@ export class EditoriaisService {
       + '/Editorial', editorial);
   }
 
-  borrarEditorial(id: number) {
+  borrarEditorial(id: string) {
     console.debug(id);
     return this.http.delete(environment.apiUrl + this.rotaIntermedia
       + '/Editorial?id=' + id);

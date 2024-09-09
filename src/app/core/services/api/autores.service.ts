@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+import { ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
 import { Injectable } from '@angular/core';
-import { Autor } from 'src/app/modules/livros/livro/livro.interface';
-import { ListadosAutoresTipos } from 'src/app/shared/enums/estadisticasTipos';
-import { environment } from 'src/environments/environment';
+import { Autor } from '../../models/autor.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AutoresService {
 
@@ -31,7 +31,7 @@ export class AutoresService {
       + '/AutoresFiltrados?id=' + id + '&tipo=' + tipo);
   }
 
-  getAutor(id: number) {
+  getAutor(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Autor?id=' + id);
   }

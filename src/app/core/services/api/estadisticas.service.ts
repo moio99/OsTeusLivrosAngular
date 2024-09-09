@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EstadisticasTipo } from 'src/app/shared/enums/estadisticasTipos'
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
+import { EstadisticasTipo } from '../../../shared/enums/estadisticasTipos';
+import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EstadisticasService {
 

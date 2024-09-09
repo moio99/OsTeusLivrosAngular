@@ -1,0 +1,128 @@
+
+<form [formGroup]="autorForm" (ngSubmit)="onSubmit($event)">
+  <button color="primary" type="submit" value="{{this.modo}}">
+    <i class="icon-disk"></i> {{this.modo}}
+  </button>
+  <button color="primary" type="button" (click)="onCancelar()">
+    <i class="icon-disk"></i> Retroceder
+  </button>
+  <div class="formulario-dados">
+    <div>
+      <mat-form-field [style.width.px]=400>
+        <mat-label>Nome:</mat-label>
+        <input matInput [formControl]="af.nome">
+        <mat-error *ngIf="af.nome.hasError('maxlength')">
+          A longitude nom debe superar os 150 caracteres
+        </mat-error>
+        <mat-error *ngIf="af.nome.hasError('required')">
+          O Nome é obrigatorio
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field [style.width.px]=400>
+        <mat-label>Nome real:</mat-label>
+        <input matInput [formControl]="af.nomeReal">
+        <mat-error *ngIf="af.nomeReal.hasError('maxlength')">
+          A longitude nom debe superar os 150 caracteres
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field [style.width.px]=400>
+        <mat-label>Lugar de nacemento:</mat-label>
+        <input matInput [formControl]="af.lugarNacemento">
+        <mat-error *ngIf="af.lugarNacemento.hasError('maxlength')">
+          A longitude nom debe superar os 150 caracteres
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field [style.width.px]=300>
+        <mat-label>Web:</mat-label>
+        <input matInput [formControl]="af.web">
+        <mat-error *ngIf="af.web.hasError('maxlength')">
+          A longitude nom debe superar os 150 caracteres
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="ancho-inputs" [style.width.px]=170>
+        <mat-label>Data de nacemento</mat-label>
+        <input matInput [matDatepicker]="fDateN" [formControl]="af.dataNacemento">
+        <mat-datepicker-toggle matSuffix [for]="fDateN"></mat-datepicker-toggle>
+        <mat-datepicker #fDateN></mat-datepicker>
+        <mat-error *ngIf="af.dataNacemento.hasError('matDatepickerParse')"
+          [innerHTML]="'O formato válido é dd/mm/aaaa'">
+        </mat-error>
+        <mat-error *ngIf="af.dataNacemento.hasError('datasInvalidas')">
+          A data de nacemento nom pode ser superior á data de defunçom
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="ancho-inputs" [style.width.px]=170>
+        <mat-label>Data de defuncom</mat-label>
+        <input matInput [matDatepicker]="fDateD" [formControl]="af.dataDefuncom">
+        <mat-datepicker-toggle matSuffix [for]="fDateD"></mat-datepicker-toggle>
+        <mat-datepicker #fDateD></mat-datepicker>
+        <mat-error *ngIf="af.dataDefuncom.hasError('matDatepickerParse')"
+          [innerHTML]="'O formato válido é dd/mm/aaaa'">
+        </mat-error>
+        <mat-error *ngIf="af.dataDefuncom.hasError('datasInvalidas')">
+          A data de defunçom nom pode ser inferior á data de nacemento
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field>
+        <input type="text"
+              placeholder="Nacionalidade:"
+              aria-label="Number"
+              matInput
+              [formControl]="af.nacom"
+              [matAutocomplete]="autoNacionalidades">
+        <mat-autocomplete #autoNacionalidades="matAutocomplete">
+          <mat-option *ngFor="let element of dadosNacionalidadesFiltradas | async" [value]="element.value">
+            {{element.value}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="text"
+              placeholder="País:"
+              aria-label="Number"
+              matInput
+              [formControl]="af.pais"
+              [matAutocomplete]="autoPaises">
+        <mat-autocomplete #autoPaises="matAutocomplete">
+          <mat-option *ngFor="let element of dadosPaisesFiltrados | async" [value]="element.value">
+            {{element.value}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field [style.width.px]=700>
+        <mat-label>Comentario:</mat-label>
+        <textarea matInput [formControl]="af.comentario" rows="4"></textarea>
+      </mat-form-field>
+    </div>
+
+  </div>
+</form>
+
+<h3 *ngIf="dadosLivrosDoAutor.length > 0">Listado de livros</h3>
+
+<table *ngIf="this.dadosLivrosDoAutor.length > 0">
+  <tr>
+    <th>Titulo</th>
+    <th>TituloOriginal</th>
+    <th>Lido</th>
+    <th>Autor</th>
+  </tr>
+  <tr *ngFor="let entrada of this.dadosLivrosDoAutor" class="listado-accom">
+    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
+    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
+    <td>{{entrada.lido ? 'Si' : 'Nom'}}</td>
+    <td>{{entrada.nomeAutor}}</td>
+  </tr>
+</table>

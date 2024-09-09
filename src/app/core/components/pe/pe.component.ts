@@ -1,11 +1,12 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { LayoutService } from 'src/app/core/services/flow/layout.service';
-import { InformacomPeTipo } from 'src/app/shared/enums/estadisticasTipos';
-import { InformacomPe } from 'src/app/shared/models/outros';
+import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { InformacomPe } from '../../../shared/models/outros.model';
+import { LayoutService } from '../../services/flow/layout.service';
 
 @Component({
   selector: 'omla-pe',
+  standalone: true,
   templateUrl: './pe.component.html',
   styleUrls: ['./pe.component.scss'],
   animations: [trigger('amosarOcultarMensagem', [

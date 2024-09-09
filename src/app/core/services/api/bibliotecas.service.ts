@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { Biblioteca } from 'src/app/modules/bibliotecas/biblioteca/biblioteca.interface';
-import { environment } from 'src/environments/environment';
+import { Biblioteca } from '../../models/biblioteca.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BibliotecasService {
 
@@ -22,7 +22,7 @@ export class BibliotecasService {
       + '/BibliotecasCosLivros');
   }
 
-  getBiblioteca(id: number) {
+  getBiblioteca(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Biblioteca?id=' + id);
   }
@@ -44,7 +44,7 @@ export class BibliotecasService {
       + '/Biblioteca', biblioteca);
   }
 
-  borrarBiblioteca(id: number) {
+  borrarBiblioteca(id: string) {
     console.debug(id);
     return this.http.delete(environment.apiUrl + this.rotaIntermedia
       + '/Biblioteca?id=' + id);

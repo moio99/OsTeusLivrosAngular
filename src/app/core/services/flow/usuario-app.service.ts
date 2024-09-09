@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsuarioAppService {
 
   constructor() { }
 
   setInformacom() {
-    var userLang = navigator.language;
+    const userLang = navigator.language;
 
     // Lo uso para establecer el idioma del DatePicker.
     if (userLang === 'gl' || userLang === 'gl-ES' || userLang === 'es' || userLang === 'es-ES') {

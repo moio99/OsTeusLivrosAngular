@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Relectura } from 'src/app/modules/livros/livro/relectura.interface';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
+import { Relectura } from '../../models/relectura.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RelecturasService {
 
@@ -13,13 +13,13 @@ export class RelecturasService {
   constructor(private http: HttpClient) {
   }
 
-  getRelectura(id: number) {
+  getRelectura(id: string) {
     console.log('relecturas id', id);
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Relectura?id=' + id);
   }
 
-  getRelecturas(idLivro: number) {
+  getRelecturas(idLivro: string) {
     console.log('relecturas idLivro', idLivro);
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Relecturas?id=' + idLivro);
@@ -36,7 +36,7 @@ export class RelecturasService {
       + '/Relectura', relectura);
   }
 
-  borrarRelectura(id: number) {
+  borrarRelectura(id: string) {
     console.debug(id);
     return this.http.delete(environment.apiUrl + this.rotaIntermedia
       + '/Relectura?id=' + id);

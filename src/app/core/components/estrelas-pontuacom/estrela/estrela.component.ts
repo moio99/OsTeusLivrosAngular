@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Estrela } from '../estrelas-pontuacom.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'omla-estrela',
+  standalone: true,
+  imports: [ CommonModule ],
   templateUrl: './estrela.component.html',
   styleUrls: ['./estrela.component.scss']
 })

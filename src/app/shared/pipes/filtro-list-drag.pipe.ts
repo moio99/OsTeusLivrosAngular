@@ -1,8 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { SimpleObjet } from '../models/outros';
+import { SimpleObjet } from '../models/outros.model';
 
 @Pipe({
-  name: 'filtroListDrag'
+  name: 'filtroListDrag',
+  standalone: true
 })
 export class FiltroListDragPipe implements PipeTransform {
 
