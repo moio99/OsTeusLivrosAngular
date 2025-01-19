@@ -3,6 +3,10 @@
   justify-content: space-around;
   align-items: flex-start;
 
+  .taboa-linguas {
+    display: flex;
+  }
+
   .paginas {
     font-family: 'Courier New', monospace;
     font-size: large;
@@ -12,6 +16,14 @@
 }
 
 .sub-menu { display: none; }
+
+.grafico {
+  width: 12px;
+  border-radius: 50%;
+  border: 2px solid #1c177e;
+  padding: 3px;
+  background-color: #302b91;
+}
 
 @media (max-width: 650px) {   // Activo com umha resoluçom por debaixo de 651px
   .sub-menu {

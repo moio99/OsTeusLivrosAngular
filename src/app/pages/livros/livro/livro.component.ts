@@ -131,7 +131,7 @@ export class LivroComponent implements OnInit {
     this.title.setTitle(this.title.getTitle() + ' Engadir');
     this.route.queryParams
       .subscribe(params => {
-        let parametros = params as Parametros;
+        const parametros = params as Parametros;
         if (parametros.id === '0')
           this.modo = this.engadir;
         else {
@@ -355,7 +355,7 @@ export class LivroComponent implements OnInit {
   * @param listadoSimple Listado cos elementos que se vai filtrar.
   */
   private filtroCombo(value: string, listadoSimple: SimpleObjet[]): SimpleObjet[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = value?.toLowerCase();
 
     return listadoSimple.filter(option => option.value.toLowerCase().includes(filterValue));
   }

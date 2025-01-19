@@ -19,7 +19,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { Parametros } from '../../../core/models/comun.interface';
 
 @Component({
   selector: 'omla-autor',
@@ -92,18 +91,16 @@ export class AutorComponent implements OnInit {
     private dadosPaginasService: DadosPaginasService) { }
 
   ngOnInit(): void {
-    this.route.queryParams
-      .subscribe(params => {
-        let parametros = params as Parametros;
-        if (parametros.id === '0')
-          this.modo = this.engadir;
-        else {
-          this.modo = this.guardar;
-          this.obterLivros(parametros.id);
-        }
-        this.obterNacionalidades(parametros.id);
+    const state = history.state;
+    if (state?.id) {
+      if (state.id === '0')
+        this.modo = this.engadir;
+      else {
+        this.modo = this.guardar;
+        this.obterLivros(state.id);
       }
-    );
+    }
+    this.obterNacionalidades(state.id);
   }
 
   /**

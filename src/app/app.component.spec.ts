@@ -5,7 +5,6 @@ import { UsuarioAppService } from './core/services/flow/usuario-app.service';
 import { of } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';  // Importar RouterTestingModule
 import { ActivatedRoute } from '@angular/router';
 
 describe('AppComponent', () => {
@@ -26,7 +25,7 @@ describe('AppComponent', () => {
 
     await TestBed.configureTestingModule({
       // declarations: [AppComponent],                  Isto nom vale porque é standalone
-      imports: [AppComponent, NoopAnimationsModule, RouterTestingModule ],
+      imports: [AppComponent, NoopAnimationsModule ],
       providers: [
         { provide: LayoutService, useValue: layoutServiceStub },
         { provide: UsuarioAppService, useValue: usuarioAppServiceStub },
@@ -36,7 +35,11 @@ describe('AppComponent', () => {
 
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-    component.panelRef = {} as MatSidenav; // Simula el ViewChild MatSidenav
+    // component.panelRef = {} as MatSidenav; // Erro, correçom abaixo
+    component.panelRef = {
+      open: jest.fn(),
+      close: jest.fn()
+    }  as unknown as MatSidenav; // Simula el ViewChild MatSidenav
   });
 
   it('should create the component', () => {

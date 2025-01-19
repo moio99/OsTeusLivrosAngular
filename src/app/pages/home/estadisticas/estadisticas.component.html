@@ -7,27 +7,32 @@
 
 <div class="contido-taboas">
   @if (this.idiomasSignal().length > 0) {
-    <table>
-      <tr>
-        <th>Idioma</th>
-        <th>Quantidade</th>
-        <th>Relecturas</th>
-        <th>Páginas</th>
-      </tr>
-      @for (entrada of this.idiomasSignal(); track entrada; let first = $first, derradeiro = $last) {
-        <tr class="listado-accom">
-          <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">
-            {{entrada.nome}}
-            @if (derradeiro) {
-              <span id="taboaAnos"></span>
-            }
-          </td>
-          <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">{{entrada.quantidade}}</td>
-          <td>{{entrada.quantidadeRelecturas}}</td>
-          <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas">{{entrada.quantidadePaginas}}</td>
+    <div class="taboa-linguas">
+      <table>
+        <tr>
+          <th>Idioma</th>
+          <th>Quantidade</th>
+          <th>Relecturas</th>
+          <th>Páginas</th>
         </tr>
-      }
-    </table>
+        @for (entrada of this.idiomasSignal(); track entrada; let first = $first, derradeiro = $last) {
+          <tr class="listado-accom">
+            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">
+              {{entrada.nome}}
+              @if (derradeiro) {
+                <span id="taboaAnos"></span>
+              }
+            </td>
+            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">{{entrada.quantidade}}</td>
+            <td>{{entrada.quantidadeRelecturas}}</td>
+            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas">{{entrada.quantidadePaginas}}</td>
+          </tr>
+        }
+      </table>
+      <span (click)="onGoGraficos('/graficos')">
+        <img src="../../../../assets/images/grafico.png" alt="Ver o gráfico" class="grafico">
+      </span>
+    </div>
   }
 
   @if (this.anosSignal().length > 0) {

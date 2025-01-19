@@ -7,12 +7,19 @@ import { PeComponent } from './core/components/pe/pe.component';
 import { LayoutService } from './core/services/flow/layout.service';
 import { UsuarioAppService } from './core/services/flow/usuario-app.service';
 import { CommonModule } from '@angular/common';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { AdaptadorDaData } from './shared/classes/adaptador-data';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, MatSidenavModule, CommonModule
-    , MenuComponent, HeaderComponent, PeComponent
+    , MenuComponent, HeaderComponent, PeComponent, NgApexchartsModule
+  ],
+  providers: [
+    { provide: DateAdapter, useClass: AdaptadorDaData },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

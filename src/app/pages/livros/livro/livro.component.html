@@ -19,16 +19,6 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="titulo-original" *ngIf="!modoRelectura">
-      <mat-form-field class="ancho-inputs">
-        <mat-label>Título original</mat-label>
-        <input matInput [formControl]="lf.tituloOriginal" maxlength="100">
-        <mat-error *ngIf="lf.tituloOriginal.hasError('maxlength')">
-          Máximo 100 caracteres
-        </mat-error>
-      </mat-form-field>
-    </div>
-
     <div class="autor" *ngIf="!modoRelectura">
       <div class="lista-etiqueta">
         <div>
@@ -51,6 +41,15 @@
       </div>
     </div>
 
+    <div class="titulo-original" *ngIf="!modoRelectura">
+      <mat-form-field class="ancho-inputs">
+        <mat-label>Título original</mat-label>
+        <input matInput [formControl]="lf.tituloOriginal" maxlength="100">
+        <mat-error *ngIf="lf.tituloOriginal.hasError('maxlength')">
+          Máximo 100 caracteres
+        </mat-error>
+      </mat-form-field>
+    </div>
     <div class="genero" *ngIf="!modoRelectura">
       <div class="lista-etiqueta">
         <div>
@@ -177,15 +176,6 @@
         </button>
       </div>
     </div>
-    <div class="isbn">
-      <mat-form-field class="ancho-inputs">
-        <mat-label>ISBN:</mat-label>
-        <input type="text" matInput [formControl]="lf.isbn" rows="4">
-        <mat-error *ngIf="lf.isbn.hasError('maxlength')">
-          Máximo 20 caracteres
-        </mat-error>
-      </mat-form-field>
-    </div>
 
     <div class="paginas">
       <mat-form-field class="ancho-inputs">
@@ -205,8 +195,55 @@
         </mat-error>
       </mat-form-field>
     </div>
+    <div class="isbn">
+      <mat-form-field class="ancho-inputs">
+        <mat-label>ISBN:</mat-label>
+        <input type="text" matInput [formControl]="lf.isbn" rows="4">
+        <mat-error *ngIf="lf.isbn.hasError('maxlength')">
+          Máximo 20 caracteres
+        </mat-error>
+      </mat-form-field>
+    </div>
     <div class="lido">
       <mat-checkbox [formControl]="lf.lido">Lido</mat-checkbox>
+    </div>
+
+    <div class="data-criacom" *ngIf="!modoRelectura">
+      <mat-form-field class="ancho-inputs">
+        <mat-label>Data de criaçom</mat-label>
+        <input matInput [matDatepicker]="fDateCri" [formControl]="lf.dataCriacom">
+        <mat-datepicker-toggle matSuffix [for]="fDateCri"></mat-datepicker-toggle>
+        <mat-datepicker #fDateCri></mat-datepicker>
+        <mat-error *ngIf="lf.dataCriacom.hasError('matDatepickerParse')"
+          [innerHTML]="'O formato válido é dd/mm/aaaa'">
+        </mat-error>
+        <mat-error *ngIf="lf.dataCriacom.hasError('datasInvalidas')">
+          A data da criaçom nom pode ser superior á data da ediçom
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="data-edicom">
+      <mat-form-field class="ancho-inputs">
+        <mat-label>Data da ediçom</mat-label>
+        <input matInput [matDatepicker]="fDateEdi" [formControl]="lf.dataEdicom">
+        <mat-datepicker-toggle matSuffix [for]="fDateEdi"></mat-datepicker-toggle>
+        <mat-datepicker #fDateEdi></mat-datepicker>
+        <mat-error *ngIf="lf.dataEdicom.hasError('matDatepickerParse')"
+          [innerHTML]="'O formato válido é dd/mm/aaaa'">
+        </mat-error>
+        <mat-error *ngIf="lf.dataEdicom.hasError('datasInvalidas')">
+          A data da ediçom nom pode ser inferior á data de criaçom
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="numero-edicom">
+      <mat-form-field class="ancho-inputs">
+        <mat-label>Número da ediçom</mat-label>
+        <input matInput [formControl]="lf.numeroEdicom" maxlength="4">
+        <mat-error *ngIf="lf.diasLeitura.hasError('pattern')">
+          Valor correto de 0 1000
+        </mat-error>
+      </mat-form-field>
     </div>
     <div class="dias-leitura">
       <mat-form-field class="ancho-inputs">
@@ -260,46 +297,10 @@
         </mat-autocomplete>
       </mat-form-field>
     </div>
-    <div class="data-criacom" *ngIf="!modoRelectura">
-      <mat-form-field class="ancho-inputs">
-        <mat-label>Data de criaçom</mat-label>
-        <input matInput [matDatepicker]="fDateCri" [formControl]="lf.dataCriacom">
-        <mat-datepicker-toggle matSuffix [for]="fDateCri"></mat-datepicker-toggle>
-        <mat-datepicker #fDateCri></mat-datepicker>
-        <mat-error *ngIf="lf.dataCriacom.hasError('matDatepickerParse')"
-          [innerHTML]="'O formato válido é dd/mm/aaaa'">
-        </mat-error>
-        <mat-error *ngIf="lf.dataCriacom.hasError('datasInvalidas')">
-          A data da criaçom nom pode ser superior á data da ediçom
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="data-edicom">
-      <mat-form-field class="ancho-inputs">
-        <mat-label>Data da ediçom</mat-label>
-        <input matInput [matDatepicker]="fDateEdi" [formControl]="lf.dataEdicom">
-        <mat-datepicker-toggle matSuffix [for]="fDateEdi"></mat-datepicker-toggle>
-        <mat-datepicker #fDateEdi></mat-datepicker>
-        <mat-error *ngIf="lf.dataEdicom.hasError('matDatepickerParse')"
-          [innerHTML]="'O formato válido é dd/mm/aaaa'">
-        </mat-error>
-        <mat-error *ngIf="lf.dataEdicom.hasError('datasInvalidas')">
-          A data da ediçom nom pode ser inferior á data de criaçom
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="numero-edicom">
-      <mat-form-field class="ancho-inputs">
-        <mat-label>Número da ediçom</mat-label>
-        <input matInput [formControl]="lf.numeroEdicom" maxlength="4">
-        <mat-error *ngIf="lf.diasLeitura.hasError('pattern')">
-          Valor correto de 0 1000
-        </mat-error>
-      </mat-form-field>
-    </div>
     <div class="electronico">
       <mat-checkbox [formControl]="lf.electronico">Electrónico</mat-checkbox>
     </div>
+
     <div class="som-serie">
       <mat-checkbox (change)="onSomSerie($event)" [formControl]="lf.somSerie">Som Serie</mat-checkbox>
     </div>
@@ -321,7 +322,7 @@
         </mat-autocomplete>
       </mat-form-field>
     </div>
-    <div class="serie-check"></div>
+
     <div class="premios" *ngIf="!modoRelectura">
       <mat-form-field class="ancho-inputs">
         <mat-label>Prémios:</mat-label>

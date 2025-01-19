@@ -64,7 +64,7 @@ export class BibliotecaComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams
       .subscribe(params => {
-        let parametros = params as Parametros;
+        const parametros = params as Parametros;
         if (parametros.id === '0')
           this.modo = this.engadir;
         else {
@@ -99,7 +99,7 @@ export class BibliotecaComponent implements OnInit {
         this.bf.localidade.setValue(dados.biblioteca[0].localidade);
         this.bf.telefone.setValue(dados.biblioteca[0].telefone);
         this.bf.dataAsociamento.setValue(dados.biblioteca[0].dataAsociamento);
-        this.bf.dataRenovacom.setValue(dados.biblioteca[0].dataRenovacom);
+        this.bf.dataRenovacom.setValue(dados.biblioteca[0].dataRenovacom, { onlySelf: true});
         this.bf.comentario.setValue(dados.biblioteca[0].comentario);
       }
     }
@@ -223,6 +223,17 @@ export class BibliotecaComponent implements OnInit {
         this.layoutService.amosarInfo(undefined);
         this.location.back();
       }
+    }
+  }
+
+  /**
+   * Para que ao dar-lhe ao intro nom faga o envio do formulario
+   * @param event Evento
+   */
+  onKeyDownImpedirEnvio(event: Event) {
+    const keyboardEvent = event as KeyboardEvent; // Convertir a KeyboardEvent
+    if (keyboardEvent.key === 'Enter') {
+      keyboardEvent.preventDefault(); // Prevenir que el formulario se envíe
     }
   }
 

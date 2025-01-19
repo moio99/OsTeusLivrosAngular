@@ -7,7 +7,12 @@ export const routes: Routes = [
     /* { path: 'livros', title: 'OTL - livros'
       , loadComponent: () => import('./../app/pages/livros/listado-livros/listado-livros.component')
         .then(m => m.ListadoLivrosComponent) }, */
-    { path: 'livros', title: 'OTL - livros',
+    {
+      path: 'graficos', title: 'OTL - Gráficos',
+      loadChildren: () => import('./../app/pages/graficos/anos-paginas-idiomas/anos-paginas-idiomas.component')
+        .then(m => m.childRoutes) },
+    {
+      path: 'livros', title: 'OTL - livros',
       loadChildren: () => import('./../app/pages/livros/listado-livros/listado-livros.component')
         .then(m => m.childRoutes) },
     {

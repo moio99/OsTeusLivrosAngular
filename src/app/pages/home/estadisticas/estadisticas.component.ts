@@ -1,4 +1,4 @@
-import { Component, OnInit, signal  } from '@angular/core';
+import { Component, effect, OnInit, signal  } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { EstadisticasService } from '../../../core/services/api/estadisticas.service';
@@ -7,6 +7,8 @@ import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
 import { Estadisticas, EstadisticasData } from '../../../core/models/estadisticas.interface';
+import { Graficos, GraficosData } from '../../../core/models/graficos.interface';
+import { GraficosService } from '../../../core/services/api/graficos.service';
 
 @Component({
   selector: 'omla-estadisticas',
@@ -18,8 +20,8 @@ import { Estadisticas, EstadisticasData } from '../../../core/models/estadistica
 export class EstadisticasComponent implements OnInit {
 
   tipos = EstadisticasTipo;
-  anosSignal = signal<Estadisticas[]>([]);
   idiomasSignal = signal<Estadisticas[]>([]);
+  anosSignal = signal<Estadisticas[]>([]);
   generosSignal = signal<Estadisticas[]>([]);
 
   ordeAnos = 'ordeAnos';
@@ -36,7 +38,13 @@ export class EstadisticasComponent implements OnInit {
   constructor(
     private router: Router,
     private estadisticasService: EstadisticasService,
-    private layoutService: LayoutService) { }
+    private graficosService: GraficosService,
+    private layoutService: LayoutService) {
+
+    effect(() => {
+      console.log('Cada vez que ha umha mudança lanzase isto ', this.anosSignal());
+    });
+  }
 
   ngOnInit(): void {
     this.layoutService.amosarInfo(undefined);
@@ -48,7 +56,7 @@ export class EstadisticasComponent implements OnInit {
       .getEstadisticas(EstadisticasTipo.Idioma)
       .pipe(first())
       .subscribe({
-        next: (v) => this.idiomasSignal.update(() => this.dadosObtidos(v)),
+        next: (v) => this.idiomasSignal.set(this.dadosObtidos(v)),
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter as estadísticas por idiomas.'}); },
@@ -58,7 +66,7 @@ export class EstadisticasComponent implements OnInit {
       .getEstadisticas(EstadisticasTipo.Ano)
       .pipe(first())
       .subscribe({
-        next: (v) => this.anosSignal.update(() => this.dadosObtidos(v)),
+        next: (v) => this.anosSignal.set(this.dadosObtidos(v)),
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter as estadísticas por anos.'}); },
@@ -68,7 +76,7 @@ export class EstadisticasComponent implements OnInit {
       .getEstadisticas(EstadisticasTipo.Genero)
       .pipe(first())
       .subscribe({
-        next: (v) => this.generosSignal.update(() => this.dadosObtidos(v)),
+        next: (v) => this.generosSignal.set(this.dadosObtidos(v)),
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter as estadísticas por géneros.'}); },
@@ -157,5 +165,31 @@ export class EstadisticasComponent implements OnInit {
     this.router.navigateByUrl(rota + '?tipo=' + tipo + '&id=' + id);
     // this.router.navigate([rota], {relativeTo: id});
     // this.router.navigate([rota], {dadoQueVai: id});
+  }
+
+  onGoGraficos(rota: string): void{
+    this.graficosService
+      .getGraficosPaginasPorIdiomaEAno()
+      .pipe(first())
+      .subscribe({
+        next: (v: object) => this.comprobarDadosObtidos(rota, v),
+        error: (e: any) => { console.error(e),
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
+        complete: () => console.info('completado listado de generos')
+    });
+  }
+
+  private comprobarDadosObtidos(rota: string, data: object) {
+    this.layoutService.amosarInfo(undefined);
+
+    const dados = <GraficosData>data;
+    if (dados != null) {
+      this.router.navigate([rota], {
+        state: { dados: dados.data },
+      });
+    } else {
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
+      console.debug('Nom se obtiverom dados');
+    }
   }
 }

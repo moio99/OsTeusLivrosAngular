@@ -156,12 +156,11 @@ export class ListadoAutoresComponent implements OnInit {
   }
 
   onIrPagina(rota: string, id: number): void{
-    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
     this.layoutService.amosarInfo(undefined);
-    console.log(this.router.url);
-    this.router.navigateByUrl(rota + '?id=' + id);
-    // this.router.navigate([rota], {relativeTo: id});
-    // this.router.navigate([rota], {dadoQueVai: id});
+    //this.router.navigateByUrl(rota + '?id=' + id);  // Ponho o de abaixo para probar outro jeito de enviar os parámetros
+    this.router.navigate([rota], {
+      state: { id: id, idRelectura: 'algo mais de probas' },
+    });
   }
 }
 

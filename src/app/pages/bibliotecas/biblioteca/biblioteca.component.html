@@ -52,7 +52,7 @@
     <div class="data-criacom">
       <mat-form-field class="ancho-inputs" [style.width.px]=170>
         <mat-label>Data de asociamento</mat-label>
-        <input matInput [matDatepicker]="fDateAso" [formControl]="bf.dataAsociamento">
+        <input matInput [matDatepicker]="fDateAso" [formControl]="bf.dataAsociamento" (keydown.enter)="onKeyDownImpedirEnvio($event)">
         <mat-datepicker-toggle matSuffix [for]="fDateAso"></mat-datepicker-toggle>
         <mat-datepicker #fDateAso></mat-datepicker>
         <mat-error *ngIf="bf.dataAsociamento.hasError('matDatepickerParse')"
@@ -64,7 +64,7 @@
     <div class="data-criacom">
       <mat-form-field class="ancho-inputs" [style.width.px]=170>
         <mat-label>Data de renovaçom</mat-label>
-        <input matInput [matDatepicker]="fDateRe" [formControl]="bf.dataRenovacom">
+        <input matInput [matDatepicker]="fDateRe" [formControl]="bf.dataRenovacom" (keydown.enter)="onKeyDownImpedirEnvio($event)">
         <mat-datepicker-toggle matSuffix [for]="fDateRe"></mat-datepicker-toggle>
         <mat-datepicker #fDateRe></mat-datepicker>
         <mat-error *ngIf="bf.dataRenovacom.hasError('matDatepickerParse')"
