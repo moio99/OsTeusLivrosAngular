@@ -123,7 +123,7 @@ export class GeneroComponent implements OnInit {
     if (this.gf.nome.status === 'VALID' && this.gf.comentario.status === 'VALID') {
       let generoRepetido: GeneroData;
       this.generosService
-        .getGeneroPorNome(String(this.gf.nome.value).trim())
+        .getGeneroPorNome(String(this.gf.nome.value).trim())  // Para comprobar que nom exista já um género co mesmo nome
         .pipe(first())
         .subscribe({
           next: (v: object) => generoRepetido = <GeneroData>v,
@@ -134,7 +134,7 @@ export class GeneroComponent implements OnInit {
     }
   }
 
-  guardarGenero(event: any, generoRepetido: GeneroData) {
+  private guardarGenero(event: any, generoRepetido: GeneroData) {
     if (generoRepetido != undefined && generoRepetido.meta.quantidade > 0 && (
       (event.submitter.value === this.engadir)
       ||

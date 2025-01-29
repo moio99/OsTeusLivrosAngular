@@ -1,17 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Routes } from '@angular/router';
-import {
-  ChartComponent,
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexXAxis,
-  ApexDataLabels,
-  ApexTitleSubtitle,
-  ApexStroke,
-  NgApexchartsModule,
-  ApexYAxis,
-  ApexLegend
-} from "ng-apexcharts";
+import { ChartComponent, NgApexchartsModule} from "ng-apexcharts";
 import { Graficos } from '../../../core/models/graficos.interface';
 import { AreasChartOptions } from '../../../core/types/chart.options';
 import { CoresIdiomasService } from '../../../core/services/flow/cores-idiomas.sevice';

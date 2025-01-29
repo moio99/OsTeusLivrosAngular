@@ -16,7 +16,7 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onFecharMenu() {
+  onFecharMenu(): void {
     this.layoutService.cerrarMenu();
   }
 }

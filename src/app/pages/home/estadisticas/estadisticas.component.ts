@@ -7,7 +7,7 @@ import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
 import { Estadisticas, EstadisticasData } from '../../../core/models/estadisticas.interface';
-import { Graficos, GraficosData } from '../../../core/models/graficos.interface';
+import { GraficosData } from '../../../core/models/graficos.interface';
 import { GraficosService } from '../../../core/services/api/graficos.service';
 
 @Component({
