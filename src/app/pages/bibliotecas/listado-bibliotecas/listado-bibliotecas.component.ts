@@ -36,7 +36,7 @@ export class ListadoBibliotecasComponent implements OnInit {
         next: (v) => this.listadoDados = this.dadosObtidos(v),
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter as biblioteca.'}); },
-        complete: () => console.info('completado listado de bibliotecas')
+          // complete: () => console.info('completado listado de bibliotecas')
     });
   }
 
@@ -64,7 +64,7 @@ export class ListadoBibliotecasComponent implements OnInit {
                 next: (v) => console.debug(v),
                 error: (e) => { console.error(e),
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a biblioteca.'}); },
-                complete: () => { console.debug('Borrado feito'); this.obterDadosDoListado();
+                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca borrada.'}); }
             });
       }

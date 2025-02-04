@@ -153,7 +153,7 @@ export class LivroComponent implements OnInit {
         next: (v: object) => this.dadosOutrosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados', duracom: 10}); },
-        complete: () => this.obterDadosRelecturas(idLivro)  // Primeiro se obtenhem as relecturas, se as houber, logo os dados do livro
+          complete: () => this.obterDadosRelecturas(idLivro)  // Primeiro se obtenhem as relecturas, se as houber, logo os dados do livro
     });
   }
 
@@ -385,7 +385,7 @@ export class LivroComponent implements OnInit {
         next: (v: object) => this.dadosRelecturasObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados das relecturas', duracom: 10}); },
-        complete: () => this.obterDadosDoLivro(idLivro)       // Dados do livro
+          complete: () => this.obterDadosDoLivro(idLivro)       // Dados do livro
     });
   }
 
@@ -406,7 +406,7 @@ export class LivroComponent implements OnInit {
         next: (v: object) => this.amosarDadosRelectura(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a relectura.'}); },
-        complete: () => console.debug('completada a obtençom da relectura do livro')
+          complete: () => console.debug('completada a obtençom da relectura do livro')
     });
   }
 
@@ -462,10 +462,11 @@ export class LivroComponent implements OnInit {
           error: (e: any) => {
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a relectura.', duracom: 10});
             console.error(e) },
-          complete: () => {
-            this.modo = this.guardar;
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura engadida.'});
-            console.debug('post completado'); }
+            complete: () => {
+              this.modo = this.guardar;
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura engadida.'});
+              // console.debug('post completado');
+            }
       });
     }
     else {
@@ -477,7 +478,7 @@ export class LivroComponent implements OnInit {
           error: (e: any) => {
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar a relectura.', duracom: 10});
             console.error(e) },
-          complete: () => {
+            complete: () => {
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura guardada.'});
             console.debug('put completado') }
       });
@@ -554,7 +555,7 @@ export class LivroComponent implements OnInit {
               next: (v: object) => console.debug(v),
               error: (e: any) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a relectura.'}); },
-              complete: () => { console.debug('Borrado feito');
+                complete: () => { // console.debug('Borrado feito');
                 this.obterDadosRelecturas(this.idLivro);
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura borrada.'}); }
           });
@@ -577,7 +578,7 @@ export class LivroComponent implements OnInit {
           next: (v: object) => this.dadosObtidosDoLivro(v),
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro', duracom: 10}); },
-          complete: () => console.debug('completada a obtençom dos dados do livro')
+            complete: () => console.debug('completada a obtençom dos dados do livro')
       });
     }
   }
@@ -846,12 +847,23 @@ export class LivroComponent implements OnInit {
     }
   }
 
+  onIrPaginaEngadirAutor(rota: string, tipo: DadosComplentarios): void{
+    this.guardarDadosDoLivro(tipo);
+    this.router.navigate([rota], {
+      state: { id: '0', idRelectura: 'algo mais de probas' },
+    });
+  }
+
   onIrPaginaEngadir(rota: string, tipo: DadosComplentarios): void{
+    this.guardarDadosDoLivro(tipo);
+    this.router.navigateByUrl(rota + '?id=0');
+  }
+
+  private guardarDadosDoLivro(tipo: DadosComplentarios) {
     let livro = this.setDadosLivro();
     this.dadosPaginasService.setDadosPagina({id: livro.id, nomePagina: this.nomePagina, elemento: livro});
     this.dadosPaginasService.setNovoDado({tipo: tipo, elemento: undefined});
     this.layoutService.amosarInfo(undefined);
-    this.router.navigateByUrl(rota + '?id=0');
   }
 
   onSomSerie(event:MatCheckboxChange) {
@@ -893,7 +905,7 @@ export class LivroComponent implements OnInit {
             next: (v: object) => livroRepetido = <LivroData>v,
             error: (e: any) => { console.error(e),
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro.'}); },
-            complete: () => this.guardarLivro(event, livroRepetido)
+              complete: () => this.guardarLivro(event, livroRepetido)
         });
       }
     }
@@ -918,10 +930,11 @@ export class LivroComponent implements OnInit {
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o livro.', duracom: 10});
               console.error(e) },
-            complete: () => {
-              this.modo = this.guardar;
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro engadido.'});
-              console.debug('post completado'); }
+              complete: () => {
+                this.modo = this.guardar;
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro engadido.'});
+                // console.debug('post completado');
+              }
         });
       }
       else {
@@ -933,7 +946,7 @@ export class LivroComponent implements OnInit {
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar o livro.', duracom: 10});
               console.error(e) },
-            complete: () => {
+              complete: () => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro guardado.'});
               console.debug('put completado') }
         });

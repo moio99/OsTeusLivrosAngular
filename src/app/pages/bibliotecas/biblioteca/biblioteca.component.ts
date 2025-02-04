@@ -84,7 +84,7 @@ export class BibliotecaComponent implements OnInit {
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter os dados da biblioteca.'}); },
-        complete: () => this.obterLivros(id)
+          complete: () => this.obterLivros(id)
     });
   }
 
@@ -119,7 +119,7 @@ export class BibliotecaComponent implements OnInit {
         next: (v) => this.dadosLivrosDaBiblioteca = this.dadosLivrosObtidos(v),
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os Livros da coleçom.'}); },
-        complete: () => console.debug('completada a obtençom dos livros da biblioteca')
+          complete: () => console.debug('completada a obtençom dos livros da biblioteca')
     });
   }
 
@@ -151,7 +151,7 @@ export class BibliotecaComponent implements OnInit {
           next: (v) => bibliotecaRepetida = <BibliotecaData>v,
           error: (e) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados da biblioteca.'}); },
-          complete: () => this.guardarBiblioteca(event, bibliotecaRepetida)
+            complete: () => this.guardarBiblioteca(event, bibliotecaRepetida)
       });
     }
   }
@@ -189,10 +189,11 @@ export class BibliotecaComponent implements OnInit {
             error: (e) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a biblioteca.'});
               console.error(e) },
-            complete: () => {
+              complete: () => {
               this.modo = this.guardar;
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca engadida.'});
-              console.debug('post completado'); }
+              console.debug('post completado');
+            }
         });
       }
       else {
@@ -204,7 +205,7 @@ export class BibliotecaComponent implements OnInit {
             error: (e) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar a biblioteca.'});
               console.error(e) },
-            complete: () => {
+              complete: () => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca guardada.'});
               console.debug('put completado') }
         });

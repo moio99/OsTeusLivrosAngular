@@ -154,7 +154,7 @@ export class AutorComponent implements OnInit {
         next: (v: object) => this.dadosLivrosDoAutor = this.dadosLivrosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os livros do autor'}); },
-        complete: () => console.debug('completada a obtençom dos livros do autor')
+          complete: () => console.debug('completada a obtençom dos livros do autor')
     });
   }
 
@@ -180,7 +180,7 @@ export class AutorComponent implements OnInit {
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter os dados das nacionalidades'}); },
-        complete: () => this.obterPaises(idAutor)
+          complete: () => this.obterPaises(idAutor)
     });
   }
 
@@ -222,7 +222,7 @@ export class AutorComponent implements OnInit {
         next: (v: object) => this.dadosPaises = this.dadosPaisesObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados dos paises'}); },
-        complete: () => this.obterDadosDoAutor(idAutor)
+          complete: () => this.obterDadosDoAutor(idAutor)
     });
   }
 
@@ -265,7 +265,7 @@ export class AutorComponent implements OnInit {
           next: (v: object) => this.dadosDoAutor = this.dadosAutorObtidos(v),
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor'}); },
-          complete: () => console.debug('completada a obtençom dos dados do autor')
+            complete: () => console.debug('completada a obtençom dos dados do autor')
       });
     }
   }
@@ -327,7 +327,7 @@ export class AutorComponent implements OnInit {
           next: (v: object) => autorRepetido = <AutorData>v,
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor.'}); },
-          complete: () => this.guardarAutor(event, autorRepetido)
+            complete: () => this.guardarAutor(event, autorRepetido)
       });
     }
   }
@@ -373,10 +373,11 @@ export class AutorComponent implements OnInit {
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o autor.'});
               console.error(e) },
-            complete: () => {
-              this.modo = this.guardar;
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor engadido.'});
-              console.debug('post completado'); }
+              complete: () => {
+                this.modo = this.guardar;
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor engadido.'});
+                // console.debug('post completado');
+              }
         });
       }
       else {
@@ -388,7 +389,7 @@ export class AutorComponent implements OnInit {
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar o autor.'});
               console.error(e) },
-            complete: () => {
+              complete: () => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor guardado.'});
               console.debug('put completado') }
         });

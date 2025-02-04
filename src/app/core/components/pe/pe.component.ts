@@ -55,6 +55,8 @@ export class PeComponent implements OnInit {
         this.visivel = false;
       //}
     }
+    else
+      this.visivel = false;
   }
 
   /**

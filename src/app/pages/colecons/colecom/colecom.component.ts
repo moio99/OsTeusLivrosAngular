@@ -73,7 +73,7 @@ export class ColecomComponent implements OnInit {
         next: (v: object) => this.dadosDaColecom = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados da coleçom.'}); },
-        complete: () => this.obterLivros(id)
+          complete: () => this.obterLivros(id)
     });
   }
 
@@ -105,7 +105,7 @@ export class ColecomComponent implements OnInit {
         next: (v: object) => this.dadosLivrosDaColecom = this.dadosLivrosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os Livros da coleçom.'}); },
-        complete: () => console.debug('completada a obtençom dos livros da coleçom')
+          complete: () => console.debug('completada a obtençom dos livros da coleçom')
     });
   }
 
@@ -134,7 +134,7 @@ export class ColecomComponent implements OnInit {
             next: (v: object) => colecomRepetido = <ColecomData>v,
             error: (e: any) => { console.error(e),
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados da coleçom.'}); },
-            complete: () => this.guardarColecom(event, colecomRepetido)
+              complete: () => this.guardarColecom(event, colecomRepetido)
         });
     }
   }
@@ -164,10 +164,11 @@ export class ColecomComponent implements OnInit {
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a coleçom.'});
               console.error(e) },
-            complete: () => {
-              this.modo = this.guardar;
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Coleçom engadida.'});
-              console.debug('post completado'); }
+              complete: () => {
+                this.modo = this.guardar;
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Coleçom engadida.'});
+                // console.debug('post completado');
+              }
         });
       }
       else {
@@ -179,7 +180,7 @@ export class ColecomComponent implements OnInit {
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar a coleçom.'});
               console.error(e) },
-            complete: () => {
+              complete: () => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Coleçom guardada.'});
               console.debug('put completado') }
         });

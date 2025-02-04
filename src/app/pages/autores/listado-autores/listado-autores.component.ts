@@ -57,7 +57,7 @@ export class ListadoAutoresComponent implements OnInit {
         next: (v: object) => this.listadoDados = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor'}); },
-        complete: () => console.info('completado listado de autores')
+          // complete: () => console.info('completado listado de autores')
     });
   }
 
@@ -71,7 +71,7 @@ export class ListadoAutoresComponent implements OnInit {
           next: (v: object) => this.filtroPaisOuNacionalidade = ' ' + v,
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: `Nom se puiderom obter a nacionalidade ${parametros.id}`}); },
-          complete: () => console.info(`completada obtençom da nacionalidade ${parametros.id}`)
+            complete: () => console.info(`completada obtençom da nacionalidade ${parametros.id}`)
       });
     }
     else {  // 2 Pais
@@ -82,7 +82,7 @@ export class ListadoAutoresComponent implements OnInit {
           next: (v: object) => this.filtroPaisOuNacionalidade = ' ' + v,
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: `Nom se puiderom obter o pais ${parametros.id}`}); },
-          complete: () => console.info(`completada obtençom do pais ${parametros.id}`)
+            complete: () => console.info(`completada obtençom do pais ${parametros.id}`)
       });
     }
     this.autoresService
@@ -92,7 +92,7 @@ export class ListadoAutoresComponent implements OnInit {
         next: (v: object) => this.listadoDados = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autores'}); },
-        complete: () => console.info('completado listado de autores')
+          // complete: () => console.info('completado listado de autores')
     });
   }
 
@@ -120,7 +120,7 @@ export class ListadoAutoresComponent implements OnInit {
                 next: (v: object) => console.debug(v),
                 error: (e: any) => { console.error(e),
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o autor.'}); },
-                complete: () => { console.debug('Borrado feito'); this.obterDadosDoListado();
+                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro borrado.'}); }
             });
       }

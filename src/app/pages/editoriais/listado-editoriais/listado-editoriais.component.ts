@@ -43,7 +43,7 @@ export class ListadoEditoriaisComponent implements OnInit {
         next: (v: object) => this.listadoDados = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter as editoriais.'}); },
-        complete: () => console.info('completado listado de editoriais')
+          // complete: () => console.info('completado listado de editoriais')
     });
   }
 
@@ -71,7 +71,7 @@ export class ListadoEditoriaisComponent implements OnInit {
                 next: (v: object) => console.debug(v),
                 error: (e: any) => { console.error(e),
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a editirial.'}); },
-                complete: () => { console.debug('Borrado feito'); this.obterDadosDoListado();
+                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Editorial borrada.'}); }
             });
       }

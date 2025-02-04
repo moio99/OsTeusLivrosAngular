@@ -70,7 +70,7 @@ export class GeneroComponent implements OnInit {
         next: (v: object) => this.dadosDoGenero = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do género.'}); },
-        complete: () => this.obterLivros(id)
+          complete: () => this.obterLivros(id)
     });
   }
 
@@ -101,7 +101,7 @@ export class GeneroComponent implements OnInit {
         next: (v: object) => this.dadosLivrosDaGenero = this.dadosLivrosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os Livros do género.'}); },
-        complete: () => console.debug('completada a obtençom dos livros do genero')
+          complete: () => console.debug('completada a obtençom dos livros do genero')
     });
   }
 
@@ -129,7 +129,7 @@ export class GeneroComponent implements OnInit {
           next: (v: object) => generoRepetido = <GeneroData>v,
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do género.'}); },
-          complete: () => this.guardarGenero(event, generoRepetido)
+            complete: () => this.guardarGenero(event, generoRepetido)
       });
     }
   }
@@ -157,10 +157,11 @@ export class GeneroComponent implements OnInit {
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o género.'});
               console.error(e) },
-            complete: () => {
-              this.modo = this.guardar;
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género engadido.'});
-              console.debug('post completado'); }
+              complete: () => {
+                this.modo = this.guardar;
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género engadido.'});
+                // console.debug('post completado');
+              }
         });
       }
       else {
@@ -172,7 +173,7 @@ export class GeneroComponent implements OnInit {
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar o género.'});
               console.error(e) },
-            complete: () => {
+              complete: () => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género guardado.'});
               console.debug('put completado') }
         });

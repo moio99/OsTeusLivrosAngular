@@ -43,7 +43,7 @@ export class ListadoEstilosLiterariosComponent implements OnInit {
         next: (v: object) => this.listadoDados = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
-        complete: () => console.info('completado listado de estilosLiterarios')
+          // complete: () => console.info('completado listado de estilosLiterarios')
     });
   }
 
@@ -71,7 +71,7 @@ export class ListadoEstilosLiterariosComponent implements OnInit {
                 next: (v: object) => console.debug(v),
                 error: (e: any) => { console.error(e),
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o género.'}); },
-                complete: () => { console.debug('Borrado feito'); this.obterDadosDoListado();
+                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género borrado.'}); }
             });
       }

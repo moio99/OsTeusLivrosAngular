@@ -1,4 +1,4 @@
-import { Component, effect, OnInit, signal  } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit, signal  } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { EstadisticasService } from '../../../core/services/api/estadisticas.service';
@@ -17,7 +17,7 @@ import { GraficosService } from '../../../core/services/api/graficos.service';
   templateUrl: './estadisticas.component.html',
   styleUrls: ['./estadisticas.component.scss']
 })
-export class EstadisticasComponent implements OnInit {
+export class EstadisticasComponent implements OnInit, OnDestroy {
 
   tipos = EstadisticasTipo;
   idiomasSignal = signal<Estadisticas[]>([]);
@@ -42,13 +42,19 @@ export class EstadisticasComponent implements OnInit {
     private layoutService: LayoutService) {
 
     effect(() => {
-      console.log('Cada vez que ha umha mudança lanzase isto ', this.anosSignal());
+      console.log('Cada vez que ha umha mudança lánza-se isto ', this.anosSignal());
     });
   }
 
   ngOnInit(): void {
     this.layoutService.amosarInfo(undefined);
     this.obterEstadisticas();
+  }
+
+  ngOnDestroy(): void {
+    if (this.layoutService) {
+      this.layoutService.unsubscribe(); // Desuscribirse para evitar fugas de memoria
+    }
   }
 
   private obterEstadisticas(): void {
@@ -60,7 +66,7 @@ export class EstadisticasComponent implements OnInit {
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter as estadísticas por idiomas.'}); },
-        complete: () => console.info('completado por Idiomas')
+          // complete: () => console.info('completado por Idiomas')
     });
     this.estadisticasService
       .getEstadisticas(EstadisticasTipo.Ano)
@@ -70,7 +76,7 @@ export class EstadisticasComponent implements OnInit {
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter as estadísticas por anos.'}); },
-        complete: () => console.info('completado por Anos')
+          complete: () => console.info('completado por Anos')
     });
     this.estadisticasService
       .getEstadisticas(EstadisticasTipo.Genero)
@@ -80,7 +86,7 @@ export class EstadisticasComponent implements OnInit {
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter as estadísticas por géneros.'}); },
-        complete: () => console.info('completado por Genero')
+          // complete: () => console.info('completado por Genero')
     });
   }
 
@@ -88,12 +94,11 @@ export class EstadisticasComponent implements OnInit {
     let resultados: Estadisticas[];
     const dados = <EstadisticasData>data;
     if (dados != null) {
-      console.debug(dados.data);
       resultados = dados.data;
     } else {
       resultados = [];
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
-      console.debug('Nom se obtiverom dados');
+      // console.debug('Nom se obtiverom dados');
     }
     return resultados
   }
@@ -175,7 +180,7 @@ export class EstadisticasComponent implements OnInit {
         next: (v: object) => this.comprobarDadosObtidos(rota, v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
-        complete: () => console.info('completado listado de generos')
+          // complete: () => console.info('completado listado de generos')
     });
   }
 

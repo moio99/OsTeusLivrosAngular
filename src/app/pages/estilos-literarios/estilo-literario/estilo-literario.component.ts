@@ -70,7 +70,7 @@ export class EstiloLiterarioComponent implements OnInit {
         next: (v: object) => this.dadosDoEstiloLiterario = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do género.'}); },
-        complete: () => this.obterLivros(id)
+          complete: () => this.obterLivros(id)
     });
   }
 
@@ -101,7 +101,7 @@ export class EstiloLiterarioComponent implements OnInit {
         next: (v: object) => this.dadosLivrosDoEstiloLiterario = this.dadosLivrosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os Livros do género.'}); },
-        complete: () => console.debug('completada a obtençom dos livros do estiloLiterario')
+          complete: () => console.debug('completada a obtençom dos livros do estiloLiterario')
     });
   }
 
@@ -129,7 +129,7 @@ export class EstiloLiterarioComponent implements OnInit {
           next: (v: object) => estiloLiterarioRepetido = <EstiloLiterarioData>v,
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do género.'}); },
-          complete: () => this.guardarEstiloLiterario(event, estiloLiterarioRepetido)
+            complete: () => this.guardarEstiloLiterario(event, estiloLiterarioRepetido)
       });
     }
   }
@@ -157,10 +157,11 @@ export class EstiloLiterarioComponent implements OnInit {
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o género.'});
               console.error(e) },
-            complete: () => {
-              this.modo = this.guardar;
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género engadido.'});
-              console.debug('post completado'); }
+              complete: () => {
+                this.modo = this.guardar;
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género engadido.'});
+                // console.debug('post completado');
+              }
         });
       }
       else {
@@ -172,7 +173,7 @@ export class EstiloLiterarioComponent implements OnInit {
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar o género.'});
               console.error(e) },
-            complete: () => {
+              complete: () => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género guardado.'});
               console.debug('put completado') }
         });

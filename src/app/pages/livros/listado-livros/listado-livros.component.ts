@@ -102,14 +102,14 @@ export class ListadoLivrosComponent implements OnInit {
               error: (e: any) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
                   mensagem: 'Nom se puiderom obter os livros polo idioma ' + this.parametros.id}); },
-              complete: () => console.info('completado listado de livros por Idioma')
+            //complete: () => console.info('completado listado de livros por Idioma')
           });
           this.outrosService.getIdiomaNome(this.parametros.id)
             .pipe(first())
             .subscribe({
               next: (v: object) => this.titulo += v,
               error: (e: any) => { console.error(e) },
-              complete: () => console.info('completado listado de livros por Idioma')
+            //complete: () => console.info('completado listado de livros por Idioma')
             });
           break;
         case EstadisticasTipo.Ano:
@@ -122,7 +122,7 @@ export class ListadoLivrosComponent implements OnInit {
               error: (e: any) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
                   mensagem: 'Nom se puiderom obter os livros polo ano ' + this.parametros.id}); },
-              complete: () => console.info('completado listado de livros por Ano')
+            //complete: () => console.info('completado listado de livros por Ano')
           });
           break;
         case EstadisticasTipo.Genero:
@@ -135,14 +135,14 @@ export class ListadoLivrosComponent implements OnInit {
               error: (e: any) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
                   mensagem: 'Nom se puiderom obter os livros polo género ' + this.parametros.id}); },
-              complete: () => console.info('completado listado de livros por Genero')
+            //complete: () => console.info('completado listado de livros por Genero')
           });
           this.generosService.getGeneroNome(this.parametros.id)
             .pipe(first())
             .subscribe({
               next: (v: object) => this.titulo += v,
               error: (e: any) => { console.error(e) },
-              complete: () => console.info('completado listado de livros por Genero')
+            //complete: () => console.info('completado listado de livros por Genero')
             });
           break;
         default:
@@ -164,7 +164,7 @@ export class ListadoLivrosComponent implements OnInit {
         next: (v: object) => this.listadoDados = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os livros.'}); },
-        complete: () => console.info('completado listado de livros')
+      //complete: () => console.info('completado listado de livros')
     });
   }
 
@@ -172,7 +172,7 @@ export class ListadoLivrosComponent implements OnInit {
     let resultados: ListadoLivros[];
     const dados = <ListadoLivrosData>data;
     if (dados != null) {
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidossss'});
       resultados = dados.data.sort((a,b) => new Ordeacom().ordear(a.titulo, b.titulo, this.inverso));
       if (amosarGrafico) {
         this.separarDadosGrafico(resultados);
@@ -271,7 +271,7 @@ export class ListadoLivrosComponent implements OnInit {
                   next: (v: object) => console.debug(v),
                   error: (e: any) => { console.error(e),
                     this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o livro.'}); },
-                  complete: () => { console.debug('Borrado feito'); this.obterDadosDoListado();
+                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
                     this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro borrado.'}); }
               });
         }

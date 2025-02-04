@@ -37,7 +37,7 @@ export class ListadoColeconsComponent implements OnInit {
         next: (v: object) => this.listadoDados = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter as coleçons.'}); },
-        complete: () => console.info('completado listado de coleçons')
+          // complete: () => console.info('completado listado de coleçons')
     });
   }
 
@@ -65,7 +65,7 @@ export class ListadoColeconsComponent implements OnInit {
                 next: (v: object) => console.debug(v),
                 error: (e: any) => { console.error(e),
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a coleçom.'}); },
-                complete: () => { console.debug('Borrado feito'); this.obterDadosDoListado();
+                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Coleçom borrada.'}); }
             });
       }

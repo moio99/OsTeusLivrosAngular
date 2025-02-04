@@ -1,3 +1,5 @@
+lanzar npm start
+
 
 # Criaçom inicial
 
