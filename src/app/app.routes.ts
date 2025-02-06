@@ -1,5 +1,6 @@
 import { provideRouter, Routes } from '@angular/router';
 import { EstadisticasComponent } from './pages/home/estadisticas/estadisticas.component';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo:'estadisticas', pathMatch:'full', title: 'OTL - Estadísticas' },
@@ -10,11 +11,15 @@ export const routes: Routes = [
     {
       path: 'graficos', title: 'OTL - Gráficos',
       loadChildren: () => import('./../app/pages/graficos/anos-paginas-idiomas/anos-paginas-idiomas.component')
-        .then(m => m.childRoutes) },
+        .then(m => m.childRoutes),
+      canActivate: [authGuard]
+    },
     {
       path: 'livros', title: 'OTL - livros',
       loadChildren: () => import('./../app/pages/livros/listado-livros/listado-livros.component')
-        .then(m => m.childRoutes) },
+        .then(m => m.childRoutes),
+      canActivate: [authGuard]
+    },
     {
       path: 'autores', title: 'OTL - Autores',
       loadChildren: () => import('./../app/pages/autores/listado-autores/listado-autores.component')

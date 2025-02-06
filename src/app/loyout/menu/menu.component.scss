@@ -24,5 +24,6 @@ a, a:visited, a:hover, a:active {
 
 a.activo::after {
   content: " ✒";
+  font-size: 12px;
 }
 
