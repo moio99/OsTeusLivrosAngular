@@ -14,6 +14,12 @@
 .menu-movel {
   display: none;
 }
+.carregando {
+  margin-left: auto;
+  img {
+    width: 25px;
+  }
+}
 @media (max-width: 650px) {   // Actua com umha resoluçom por debaixo de 651px
   .menu-movel {
     display: block;
