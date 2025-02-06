@@ -46,7 +46,7 @@ export class EstrelasPontuacomComponent implements OnInit {
     this.numeroActual = (this.pontuacom != undefined) ? this.pontuacom : 0;
   }
 
-  onSimulacom(estrelaDados: Estrela) {
+  onSimulacom(estrelaDados: Estrela | undefined) {
     this.estrelaSimulando = estrelaDados;
     if (estrelaDados != undefined)
       this.numeroActual = estrelaDados.numero;

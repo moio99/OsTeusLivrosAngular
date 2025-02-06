@@ -28,6 +28,7 @@ describe('EstadisticasComponent', () => {
 
     layoutServiceMock = {
       amosarInfo: jest.fn(),
+      unsubscribe: jest.fn()
     } as any;
 
     graficosServiceMock = {
@@ -73,6 +74,17 @@ describe('EstadisticasComponent', () => {
     expect(component.idiomasSignal()).toEqual(mockIdiomasData.data);
     expect(component.anosSignal()).toEqual(mockAnosData.data);
     expect(component.generosSignal()).toEqual(mockGenerosData.data);
+  });
+
+  it('should call unsubscribe on ngOnDestroy if layoutService exists', () => {
+    component.ngOnDestroy();
+    expect(layoutServiceMock.unsubscribe).toHaveBeenCalled();
+  });
+
+  it('should not throw an error if layoutService is undefined on ngOnDestroy', () => {
+    // Simular que layoutService es undefined
+    (component as any).layoutService = undefined;
+    expect(() => component.ngOnDestroy()).not.toThrow();
   });
 
   it('should handle error when obtaining idiomas statistics', () => {

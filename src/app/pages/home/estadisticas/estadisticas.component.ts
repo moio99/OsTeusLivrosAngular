@@ -9,11 +9,12 @@ import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-c
 import { Estadisticas, EstadisticasData } from '../../../core/models/estadisticas.interface';
 import { GraficosData } from '../../../core/models/graficos.interface';
 import { GraficosService } from '../../../core/services/api/graficos.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'omla-estadisticas',
   standalone: true,
-  imports: [OrdeColunaComponent],
+  imports: [OrdeColunaComponent, HttpClientModule],
   templateUrl: './estadisticas.component.html',
   styleUrls: ['./estadisticas.component.scss']
 })

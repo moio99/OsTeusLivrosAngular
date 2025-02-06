@@ -1,17 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AutoresService } from './autores.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { EstilosLiterariosService } from './estilos-literarios.service';
 
-describe('EstadisticasService', () => {
-  let service: AutoresService;
+describe('EstilosLiterariosService', () => {
+  let service: EstilosLiterariosService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AutoresService]
+      providers: [EstilosLiterariosService]
     });
-    service = TestBed.inject(AutoresService);
+    service = TestBed.inject(EstilosLiterariosService);
   });
 
   it('should be created', () => {

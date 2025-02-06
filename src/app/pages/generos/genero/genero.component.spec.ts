@@ -143,6 +143,23 @@ describe('GeneroComponent', () => {
     expect(layoutService.amosarInfo).toHaveBeenCalledWith(undefined); // Check for clearing info message
   });
 
+
+  it('should not create a genre if the form is invalid - guardarGenero que já existe generoRepetido', () => {
+    component.generoForm.controls.nome.setValue('Ficción');
+    component.generoForm.controls.comentario.setValue('Comentario');
+
+    // Simular getGeneroPorNombre para que no falle
+    generosService.getGeneroPorNome.mockReturnValueOnce(of({ meta: { quantidade: 1 }})); // Simulando que el nombre no está repetido
+
+    // FGG: Se envía o formulario que fai que se guarde
+    component.onSubmit({ submitter: { value: component.engadir } });
+
+    expect(layoutService.amosarInfo).toHaveBeenCalledWith({
+      tipo: InformacomPeTipo.Aviso,
+      mensagem: 'O nome do género já existe na base de dados'
+    });
+  });
+
   it('should not create a genre if the form is invalid - guardarGenero', () => {
     // FGG: Se envía o formulario que fai que se guarde
     component.onSubmit({ submitter: { value: component.engadir } });

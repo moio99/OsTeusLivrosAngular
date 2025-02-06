@@ -34,7 +34,22 @@ describe('FiltroListDragPipe', () => {
     const expected = [
       { id: 2, value: 'Nome do autor 2' }
     ];
-    expect(pipe.transform(value, filtro, 0)).toEqual(expected);
+    const resultado = pipe.transform(value, filtro, 0);
+    expect(resultado).toEqual(expected);
+  });
+
+  it('should filter the value based on filtro NOM coincidindo as maiúsculas', () => {
+    const value: SimpleObjet[] = [
+      { id: 1, value: 'Nome do autor 1' },
+      { id: 2, value: 'Nome do autor 2' },
+      { id: 3, value: 'Nome do autor 3' }
+    ];
+    const filtro = 'NOME do autor 2';
+    const expected = [
+      { id: 2, value: 'Nome do autor 2' }
+    ];
+    const resultado = pipe.transform(value, filtro, 0);
+    expect(resultado).toEqual(expected);
   });
 
   it('should return an empty array when no matches are found', () => {

@@ -10,16 +10,16 @@ export class FiltroListDragPipe implements PipeTransform {
   transform(value: SimpleObjet[], filtro: string, dummy: number): any {
     if (!value || !filtro) return value;
 
-    let filtroPequeno = filtro.toLocaleLowerCase();
+    const filtroMinusculas = filtro.toLocaleLowerCase();
 
     /* let totalGenerosFiltrado: SimpleObjet[] = [];
     value.forEach(elemento => {
-      let atopado = elemento.value.toLocaleLowerCase().indexOf(filtroPequeno);
+      let atopado = elemento.value.toLocaleLowerCase().indexOf(filtroMinusculas);
       if (atopado > -1)
         totalGenerosFiltrado.push(elemento);
     });
     return totalGenerosFiltrado; */
 
-    return value.filter(elemento => elemento.value.toLowerCase().includes(filtroPequeno));
+    return value.filter(elemento => elemento.value.toLowerCase().includes(filtroMinusculas));
   }
 }
