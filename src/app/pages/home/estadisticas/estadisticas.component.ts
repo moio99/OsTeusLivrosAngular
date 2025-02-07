@@ -58,52 +58,6 @@ export class EstadisticasComponent implements OnInit, OnDestroy {
     }
   }
 
-  private obterEstadisticas(): void {
-    this.estadisticasService
-      .getEstadisticas(EstadisticasTipo.Idioma)
-      .pipe(first())
-      .subscribe({
-        next: (v) => this.idiomasSignal.set(this.dadosObtidos(v)),
-        error: (e) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-            mensagem: 'Nom se puiderom obter as estadísticas por idiomas.'}); },
-          // complete: () => console.info('completado por Idiomas')
-    });
-    this.estadisticasService
-      .getEstadisticas(EstadisticasTipo.Ano)
-      .pipe(first())
-      .subscribe({
-        next: (v) => this.anosSignal.set(this.dadosObtidos(v)),
-        error: (e) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-            mensagem: 'Nom se puiderom obter as estadísticas por anos.'}); },
-          complete: () => console.info('completado por Anos')
-    });
-    this.estadisticasService
-      .getEstadisticas(EstadisticasTipo.Genero)
-      .pipe(first())
-      .subscribe({
-        next: (v) => this.generosSignal.set(this.dadosObtidos(v)),
-        error: (e) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-            mensagem: 'Nom se puiderom obter as estadísticas por géneros.'}); },
-          // complete: () => console.info('completado por Genero')
-    });
-  }
-
-  private dadosObtidos(data: object): Estadisticas[] {
-    let resultados: Estadisticas[];
-    const dados = <EstadisticasData>data;
-    if (dados != null) {
-      resultados = dados.data;
-    } else {
-      resultados = [];
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
-      // console.debug('Nom se obtiverom dados');
-    }
-    return resultados
-  }
-
   setOrdeAnos() {
     this.inversoAnos = (this.tipoOrdeacomAnos === this.ordeAnos) ? !this.inversoAnos : false;
     this.tipoOrdeacomAnos = this.ordeAnos;
@@ -183,6 +137,52 @@ export class EstadisticasComponent implements OnInit, OnDestroy {
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
           // complete: () => console.info('completado listado de generos')
     });
+  }
+
+  private obterEstadisticas(): void {
+    this.estadisticasService
+      .getEstadisticas(EstadisticasTipo.Idioma)
+      .pipe(first())
+      .subscribe({
+        next: (v) => this.idiomasSignal.set(this.dadosObtidos(v)),
+        error: (e) => { console.error(e),
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+            mensagem: 'Nom se puiderom obter as estadísticas por idiomas.'}); },
+          // complete: () => console.info('completado por Idiomas')
+    });
+    this.estadisticasService
+      .getEstadisticas(EstadisticasTipo.Ano)
+      .pipe(first())
+      .subscribe({
+        next: (v) => this.anosSignal.set(this.dadosObtidos(v)),
+        error: (e) => { console.error(e),
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+            mensagem: 'Nom se puiderom obter as estadísticas por anos.'}); },
+          complete: () => console.info('completado por Anos')
+    });
+    this.estadisticasService
+      .getEstadisticas(EstadisticasTipo.Genero)
+      .pipe(first())
+      .subscribe({
+        next: (v) => this.generosSignal.set(this.dadosObtidos(v)),
+        error: (e) => { console.error(e),
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+            mensagem: 'Nom se puiderom obter as estadísticas por géneros.'}); },
+          // complete: () => console.info('completado por Genero')
+    });
+  }
+
+  private dadosObtidos(data: object): Estadisticas[] {
+    let resultados: Estadisticas[];
+    const dados = <EstadisticasData>data;
+    if (dados != null) {
+      resultados = dados.data;
+    } else {
+      resultados = [];
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
+      // console.debug('Nom se obtiverom dados');
+    }
+    return resultados
   }
 
   private comprobarDadosObtidos(rota: string, data: object) {

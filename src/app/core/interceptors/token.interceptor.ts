@@ -10,7 +10,11 @@ export class TokenInterceptor implements HttpInterceptor {
     const token = 'tocotom-tocotom-pom-pom';
 
     const clonedRequest = req.clone({
-      // headers: req.headers.set('Authorization', `Bearer ${token}`),
+      setHeaders: {
+        usuarinho: 'Lector01',
+        rolroleiro: 'Usuario',              // nom vale rolRoleiro
+        authorization: `Bearer ${token}`    // nom vale Authorization
+      }
     });
 
     // Manejar la solicitud

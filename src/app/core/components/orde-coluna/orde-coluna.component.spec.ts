@@ -1,57 +1,69 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OrdeColunaComponent } from './orde-coluna.component';
-import { TestBed } from '@angular/core/testing';
 
 describe('OrdeColunaComponent', () => {
   let component: OrdeColunaComponent;
+  let fixture: ComponentFixture<OrdeColunaComponent>;
 
-  beforeEach(() => {
-    // Configurar el módulo de pruebas
-    TestBed.configureTestingModule({
-      // declarations: [OrdeColunaComponent]  nom por que é standalone
-      imports: [ OrdeColunaComponent ],
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [OrdeColunaComponent], // Importar el componente standalone
+    }).compileComponents();
 
-    // Crear una instancia del componente
-    component = TestBed.createComponent(OrdeColunaComponent).componentInstance;
+    fixture = TestBed.createComponent(OrdeColunaComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('debería crear el componente', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set valorInverso and call amosarResultado when inverso input changes', () => {
-    const amosarResultadoSpy = jest.spyOn(component as any, 'amosarResultado');
-    component.inverso = true;
-    expect(component.valorInverso).toBe(true);
-    expect(amosarResultadoSpy).toHaveBeenCalled();
+  it('debería tener valores iniciales correctos', () => {
+    expect(component.abcd).toBe('↓');
+    expect(component.dcba).toBe('↑');
+    expect(component.nome).toBe('');
+    expect(component.caracter).toBe('');
   });
 
-  it('should set valorInverso and call amosarResultado when inverso input changes', () => {
-    const amosarResultadoSpy = jest.spyOn(component as any, 'amosarResultado');
-    component.inverso = true;
-    expect(component.valorInverso).toBe(true);
-    expect(amosarResultadoSpy).toHaveBeenCalled();
+  it('debería actualizar caracter cuando actual coincide con nome y inverso es false', () => {
+    component.nome = 'columna1';
+    component.actual = 'columna1'; // Llamar al setter de actual
+    component.inverso = false; // Llamar al setter de inverso
+
+    expect(component.caracter).toBe('↓');
   });
 
-  it('should update caracter based on valorActual and valorInverso', () => {
-    component.nome = 'columna';
-    component.abcd = '↓';
-    component.dcba = '↑';
+  it('debería actualizar caracter cuando actual coincide con nome y inverso es true', () => {
+    component.nome = 'columna1';
+    component.actual = 'columna1'; // Llamar al setter de actual
+    component.inverso = true; // Llamar al setter de inverso
 
-    // caso 1: valorActual coincide con nome y valorInverso es true
-    component.valorActual = 'columna';
-    component.valorInverso = true;
-    component['amosarResultado']();
+    expect(component.caracter).toBe('↑');
+  });
+
+  it('debería limpiar caracter cuando actual no coincide con nome', () => {
+    component.nome = 'columna1';
+    component.actual = 'columna2'; // Llamar al setter de actual
+    component.inverso = false; // Llamar al setter de inverso
+
+    expect(component.caracter).toBe('');
+  });
+
+  it('debería manejar cambios en actual e inverso correctamente', () => {
+    component.nome = 'columna1';
+
+    // Cambiar actual e inverso
+    component.actual = 'columna1';
+    component.inverso = true;
     expect(component.caracter).toBe('↑');
 
-    // caso 2: valorActual coincide con nome y valorInverso es false
-    component.valorInverso = false;
-    component['amosarResultado']();
+    // Cambiar solo inverso
+    component.inverso = false;
     expect(component.caracter).toBe('↓');
 
-    // caso 3: valorActual no coincide con nome
-    component.valorActual = 'otraColumna';
-    component['amosarResultado']();
+    // Cambiar actual a un valor que no coincide
+    component.actual = 'columna2';
     expect(component.caracter).toBe('');
   });
 });

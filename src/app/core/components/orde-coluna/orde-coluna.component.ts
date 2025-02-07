@@ -8,10 +8,6 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class OrdeColunaComponent implements OnInit {
 
-  caracter = '';
-  valorActual = '';
-  valorInverso = false;
-
   @Input() abcd: string = '↓';
   @Input() dcba: string = '↑';
   @Input() nome: string = '';
@@ -26,6 +22,10 @@ export class OrdeColunaComponent implements OnInit {
     this.valorInverso = data;
     this.amosarResultado();
   }
+
+  caracter = '';
+  private valorActual = '';
+  private valorInverso = false;
 
   constructor() { }
 

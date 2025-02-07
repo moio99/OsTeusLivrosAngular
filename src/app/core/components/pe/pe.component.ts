@@ -63,7 +63,7 @@ export class PeComponent implements OnInit {
    * Realiza umha pausa do tempo passado.
    * @param ms Tempo em milisegundos.
    */
-  pausa(ms: number) {
+  private pausa(ms: number) {
     return new Promise( resolve => {setTimeout(resolve, ms); } );
   }
 }
