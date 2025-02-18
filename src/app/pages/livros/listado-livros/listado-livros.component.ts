@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { first, map, tap } from 'rxjs/operators';
 import { GenerosService } from '../../../core/services/api/generos.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { OutrosService } from '../../../core/services/api/outros.service';
@@ -159,7 +159,16 @@ export class ListadoLivrosComponent implements OnInit {
     this.titulo = this.tituloListado;
     this.livrosService
       .getListadoLivros()
-      .pipe(first())
+      .pipe(
+        first(),
+        tap((v) => {
+          // console.log(v)
+        }),
+        /* map((v) => {
+          const dados = <ListadoLivrosData>v;
+          return dados.data;
+        }) */
+      )
       .subscribe({
         next: (v: object) => this.listadoDados = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
@@ -173,7 +182,8 @@ export class ListadoLivrosComponent implements OnInit {
     const dados = <ListadoLivrosData>data;
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidossss'});
-      resultados = dados.data.sort((a,b) => new Ordeacom().ordear(a.titulo, b.titulo, this.inverso));
+      resultados = dados.data.sort((a,b) => new Ordeacom().ordear(
+        a.titulo.replace(/[¿?¡!]/g,''), b.titulo.replace(/[¿?¡!]/g,'').replace('¡',''), this.inverso));
       if (amosarGrafico) {
         this.separarDadosGrafico(resultados);
       }
@@ -219,7 +229,8 @@ export class ListadoLivrosComponent implements OnInit {
     this.inverso = (this.tipoOrdeacom == this.ordeTituloAlfabetico) ? !this.inverso : false;
     this.tipoOrdeacom = this.ordeTituloAlfabetico;
 
-    this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.titulo, b.titulo, this.inverso));
+    this.listadoDados.sort((a,b) => new Ordeacom().ordear(
+      a.titulo.replace(/[¿?¡!]/g,''), b.titulo.replace(/[¿?¡!]/g,''), this.inverso));
   }
 
   setOrdeAutorAlfabetico() {
@@ -256,7 +267,10 @@ export class ListadoLivrosComponent implements OnInit {
       this.dadosPaginasService.setDadosPagina({id: id, nomePagina: 'livro', elemento: undefined});
       this.router.navigateByUrl(rota + '?id=' + id + '&idRelectura=' + idRelectura);
     } else {
-      this.router.navigateByUrl(rota + '?id=' + id);
+      // A autores navegase co state
+      this.router.navigate([rota], {
+        state: { id: id, idRelectura: 'algo mais de probas' },
+      });
     }
   }
 

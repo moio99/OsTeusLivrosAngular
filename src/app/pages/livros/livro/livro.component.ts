@@ -310,26 +310,26 @@ export class LivroComponent implements OnInit {
     dados.forEach(function (value) {
       let iterado = dateConvert.getDateFromMySQL(value.dataDoLivro);
       if (iterado.year > maiorData.year) {
-        //console.log('id do maior ANO: ' + value.id, maiorData);
-        maiorData = dateConvert.getDateFromMySQL(value.dataDoLivro);
+        // console.log('id do maior ANO: ' + value.id, maiorData);
+        maiorData = iterado;
       }
-      else if (iterado.year = maiorData.year) {
+      else if (iterado.year == maiorData.year) {
         if (iterado.month > maiorData.month) {
-          //console.log('id do maior MES: ' + value.id, maiorData, iterado);
-          maiorData = dateConvert.getDateFromMySQL(value.dataDoLivro);
+          // console.log('id do maior MES: ' + value.id, maiorData, iterado);
+          maiorData = iterado;
         }
-        else if (iterado.month = maiorData.month) {
+        else if (iterado.month == maiorData.month) {
           if (iterado.day > maiorData.day) {
-            //console.log('id do maior DIA: ' + value.id, maiorData, iterado);
-            maiorData = dateConvert.getDateFromMySQL(value.dataDoLivro);
+            // console.log('id do maior DIA: ' + value.id, maiorData, iterado);
+            maiorData = iterado;
           }
         }
       }
     });
 
     maiorData.day = maiorData.day + 1;
-    //console.log('ultimas Leituras:', dados);
-    //console.log('maior data', maiorData);
+    // console.log('ultimas Leituras:', dados);
+    // console.log('maior data', maiorData);
     this.diasLeitura = this.getDiasDendeUltimaLeitura(maiorData);
     if (this.modo === this.engadir) {
       this.lf.diasLeitura.setValue(this.diasLeitura.toString());
