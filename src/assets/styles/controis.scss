@@ -1,0 +1,52 @@
+
+button {
+  background-color: #0e8210;
+  border: 2px solid #095b0b;
+  border-radius: 4px 4px 4px 4px;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  font-family: Tahoma,Geneva,sans-serif;
+  color: #f4f4f4;
+  padding: 3px 10px 3px;
+  text-align: left;
+  cursor: pointer;
+}
+button:hover {
+  opacity: 1.25;
+  background-color: #0d8d10;
+  border: 2px solid #0a740c;
+  color: #FFFFFF;
+  box-shadow:0 0 6px #93eb95;
+}
+
+.botom-novo-resgistro {
+  background: url(../images/novo.png) no-repeat;
+  background-position: right -25px;
+  background-color: #0e8210;
+  padding-right: 30px;
+}
+
+.botom-guardar-resgistro {
+  background: url(../images/guardar.png) no-repeat;
+  background-size: 15px;
+  background-position: right;
+  background-color: #0e8210;
+  padding-right: 20px;
+}
+
+.popup-multiselecom {
+  background: #1d1d1e url(../images/fundoAzul.png) repeat left top;
+  color: rgb(211, 207, 248);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.ancho-inputs {
+  width: 100%;
+}
+
+@media (max-width: 650px) {   // Actua com umha resoluçom por debaixo de 651px
+  .popup-multiselecom {
+    padding: 1px;
+  }
+}

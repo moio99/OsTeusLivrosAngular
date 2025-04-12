@@ -1,0 +1,42 @@
+.lista-com-comas {
+  ul { padding: 0px; margin: 0px; }
+  li { display: inline; list-style-type: none; }
+  li:after { content: ", "; }
+  li:last-child:after { content: " "; }
+}
+
+.listado-accom {
+  cursor: pointer;
+
+  img {
+    width: 12px;
+    border-radius: 50%;
+    border: 2px solid #1c177e;
+    padding: 3px;
+    background-color: #302b91;
+  }
+
+  img:hover {
+    opacity: 1.55;
+    box-shadow:0 0 6px #5a56a5;
+    border-radius: 50%;
+    background-color: #413c97;
+  }
+}
+
+@media (max-width: 650px) {   // Actua com umha resoluçom por debaixo de 651px
+  .taboas-listado {
+    width: calc(100% - 10px);
+  }
+}
+
+.formulario-dados div {
+  margin-right: 5px;
+}
+
+@media (min-width: 650px) {   // Actua com umha resoluçom por riba de 651px
+  .formulario-dados {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

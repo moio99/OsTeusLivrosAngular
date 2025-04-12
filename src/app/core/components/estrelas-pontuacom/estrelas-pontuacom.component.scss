@@ -1,0 +1,22 @@
+
+.estrelas {
+  display: flex;
+  height: 40px;
+  .bloco-estrelas{
+    display: flex;
+
+    .estrelaEnteira {
+      height: 100%;
+     }
+
+    .estrelaDecimal {
+      height: 100%;
+    }
+  }
+
+  .bloco-numero {
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+  }
+}

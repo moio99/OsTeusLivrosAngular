@@ -1,0 +1,28 @@
+<h3>Listado de Editoriais</h3>
+<button class="botom-novo-resgistro" (click)="onIrPagina('/editoriais/editorial', '0')">
+  Nova Editorial
+</button>
+
+<h1 *ngIf="tipoListado.length > 0">Listado {{this.tipoListado}}</h1>
+
+<table *ngIf="this.listadoDados.length > 0" class="taboas-listado">
+  <tr>
+    <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna
+      [nome]="this.nomeAlfabetico"
+      [actual]="this.tipoOrdeacom"
+      [inverso]="this.inverso"></omla-orde-coluna></th>
+    <th>Web</th>
+    <th (click)="ordeNumeroLivros()">Livros<omla-orde-coluna
+      [nome]="this.numeroLivros"
+      [actual]="this.tipoOrdeacom"
+      [inverso]="this.inverso"></omla-orde-coluna></th>
+  </tr>
+  <tr *ngFor="let entrada of this.listadoDados" class="listado-accom">
+    <td (click)="onIrPagina('/editoriais/editorial', entrada.id)">{{entrada.nome}}</td>
+    <td (click)="onIrPagina('/editoriais/editorial', entrada.id)">{{entrada.web || '---'}}</td>
+    <td (click)="onIrPagina('/editoriais/editorial', entrada.id)">{{entrada.quantidadeLivros}}</td>
+    <td (click)="onBorrarElemento(entrada.id, entrada.nome, entrada.quantidadeLivros)">
+      <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+    </td>
+  </tr>
+</table>

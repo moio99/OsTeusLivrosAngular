@@ -1,0 +1,63 @@
+<form [formGroup]="colecomForm" (ngSubmit)="onSubmit($event)">
+  <button color="primary" type="submit" value="{{this.modo}}">
+    <i class="icon-disk"></i> {{this.modo}}
+  </button>
+  <button color="primary" type="button" (click)="onCancelar()">
+    <i class="icon-disk"></i> Retroceder
+  </button>
+  <div class="formulario-dados">
+    <mat-form-field [style.width.px]=500>
+      <mat-label>Nome:</mat-label>
+      <input matInput [formControl]="cf.nome" width="200">
+      <mat-error *ngIf="cf.nome.hasError('maxlength')">
+        A longitude nom debe superar os 150 caracteres
+      </mat-error>
+      <mat-error *ngIf="cf.nome.hasError('required')">
+        O Nome é obrigatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field [style.width.px]=150>
+      <mat-label>ISBN:</mat-label>
+      <input matInput [formControl]="cf.isbn">
+      <mat-error *ngIf="cf.isbn.hasError('maxlength')">
+        A longitude nom debe superar os 20 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field [style.width.px]=300>
+      <mat-label>web:</mat-label>
+      <input matInput [formControl]="cf.web">
+      <mat-error *ngIf="cf.web.hasError('maxlength')">
+        A longitude nom debe superar os 150 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field [style.width.px]=500>
+      <mat-label>Comentario:</mat-label>
+      <textarea matInput [formControl]="cf.comentario" rows="4"></textarea>
+      <mat-error *ngIf="cf.comentario.hasError('maxlength')">
+        A longitude nom debe superar os 5000 caracteres
+      </mat-error>
+    </mat-form-field>
+  </div>
+</form>
+
+<h3 *ngIf="dadosLivrosDaColecom.length > 0">Listado de livros</h3>
+
+<table *ngIf="this.dadosLivrosDaColecom.length > 0">
+  <tr>
+    <th>Titulo</th>
+    <th>TituloOriginal</th>
+    <th>Autor</th>
+  </tr>
+  <tr *ngFor="let entrada of this.dadosLivrosDaColecom" class="listado-accom">
+    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
+    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
+    <td class="lista-com-comas">
+      <ul>
+        <li *ngFor="let autor of entrada.autores" (click)="onIrPagina('/autores/autor', autor.id)">{{autor.nome}}</li>
+      </ul>
+    </td>
+  </tr>
+</table>

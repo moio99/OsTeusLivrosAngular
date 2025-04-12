@@ -1,0 +1,89 @@
+.dadosLivro {
+  .lista-etiqueta {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .listado-seleccom {
+    display: flex;
+
+    &__input {
+      height: 75px;
+    }
+
+    &__botons {
+      display: flex;
+      flex-flow: column;
+      align-items: flex-start;
+    }
+  }
+
+  .pontuacom {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.mat-dialog-container{
+  padding: 1px;
+}
+
+@media (min-width: 650px) {   // Actua com umha resoluçom por riba de 651px
+  .dadosLivro {
+    display: grid;
+    width: 100%;
+    //height: 100vh;
+    grid-template-columns: repeat(4 1fr);
+    grid-template-rows: repeat(11 1fr);
+
+    div {
+      margin-left: 5px;
+    }
+
+    .titulo { grid-area: 1/1/2/4; }
+    .autor { grid-area: 1/4/2/5; }
+
+    .titulo-original { grid-area: 2/1/3/4; }
+    .genero { grid-area: 2/4/3/5; }
+
+    .biblioteca { grid-area: 3/1/4/2; }
+    .editorial { grid-area: 3/2/4/3; }
+    .colecom { grid-area: 3/3/4/4; }
+    .estido { grid-area: 3/4/4/5; }
+
+    .paginas { grid-area: 4/1/5/2; }
+    .paginas-lidas { grid-area: 4/2/5/3; }
+    .isbn { grid-area: 4/3/5/4; }
+    .lido { grid-area: 4/4/5/5; }
+
+    .data-criacom { grid-area: 5/1/6/2; }
+    .data-edicom { grid-area: 5/2/6/3; }
+    .numero-edicom { grid-area: 5/3/6/4; }
+    .dias-leitura { grid-area: 5/4/6/5; }
+
+    .data-fim-leiturata { grid-area: 6/1/7/2; }
+    .idioma { grid-area: 6/2/7/3; }
+    .idioma-original { grid-area: 6/3/7/4; }
+    .electronico  { grid-area: 6/4/7/5; }
+
+    .som-serie { grid-area: 7/1/8/2; }
+    .serie-combo { grid-area: 7/2/8/3; }
+    .serie-check { grid-area: 7/1/8/2; }
+
+    .premios { grid-area: 8/1/9/5; }
+    .descricom { grid-area: 9/1/10/5; }
+    .comentario { grid-area: 10/1/11/5; }
+    .pontuacom {
+      grid-area: 11/1/12/4;
+    }
+  }
+}
+
+.mais-dados {
+  div {
+    :first-child {
+      font-weight: bold;
+    }
+  }
+}

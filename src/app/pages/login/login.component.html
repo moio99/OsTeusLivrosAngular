@@ -1,0 +1,40 @@
+<div class="login-container">
+  <h2>Iniciar Sesión</h2>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+    <div class="form-group">
+      <label for="username">Nombre de usuario</label>
+      <input
+        type="text"
+        id="nome"
+        formControlName="nome"
+        placeholder="Ingresa tu usuario"
+        [class.is-invalid]="loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched">
+      <div *ngIf="loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched" class="invalid-feedback">
+        El nombre de usuario es requerido
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="contrasinal">Contraseña</label>
+      <input
+        type="password"
+        id="contrasinal"
+        formControlName="contrasinal"
+        placeholder="Ingresa tu contraseña"
+        [class.is-invalid]="loginForm.get('contrasinal')?.invalid && loginForm.get('contrasinal')?.touched">
+      <div *ngIf="loginForm.get('contrasinal')?.invalid && loginForm.get('contrasinal')?.touched" class="invalid-feedback">
+        O contrasinal é obrigatorio
+      </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="loading || loginForm.invalid">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+      {{ loading ? 'Ingresando...' : 'Ingresar' }}
+    </button>
+  </form>
+</div>

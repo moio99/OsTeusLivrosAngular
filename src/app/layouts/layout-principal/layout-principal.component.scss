@@ -1,0 +1,60 @@
+@import "../../../../src/assets/styles/constans.scss";
+
+$contedor: "contedor";
+
+.#{$contedor} {
+  overflow: hidden;
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  grid-template-columns: $ancho-menu 1fr;
+  grid-template-rows: 50px 1fr 30px;
+  // overscroll-behavior-y: none;
+  /* grid-template-areas:
+      "cabezalho cabezalho"
+      "menu contido"
+      "menu pe"; */
+      /* 11  2  3
+            #  #
+          2
+            #  #
+          3
+            #  #
+          4 */
+
+  .#{$contedor}__cabezalho{
+    grid-area: 1/1/2/3; //cabezalho;
+    background: #9399aa url(../../../assets/images/fundoCinzento.jpg) repeat left top;
+    color: rgb(211, 207, 248);
+  }
+  .#{$contedor}__menu{
+    grid-area: 2/1/4/2; //menu;
+  }
+  .#{$contedor}__contido{
+    grid-area: 2/2/4/3; //contido;
+    overflow-y: auto;
+    background: #9399aa url(../../../assets/images/fundoAzul.png) repeat left top;
+    padding: 5px;
+  }
+  /* .pe{
+    grid-area: 3/2/43; //pe;
+  } */
+}
+
+.pe-emergente {
+  position: fixed;
+  bottom: 0px;
+}
+
+@media (max-width: 650px) {   // Actua com umha resoluçom por debaixo de 651px
+  .#{$contedor} {
+    width: 100%;
+
+    .#{$contedor}__menu {
+      display: none;
+    }
+    .#{$contedor}__contido {
+      grid-area: 2/1/4/3;
+    }
+  }
+}

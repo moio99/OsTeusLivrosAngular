@@ -1,0 +1,17 @@
+<div class="contido">
+
+  <div class="menu-movel">
+    <mat-icon fontIcon="menu"
+      (click)="onAmosarMenu()"
+    ></mat-icon>
+  </div>
+
+  <img src="../../../assets/images/titulo_esquerda.png" alt="">
+  <span>Gestom dos livros lidos</span>
+  <img src="../../../assets/images/titulo_dereita.png" alt="">
+  <div class="carregando">
+    @if (isAmosarCarregando | async) {
+      <img src="../../../assets/images/carregando.gif" alt="Carregando">
+    }
+  </div>
+</div>

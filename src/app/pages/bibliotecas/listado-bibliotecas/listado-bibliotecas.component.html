@@ -1,0 +1,28 @@
+<h3>Listado de Bibliotecas</h3>
+<button class="botom-novo-resgistro" (click)="onIrPagina('/bibliotecas/biblioteca', '0')">
+  Nova Biblioteca
+</button>
+
+@if (tipoListado.length > 0) {
+  <h1>Listado {{this.tipoListado}}</h1>
+}
+@if (this.listadoDados.length > 0) {
+  <table class="taboas-listado">
+    <tr>
+      <th>Nome</th>
+      <th>Data renovaçom</th>
+      <th>Livros</th>
+    </tr>
+
+    @for (entrada of this.listadoDados; track entrada) {
+      <tr class="listado-accom">
+        <td (click)="onIrPagina('bibliotecas/biblioteca', entrada.id)">{{entrada.nome}}</td>
+        <td (click)="onIrPagina('bibliotecas/biblioteca', entrada.id)">{{entrada.dataRenovacom ? (entrada.dataRenovacom | date:'dd/MM/yyyy') : '---'}}</td>
+        <td (click)="onIrPagina('bibliotecas/biblioteca', entrada.id)">{{entrada.quantidadeLivros}}</td>
+        <td (click)="onBorrarElemento(entrada.id, entrada.nome, entrada.quantidadeLivros)">
+          <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+        </td>
+      </tr>
+    }
+  </table>
+}

@@ -1,0 +1,51 @@
+.contido-taboas {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+
+  .taboa-linguas {
+    display: flex;
+  }
+
+  .paginas {
+    font-family: 'Courier New', monospace;
+    font-size: large;
+    font-weight: bold;
+  }
+
+}
+
+.sub-menu { display: none; }
+
+.grafico {
+  width: 12px;
+  border-radius: 50%;
+  border: 2px solid #1c177e;
+  padding: 3px;
+  background-color: #302b91;
+  cursor: pointer;
+}
+
+@media (max-width: 650px) {   // Activo com umha resoluçom por debaixo de 651px
+  .sub-menu {
+    position: absolute;
+    width: 100%;
+    margin: -5px;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #9399aa;
+
+    a { cursor: pointer; }
+  }
+
+  .contido-taboas {
+    margin-top: 20px;
+    display: grid;
+    justify-content: center;
+  }
+  .contido-taboas > *:not(:last-child) {
+    // > *  para todos os filhos
+    margin-bottom: 5px;
+  }
+}
+

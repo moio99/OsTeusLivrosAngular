@@ -1,0 +1,28 @@
+.contido {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin: auto 10px;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: larger;
+
+  span {
+    margin: 0 8px;
+  }
+}
+.menu-movel {
+  display: none;
+}
+.carregando {
+  margin-left: auto;
+  img {
+    width: 25px;
+  }
+}
+@media (max-width: 650px) {   // Actua com umha resoluçom por debaixo de 651px
+  .menu-movel {
+    display: block;
+    cursor: pointer;
+  }
+}

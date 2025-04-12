@@ -1,0 +1,12 @@
+<h3>Listado por {{tipo === tipos.porNacionalidade ? 'Nacionalidade' : 'Pais'}}</h3>
+
+<table *ngIf="this.listadoDados.length > 0" class="taboas-listado">
+  <tr>
+    <th>Nome</th>
+    <th>Quantidade</th>
+  </tr>
+  <tr *ngFor="let entrada of this.listadoDados" class="listado-accom">
+    <td (click)="onIrPagina('autores', entrada.id)">{{entrada.nome || '---'}}</td>
+    <td (click)="onIrPagina('autores', entrada.id)">{{entrada.quantidadeAutores}}</td>
+  </tr>
+</table>

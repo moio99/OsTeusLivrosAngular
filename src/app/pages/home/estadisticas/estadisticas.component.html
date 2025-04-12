@@ -1,0 +1,120 @@
+<span id="subMenu"></span>
+<div class="sub-menu">
+  <a (click)="scrollAoElemento('subMenu')">Idiomas</a>
+  <a (click)="scrollAoElemento('taboaAnos')">Anos</a>
+  <a (click)="scrollAoElemento('taboaGenero')">Géneros</a>
+</div>
+
+<div class="contido-taboas">
+  @if (this.idiomasSignal().length > 0) {
+    <div class="taboa-linguas">
+      <table>
+        <tr>
+          <th>Idioma</th>
+          <th>Quantidade</th>
+          <th>Relecturas</th>
+          <th>Páginas</th>
+        </tr>
+        @for (entrada of this.idiomasSignal(); track entrada; let first = $first, derradeiro = $last) {
+          <tr class="listado-accom">
+            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">
+              {{entrada.nome}}
+              @if (derradeiro) {
+                <span id="taboaAnos"></span>
+              }
+            </td>
+            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">{{entrada.quantidade}}</td>
+            <td>{{entrada.quantidadeRelecturas}}</td>
+            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas">{{entrada.quantidadePaginas}}</td>
+          </tr>
+        }
+      </table>
+      <span (click)="onGoGraficos('/graficos')">
+        <img src="../../../../assets/images/grafico.png" alt="Ver o gráfico" class="grafico">
+      </span>
+    </div>
+  }
+
+  @if (this.anosSignal().length > 0) {
+    <table>
+      <tr>
+        <th (click)="setOrdeAnos()">
+          <div style="display: flex;">
+            Ano
+            <omla-orde-coluna
+              [nome]="this.ordeAnos"
+              [actual]="this.tipoOrdeacomAnos"
+              [inverso]="this.inversoAnos"></omla-orde-coluna>
+          </div>
+        </th>
+        <th (click)="setOrdeQuantidadeAnos()">
+          <div style="display: flex;">
+            Quantidade
+            <omla-orde-coluna
+              [nome]="this.ordeQuantidadeAnos"
+              [actual]="this.tipoOrdeacomAnos"
+              [inverso]="this.inversoAnos"></omla-orde-coluna>
+          </div>
+        </th>
+        <th>Relecturas</th>
+        <th (click)="setOrdePaginasAnos()">
+          <div style="display: flex;">
+            Páginas
+            <omla-orde-coluna
+              [nome]="this.ordePaginasAnos"
+              [actual]="this.tipoOrdeacomAnos"
+              [inverso]="this.inversoAnos"></omla-orde-coluna>
+          </div>
+        </th>
+      </tr>
+      @for (entrada of this.anosSignal(); track entrada) {
+        <tr class="listado-accom">
+          <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">
+            {{entrada.nome}}
+            @if ($last) {
+              <span id="taboaGenero"></span>
+            }
+          </td>
+          <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">{{entrada.quantidade}}</td>
+          <td>{{entrada.quantidadeRelecturas}}</td>
+          <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas">{{entrada.quantidadePaginas}}</td>
+        </tr>
+      }
+    </table>
+  }
+
+  @if (this.generosSignal().length > 0) {
+    <table>
+      <tr>
+        <th>Género</th>
+        <th (click)="setOrdeQuantidadeGeneros()">
+          <div style="display: flex;">
+            Quantidade
+            <omla-orde-coluna
+              [nome]="this.ordeQuantidadeGeneros"
+              [actual]="this.tipoOrdeacomGeneros"
+              [inverso]="this.inversoGeneros"></omla-orde-coluna>
+          </div>
+        </th>
+        <th>Relecturas</th>
+        <th (click)="setOrdePaginasGeneros()">
+          <div style="display: flex;">
+            Páginas
+            <omla-orde-coluna
+              [nome]="this.ordePaginasGeneros"
+              [actual]="this.tipoOrdeacomGeneros"
+              [inverso]="this.inversoGeneros"></omla-orde-coluna>
+          </div>
+        </th>
+      </tr>
+      @for (entrada of this.generosSignal(); track entrada) {
+        <tr class="listado-accom">
+          <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)">{{entrada.nome}}</td>
+          <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)">{{entrada.quantidade}}</td>
+          <td>{{entrada.quantidadeRelecturas}}</td>
+          <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas">{{entrada.quantidadePaginas}}</td>
+        </tr>
+      }
+    </table>
+  }
+</div>

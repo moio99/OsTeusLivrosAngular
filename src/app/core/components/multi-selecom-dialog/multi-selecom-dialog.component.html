@@ -1,0 +1,39 @@
+<div class="fun">
+<div class="contedor-dialogo popup-multiselecom">
+  <div class="boton-fechar">
+    <button (click)="onFechar()">Fechar</button>
+  </div>
+
+  <input class="filtro-caixa" type="text" (input)="onCambioFiltro($event.target)" placeholder="⌕ Filtro">
+
+  <div>
+    <div class="example-container container-todo">
+      <span>Todos</span>
+      <div
+        cdkDropList
+        #TodoList="cdkDropList"
+                [id]="'listadoTodo'"
+        [cdkDropListData]="multiDados.total | filtroListDrag: filtro:dummy"
+        [cdkDropListConnectedTo]="[EscolmaList]"
+        class="example-list"
+        (cdkDropListDropped)="onMover($event)">
+        <div class="example-box" *ngFor="let item of multiDados.total | filtroListDrag: filtro:dummy" cdkDrag>{{item.value}}</div>
+      </div>
+    </div>
+
+    <div class="example-container">
+      <span>Escolma</span>
+      <div
+        cdkDropList
+        #EscolmaList="cdkDropList"
+                [id]="'listadoEscolma'"
+        [cdkDropListData]="multiDados.escolma"
+        [cdkDropListConnectedTo]="[TodoList]"
+        class="example-list"
+        (cdkDropListDropped)="onMover($event)">
+        <div class="example-box" *ngFor="let item of multiDados.escolma" cdkDrag>{{item.value}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

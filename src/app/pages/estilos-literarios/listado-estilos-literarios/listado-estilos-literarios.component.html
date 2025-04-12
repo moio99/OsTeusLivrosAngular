@@ -1,0 +1,38 @@
+<h3>Listado de Estilos literarios{{this.tipoOrdeacom}}
+  @if(this.inverso) {
+    <span> inverso</span>
+  }
+</h3>
+<button class="botom-novo-resgistro" (click)="onIrPagina('/estilos-literarios/estilo-literario', '0')">
+  Novo Estilo
+</button>
+@if(tipoListado.length > 0) {
+  <h1>Listado {{this.tipoListado}}</h1>
+}
+
+@if(this.listadoDados.length > 0) {
+  <table class="taboas-listado">
+    <tr>
+      <th>Nome</th>
+      <th (click)="ordeNumeroLivros()">Livros<omla-orde-coluna
+        [nome]="this.numeroLivros"
+        [actual]="this.tipoOrdeacom"
+        [inverso]="this.inverso"></omla-orde-coluna></th>
+      <th (click)="ordeNumeroLivrosLidos()">Lidos<omla-orde-coluna
+        [nome]="this.numeroLivrosLidos"
+        [actual]="this.tipoOrdeacom"
+        [inverso]="this.inverso"></omla-orde-coluna></th>
+    </tr>
+    @for (entrada of this.listadoDados; track entrada) {
+      <tr class="listado-accom">
+        <td (click)="onIrPagina('/estilos-literarios/estilo-literario', entrada.id)">{{entrada.nome}}</td>
+        <td (click)="onIrPagina('/estilos-literarios/estilo-literario', entrada.id)">{{entrada.quantidadeLivros}}</td>
+        <td (click)="onIrPagina('/estilos-literarios/estilo-literario', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>
+        <td (click)="onBorrarElemento(entrada.id, entrada.nome, entrada.quantidadeLivros)">
+          <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+        </td>
+      </tr>
+    }
+  </table>
+}
+<img class="grafico-estilos" src="../../../../assets/images/Movimientos-literarios.png" alt="">

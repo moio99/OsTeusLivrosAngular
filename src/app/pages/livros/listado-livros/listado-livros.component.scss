@@ -1,0 +1,18 @@
+
+.botoneira > *:not(:last-child) {
+  // > *  para todos os filhos
+  margin-right: 8px;
+}
+.botoneira {
+  a:hover {
+    cursor: pointer;
+  }
+}
+
+.cabeceira-pequena {
+  display: inline-flex;
+}
+
+.titulo-galego {
+  font-weight: bold;
+}
