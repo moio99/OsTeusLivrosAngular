@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 4210",
+    "start": "node server.js",
+    "startLocal": "ng serve --port 4210",
     "startNoNecesario": "ng serve --port 4210 --proxy-config proxy.conf.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
@@ -24,6 +25,7 @@
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
     "apexcharts": "^3.54.1",
+    "express": "^5.1.0",
     "ng-apexcharts": "^1.7.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -37,5 +39,8 @@
     "@types/node": "^22.14.0",
     "jest-preset-angular": "^14.2.2",
     "typescript": "~5.4.2"
+  },
+  "engines": {
+    "node": "20.16.0"
   }
 }
