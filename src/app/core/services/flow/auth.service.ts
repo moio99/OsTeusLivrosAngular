@@ -34,7 +34,6 @@ export class AuthService {
       return false;
     } */
 
-    console.log('whereIAm>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', environment.whereIAm);
     // environments.pre é a versom para railway (na nuve)
     if (environment.whereIAm !== environments.pre && environment.whereIAm !== environments.pro) {
       return true;
@@ -46,7 +45,6 @@ export class AuthService {
   }
 
   postLogin(usuario: Usuario): Observable<DadosLogueo> {
-    console.log('environment.apiUrl>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', environment.apiUrl);
     return this.http.post(environment.apiUrl + '/login', usuario).pipe(
       map((response: any) => response as DadosLogueo), // Cast the response to DadosLogueo
       tap(response => {
