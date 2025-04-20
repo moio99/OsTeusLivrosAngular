@@ -27,6 +27,7 @@
     "apexcharts": "^3.54.1",
     "express": "^5.1.0",
     "ng-apexcharts": "^1.7.1",
+    "path-to-regexp": "^8.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
