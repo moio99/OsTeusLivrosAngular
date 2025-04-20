@@ -3,25 +3,25 @@
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
     <div class="form-group">
-      <label for="username">Nombre de usuario</label>
+      <label for="username">Nome do usuario</label>
       <input
         type="text"
         id="nome"
         formControlName="nome"
-        placeholder="Ingresa tu usuario"
+        placeholder="Isire o nome do usuario"
         [class.is-invalid]="loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched">
       <div *ngIf="loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched" class="invalid-feedback">
-        El nombre de usuario es requerido
+        El nome do usuario é obrigatorio
       </div>
     </div>
 
     <div class="form-group">
-      <label for="contrasinal">Contraseña</label>
+      <label for="contrasinal">Contrasinal</label>
       <input
         type="password"
         id="contrasinal"
         formControlName="contrasinal"
-        placeholder="Ingresa tu contraseña"
+        placeholder="Isire o teu contrasinal"
         [class.is-invalid]="loginForm.get('contrasinal')?.invalid && loginForm.get('contrasinal')?.touched">
       <div *ngIf="loginForm.get('contrasinal')?.invalid && loginForm.get('contrasinal')?.touched" class="invalid-feedback">
         O contrasinal é obrigatorio
