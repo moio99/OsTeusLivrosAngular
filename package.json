@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
+    "start": "http-server dist/os-meus-livros-w/browser -p $PORT",
     "startLocal": "ng serve --port 4210",
     "startNoNecesario": "ng serve --port 4210 --proxy-config proxy.conf.json",
     "build": "ng build",
@@ -26,6 +26,7 @@
     "@angular/router": "^17.3.0",
     "apexcharts": "^3.54.1",
     "express": "^5.1.0",
+    "http-server": "^14.1.1",
     "ng-apexcharts": "^1.7.1",
     "path-to-regexp": "^8.2.0",
     "rxjs": "~7.8.0",
