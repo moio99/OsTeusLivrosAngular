@@ -7,7 +7,7 @@ app.use(express.static(path.join(__dirname, 'dist/os-meus-livros-w')));
 
 // Redirige todas las rutas al index.html (para SPA)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/os-meus-livros-w/browser/index.html'));
+  res.sendFile(path.join(__dirname, 'dist/os-meus-livros-w/index.html'));
 });
 
 // Puerto configurable para Render.com
