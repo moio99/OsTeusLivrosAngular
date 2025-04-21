@@ -13,6 +13,8 @@ import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Parametros } from '../../../core/models/comun.interface';
+import { environment, environments } from '../../../../environments/environment';
+import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 
 @Component({
   selector: 'omla-editorial',
@@ -23,8 +25,8 @@ import { Parametros } from '../../../core/models/comun.interface';
 })
 export class EditorialComponent implements OnInit {
 
-  engadir = 'Engadir'; guardar = 'Guardar';
-  modo = this.engadir;
+  estadosPagina = EstadosPagina;
+  modo = EstadosPagina.soVisualizar;
   dadosDaEditorial: Editorial | undefined = {
     id: 0,
     nome: '',
@@ -56,10 +58,14 @@ export class EditorialComponent implements OnInit {
       .subscribe(params => {
         let parametros = params as Parametros;
         if (parametros.id === '0')
-          this.modo = this.engadir;
+          this.modo = EstadosPagina.engadir;
         else {
-          this.modo = this.guardar;
+          this.modo = EstadosPagina.guardar;
           this.obterDadosDaEditorial(parametros.id);
+        }
+
+        if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+          this.modo = EstadosPagina.soVisualizar;
         }
       }
     );
@@ -142,9 +148,9 @@ export class EditorialComponent implements OnInit {
 
   guardarEditorial(event: any, editorialRepetido: EditorialData) {
     if (editorialRepetido != undefined && editorialRepetido.meta.quantidade > 0 && (
-      (event.submitter.value === this.engadir)
+      (event.submitter.value === EstadosPagina.engadir)
       ||
-      (event.submitter.value !== this.engadir && editorialRepetido.meta.id != this.dadosDaEditorial?.id))) { // se está actualizando os ids deben ser inguais
+      (event.submitter.value !== EstadosPagina.engadir && editorialRepetido.meta.id != this.dadosDaEditorial?.id))) { // se está actualizando os ids deben ser inguais
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome da editorial já existe na base de dados'});
     }
     else {
@@ -156,7 +162,7 @@ export class EditorialComponent implements OnInit {
         comentario: (this.ef.comentario.value == null) ? null : String(this.ef.comentario.value).trim()
       };
 
-      if (event.submitter.value === this.engadir) {
+      if (event.submitter.value === EstadosPagina.engadir) {
         this.editoriaisService
           .postEditorial(editorial)
           .pipe(first())
@@ -166,7 +172,7 @@ export class EditorialComponent implements OnInit {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a editorial.'});
               console.error(e) },
               complete: () => {
-                this.modo = this.guardar;
+                this.modo = EstadosPagina.guardar;
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Editorial engadida.'});
                 // console.debug('post completado');
               }

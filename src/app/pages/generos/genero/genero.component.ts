@@ -13,6 +13,8 @@ import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.s
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Parametros } from '../../../core/models/comun.interface';
+import { environment, environments } from '../../../../environments/environment';
+import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 
 @Component({
   selector: 'omla-genero',
@@ -24,8 +26,8 @@ import { Parametros } from '../../../core/models/comun.interface';
 })
 export class GeneroComponent implements OnInit {
 
-  engadir = 'Engadir'; guardar = 'Guardar';
-  modo = this.engadir;
+  estadosPagina = EstadosPagina;
+  modo = EstadosPagina.soVisualizar;
   dadosDoGenero: Genero | undefined = {
     id: 0,
     nome: '',
@@ -53,10 +55,14 @@ export class GeneroComponent implements OnInit {
       .subscribe(params => {
         let parametros = params as Parametros;
         if (parametros.id === '0')
-          this.modo = this.engadir;
+          this.modo = EstadosPagina.engadir;
         else {
-          this.modo = this.guardar;
+          this.modo = EstadosPagina.guardar;
           this.obterDadosDoGenero(parametros.id);
+        }
+
+        if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+          this.modo = EstadosPagina.soVisualizar;
         }
       }
     );
@@ -136,9 +142,9 @@ export class GeneroComponent implements OnInit {
 
   private guardarGenero(event: any, generoRepetido: GeneroData) {
     if (generoRepetido != undefined && generoRepetido.meta.quantidade > 0 && (
-      (event.submitter.value === this.engadir)
+      (event.submitter.value === EstadosPagina.engadir)
       ||
-      (event.submitter.value !== this.engadir && generoRepetido.meta.id != this.dadosDoGenero?.id))) { // se está actualizando os ids deben ser inguais
+      (event.submitter.value !== EstadosPagina.engadir && generoRepetido.meta.id != this.dadosDoGenero?.id))) { // se está actualizando os ids deben ser inguais
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome do género já existe na base de dados'});
     }
     else {
@@ -148,7 +154,7 @@ export class GeneroComponent implements OnInit {
         comentario: (this.gf.comentario.value == null) ? null : String(this.gf.comentario.value).trim()
       };
 
-      if (event.submitter.value === this.engadir) {
+      if (event.submitter.value === EstadosPagina.engadir) {
         this.generosService
           .postGenero(genero)
           .pipe(first())
@@ -158,7 +164,7 @@ export class GeneroComponent implements OnInit {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o género.'});
               console.error(e) },
               complete: () => {
-                this.modo = this.guardar;
+                this.modo = EstadosPagina.guardar;
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género engadido.'});
                 // console.debug('post completado');
               }

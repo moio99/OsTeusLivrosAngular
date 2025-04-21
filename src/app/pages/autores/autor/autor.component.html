@@ -1,11 +1,13 @@
 
 <form [formGroup]="autorForm" (ngSubmit)="onSubmit($event)">
-  <button color="primary" type="submit" value="{{this.modo}}">
-    <i class="icon-disk"></i> {{this.modo}}
-  </button>
-  <button color="primary" type="button" (click)="onCancelar()">
-    <i class="icon-disk"></i> Retroceder
-  </button>
+  @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+    <button color="primary" type="submit" value="{{this.modo}}">
+      <i class="icon-disk"></i> {{this.modo}}
+    </button>
+    <button color="primary" type="button" (click)="onCancelar()">
+      <i class="icon-disk"></i> Retroceder
+    </button>
+  }
   <div class="formulario-dados">
     <div>
       <mat-form-field [style.width.px]=400>

@@ -5,11 +5,13 @@
   <span>(lidos e nom lidos)</span>
 </h3>
 
-<div class="botoneira">
-  <button class="botom-novo-resgistro" (click)="onIrPagina('livros/livro', '0')">
-    Novo Livro
-  </button>
-</div>
+@if (!soVisualizar) {
+  <div class="botoneira">
+    <button class="botom-novo-resgistro" (click)="onIrPagina('livros/livro', '0')">
+      Novo Livro
+    </button>
+  </div>
+}
 
 @if ( chartOptions.labels.length > 0) {
   <div id="chart">

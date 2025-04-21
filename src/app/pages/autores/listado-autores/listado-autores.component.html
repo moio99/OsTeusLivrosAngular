@@ -8,9 +8,11 @@
     <li><a routerLink="porNacionalidade">Por Nacionalidade</a></li>
     <li><a routerLink="porPais">Por Pais</a></li>
     <li>
-      <button class="botom-novo-resgistro" (click)="onIrPagina('autores/autor', 0)">
-        Novo Autor
-      </button>
+      @if (!soVisualizar) {
+        <button class="botom-novo-resgistro" (click)="onIrPagina('autores/autor', 0)">
+          Novo Autor
+        </button>
+      }
     </li>
   </ul>
 </div>

@@ -3,7 +3,7 @@ export enum environments {
 };
 
 export const environment = {
-  production: false,
+  production: true,
   whereIAm: environments.pro,
   // whereIAm: environments.pre,
   //apiUrl: "http://localhost:5002/api"

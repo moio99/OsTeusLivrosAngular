@@ -16,6 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { Parametros } from '../../../core/models/comun.interface';
+import { environment, environments } from '../../../../environments/environment';
+import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 
 @Component({
   selector: 'omla-biblioteca',
@@ -27,8 +29,8 @@ import { Parametros } from '../../../core/models/comun.interface';
 })
 export class BibliotecaComponent implements OnInit {
 
-  engadir = 'Engadir'; guardar = 'Guardar';
-  modo = this.engadir;
+  estadosPagina = EstadosPagina;
+  modo = EstadosPagina.soVisualizar;
   dadosDaBiblioteca: Biblioteca | undefined = {
     id: 0,
     nome: '',
@@ -66,10 +68,14 @@ export class BibliotecaComponent implements OnInit {
       .subscribe(params => {
         const parametros = params as Parametros;
         if (parametros.id === '0')
-          this.modo = this.engadir;
+          this.modo = EstadosPagina.engadir;
         else {
-          this.modo = this.guardar;
+          this.modo = EstadosPagina.guardar;
           this.obterDadosDaBiblioteca(parametros.id);
+        }
+
+        if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+          this.modo = EstadosPagina.soVisualizar;
         }
       }
     );
@@ -158,9 +164,9 @@ export class BibliotecaComponent implements OnInit {
 
   guardarBiblioteca(event: any, bibliotecaRepetida: BibliotecaData) {
     if (bibliotecaRepetida != undefined && bibliotecaRepetida.meta.quantidade > 0 && (
-      (event.submitter.value === this.engadir)
+      (event.submitter.value === EstadosPagina.engadir)
       ||
-      (event.submitter.value !== this.engadir && bibliotecaRepetida.meta.id != this.dadosDaBiblioteca?.id))) { // se está actualizando os ids deben ser inguais
+      (event.submitter.value !== EstadosPagina.engadir && bibliotecaRepetida.meta.id != this.dadosDaBiblioteca?.id))) { // se está actualizando os ids deben ser inguais
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome da biblioteca já existe na base de dados'});
     }
     else {
@@ -180,7 +186,7 @@ export class BibliotecaComponent implements OnInit {
         comentario: (this.bf.comentario.value === null) ? null : String(this.bf.comentario.value).trim()
       };
 
-      if (event.submitter.value === this.engadir) {
+      if (event.submitter.value === EstadosPagina.engadir) {
         this.bibliotecasService
           .postBiblioteca(biblioteca)
           .pipe(first())
@@ -190,7 +196,7 @@ export class BibliotecaComponent implements OnInit {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a biblioteca.'});
               console.error(e) },
               complete: () => {
-              this.modo = this.guardar;
+              this.modo = EstadosPagina.guardar;
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca engadida.'});
               console.debug('post completado');
             }

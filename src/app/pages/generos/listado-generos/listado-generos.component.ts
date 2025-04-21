@@ -9,6 +9,7 @@ import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-listado-generos',
@@ -19,6 +20,7 @@ import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-c
 })
 export class ListadoGenerosComponent implements OnInit {
 
+  soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   nomeAlfabetico = ', alfabético';
   numeroLivros = ', número de livros';
   numeroLivrosLidos = ', número de livros lidos';

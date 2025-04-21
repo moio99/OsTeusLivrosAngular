@@ -4,6 +4,7 @@ import { Validators, ValidatorFn, FormBuilder, AbstractControl, ValidationErrors
 import { ActivatedRoute, Router } from '@angular/router';
 import { first, map, Observable, startWith } from 'rxjs';
 import { AutorData } from '../../../core/models/autor.interface';
+import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { ListadoLivros, ListadoLivrosData } from '../../../core/models/listado-livros.interface';
 import { Autor } from '../../../core/models/livro.interface';
 import { AutoresService } from '../../../core/services/api/autores.service';
@@ -19,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-autor',
@@ -30,8 +32,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 })
 export class AutorComponent implements OnInit {
 
-  engadir = 'Engadir'; guardar = 'Guardar';
-  modo = this.engadir;
+  estadosPagina = EstadosPagina;
+  modo = EstadosPagina.soVisualizar;
   dadosDoAutor: Autor | undefined= {
     id: 0,
     nome: '',
@@ -94,11 +96,15 @@ export class AutorComponent implements OnInit {
     const state = history.state;
     if (state?.id) {
       if (state.id === '0')
-        this.modo = this.engadir;
+        this.modo = EstadosPagina.engadir;
       else {
-        this.modo = this.guardar;
+        this.modo = EstadosPagina.guardar;
         this.obterLivros(state.id);
       }
+    }
+
+    if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+      this.modo = EstadosPagina.soVisualizar;
     }
     this.obterNacionalidades(state.id);
   }
@@ -334,9 +340,9 @@ export class AutorComponent implements OnInit {
 
   guardarAutor(event: any, autorRepetido: AutorData) {
     if (autorRepetido != undefined && autorRepetido.meta.quantidade > 0 && (
-      (event.submitter.value === this.engadir)
+      (event.submitter.value === EstadosPagina.engadir)
       ||
-      (event.submitter.value !== this.engadir && autorRepetido.meta.id != this.dadosDoAutor?.id))) { // se está actualizando os ids deben ser inguais
+      (event.submitter.value !== EstadosPagina.engadir && autorRepetido.meta.id != this.dadosDoAutor?.id))) { // se está actualizando os ids deben ser inguais
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome do autor já existe na base de dados'});
     }
     else {
@@ -364,7 +370,7 @@ export class AutorComponent implements OnInit {
         quantidade: 0
       };
 
-      if (event.submitter.value === this.engadir) {
+      if (event.submitter.value === EstadosPagina.engadir) {
         this.autoresService
           .postAutor(autor)
           .pipe(first())
@@ -374,7 +380,7 @@ export class AutorComponent implements OnInit {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o autor.'});
               console.error(e) },
               complete: () => {
-                this.modo = this.guardar;
+                this.modo = EstadosPagina.guardar;
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor engadido.'});
                 // console.debug('post completado');
               }

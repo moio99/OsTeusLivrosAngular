@@ -11,6 +11,7 @@ import { AutorComponent } from '../autor/autor.component';
 import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
 import { Parametros } from '../../../core/models/autor.interface';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-listado-autores',
@@ -21,6 +22,7 @@ import { Parametros } from '../../../core/models/autor.interface';
 })
 export class ListadoAutoresComponent implements OnInit {
 
+  soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   nomeAlfabetico = ', alfabético';
   numeroLivros = ', número de livros';
   numeroLivrosLidos = ', número de livros lidos';

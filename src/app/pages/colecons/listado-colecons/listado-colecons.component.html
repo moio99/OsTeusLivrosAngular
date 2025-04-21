@@ -1,7 +1,9 @@
 <h3>Listado de Coleçons</h3>
-<button class="botom-novo-resgistro" (click)="onIrPagina('/colecons/colecom', '0')">
-  Nova Coleçom
-</button>
+@if (!soVisualizar) {
+  <button class="botom-novo-resgistro" (click)="onIrPagina('/colecons/colecom', '0')">
+    Nova Coleçom
+  </button>
+}
 
 <h1 *ngIf="tipoListado.length > 0">Listado {{this.tipoListado}}</h1>
 

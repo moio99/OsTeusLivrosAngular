@@ -1,7 +1,9 @@
 <h3>Listado de Editoriais</h3>
-<button class="botom-novo-resgistro" (click)="onIrPagina('/editoriais/editorial', '0')">
-  Nova Editorial
-</button>
+@if (!soVisualizar) {
+  <button class="botom-novo-resgistro" (click)="onIrPagina('/editoriais/editorial', '0')">
+    Nova Editorial
+  </button>
+}
 
 <h1 *ngIf="tipoListado.length > 0">Listado {{this.tipoListado}}</h1>
 

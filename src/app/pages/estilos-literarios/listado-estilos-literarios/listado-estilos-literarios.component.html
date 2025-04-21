@@ -3,9 +3,11 @@
     <span> inverso</span>
   }
 </h3>
-<button class="botom-novo-resgistro" (click)="onIrPagina('/estilos-literarios/estilo-literario', '0')">
-  Novo Estilo
-</button>
+@if (!soVisualizar) {
+  <button class="botom-novo-resgistro" (click)="onIrPagina('/estilos-literarios/estilo-literario', '0')">
+    Novo Estilo
+  </button>
+}
 @if(tipoListado.length > 0) {
   <h1>Listado {{this.tipoListado}}</h1>
 }

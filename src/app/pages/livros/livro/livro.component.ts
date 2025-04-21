@@ -29,6 +29,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { EstrelasPontuacomComponent } from '../../../core/components/estrelas-pontuacom/estrelas-pontuacom.component';
 import { EstrelaComponent } from '../../../core/components/estrelas-pontuacom/estrela/estrela.component';
 import { Parametros } from '../../../core/models/comun.interface';
+import { EstadosPagina } from '../../../shared/enums/estadosPagina';
+import { environment, environments } from '../../../../environments/environment';
 
 export enum MultiGestom {
   autores = 1,
@@ -51,9 +53,9 @@ export class LivroComponent implements OnInit {
   dadosDoLivro: Livro | undefined;
   dadosDaRelectura: Relectura | undefined;
   nomePagina = 'livro';
-  engadir = 'Engadir'; guardar = 'Guardar';
+  estadosPagina = EstadosPagina;
+  modo = EstadosPagina.soVisualizar;
   modoRelectura = false;
-  modo = this.engadir;
   modoSalvadoRelectura = this.modo;
   multiGestom = MultiGestom;
   dadosComplentarios = DadosComplentarios;
@@ -132,12 +134,14 @@ export class LivroComponent implements OnInit {
     this.route.queryParams
       .subscribe(params => {
         const parametros = params as Parametros;
-        if (parametros.id === '0')
-          this.modo = this.engadir;
-        else {
-          id = parametros.id;
-          this.idRelectura = parametros.idRelectura === undefined ? '0' : parametros.idRelectura;
-          this.modo = this.guardar;
+        if (environment.whereIAm !== environments.pre && environment.whereIAm !== environments.pro) {
+          if (parametros.id === '0')
+            this.modo = EstadosPagina.engadir;
+          else {
+            id = parametros.id;
+            this.idRelectura = parametros.idRelectura === undefined ? '0' : parametros.idRelectura;
+            this.modo = EstadosPagina.guardar;
+          }
         }
         this.obterDados(parametros.id);
       }
@@ -330,7 +334,7 @@ export class LivroComponent implements OnInit {
     // console.log('ultimas Leituras:', dados);
     // console.log('maior data', maiorData);
     this.diasLeitura = this.getDiasDendeUltimaLeitura(maiorData);
-    if (this.modo === this.engadir) {
+    if (this.modo === EstadosPagina.engadir) {
       this.lf.diasLeitura.setValue(this.diasLeitura.toString());
     }
   }
@@ -366,7 +370,7 @@ export class LivroComponent implements OnInit {
     this.lf.dataFimLeiturata.setValue('');
     this.lf.diasLeitura.setValue(this.diasLeitura.toString());
     this.modoSalvadoRelectura = this.modo;
-    this.modo = this.engadir;
+    this.modo = EstadosPagina.engadir;
     this.modoRelectura = true;
   }
 
@@ -416,7 +420,7 @@ export class LivroComponent implements OnInit {
 
       if (this.dadosDaRelectura) {
         this.onGestomNovaRelectura();
-        this.modo = this.guardar;
+        this.modo = EstadosPagina.guardar;
         this.setDadosRelecturaForm();
       }
       else
@@ -452,7 +456,7 @@ export class LivroComponent implements OnInit {
   guardarRelectura(event: any) {
     let relectura = this.setDadosRelectura();
 
-    if (event.submitter.value === this.engadir) {
+    if (event.submitter.value === EstadosPagina.engadir) {
       this.relecturasService
         .postRelectura(relectura)
         .pipe(first())
@@ -462,7 +466,7 @@ export class LivroComponent implements OnInit {
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a relectura.', duracom: 10});
             console.error(e) },
             complete: () => {
-              this.modo = this.guardar;
+              this.modo = EstadosPagina.guardar;
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura engadida.'});
               // console.debug('post completado');
             }
@@ -912,15 +916,15 @@ export class LivroComponent implements OnInit {
 
   guardarLivro(event: any, livroRepetido: LivroData) {
     if (livroRepetido != undefined && livroRepetido.meta.quantidade > 0 && (
-      (event.submitter.value === this.engadir)
+      (event.submitter.value === EstadosPagina.engadir)
       ||
-      (event.submitter.value !== this.engadir && livroRepetido.meta.id != this.dadosDoLivro?.id))) { // se está actualizando os ids deben ser inguais
+      (event.submitter.value !== EstadosPagina.engadir && livroRepetido.meta.id != this.dadosDoLivro?.id))) { // se está actualizando os ids deben ser inguais
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O título do livro já existe na base de dados'});
     }
     else {
       let livro = this.setDadosLivro();
 
-      if (event.submitter.value === this.engadir) {
+      if (event.submitter.value === EstadosPagina.engadir) {
         this.livrosService
           .postLivro(livro)
           .pipe(first())
@@ -930,7 +934,7 @@ export class LivroComponent implements OnInit {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o livro.', duracom: 10});
               console.error(e) },
               complete: () => {
-                this.modo = this.guardar;
+                this.modo = EstadosPagina.guardar;
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro engadido.'});
                 // console.debug('post completado');
               }
