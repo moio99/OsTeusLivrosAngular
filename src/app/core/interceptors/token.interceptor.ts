@@ -1,23 +1,29 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpInterceptorFn, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from '../services/flow/auth.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor(private authService: AuthService,) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = 'tocotom-tocotom-pom-pom';
+    const token = this.authService.getToken();
+    const usuarioLogado = this.authService.getUsuarioLogado();
 
-    const clonedRequest = req.clone({
-      setHeaders: {
-        usuarinho: 'Lector01',
-        rolroleiro: 'Usuario',              // nom vale rolRoleiro
-        authorization: `Bearer ${token}`    // nom vale Authorization
-      }
-    });
+    if (token !== null && usuarioLogado !== undefined) {
+      const clonedRequest = req.clone({
+        setHeaders: {
+          usuarinho: `${usuarioLogado?.nome}`,
+          rolroleiro: `${usuarioLogado?.id}`,
+          authorization: `Bearer ${token}`
+        }
+      });
 
-    // Manejar la solicitud
-    return next.handle(clonedRequest);
+      return next.handle(clonedRequest);
+    }
+
+    return next.handle(req);
   }
+
 }

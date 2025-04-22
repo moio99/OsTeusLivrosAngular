@@ -13,6 +13,8 @@ import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.s
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Parametros } from '../../../core/models/comun.interface';
+import { environment, environments } from '../../../../environments/environment';
+import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 
 @Component({
   selector: 'omla-colecom',
@@ -23,8 +25,8 @@ import { Parametros } from '../../../core/models/comun.interface';
 })
 export class ColecomComponent implements OnInit {
 
-  engadir = 'Engadir'; guardar = 'Guardar';
-  modo = this.engadir;
+  estadosPagina = EstadosPagina;
+  modo = EstadosPagina.soVisualizar;
   dadosDaColecom: Colecom | undefined = {
     id: 0,
     nome: '',
@@ -56,10 +58,14 @@ export class ColecomComponent implements OnInit {
       .subscribe(params => {
         let parametros = params as Parametros;
         if (parametros.id === '0')
-          this.modo = this.engadir;
+          this.modo = EstadosPagina.engadir;
         else {
-          this.modo = this.guardar;
+          this.modo = EstadosPagina.guardar;
           this.obterDadosDaColecom(parametros.id);
+        }
+
+        if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+          this.modo = EstadosPagina.soVisualizar;
         }
       }
     );
@@ -141,9 +147,9 @@ export class ColecomComponent implements OnInit {
 
   guardarColecom(event: any, colecomRepetido: ColecomData) {
     if (colecomRepetido != undefined && colecomRepetido.meta.quantidade > 0 && (
-      (event.submitter.value === this.engadir)
+      (event.submitter.value === EstadosPagina.engadir)
       ||
-      (event.submitter.value !== this.engadir && colecomRepetido.meta.id != this.dadosDaColecom?.id))) { // se está actualizando os ids deben ser inguais
+      (event.submitter.value !== EstadosPagina.engadir && colecomRepetido.meta.id != this.dadosDaColecom?.id))) { // se está actualizando os ids deben ser inguais
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome da coleçom já existe na base de dados'});
     }
     else {
@@ -155,7 +161,7 @@ export class ColecomComponent implements OnInit {
         comentario: (this.cf.comentario.value == null) ? null : String(this.cf.comentario.value).trim()
       };
 
-      if (event.submitter.value === this.engadir) {
+      if (event.submitter.value === EstadosPagina.engadir) {
         this.coleconsService
           .postColecom(colecom)
           .pipe(first())
@@ -165,7 +171,7 @@ export class ColecomComponent implements OnInit {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a coleçom.'});
               console.error(e) },
               complete: () => {
-                this.modo = this.guardar;
+                this.modo = EstadosPagina.guardar;
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Coleçom engadida.'});
                 // console.debug('post completado');
               }

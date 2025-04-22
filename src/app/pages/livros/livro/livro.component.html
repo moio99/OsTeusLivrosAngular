@@ -1,14 +1,15 @@
 <form [formGroup]="livroForm" (ngSubmit)="onSubmit($event)">
-  <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{this.modo}}">
-    {{this.modo}}
-  </button>
-  <button type="button" mat-icon-button (click)="onGestomNovaRelectura()" *ngIf="!modoRelectura && modo !== engadir">
-    Nova relectura
-  </button>
-  <button type="button" mat-icon-button (click)="onCancelarNovaRelectura()" *ngIf="modoRelectura">
-    Cancelar {{this.modo === this.engadir ? 'nova' : 'modificar' }} relectura
-  </button>
-
+  @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+    <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{this.modo}}">
+      {{this.modo}}
+    </button>
+    <button type="button" mat-icon-button (click)="onGestomNovaRelectura()" *ngIf="!modoRelectura && modo !== estadosPagina.engadir">
+      Nova relectura
+    </button>
+    <button type="button" mat-icon-button (click)="onCancelarNovaRelectura()" *ngIf="modoRelectura">
+      Cancelar {{this.modo === estadosPagina.engadir ? 'nova' : 'modificar' }} relectura
+    </button>
+  }
   <div class="dadosLivro">
     <div class="titulo">
       <mat-form-field class="ancho-inputs">
@@ -24,14 +25,16 @@
         <div>
           Autor<span *ngIf="autoresLivro.length > 1">es</span>:
         </div>
-        <div>
-          <button type="button" mat-icon-button (click)="onGestomMulti(multiGestom.autores)">
-            Gestionar
-          </button>
-          <button type="button" mat-icon-button (click)="onIrPaginaEngadirAutor('/autores/autor', dadosComplentarios.Autor)">
-            Engadir
-          </button>
-        </div>
+        @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+          <div>
+            <button type="button" mat-icon-button (click)="onGestomMulti(multiGestom.autores)">
+              Gestionar
+            </button>
+            <button type="button" mat-icon-button (click)="onIrPaginaEngadirAutor('/autores/autor', dadosComplentarios.Autor)">
+              Engadir
+            </button>
+          </div>
+        }
       </div>
       <div class="lista-com-comas">
         <ul>
@@ -55,14 +58,16 @@
         <div>
           Género<span *ngIf="generosLivro.length > 1">s</span>:
         </div>
-        <div>
-          <button type="button" mat-icon-button (click)="onGestomMulti(multiGestom.generos)">
-            Gestionar
-          </button>
-          <button type="button" mat-icon-button (click)="onIrPaginaEngadir('/generos/genero', dadosComplentarios.Genero)">
-            Engadir
-          </button>
-        </div>
+        @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+          <div>
+            <button type="button" mat-icon-button (click)="onGestomMulti(multiGestom.generos)">
+              Gestionar
+            </button>
+            <button type="button" mat-icon-button (click)="onIrPaginaEngadir('/generos/genero', dadosComplentarios.Genero)">
+              Engadir
+            </button>
+          </div>
+        }
       </div>
       <div class="lista-com-comas">
         <ul>
@@ -86,17 +91,19 @@
           }
         </mat-autocomplete>
       </mat-form-field>
-      <div class="listado-seleccom__botons">
-        <button type="button" mat-icon-button
-          (click)="onIrPaginaEngadir('/bibliotecas/biblioteca', dadosComplentarios.Biblioteca)">
-          Engadir
-        </button>
-        <button type="button" mat-icon-button
-          *ngIf="lf.idBiblioteca.getRawValue()"
-          (click)="onIrPaginaBiblioteca('/bibliotecas/biblioteca')">
-          Editar
-        </button>
-      </div>
+      @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+        <div class="listado-seleccom__botons">
+          <button type="button" mat-icon-button
+            (click)="onIrPaginaEngadir('/bibliotecas/biblioteca', dadosComplentarios.Biblioteca)">
+            Engadir
+          </button>
+          <button type="button" mat-icon-button
+            *ngIf="lf.idBiblioteca.getRawValue()"
+            (click)="onIrPaginaBiblioteca('/bibliotecas/biblioteca')">
+            Editar
+          </button>
+        </div>
+      }
     </div>
     <div class="editorial listado-seleccom">
       <mat-form-field class="ancho-inputs listado-seleccom__input">
@@ -112,17 +119,19 @@
           }
         </mat-autocomplete>
       </mat-form-field>
-      <div class="listado-seleccom__botons">
-        <button type="button" mat-icon-button
-          (click)="onIrPaginaEngadir('/editoriais/editorial', dadosComplentarios.Editorial)">
-          Engadir
-        </button>
-        <button type="button" mat-icon-button
-          *ngIf="lf.idEditorial.getRawValue()"
-          (click)="onIrPaginaEditorial('/editoriais/editorial')">
-          Editar
-        </button>
-      </div>
+      @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+        <div class="listado-seleccom__botons">
+          <button type="button" mat-icon-button
+            (click)="onIrPaginaEngadir('/editoriais/editorial', dadosComplentarios.Editorial)">
+            Engadir
+          </button>
+          <button type="button" mat-icon-button
+            *ngIf="lf.idEditorial.getRawValue()"
+            (click)="onIrPaginaEditorial('/editoriais/editorial')">
+            Editar
+          </button>
+        </div>
+      }
     </div>
     <div class="colecom listado-seleccom">
       <mat-form-field class="ancho-inputs listado-seleccom__input">
@@ -138,17 +147,19 @@
           }
         </mat-autocomplete>
       </mat-form-field>
-      <div class="listado-seleccom__botons">
-        <button type="button" mat-icon-button
-          (click)="onIrPaginaEngadir('/colecons/colecom', dadosComplentarios.Colecom)">
-          Engadir
-        </button>
-        <button type="button" mat-icon-button
-          *ngIf="lf.idColecom.getRawValue()"
-          (click)="onIrPaginaColecom('/colecons/colecom')">
-          Editar
-        </button>
-      </div>
+      @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+        <div class="listado-seleccom__botons">
+          <button type="button" mat-icon-button
+            (click)="onIrPaginaEngadir('/colecons/colecom', dadosComplentarios.Colecom)">
+            Engadir
+          </button>
+          <button type="button" mat-icon-button
+            *ngIf="lf.idColecom.getRawValue()"
+            (click)="onIrPaginaColecom('/colecons/colecom')">
+            Editar
+          </button>
+        </div>
+      }
     </div>
     <div class="estilo listado-seleccom" *ngIf="!modoRelectura">
       <mat-form-field class="ancho-inputs listado-seleccom__input">
@@ -164,17 +175,19 @@
           }
         </mat-autocomplete>
       </mat-form-field>
-      <div class="listado-seleccom__botons">
-        <button type="button" mat-icon-button
-          (click)="onIrPaginaEngadir('/estilos-literarios/estilo-literario', dadosComplentarios.EstiloLiterario)">
-          Engadir
-        </button>
-        <button type="button" mat-icon-button
-          *ngIf="lf.idEstilo.getRawValue()"
-          (click)="onIrPaginaEstilo('/estilos-literarios/estilo-literario')">
-          Editar
-        </button>
-      </div>
+      @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+        <div class="listado-seleccom__botons">
+          <button type="button" mat-icon-button
+            (click)="onIrPaginaEngadir('/estilos-literarios/estilo-literario', dadosComplentarios.EstiloLiterario)">
+            Engadir
+          </button>
+          <button type="button" mat-icon-button
+            *ngIf="lf.idEstilo.getRawValue()"
+            (click)="onIrPaginaEstilo('/estilos-literarios/estilo-literario')">
+            Editar
+          </button>
+        </div>
+      }
     </div>
 
     <div class="paginas">
@@ -358,15 +371,17 @@
     </div>
   </div>
 
-  <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{this.modo}}">
-    {{this.modo}}
-  </button>
-  <button type="button" mat-icon-button (click)="onGestomNovaRelectura()" *ngIf="!modoRelectura">
-    Nova relectura
-  </button>
-  <button type="button" mat-icon-button (click)="onCancelarNovaRelectura()" *ngIf="modoRelectura">
-    Cancelar {{this.modo === this.engadir ? 'nova' : 'modificar' }} relectura
-  </button>
+  @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+    <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{this.modo}}">
+      {{this.modo}}
+    </button>
+    <button type="button" mat-icon-button (click)="onGestomNovaRelectura()" *ngIf="!modoRelectura">
+      Nova relectura
+    </button>
+    <button type="button" mat-icon-button (click)="onCancelarNovaRelectura()" *ngIf="modoRelectura">
+      Cancelar {{this.modo === estadosPagina.engadir ? 'nova' : 'modificar' }} relectura
+    </button>
+  }
 </form>
 
 <div *ngIf="!modoRelectura">

@@ -1,7 +1,9 @@
 <h3>Listado de Bibliotecas</h3>
-<button class="botom-novo-resgistro" (click)="onIrPagina('/bibliotecas/biblioteca', '0')">
-  Nova Biblioteca
-</button>
+@if (!soVisualizar) {
+  <button class="botom-novo-resgistro" (click)="onIrPagina('/bibliotecas/biblioteca', '0')">
+    Nova Biblioteca
+  </button>
+}
 
 @if (tipoListado.length > 0) {
   <h1>Listado {{this.tipoListado}}</h1>

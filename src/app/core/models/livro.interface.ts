@@ -41,11 +41,11 @@ export interface Livro {
   descricom: string | null;
   comentario: string | null;
   pontuacom?: number;
-  autores: AutorSimple[];
+  autores: ObjetoSimpleIdNome[];
   generos: Genero[];
 }
 
-export interface AutorSimple {
+export interface ObjetoSimpleIdNome {
   id: number;
   nome: string;
 }

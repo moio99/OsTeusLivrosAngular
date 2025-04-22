@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppComponent } from './app.component';
-import { LayoutService } from './core/services/flow/layout.service';
-import { UsuarioAppService } from './core/services/flow/usuario-app.service';
 import { of } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
+import { LayoutBaleiroComponent } from '../layout-baleiro/layout-baleiro.component';
+import { LayoutService } from '../../core/services/flow/layout.service';
+import { UsuarioAppService } from '../../core/services/flow/usuario-app.service';
 
-describe('AppComponent', () => {
-  let component: AppComponent;
-  let fixture: ComponentFixture<AppComponent>;
+describe('LayoutBaleiroComponent', () => {
+  let component: LayoutBaleiroComponent;
+  let fixture: ComponentFixture<LayoutBaleiroComponent>;
   let layoutServiceStub: Partial<LayoutService>;
   let usuarioAppServiceStub: Partial<UsuarioAppService>;
 
@@ -24,8 +24,8 @@ describe('AppComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      // declarations: [AppComponent],                  Isto nom vale porque é standalone
-      imports: [AppComponent, NoopAnimationsModule ],
+      // declarations: [LayoutBaleiroComponent],                  Isto nom vale porque é standalone
+      imports: [LayoutBaleiroComponent, NoopAnimationsModule ],
       providers: [
         { provide: LayoutService, useValue: layoutServiceStub },
         { provide: UsuarioAppService, useValue: usuarioAppServiceStub },
@@ -33,7 +33,7 @@ describe('AppComponent', () => {
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AppComponent);
+    fixture = TestBed.createComponent(LayoutBaleiroComponent);
     component = fixture.componentInstance;
     // component.panelRef = {} as MatSidenav; // Erro, correçom abaixo
     component.panelRef = {

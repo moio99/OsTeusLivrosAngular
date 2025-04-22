@@ -22,7 +22,7 @@ export const authGuard = (        // Isto é umha funçom
   if (authService.estaAutenticado(route.url[0].path)) {
     return true;
   } else {
-    router.navigate(['/estadisticas']);
+    router.navigate(['/login']);
     return false;
   }
 };

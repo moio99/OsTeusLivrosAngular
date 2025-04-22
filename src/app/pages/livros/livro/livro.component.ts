@@ -20,15 +20,17 @@ import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Title } from '@angular/platform-browser';
 import { EngadirEditarData } from '../../../shared/models/datas';
 import { RelecturasService } from '../../../core/services/api/relecturas.service';
-import { AutorSimple, datasUltimosAnos, Livro, LivroData, Outros } from '../../../core/models/livro.interface';
+import { ObjetoSimpleIdNome, datasUltimosAnos, Livro, LivroData, Outros } from '../../../core/models/livro.interface';
 import { Genero } from '../../../core/models/genero.interface';
 import { Relectura, ListadoRelecturas, RelecturasData, RelecturaData } from '../../../core/models/relectura.interface';
 import { SimpleObjet } from '../../../shared/models/outros.model';
 import { MultiDados, MultiSelecomDialogComponent } from '../../../core/components/multi-selecom-dialog/multi-selecom-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { EstrelasPontuacomComponent } from '../../../core/components/estrelas-pontuacom/estrelas-pontuacom.component';
-import { EstrelaComponent } from '../../../core/components/estrelas-pontuacom/estrela/estrela.component';
 import { Parametros } from '../../../core/models/comun.interface';
+import { EstadosPagina } from '../../../shared/enums/estadosPagina';
+import { environment, environments } from '../../../../environments/environment';
+import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 
 export enum MultiGestom {
   autores = 1,
@@ -40,7 +42,7 @@ export enum MultiGestom {
   standalone: true,
   imports: [ CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatCheckboxModule
     , MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule
-    , EstrelasPontuacomComponent, EstrelaComponent ],
+    , EstrelasPontuacomComponent ],
   templateUrl: './livro.component.html',
   styleUrls: ['./livro.component.scss']
 })
@@ -51,15 +53,13 @@ export class LivroComponent implements OnInit {
   dadosDoLivro: Livro | undefined;
   dadosDaRelectura: Relectura | undefined;
   nomePagina = 'livro';
-  engadir = 'Engadir'; guardar = 'Guardar';
+  estadosPagina = EstadosPagina;
+  modo = EstadosPagina.soVisualizar;
   modoRelectura = false;
-  modo = this.engadir;
   modoSalvadoRelectura = this.modo;
   multiGestom = MultiGestom;
   dadosComplentarios = DadosComplentarios;
-  totalAutores: SimpleObjet[] = [];
   autoresLivro: SimpleObjet[] = [];
-  totalGeneros: SimpleObjet[] = [];
   generosLivro: SimpleObjet[] = [];
   bibliotecasCombo: SimpleObjet[] = [];
   bibliotecas: Observable<SimpleObjet[]> | undefined;
@@ -118,6 +118,7 @@ export class LivroComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private layoutService: LayoutService,
+    private usuarioAppService: UsuarioAppService,
     private title: Title,
     private fb: FormBuilder,
     private outrosService: OutrosService,
@@ -132,155 +133,105 @@ export class LivroComponent implements OnInit {
     this.route.queryParams
       .subscribe(params => {
         const parametros = params as Parametros;
-        if (parametros.id === '0')
-          this.modo = this.engadir;
-        else {
-          id = parametros.id;
-          this.idRelectura = parametros.idRelectura === undefined ? '0' : parametros.idRelectura;
-          this.modo = this.guardar;
+        if (environment.whereIAm !== environments.pre && environment.whereIAm !== environments.pro) {
+          if (parametros.id === '0')
+            this.modo = EstadosPagina.engadir;
+          else {
+            id = parametros.id;
+            this.idRelectura = parametros.idRelectura === undefined ? '0' : parametros.idRelectura;
+            this.modo = EstadosPagina.guardar;
+          }
         }
-        this.obterDados(parametros.id);
+        this.obterOutrosDados(parametros.id);
       }
     );
     this.idLivro = id;
   }
 
-  private obterDados(idLivro: string): void {
-    this.outrosService
-      .getTodo()          // Dados complementarios
-      .pipe(first())
-      .subscribe({
-        next: (v: object) => this.dadosOutrosObtidos(v),
-        error: (e: any) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados', duracom: 10}); },
-          complete: () => this.obterDadosRelecturas(idLivro)  // Primeiro se obtenhem as relecturas, se as houber, logo os dados do livro
-    });
+  private obterOutrosDados(idLivro: string): void {
+    const dados = this.usuarioAppService.getDadosOutros();
+    if (dados) {                                            // Já os tinhamos
+      this.dadosOutrosObtidos(dados);
+      this.obterDadosRelecturasELivro(idLivro);
+    } else {
+      this.outrosService
+        .getTodo()          // Dados complementarios
+        .pipe(first())
+        .subscribe({
+          next: (v: object) => {
+            this.usuarioAppService.setDadosOutros(v);
+            this.dadosOutrosObtidos(this.usuarioAppService.getDadosOutros());
+            this.obterDadosRelecturasELivro(idLivro)
+          },
+          error: (e: any) => { console.error(e),
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados', duracom: 10}); },
+      });
+    }
   }
 
-  private dadosOutrosObtidos(data: object) {
-    const dados = <Outros>data;
-    if (dados != null) {
-
-      if (dados.autores != null
-        && dados.autores.data != null && Array.isArray(dados.autores.data)) {
-
-        let dadosReducidos: SimpleObjet[] = [];
-        dados.autores.data.forEach(function (value) {
-          dadosReducidos.push({id: value.id, value: value.nome});
-        });
-        this.totalAutores = dadosReducidos;
+  private dadosOutrosObtidos(dados: Outros | null) {
+    if (dados) {
+      if (dados.bibliotecas?.data) {
+        const result = this.processarDadosCombo(
+          dados.bibliotecas.data,
+          this.lf.idBiblioteca
+        );
+        this.bibliotecasCombo = result.combo;
+        this.bibliotecas = result.observable;
       }
 
-      if (dados.generos != null
-        && dados.generos.data != null && Array.isArray(dados.generos.data)) {
-
-        let dadosReducidos: SimpleObjet[] = [];
-        dados.generos.data.forEach(function (value) {
-          dadosReducidos.push({id: value.id, value: value.nome});
-        });
-        this.totalGeneros = dadosReducidos;
+      if (dados.editoriais?.data) {
+        const result = this.processarDadosCombo(
+          dados.editoriais.data,
+          this.lf.idEditorial
+        );
+        this.editoriaisCombo = result.combo;
+        this.editoriais = result.observable;
       }
 
-      if (dados.bibliotecas != null
-        && dados.bibliotecas.data != null && Array.isArray(dados.bibliotecas.data)) {
-
-        let dadosReducidos: SimpleObjet[] = [];
-        dados.bibliotecas.data.forEach(function (value) {
-          dadosReducidos.push({id: value.id, value: value.nome});
-        });
-        this.bibliotecasCombo = dadosReducidos;
-
-        this.bibliotecas = this.lf.idBiblioteca.valueChanges
-          .pipe(
-            startWith(''),
-            map(value => this.filtroCombo(value as string, this.bibliotecasCombo))
-          );
+      if (dados.colecons?.data) {
+        const result = this.processarDadosCombo(
+          dados.colecons.data,
+          this.lf.idColecom
+        );
+        this.coleconsCombo = result.combo;
+        this.colecons = result.observable;
       }
 
-      if (dados.editoriais != null
-        && dados.editoriais.data != null && Array.isArray(dados.editoriais.data)) {
-
-        let dadosReducidos: SimpleObjet[] = [];
-        dados.editoriais.data.forEach(function (value) {
-          dadosReducidos.push({id: value.id, value: value.nome});
-        });
-        this.editoriaisCombo = dadosReducidos;
-
-        this.editoriais = this.lf.idEditorial.valueChanges
-          .pipe(
-            startWith(''),
-            map(value => this.filtroCombo(value as string, this.editoriaisCombo))
-          );
+      if (dados.estilos?.data) {
+        const result = this.processarDadosCombo(
+          dados.estilos.data,
+          this.lf.idEstilo
+        );
+        this.estilosCombo = result.combo;
+        this.estilos = result.observable;
       }
 
-      if (dados.colecons != null
-        && dados.colecons.data != null && Array.isArray(dados.colecons.data)) {
+      if (dados.idiomas?.data) {
+        const result = this.processarDadosCombo(
+          dados.idiomas.data,
+          this.lf.idioma
+        );
+        this.idiomasCombo = result.combo;
+        this.idiomas = result.observable;
 
-        let dadosReducidos: SimpleObjet[] = [];
-        dados.colecons.data.forEach(function (value) {
-          dadosReducidos.push({id: value.id, value: value.nome});
-        });
-        this.coleconsCombo = dadosReducidos;
-
-        this.colecons = this.lf.idColecom.valueChanges
-          .pipe(
-            startWith(''),
-            map(value => this.filtroCombo(value as string, this.coleconsCombo))
-          );
+        const resultIdiomaOriginal = this.processarDadosCombo(
+          dados.idiomas.data,
+          this.lf.idiomaOriginal
+        );
+        this.idiomasCombo = resultIdiomaOriginal.combo;
+        this.idiomasOriginais = resultIdiomaOriginal.observable;
       }
 
-      if (dados.estilos != null
-        && dados.estilos.data != null && Array.isArray(dados.estilos.data)) {
-
-        let dadosReducidos: SimpleObjet[] = [];
-        dados.estilos.data.forEach(function (value) {
-          dadosReducidos.push({id: value.id, value: value.nome});
-        });
-        this.estilosCombo = dadosReducidos;
-
-        this.estilos = this.lf.idEstilo.valueChanges
-          .pipe(
-            startWith(''),
-            map(value => this.filtroCombo(value as string, this.estilosCombo))
-          );
-      }
-
-      if (dados.idiomas != null
-        && dados.idiomas.data != null && Array.isArray(dados.idiomas.data)) {
-
-        let dadosReducidos: SimpleObjet[] = [];
-        dados.idiomas.data.forEach(function (value) {
-          dadosReducidos.push({id: value.id, value: value.nome});
-        });
-        this.idiomasCombo = dadosReducidos;
-
-        this.idiomas = this.lf.idioma.valueChanges
-          .pipe(
-            startWith(''),
-            map(value => this.filtroCombo(value as string, this.idiomasCombo))
-          );
-        this.idiomasOriginais = this.lf.idiomaOriginal.valueChanges
-          .pipe(
-            startWith(''),
-            map(value => this.filtroCombo(value as string, this.idiomasCombo))
-          );
-      }
-
-      if (dados.seriesLivro != null
-        && dados.seriesLivro.data != null && dados.seriesLivro.data.length > 0) {
-
-        let dadosReducidos: SimpleObjet[] = [];
-        dadosReducidos.push({id: 0, value: 'Som o primeiro'});
-        dados.seriesLivro.data.forEach(function (value) {
-          dadosReducidos.push({id: value.id, value: value.titulo});
-        });
-        this.seriesLivrosCombo = dadosReducidos;
-
-        this.seriesLivro = this.lf.serie.valueChanges
-          .pipe(
-            startWith(''),
-            map(value => this.filtroCombo(value as string, this.seriesLivrosCombo))
-          );
+      if (dados.seriesLivro?.data) {
+        const dadosSeries = dados.seriesLivro.data.map(s => ({id: s.id, nome: s.titulo}))
+          .sort((a, b) => a.nome.localeCompare(b.nome));
+        const result = this.processarDadosCombo(
+          [{id: 0, nome: 'Som o primeiro'}, ...dadosSeries],
+          this.lf.serie, false
+        );
+        this.seriesLivrosCombo = result.combo;
+        this.seriesLivro = result.observable;
       }
 
       /* if (idLivro == 0 && dados.ultimaLeitura) {
@@ -297,6 +248,41 @@ export class LivroComponent implements OnInit {
     }
     else
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados', duracom: 10});
+  }
+
+  /**
+   * Processa um array de objetos com id e nome e
+   * retorna um objeto com as seguintes propriedades:
+   * - combo: um array de objetos com id e value (nome)
+   *   ordenado alfabeticamente
+   * - observable: um observable que emite um array de objetos
+   *   com id e value (nome) sempre que o valor do AbstractControl
+   *   mudar. O array emitido   filtrado pelo valor do AbstractControl
+   *   e ordenado alfabeticamente.
+   * - ordenar: por defecto true, se vem false nom faz a ordenaçom
+   * @param data array de objetos com id e nome
+   * @param valueChanges AbstractControl que emite um valor
+   *   (string) que ser  usado como filtro para o array de objetos
+   *   gerado
+   * @returns um objeto com as propriedades combo e observable
+   *   descritas acima
+   */
+  private processarDadosCombo(
+    data: ObjetoSimpleIdNome[] | undefined | null,
+    valueChanges: AbstractControl,
+    ordenar: boolean = true
+  ): { combo: SimpleObjet[], observable: Observable<SimpleObjet[]> } {
+    const dadosReducidos: SimpleObjet[] = (data || [])
+      .map(item => ({ id: item.id, value: item.nome }))
+      .sort((a, b) => ordenar ? a.value.localeCompare(b.value) : 0);
+
+    return {
+      combo: dadosReducidos,
+      observable: valueChanges.valueChanges.pipe(
+        startWith(''),
+        map(value => this.filtroCombo(value as string, dadosReducidos))
+      )
+    };
   }
 
   /**
@@ -327,11 +313,10 @@ export class LivroComponent implements OnInit {
       }
     });
 
-    maiorData.day = maiorData.day + 1;
     // console.log('ultimas Leituras:', dados);
     // console.log('maior data', maiorData);
     this.diasLeitura = this.getDiasDendeUltimaLeitura(maiorData);
-    if (this.modo === this.engadir) {
+    if (this.modo === EstadosPagina.engadir) {
       this.lf.diasLeitura.setValue(this.diasLeitura.toString());
     }
   }
@@ -367,7 +352,7 @@ export class LivroComponent implements OnInit {
     this.lf.dataFimLeiturata.setValue('');
     this.lf.diasLeitura.setValue(this.diasLeitura.toString());
     this.modoSalvadoRelectura = this.modo;
-    this.modo = this.engadir;
+    this.modo = EstadosPagina.engadir;
     this.modoRelectura = true;
   }
 
@@ -377,7 +362,7 @@ export class LivroComponent implements OnInit {
     this.modoRelectura = false;
   }
 
-  private obterDadosRelecturas(idLivro: string): void {
+  private obterDadosRelecturasELivro(idLivro: string): void {
     this.relecturasService
       .getRelecturas(idLivro)
       .pipe(first())
@@ -417,7 +402,7 @@ export class LivroComponent implements OnInit {
 
       if (this.dadosDaRelectura) {
         this.onGestomNovaRelectura();
-        this.modo = this.guardar;
+        this.modo = EstadosPagina.guardar;
         this.setDadosRelecturaForm();
       }
       else
@@ -453,7 +438,7 @@ export class LivroComponent implements OnInit {
   guardarRelectura(event: any) {
     let relectura = this.setDadosRelectura();
 
-    if (event.submitter.value === this.engadir) {
+    if (event.submitter.value === EstadosPagina.engadir) {
       this.relecturasService
         .postRelectura(relectura)
         .pipe(first())
@@ -463,7 +448,7 @@ export class LivroComponent implements OnInit {
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a relectura.', duracom: 10});
             console.error(e) },
             complete: () => {
-              this.modo = this.guardar;
+              this.modo = EstadosPagina.guardar;
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura engadida.'});
               // console.debug('post completado');
             }
@@ -531,7 +516,7 @@ export class LivroComponent implements OnInit {
       let info = <{idResult: string}>data;
       relectura.id = info.idResult;
       this.dadosDaRelectura = relectura;
-      this.obterDadosRelecturas(this.idLivro);
+      this.obterDadosRelecturasELivro(this.idLivro);
 
       this.setDadosLivroForm();
       this.modo = this.modoSalvadoRelectura;
@@ -556,7 +541,7 @@ export class LivroComponent implements OnInit {
               error: (e: any) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a relectura.'}); },
                 complete: () => { // console.debug('Borrado feito');
-                this.obterDadosRelecturas(this.idLivro);
+                this.obterDadosRelecturasELivro(this.idLivro);
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura borrada.'}); }
           });
     }
@@ -634,12 +619,9 @@ export class LivroComponent implements OnInit {
     if (novoDado && novoDado.elemento && this.dadosDoLivro) {
       switch (novoDado.tipo) {
         case DadosComplentarios.Autor: {
-          const anonimo = this.totalAutores.find(a => a.value === 'Anónimo');
-          if (anonimo) {
-            const indexAtopado = this.dadosDoLivro.autores.findIndex(a => a.id == anonimo.id);
-            if (indexAtopado >= 0)
-              this.dadosDoLivro.autores.splice(indexAtopado, 1);
-          }
+          const indexAtopado = this.dadosDoLivro.autores.findIndex(a => a.nome === 'Anónimo');
+          if (indexAtopado >= 0)
+            this.dadosDoLivro.autores.splice(indexAtopado, 1);
           this.dadosDoLivro.autores.push(novoDado.elemento);
           break
         }
@@ -742,37 +724,36 @@ export class LivroComponent implements OnInit {
   }
 
   onGestomMulti(opcom: MultiGestom): void {
+    const dados = this.usuarioAppService.getDadosOutros();
     let multiDados: MultiDados = {total: [], escolma: []};
     switch (opcom) {
       case MultiGestom.autores: {
-        if (this.totalAutores.length < 1) {
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom há autores disponhiveis'});
+        if (dados?.autores?.data?.length) {
+          multiDados = {
+            total: dados.autores.data
+              .filter(autor => !this.autoresLivro.some(a => a.id === autor.id))
+              .map(autor => ({ id: autor.id, value: autor.nome }))
+              .sort((a, b) => a.value.localeCompare(b.value)),
+            escolma: [...this.autoresLivro]
+          };
         }
         else {
-          let totalAutoresFiltrado: SimpleObjet[] = [];
-          this.totalAutores.forEach(autor => {
-            let atopado = this.autoresLivro.find(g => g.id == autor.id);
-            if (!atopado)
-              totalAutoresFiltrado.push(autor);
-          });
-          multiDados.total = totalAutoresFiltrado;
-          multiDados.escolma = [...this.autoresLivro];
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom há autores disponhiveis'});
         }
         break;
       }
       case MultiGestom.generos: {
-        if (this.totalGeneros.length < 1) {
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom há géneros disponhiveis'});
+        if (dados && dados.generos && dados.generos.data.length > 0) {
+          multiDados = {
+            total: dados.generos.data
+              .filter(genero => !this.generosLivro.some(a => a.id === genero.id))
+              .map(genero => ({ id: genero.id, value: genero.nome }))
+              .sort((a, b) => a.value.localeCompare(b.value)),
+            escolma: [...this.generosLivro]
+          };
         }
         else {
-          let totalGenerosFiltrado: SimpleObjet[] = [];
-          this.totalGeneros.forEach(genero => {
-            let atopado = this.generosLivro.find(g => g.id == genero.id);
-            if (!atopado)
-              totalGenerosFiltrado.push(genero);
-          });
-          multiDados.total = totalGenerosFiltrado;
-          multiDados.escolma = [...this.generosLivro];
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom há géneros disponhiveis'});
         }
         break;
       }
@@ -913,15 +894,15 @@ export class LivroComponent implements OnInit {
 
   guardarLivro(event: any, livroRepetido: LivroData) {
     if (livroRepetido != undefined && livroRepetido.meta.quantidade > 0 && (
-      (event.submitter.value === this.engadir)
+      (event.submitter.value === EstadosPagina.engadir)
       ||
-      (event.submitter.value !== this.engadir && livroRepetido.meta.id != this.dadosDoLivro?.id))) { // se está actualizando os ids deben ser inguais
+      (event.submitter.value !== EstadosPagina.engadir && livroRepetido.meta.id != this.dadosDoLivro?.id))) { // se está actualizando os ids deben ser inguais
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O título do livro já existe na base de dados'});
     }
     else {
       let livro = this.setDadosLivro();
 
-      if (event.submitter.value === this.engadir) {
+      if (event.submitter.value === EstadosPagina.engadir) {
         this.livrosService
           .postLivro(livro)
           .pipe(first())
@@ -931,7 +912,7 @@ export class LivroComponent implements OnInit {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o livro.', duracom: 10});
               console.error(e) },
               complete: () => {
-                this.modo = this.guardar;
+                this.modo = EstadosPagina.guardar;
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro engadido.'});
                 // console.debug('post completado');
               }
@@ -968,14 +949,17 @@ export class LivroComponent implements OnInit {
     let idiomaOriginal = this.idiomasCombo.find(option => option.value === this.lf.idiomaOriginal.value);
     let serie = this.seriesLivrosCombo.find(option => option.value === this.lf.serie.value);
 
-    let autores: AutorSimple[] = [];
+    let autores: ObjetoSimpleIdNome[] = [];
     this.autoresLivro.forEach(function (value) {
       autores.push({id: value.id, nome: value.value});
     });
     if (autores.length < 1) {
-      let anonimo = this.totalAutores.find(a => a.value === 'Anónimo');
-      if (anonimo)
-        autores.push({id: anonimo.id, nome: anonimo.value});
+      const dados = this.usuarioAppService.getDadosOutros();
+      if (dados && dados.autores && dados.autores.data.length > 0) {
+        let anonimo = dados.autores.data.find(a => a.nome === 'Anónimo');
+        if (anonimo)
+          autores.push({id: anonimo.id, nome: anonimo.nome});
+      }
     }
 
     let generos: Genero[] = [];

@@ -9,6 +9,7 @@ import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-c
 import { EstiloLiterarioComponent } from '../estilo-literario/estilo-literario.component';
 import { EstilosLiterariosService } from '../../../core/services/api/estilos-literarios.service';
 import { ListadoEstilosLiterarios, ListadoEstilosLiterariosData } from '../../../core/models/listado-estilos-literarios.interface';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-listado-estilos-literarios',
@@ -19,6 +20,7 @@ import { ListadoEstilosLiterarios, ListadoEstilosLiterariosData } from '../../..
 })
 export class ListadoEstilosLiterariosComponent implements OnInit {
 
+  soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   numeroLivros = ', número de livros';
   numeroLivrosLidos = ', número de livros lidos';
   tipoOrdeacom = '';

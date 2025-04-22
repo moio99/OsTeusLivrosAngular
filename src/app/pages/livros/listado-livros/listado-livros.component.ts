@@ -19,6 +19,7 @@ import {
 import { TartaChartOptions } from '../../../core/types/chart.options';
 import { CoresIdiomasService } from '../../../core/services/flow/cores-idiomas.sevice';
 import { CoresIdioma } from '../../../shared/cores.idiomas.config';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-listado-livros',
@@ -31,6 +32,7 @@ export class ListadoLivrosComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<TartaChartOptions>;
 
+  soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   titulo = '';
   tituloListado = 'Listado';
   ordeTituloAlfabetico = ', título alfabético';

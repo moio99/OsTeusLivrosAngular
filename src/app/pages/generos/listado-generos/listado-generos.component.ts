@@ -9,6 +9,8 @@ import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
+import { environment, environments } from '../../../../environments/environment';
+import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 
 @Component({
   selector: 'omla-listado-generos',
@@ -19,6 +21,7 @@ import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-c
 })
 export class ListadoGenerosComponent implements OnInit {
 
+  soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   nomeAlfabetico = ', alfabético';
   numeroLivros = ', número de livros';
   numeroLivrosLidos = ', número de livros lidos';
@@ -30,6 +33,7 @@ export class ListadoGenerosComponent implements OnInit {
   constructor(
     private router: Router,
     private layoutService: LayoutService,
+    private usuarioAppService: UsuarioAppService,
     private generosService: GenerosService) { }
 
   ngOnInit(): void {
@@ -66,15 +70,15 @@ export class ListadoGenerosComponent implements OnInit {
     if (livros == 0) {
       if(confirm("Está certo de querer borrar o género " + nome + "?")) {
         this.generosService
-              .borrarGenero(id)
-              .pipe(first())
-              .subscribe({
-                next: (v: object) => console.debug(v),
-                error: (e: any) => { console.error(e),
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o género.'}); },
-                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género borrado.'}); }
-            });
+          .borrarGenero(id)
+          .pipe(first())
+          .subscribe({
+            next: (v: object) => this.usuarioAppService.removerGenero(id),
+            error: (e: any) => { console.error(e),
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o género.'}); },
+              complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género borrado.'}); }
+        });
       }
     }
     else {

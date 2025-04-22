@@ -8,6 +8,7 @@ import { ListadoColecons, ListadoColeconsData } from '../../../core/models/lista
 import { ColeconsService } from '../../../core/services/api/colecons.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-listado-colecons',
@@ -17,6 +18,8 @@ import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
   styleUrls: ['./listado-colecons.component.scss']
 })
 export class ListadoColeconsComponent implements OnInit {
+
+  soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   tipoListado = '';
   listadoDados: ListadoColecons[] = [];
 

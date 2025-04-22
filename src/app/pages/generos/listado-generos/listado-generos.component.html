@@ -1,10 +1,12 @@
 <h3>Listado de Géneros{{this.tipoOrdeacom}}
   <span *ngIf="this.inverso"> inverso</span>
 </h3>
-<button class="botom-novo-resgistro" (click)="onIrPagina('/generos/genero', '0')">
-  Novo Género
-</button>
-*
+
+@if (!soVisualizar) {
+  <button class="botom-novo-resgistro" (click)="onIrPagina('/generos/genero', '0')">
+    Novo Género
+  </button>
+}
 <h1 *ngIf="tipoListado.length > 0">Listado {{this.tipoListado}}</h1>
 
 <table *ngIf="this.listadoDados.length > 0" class="taboas-listado">

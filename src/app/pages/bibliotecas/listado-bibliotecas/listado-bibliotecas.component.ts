@@ -7,6 +7,7 @@ import { LayoutService } from '../../../core/services/flow/layout.service';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { CommonModule } from '@angular/common';
 import { BibliotecaComponent } from '../biblioteca/biblioteca.component';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-listado-bibliotecas',
@@ -16,6 +17,8 @@ import { BibliotecaComponent } from '../biblioteca/biblioteca.component';
   styleUrls: ['./listado-bibliotecas.component.scss']
 })
 export class ListadoBibliotecasComponent implements OnInit {
+
+  soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   tipoListado = '';
   listadoDados: ListadoBibliotecas[] = [];
 

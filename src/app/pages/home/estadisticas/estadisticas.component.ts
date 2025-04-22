@@ -10,6 +10,10 @@ import { Estadisticas, EstadisticasData } from '../../../core/models/estadistica
 import { GraficosData } from '../../../core/models/graficos.interface';
 import { GraficosService } from '../../../core/services/api/graficos.service';
 import { HttpClientModule } from '@angular/common/http';
+import { OutrosService } from '../../../core/services/api/outros.service';
+import { PeticomPendenteComponent } from '../../../peticom-pendente.guard';
+import { environment, environments } from '../../../../environments/environment';
+import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 
 @Component({
   selector: 'omla-estadisticas',
@@ -18,8 +22,9 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './estadisticas.component.html',
   styleUrls: ['./estadisticas.component.scss']
 })
-export class EstadisticasComponent implements OnInit, OnDestroy {
+export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendenteComponent {
 
+  isDadosCombosPendente = true;
   tipos = EstadisticasTipo;
   idiomasSignal = signal<Estadisticas[]>([]);
   anosSignal = signal<Estadisticas[]>([]);
@@ -38,11 +43,14 @@ export class EstadisticasComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private usuarioApp: UsuarioAppService,
     private estadisticasService: EstadisticasService,
+    private outrosService: OutrosService,
     private graficosService: GraficosService,
     private layoutService: LayoutService) {
 
     effect(() => {
+      if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) return;
       console.log('Cada vez que ha umha mudança lánza-se isto ', this.anosSignal());
     });
   }
@@ -50,6 +58,15 @@ export class EstadisticasComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.layoutService.amosarInfo(undefined);
     this.obterEstadisticas();
+    this.obterDadosOutros();
+  }
+
+  podoDeactivate(): boolean {
+    if (this.isDadosCombosPendente) {
+      alert('Todabía todos os dados nom forom carregados, agarde um chisco...');
+      return false
+    }
+    return true;
   }
 
   ngOnDestroy(): void {
@@ -197,5 +214,19 @@ export class EstadisticasComponent implements OnInit, OnDestroy {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
       console.debug('Nom se obtiverom dados');
     }
+  }
+
+  private obterDadosOutros() {
+    this.outrosService.getTodo()
+      .pipe(first())
+      .subscribe({
+        next: (data) => {
+          this.isDadosCombosPendente = false;
+          this.usuarioApp.setDadosOutros(data);
+        },
+        error: () => {
+          this.isDadosCombosPendente = false;
+        },
+    });
   }
 }

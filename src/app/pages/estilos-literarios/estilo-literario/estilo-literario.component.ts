@@ -13,6 +13,8 @@ import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Parametros } from '../../../core/models/comun.interface';
 import { EstiloLiterario, EstiloLiterarioData } from '../../../core/models/estilos-literarios.interface';
 import { EstilosLiterariosService } from '../../../core/services/api/estilos-literarios.service';
+import { environment, environments } from '../../../../environments/environment';
+import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 
 @Component({
   selector: 'omla-estilo-literario',
@@ -24,8 +26,8 @@ import { EstilosLiterariosService } from '../../../core/services/api/estilos-lit
 })
 export class EstiloLiterarioComponent implements OnInit {
 
-  engadir = 'Engadir'; guardar = 'Guardar';
-  modo = this.engadir;
+  estadosPagina = EstadosPagina;
+  modo = EstadosPagina.soVisualizar;
   dadosDoEstiloLiterario: EstiloLiterario | undefined = {
     id: 0,
     nome: '',
@@ -53,10 +55,14 @@ export class EstiloLiterarioComponent implements OnInit {
       .subscribe(params => {
         let parametros = params as Parametros;
         if (parametros.id === '0')
-          this.modo = this.engadir;
+          this.modo = EstadosPagina.engadir;
         else {
-          this.modo = this.guardar;
+          this.modo = EstadosPagina.guardar;
           this.obterDadosDoEstiloLiterario(parametros.id);
+        }
+
+        if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+          this.modo = EstadosPagina.soVisualizar;
         }
       }
     );
@@ -136,9 +142,9 @@ export class EstiloLiterarioComponent implements OnInit {
 
   guardarEstiloLiterario(event: any, estiloLiterarioRepetido: EstiloLiterarioData) {
     if (estiloLiterarioRepetido != undefined && estiloLiterarioRepetido.meta.quantidade > 0 && (
-      (event.submitter.value === this.engadir)
+      (event.submitter.value === EstadosPagina.engadir)
       ||
-      (event.submitter.value !== this.engadir && estiloLiterarioRepetido.meta.id != this.dadosDoEstiloLiterario?.id))) { // se está actualizando os ids deben ser inguais
+      (event.submitter.value !== EstadosPagina.engadir && estiloLiterarioRepetido.meta.id != this.dadosDoEstiloLiterario?.id))) { // se está actualizando os ids deben ser inguais
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome do género já existe na base de dados'});
     }
     else {
@@ -148,7 +154,7 @@ export class EstiloLiterarioComponent implements OnInit {
         comentario: (this.gf.comentario.value == null) ? null : String(this.gf.comentario.value).trim()
       };
 
-      if (event.submitter.value === this.engadir) {
+      if (event.submitter.value === EstadosPagina.engadir) {
         this.estilosLiterariosService
           .postEstiloLiterario(estiloLiterario)
           .pipe(first())
@@ -158,7 +164,7 @@ export class EstiloLiterarioComponent implements OnInit {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o género.'});
               console.error(e) },
               complete: () => {
-                this.modo = this.guardar;
+                this.modo = EstadosPagina.guardar;
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género engadido.'});
                 // console.debug('post completado');
               }
