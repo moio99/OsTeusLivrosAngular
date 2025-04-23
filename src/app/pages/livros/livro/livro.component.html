@@ -83,6 +83,7 @@
               placeholder="Biblioteca:"
               aria-label="Number"
               matInput
+              (focus)="focusTrigger.next()"
               [formControl]="lf.idBiblioteca"
               [matAutocomplete]="idbiblio">
         <mat-autocomplete #idbiblio="matAutocomplete">
@@ -111,6 +112,7 @@
               placeholder="Editorial:"
               aria-label="Number"
               matInput
+              (focus)="focusTrigger.next()"
               [formControl]="lf.idEditorial"
               [matAutocomplete]="idedito">
         <mat-autocomplete #idedito="matAutocomplete">
@@ -139,6 +141,7 @@
               placeholder="Colecom:"
               aria-label="Number"
               matInput
+              (focus)="focusTrigger.next()"
               [formControl]="lf.idColecom"
               [matAutocomplete]="idcoleC">
         <mat-autocomplete #idcoleC="matAutocomplete">
@@ -167,6 +170,7 @@
               placeholder="Estilo literario:"
               aria-label="Number"
               matInput
+              (focus)="focusTrigger.next()"
               [formControl]="lf.idEstilo"
               [matAutocomplete]="idestiloLi">
         <mat-autocomplete #idestiloLi="matAutocomplete">
@@ -286,6 +290,7 @@
               placeholder="Idioma:"
               aria-label="Number"
               matInput
+              (focus)="focusTrigger.next()"
               [formControl]="lf.idioma"
               [matAutocomplete]="idiomaC">
         <mat-autocomplete #idiomaC="matAutocomplete">
@@ -301,6 +306,7 @@
               placeholder="Idioma Original:"
               aria-label="Number"
               matInput
+              (focus)="focusTrigger.next()"
               [formControl]="lf.idiomaOriginal"
               [matAutocomplete]="idiomaOrig">
         <mat-autocomplete #idiomaOrig="matAutocomplete">
@@ -323,10 +329,11 @@
               placeholder="Serie:"
               aria-label="Number"
               matInput
+              (focus)="focusTrigger.next()"
               [formControl]="lf.serie"
               [matAutocomplete]="serieLivro">
         <mat-autocomplete #serieLivro="matAutocomplete">
-          @for (option of bibliotecas | async; track option) {
+          @for (option of seriesLivro | async; track option) {
             <mat-option [value]="option.value">{{option.value}}</mat-option>
           }
           <mat-option *ngFor="let element of seriesLivro | async" [value]="element.value">

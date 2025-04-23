@@ -27,7 +27,7 @@ export class PorTiposComponent implements OnInit {
     private autoresService: AutoresService) { }
 
   ngOnInit(): void {
-    if (this.route.snapshot.url[0].path == 'porNacionalidade') {
+    if (this.route.snapshot.url[1].path == 'porNacionalidade') {
       this.tipo = ListadosAutoresTipos.porNacionalidade;
       this.obterDadosDoListadoPorNacionalidade();
     }

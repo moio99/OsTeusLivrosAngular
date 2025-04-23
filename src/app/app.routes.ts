@@ -4,9 +4,14 @@ import { authGuard } from './auth.guard';
 import { LoginComponent } from './pages/login/login.component';
 import { LayoutBaleiroComponent } from './layouts/layout-baleiro/layout-baleiro.component';
 import { LayoutPrincipalComponent } from './layouts/layout-principal/layout-principal.component';
+import { environments } from '../environments/environment';
+import { PeticomPendenteRequestGuard } from './peticom-pendente.guard';
+import { PorTiposComponent } from './pages/autores/listado-autores/por-tipos/por-tipos.component';
+
+const rotaPorDefecto = environments.dev || environments.test ? 'estadisticas' : 'login';
 
 export const routes: Routes = [
-  { path: '', redirectTo:'login', pathMatch:'full', title: 'OTL - login' },
+  { path: '', redirectTo: rotaPorDefecto, pathMatch:'full', title: 'OTL - login' },
   {
     path: 'login',
     component: LayoutBaleiroComponent,
@@ -17,7 +22,12 @@ export const routes: Routes = [
     path: '',
     component: LayoutPrincipalComponent,
     children: [
-      { path: 'estadisticas', component: EstadisticasComponent, title: 'OTL - Estadísticas', canActivate: [authGuard] },
+      { path: 'estadisticas',
+        component: EstadisticasComponent,
+        title: 'OTL - Estadísticas',
+        canActivate: [authGuard],
+        canDeactivate: [PeticomPendenteRequestGuard]
+      },
       /* { path: 'livros', title: 'OTL - livros'
         , loadComponent: () => import('./../app/pages/livros/listado-livros/listado-livros.component')
           .then(m => m.ListadoLivrosComponent) }, */
@@ -39,6 +49,18 @@ export const routes: Routes = [
           .then(m => m.childRoutes),
         canActivate: [authGuard]
       },
+        {
+          path: 'autores/porNacionalidade',
+          title: 'Por Nacionalidade',
+          loadComponent: () => import('./../app/pages/autores/listado-autores/por-tipos/por-tipos.component')
+            .then(m => m.PorTiposComponent) // Standalone component
+        },
+        {
+          path: 'autores/porPais',
+          title: 'Por País',
+          loadComponent: () => import('./../app/pages/autores/listado-autores/por-tipos/por-tipos.component')
+            .then(m => m.PorTiposComponent) // Standalone component
+        },
       {
         path: 'editoriais', title: 'OTL - Editoriais',
         loadChildren: () => import('./../app/pages/editoriais/listado-editoriais/listado-editoriais.component')

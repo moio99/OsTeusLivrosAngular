@@ -15,6 +15,7 @@ import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Parametros } from '../../../core/models/comun.interface';
 import { environment, environments } from '../../../../environments/environment';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
+import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 
 @Component({
   selector: 'omla-genero',
@@ -45,6 +46,7 @@ export class GeneroComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private layoutService: LayoutService,
+    private usuarioAppService: UsuarioAppService,
     private location: Location,
     private generosService: GenerosService,
     private livrosService: LivrosService,
@@ -159,7 +161,7 @@ export class GeneroComponent implements OnInit {
           .postGenero(genero)
           .pipe(first())
           .subscribe({
-            next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, genero)},
+            next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, genero), this.usuarioAppService.setGenero(genero)},
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o género.'});
               console.error(e) },
@@ -175,7 +177,7 @@ export class GeneroComponent implements OnInit {
           .putGenero(genero)
           .pipe(first())
           .subscribe({
-            next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, genero)},
+            next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, genero), this.usuarioAppService.setGenero(genero)},
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar o género.'});
               console.error(e) },

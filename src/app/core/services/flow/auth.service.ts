@@ -48,7 +48,6 @@ export class AuthService {
     return this.http.post(environment.apiUrl + '/login', usuario).pipe(
       map((response: any) => response as DadosLogueo), // Cast the response to DadosLogueo
       tap(response => {
-        console.log('LoginService - postLogin - response:', response);
         if (response.token) {
           this._usuarioLogado = response.usuario;
           this._usuarioToken = response.token;
