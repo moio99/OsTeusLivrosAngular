@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { first, map, Observable, startWith } from 'rxjs';
+import { first, map, merge, Observable, startWith, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { CommonModule } from '@angular/common';
@@ -61,6 +61,7 @@ export class LivroComponent implements OnInit {
   dadosComplentarios = DadosComplentarios;
   autoresLivro: SimpleObjet[] = [];
   generosLivro: SimpleObjet[] = [];
+  focusTrigger = new Subject<void>();   // Para que os combos ao recibir o foco por primeira vez amose o listado inda que esteja valeiro
   bibliotecasCombo: SimpleObjet[] = [];
   bibliotecas: Observable<SimpleObjet[]> | undefined;
   editoriaisCombo: SimpleObjet[] = [];
@@ -251,25 +252,18 @@ export class LivroComponent implements OnInit {
   }
 
   /**
-   * Processa um array de objetos com id e nome e
-   * retorna um objeto com as seguintes propriedades:
-   * - combo: um array de objetos com id e value (nome)
-   *   ordenado alfabeticamente
-   * - observable: um observable que emite um array de objetos
-   *   com id e value (nome) sempre que o valor do AbstractControl
-   *   mudar. O array emitido   filtrado pelo valor do AbstractControl
-   *   e ordenado alfabeticamente.
-   * - ordenar: por defecto true, se vem false nom faz a ordenaçom
-   * @param data array de objetos com id e nome
-   * @param valueChanges AbstractControl que emite um valor
-   *   (string) que ser  usado como filtro para o array de objetos
-   *   gerado
-   * @returns um objeto com as propriedades combo e observable
-   *   descritas acima
+   * Processa um array de objetos com id e nome, em um array de objetos
+   * simples com id e value, ordenado por value, e um observable que
+   * filtra o array com base no valor de um campo de formulario.
+   * @param data Array de objetos com id e nome.
+   * @param controlFormulario Campo do formul rio cujo valor ser  usado para
+   * filtrar o array.
+   * @param ordenar Se true, ordena o array por value.
+   * @returns Um objeto com o array de objetos simples e o observable.
    */
   private processarDadosCombo(
     data: ObjetoSimpleIdNome[] | undefined | null,
-    valueChanges: AbstractControl,
+    controlFormulario: AbstractControl,
     ordenar: boolean = true
   ): { combo: SimpleObjet[], observable: Observable<SimpleObjet[]> } {
     const dadosReducidos: SimpleObjet[] = (data || [])
@@ -278,11 +272,23 @@ export class LivroComponent implements OnInit {
 
     return {
       combo: dadosReducidos,
-      observable: valueChanges.valueChanges.pipe(
+      observable: merge(
+          controlFormulario.valueChanges.pipe(startWith('')),
+          this.focusTrigger
+        ).pipe(
+          map(() => {
+            const value = controlFormulario.value || '';
+            return this.filtroCombo(value, dadosReducidos);
+          })
+      )
+    };
+    /* return {
+      combo: dadosReducidos,
+      observable: controlFormulario.valueChanges.pipe(
         startWith(''),
         map(value => this.filtroCombo(value as string, dadosReducidos))
       )
-    };
+    }; */
   }
 
   /**
