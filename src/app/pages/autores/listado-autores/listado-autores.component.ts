@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, Routes } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule, Routes } from '@angular/router';
 import { first } from 'rxjs';
 import { ListadoAutores, ListadoAutoresData } from '../../../core/models/listado-autores.interface';
 import { AutoresService } from '../../../core/services/api/autores.service';
@@ -16,7 +16,7 @@ import { environment, environments } from '../../../../environments/environment'
 @Component({
   selector: 'omla-listado-autores',
   standalone: true,
-  imports: [ CommonModule, OrdeColunaComponent ],
+  imports: [ CommonModule, OrdeColunaComponent, RouterModule ],
   templateUrl: './listado-autores.component.html',
   styleUrls: ['./listado-autores.component.scss']
 })
