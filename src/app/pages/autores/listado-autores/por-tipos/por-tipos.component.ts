@@ -42,7 +42,7 @@ export class PorTiposComponent implements OnInit {
       .getListadoAutoresPorNacons()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidos(v),
+        next: (v: object) => this.listadoDados = this.dadosObtidos(v, true),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puido obter o listado de autores por paises.'}); },
@@ -55,7 +55,7 @@ export class PorTiposComponent implements OnInit {
       .getListadoAutoresPorPaises()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidos(v),
+        next: (v: object) => this.listadoDados = this.dadosObtidos(v, false),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puido obter o listado de autores por naçons.'}); },
@@ -63,11 +63,15 @@ export class PorTiposComponent implements OnInit {
     });
   }
 
-  private dadosObtidos(data: object): ListadoConcretoAutores[] {
+  private dadosObtidos(data: object, porNacons: boolean): ListadoConcretoAutores[] {
     let resultados: ListadoConcretoAutores[];
     const dados = <ListadoConcretoAutoresData>data;
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
+      if (porNacons)
+        this.autoresService.setListadoAutoresPorNacons(dados);
+      else
+        this.autoresService.setListadoAutoresPorPaises(dados);
       resultados = dados.data;
     } else {
       resultados = [];
