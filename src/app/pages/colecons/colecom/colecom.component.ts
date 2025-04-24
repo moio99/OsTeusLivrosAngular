@@ -27,6 +27,7 @@ export class ColecomComponent implements OnInit {
 
   estadosPagina = EstadosPagina;
   modo = EstadosPagina.soVisualizar;
+  disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
   dadosDaColecom: Colecom | undefined = {
     id: 0,
     nome: '',
@@ -37,10 +38,10 @@ export class ColecomComponent implements OnInit {
   dadosLivrosDaColecom: ListadoLivros[] = [];
 
   colecomForm = new FormGroup({
-    nome: new FormControl('', [Validators.required, Validators.maxLength(150)]),
-    isbn: new FormControl('', [Validators.maxLength(20)]),
-    web: new FormControl('', [Validators.maxLength(150)]),
-    comentario: new FormControl('', Validators.maxLength(50000))
+    nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
+    isbn: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(20)]),
+    web: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(150)]),
+    comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
   });
   get cf() { return this.colecomForm.controls; }
 

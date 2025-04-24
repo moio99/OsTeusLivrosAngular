@@ -1,4 +1,4 @@
-import { Component, effect, OnDestroy, OnInit, signal  } from '@angular/core';
+import { Component, effect, ElementRef, OnDestroy, OnInit, signal, ViewChild  } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { EstadisticasService } from '../../../core/services/api/estadisticas.service';
@@ -40,6 +40,10 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
   ordePaginasGeneros = 'ordePaginasGeneros';
   tipoOrdeacomGeneros = this.ordeQuantidadeGeneros;
   inversoGeneros = true;
+
+  @ViewChild('subMenu') subMenu!: ElementRef;
+  @ViewChild('taboaAnos') taboaAnos!: ElementRef;
+  @ViewChild('taboaGenero') taboaGenero!: ElementRef;
 
   constructor(
     private router: Router,
@@ -125,9 +129,20 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
     });
   }
 
-  scrollAoElemento(elementId: string): void {
+  /* scrollAoElemento(elementId: string): void {
     const elemento = document.getElementById(elementId);
     elemento?.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  } */
+
+  scrollAoElemento(target: ElementRef | HTMLElement): void {
+    const element = target instanceof ElementRef ? target.nativeElement : target;
+    requestAnimationFrame(() => {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest"
+      });
+    });
   }
 
   /**

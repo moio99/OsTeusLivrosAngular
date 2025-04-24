@@ -27,6 +27,7 @@ export class EditorialComponent implements OnInit {
 
   estadosPagina = EstadosPagina;
   modo = EstadosPagina.soVisualizar;
+  disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
   dadosDaEditorial: Editorial | undefined = {
     id: 0,
     nome: '',
@@ -37,10 +38,10 @@ export class EditorialComponent implements OnInit {
   dadosLivrosDaEditorial: ListadoLivros[] = [];
 
   editorialForm = new FormGroup({
-    nome: new FormControl('', [Validators.required, Validators.maxLength(150)]),
-    direicom: new FormControl('', Validators.maxLength(150)),
-    web: new FormControl('', Validators.maxLength(150)),
-    comentario: new FormControl('', Validators.maxLength(50000))
+    nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
+    direicom: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
+    web: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
+    comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
   });
   get ef() { return this.editorialForm.controls; }
 

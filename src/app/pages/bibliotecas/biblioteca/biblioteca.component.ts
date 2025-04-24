@@ -31,6 +31,7 @@ export class BibliotecaComponent implements OnInit {
 
   estadosPagina = EstadosPagina;
   modo = EstadosPagina.soVisualizar;
+  disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
   dadosDaBiblioteca: Biblioteca | undefined = {
     id: 0,
     nome: '',
@@ -44,13 +45,13 @@ export class BibliotecaComponent implements OnInit {
   dadosLivrosDaBiblioteca: ListadoLivros[] = [];
 
   bibliotecaForm = new FormGroup({
-    nome: new FormControl('', [Validators.required, Validators.maxLength(150)]),
-    endereco: new FormControl('', [Validators.maxLength(150)]),
-    localidade: new FormControl('', [Validators.maxLength(100)]),
-    telefone: new FormControl('', [Validators.maxLength(50)]),
-    dataAsociamento: new FormControl(''),
-    dataRenovacom: new FormControl(''),
-    comentario: new FormControl('', Validators.maxLength(50000))
+    nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
+    endereco: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(150)]),
+    localidade: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(100)]),
+    telefone: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(50)]),
+    dataAsociamento: new FormControl({ value: '', disabled: this.disabledFormulario}),
+    dataRenovacom: new FormControl({ value: '', disabled: this.disabledFormulario}),
+    comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
   });
   get bf() { return this.bibliotecaForm.controls; }
 

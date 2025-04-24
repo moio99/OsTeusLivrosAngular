@@ -1,8 +1,8 @@
-<span id="subMenu"></span>
+<span #subMenu></span>
 <div class="sub-menu">
-  <a (click)="scrollAoElemento('subMenu')">Idiomas</a>
-  <a (click)="scrollAoElemento('taboaAnos')">Anos</a>
-  <a (click)="scrollAoElemento('taboaGenero')">Géneros</a>
+  <a (click)="scrollAoElemento(subMenu)">Idiomas</a>
+  <a (click)="scrollAoElemento(taboaAnos)">Anos</a>
+  <a (click)="scrollAoElemento(taboaGenero)">Géneros</a>
 </div>
 
 <div class="contido-taboas">
@@ -17,8 +17,11 @@
         </tr>
         @for (entrada of this.idiomasSignal(); track entrada; let first = $first, derradeiro = $last) {
           <tr class="listado-accom">
-            <td [attr.id]="derradeiro ? 'taboaAnos' : null" (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">
+            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">
               {{entrada.nome}}
+              @if (derradeiro) {
+                <span #taboaAnos></span>
+              }
             </td>
             <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">{{entrada.quantidade}}</td>
             <td>{{entrada.quantidadeRelecturas}}</td>
@@ -66,7 +69,12 @@
       </tr>
       @for (entrada of this.anosSignal(); track entrada) {
         <tr class="listado-accom">
-          <td [attr.id]="$last ? 'taboaGenero' : null" (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)"></td>
+          <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">
+            {{entrada.nome}}
+            @if ($last) {
+              <span #taboaGenero></span>
+            }
+          </td>
           <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">{{entrada.quantidade}}</td>
           <td>{{entrada.quantidadeRelecturas}}</td>
           <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas">{{entrada.quantidadePaginas}}</td>

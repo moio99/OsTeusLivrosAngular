@@ -38,8 +38,10 @@
       </div>
       <div class="lista-com-comas">
         <ul>
-          <li *ngFor="let item of autoresLivro" class="listado-accom"
-            (click)="onIrPagina('/autores/autor', item.id)">{{item.value}}</li>
+          <li *ngFor="let item of autoresLivro"
+            class="listado-accom"
+            [ngStyle]="{'cursor': (modo !== estadosPagina.soVisualizar ? null : 'auto')}"
+            (click)="onIrPaginaAutor('/autores/autor', item.id)">{{item.value}}</li>
         </ul>
       </div>
     </div>
@@ -71,7 +73,9 @@
       </div>
       <div class="lista-com-comas">
         <ul>
-          <li *ngFor="let item of generosLivro" class="listado-accom"
+          <li *ngFor="let item of generosLivro"
+            class="listado-accom"
+            [ngStyle]="{'cursor': (modo !== estadosPagina.soVisualizar ? null : 'auto')}"
             (click)="onIrPagina('/generos/genero', item.id)">{{item.value}}</li>
         </ul>
       </div>

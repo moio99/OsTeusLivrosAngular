@@ -29,6 +29,7 @@ export class GeneroComponent implements OnInit {
 
   estadosPagina = EstadosPagina;
   modo = EstadosPagina.soVisualizar;
+  disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
   dadosDoGenero: Genero | undefined = {
     id: 0,
     nome: '',
@@ -37,8 +38,8 @@ export class GeneroComponent implements OnInit {
   dadosLivrosDaGenero: ListadoLivros[] = [];
 
   generoForm = new FormGroup({
-    nome: new FormControl('', [Validators.required, Validators.maxLength(150)]),
-    comentario: new FormControl('', Validators.maxLength(50000))
+    nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
+    comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
   });
   get gf() { return this.generoForm.controls; }
 
