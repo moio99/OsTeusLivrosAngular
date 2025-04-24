@@ -17,11 +17,8 @@
         </tr>
         @for (entrada of this.idiomasSignal(); track entrada; let first = $first, derradeiro = $last) {
           <tr class="listado-accom">
-            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">
+            <td [attr.id]="derradeiro ? 'taboaAnos' : null" (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">
               {{entrada.nome}}
-              @if (derradeiro) {
-                <span id="taboaAnos"></span>
-              }
             </td>
             <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">{{entrada.quantidade}}</td>
             <td>{{entrada.quantidadeRelecturas}}</td>
@@ -69,12 +66,7 @@
       </tr>
       @for (entrada of this.anosSignal(); track entrada) {
         <tr class="listado-accom">
-          <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">
-            {{entrada.nome}}
-            @if ($last) {
-              <span id="taboaGenero"></span>
-            }
-          </td>
+          <td [attr.id]="$last ? 'taboaGenero' : null" (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)"></td>
           <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">{{entrada.quantidade}}</td>
           <td>{{entrada.quantidadeRelecturas}}</td>
           <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas">{{entrada.quantidadePaginas}}</td>

@@ -184,6 +184,7 @@ export class ListadoLivrosComponent implements OnInit {
     const dados = <ListadoLivrosData>data;
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidossss'});
+      this.livrosService.setListadoLivros(dados);
       resultados = dados.data.sort((a,b) => new Ordeacom().ordear(
         a.titulo.replace(/[¿?¡!]/g,''), b.titulo.replace(/[¿?¡!]/g,'').replace('¡',''), this.inverso));
       if (amosarGrafico) {

@@ -6,7 +6,6 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class CarregandoService {
   private contadorPeticiones = 0;
-  private isLoading = false
 
   private carregandoSubject = new BehaviorSubject<boolean>(false);
   carregando$ = this.carregandoSubject.asObservable();
@@ -14,7 +13,6 @@ export class CarregandoService {
   amosar(): void {
     this.carregandoSubject.next(true);
     this.contadorPeticiones++;
-    this.isLoading = true;
   }
 
   ocultar(): void {
@@ -22,7 +20,6 @@ export class CarregandoService {
 
     if (this.contadorPeticiones <= 0) {
       this.contadorPeticiones = 0; // Evita valores negativos
-      this.isLoading = false;
       this.carregandoSubject.next(false);
     }
   }
