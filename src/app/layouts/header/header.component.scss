@@ -15,7 +15,10 @@
   display: none;
 }
 .carregando {
-  margin-left: auto;
+  position: absolute;
+  z-index: 10;
+  right: 55px;
+  top: 10px;
   img {
     width: 25px;
   }

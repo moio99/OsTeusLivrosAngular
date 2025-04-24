@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { environment, environments } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Livro } from '../../models/livro.interface';
+import { delay, of } from 'rxjs';
+import { ListadoLivrosData } from '../../models/listado-livros.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -9,13 +11,32 @@ import { Livro } from '../../models/livro.interface';
 export class LivrosService {
 
   private rotaIntermedia = '/Livros';
+  private cacheListadoLivrosData: ListadoLivrosData | undefined = undefined;
 
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * Quando nom estea em local guarda umha caché
+   * @returns
+   */
   getListadoLivros() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/');
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (!isProdOrPre || !this.cacheListadoLivrosData) {
+      return this.http.get(environment.apiUrl + this.rotaIntermedia + '/');
+    } else {
+      return of(this.cacheListadoLivrosData);
+    }
+  }
+  setListadoLivros(dados: ListadoLivrosData) {
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (isProdOrPre) {
+      this.cacheListadoLivrosData = dados;
+    }
+  }
+
+  private pausa(ms: number) {
+    return new Promise( resolve => {setTimeout(resolve, ms); } );
   }
 
   getListadoLivrosUltimaLectura() {

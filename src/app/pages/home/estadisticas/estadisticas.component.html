@@ -1,8 +1,8 @@
-<span id="subMenu"></span>
+<span #subMenu></span>
 <div class="sub-menu">
-  <a (click)="scrollAoElemento('subMenu')">Idiomas</a>
-  <a (click)="scrollAoElemento('taboaAnos')">Anos</a>
-  <a (click)="scrollAoElemento('taboaGenero')">Géneros</a>
+  <a (click)="scrollAoElemento(subMenu)">Idiomas</a>
+  <a (click)="scrollAoElemento(taboaAnos)">Anos</a>
+  <a (click)="scrollAoElemento(taboaGenero)">Géneros</a>
 </div>
 
 <div class="contido-taboas">
@@ -20,7 +20,7 @@
             <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">
               {{entrada.nome}}
               @if (derradeiro) {
-                <span id="taboaAnos"></span>
+                <span #taboaAnos></span>
               }
             </td>
             <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">{{entrada.quantidade}}</td>
@@ -72,7 +72,7 @@
           <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">
             {{entrada.nome}}
             @if ($last) {
-              <span id="taboaGenero"></span>
+              <span #taboaGenero></span>
             }
           </td>
           <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">{{entrada.quantidade}}</td>

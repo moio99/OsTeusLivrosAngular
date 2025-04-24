@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Estrela } from '../estrelas-pontuacom.interface';
 import { CommonModule } from '@angular/common';
+import { environment, environments } from '../../../../../environments/environment';
 
 @Component({
   selector: 'omla-estrela',
@@ -43,15 +44,19 @@ export class EstrelaComponent implements OnInit {
   }
 
   entrouORato() {
-    if (this.numero > -1)
-      this.simulacomEvent.emit({numero: this.numero, marcada: true});
+    if (environment.whereIAm === environments.dev || environment.whereIAm === environments.test) {
+      if (this.numero > -1)
+        this.simulacomEvent.emit({numero: this.numero, marcada: true});
+    }
   }
 
   saiuORato() {
-    this.simulacomEvent.emit(undefined);
+    if (environment.whereIAm === environments.dev || environment.whereIAm === environments.test)
+      this.simulacomEvent.emit(undefined);
   }
 
   ratoPicou() {
-    this.estavelecerPontuacomEvent.emit(this.numero);
+    if (environment.whereIAm === environments.dev || environment.whereIAm === environments.test)
+      this.estavelecerPontuacomEvent.emit(this.numero);
   }
 }

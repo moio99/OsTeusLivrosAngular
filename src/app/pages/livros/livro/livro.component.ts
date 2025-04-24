@@ -55,6 +55,7 @@ export class LivroComponent implements OnInit {
   nomePagina = 'livro';
   estadosPagina = EstadosPagina;
   modo = EstadosPagina.soVisualizar;
+  disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
   modoRelectura = false;
   modoSalvadoRelectura = this.modo;
   multiGestom = MultiGestom;
@@ -81,7 +82,7 @@ export class LivroComponent implements OnInit {
   rex1000000 = '([1-1][0-0]{6,6}|[0-9]{1,6})';
   rex1000 = '([1-1][0-0]{3,3}|[0-9]{1,3})';
   livroForm = this.fb.group({
-    titulo: new FormControl('', {
+    titulo: new FormControl({ value: '', disabled: this.disabledFormulario}, {
         validators: [
            Validators.required,
            Validators.maxLength(100)
@@ -89,28 +90,28 @@ export class LivroComponent implements OnInit {
         // asyncValidators: [ ... array of asynchronous validators ...]
         updateOn: 'blur' // 'change' or 'blur' or 'submit'
     }),
-    tituloOriginal: new FormControl('', { validators: [Validators.maxLength(100)] }),
-    idBiblioteca: new FormControl(''),
-    idEditorial: new FormControl(''),
-    idColecom: new FormControl(''),
-    idEstilo: new FormControl(''),
-    isbn: new FormControl('', { validators: [Validators.maxLength(20)] }),
-    paginas: new FormControl('', { validators: [Validators.pattern(this.rex1000000)] }),
-    paginasLidas: new FormControl('', { validators: [Validators.pattern(this.rex1000000)] }),
-    lido: [false],
-    diasLeitura: new FormControl('', { validators: [Validators.pattern(this.rex1000)] }),
-    dataFimLeiturata: new FormControl(''),
-    idioma: new FormControl(''),
-    idiomaOriginal: new FormControl(''),
-    dataCriacom: new FormControl('', { validators: [ this.checkDuasDatasValidator() ] }),
-    dataEdicom: new FormControl('', { validators: [ this.checkDuasDatasValidator() ] }),
-    numeroEdicom: new FormControl('', { validators: [Validators.pattern(this.rex1000)] }),
-    electronico: new FormControl(false),
-    somSerie: new FormControl(false),
-    serie: new FormControl(''),
-    premios: new FormControl('', { validators: [Validators.maxLength(255)] }),
-    descricom: new FormControl('', { validators: [Validators.maxLength(50000)] }),
-    comentario: new FormControl('', { validators: [Validators.maxLength(50000)] }),
+    tituloOriginal: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(100)] }),
+    idBiblioteca: new FormControl({ value: '', disabled: this.disabledFormulario}),
+    idEditorial: new FormControl({ value: '', disabled: this.disabledFormulario}),
+    idColecom: new FormControl({ value: '', disabled: this.disabledFormulario}),
+    idEstilo: new FormControl({ value: '', disabled: this.disabledFormulario}),
+    isbn: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(20)] }),
+    paginas: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000000)] }),
+    paginasLidas: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000000)] }),
+    lido: [{ value: false, disabled: this.disabledFormulario}],
+    diasLeitura: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000)] }),
+    dataFimLeiturata: new FormControl({ value: '', disabled: this.disabledFormulario}),
+    idioma: new FormControl({ value: '', disabled: this.disabledFormulario}),
+    idiomaOriginal: new FormControl({ value: '', disabled: this.disabledFormulario}),
+    dataCriacom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [ this.checkDuasDatasValidator() ] }),
+    dataEdicom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [ this.checkDuasDatasValidator() ] }),
+    numeroEdicom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000)] }),
+    electronico: new FormControl({ value: false, disabled: this.disabledFormulario}),
+    somSerie: new FormControl({ value: false, disabled: this.disabledFormulario}),
+    serie: new FormControl({ value: '', disabled: this.disabledFormulario}),
+    premios: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(255)] }),
+    descricom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(50000)] }),
+    comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(50000)] }),
   });
   get lf() { return this.livroForm.controls; }
   pontuacomEstrelas: number | undefined;
@@ -784,14 +785,30 @@ export class LivroComponent implements OnInit {
     });
   }
 
+  onIrPaginaAutor(rota: string, id: number): void {
+    if (this.modo !== this.estadosPagina.soVisualizar) {
+      let livro = this.setDadosLivro();
+      this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+      this.layoutService.amosarInfo(undefined);
+      this.router.navigate([rota], {
+        state: { id: id},
+      });
+    }
+  }
+
   onIrPagina(rota: string, id: number): void {
-    let livro = this.setDadosLivro();
-    this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
-    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
-    this.layoutService.amosarInfo(undefined);
-    this.router.navigateByUrl(rota + '?id=' + id);
-    // this.router.navigate([rota], {relativeTo: id});
-    // this.router.navigate([rota], {dadoQueVai: id});
+    if (this.modo !== this.estadosPagina.soVisualizar) {
+      let livro = this.setDadosLivro();
+      this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+      //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
+      this.layoutService.amosarInfo(undefined);
+      this.router.navigateByUrl(rota + '?id=' + id);
+      // this.router.navigate([rota], {relativeTo: id});
+      // this.router.navigate([rota], {dadoQueVai: id});
+    }
+    this.router.navigate([rota], {
+      state: { id: id, idRelectura: 'algo mais de probas' },
+    });
   }
 
   onIrPaginaBiblioteca(rota: string): void{

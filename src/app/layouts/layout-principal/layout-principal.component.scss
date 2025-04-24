@@ -54,6 +54,7 @@ $contedor: "contedor";
       display: none;
     }
     .#{$contedor}__contido {
+      padding-bottom: 50px;
       grid-area: 2/1/4/3;
     }
   }

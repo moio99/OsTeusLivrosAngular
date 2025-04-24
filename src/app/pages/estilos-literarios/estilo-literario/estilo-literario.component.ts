@@ -28,6 +28,7 @@ export class EstiloLiterarioComponent implements OnInit {
 
   estadosPagina = EstadosPagina;
   modo = EstadosPagina.soVisualizar;
+  disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
   dadosDoEstiloLiterario: EstiloLiterario | undefined = {
     id: 0,
     nome: '',
@@ -36,8 +37,8 @@ export class EstiloLiterarioComponent implements OnInit {
   dadosLivrosDoEstiloLiterario: ListadoLivros[] = [];
 
   estiloLiterarioForm = new FormGroup({
-    nome: new FormControl('', [Validators.required, Validators.maxLength(150)]),
-    comentario: new FormControl('', Validators.maxLength(50000))
+    nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
+    comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
   });
   get gf() { return this.estiloLiterarioForm.controls; }
 
