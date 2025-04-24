@@ -1,7 +1,30 @@
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { EstiloLiterario, EstiloLiterarioData } from '../../models/estilos-literarios.interface';
+import { ListadoEstilosLiterariosData } from '../../models/listado-estilos-literarios.interface';
+import { BaseApiService } from './base-api.service.ts';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class EstilosLiterariosService extends BaseApiService<EstiloLiterario, EstiloLiterarioData, ListadoEstilosLiterariosData> {
+  protected rotaIntermedia = '/EstilosLiterarios';
+
+  constructor(override http: HttpClient) {
+    super(http);
+  }
+
+  protected getEntityName(): string {
+    return 'EstilosLiterario';
+  }
+}
+
+/* import { HttpClient } from '@angular/common/http';
+import { environment, environments } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { EstiloLiterario } from '../../models/estilos-literarios.interface';
+import { of } from 'rxjs';
+import { ListadoEstilosLiterariosData } from '../../models/listado-estilos-literarios.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +32,7 @@ import { EstiloLiterario } from '../../models/estilos-literarios.interface';
 export class EstilosLiterariosService {
 
   private rotaIntermedia = '/EstilosLiterarios';
+  private cacheListadoEstilosLiterariosData: ListadoEstilosLiterariosData | undefined = undefined;
 
   constructor(private http: HttpClient) {
   }
@@ -18,8 +42,18 @@ export class EstilosLiterariosService {
   }
 
   getListadoEstilosLiterariosCosLivros() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/EstilosLiterariosCosLivros');
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (!isProdOrPre || !this.cacheListadoEstilosLiterariosData) {
+      return this.http.get(environment.apiUrl + this.rotaIntermedia + '/EstilosLiterariosCosLivros');
+    } else {
+      return of(this.cacheListadoEstilosLiterariosData);
+    }
+  }
+  setListadoEstilosLiterariosData(dados: ListadoEstilosLiterariosData) {
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (isProdOrPre) {
+      this.cacheListadoEstilosLiterariosData = dados;
+    }
   }
 
   getEstiloLiterario(id: string) {
@@ -55,3 +89,4 @@ export class EstilosLiterariosService {
       + '/EstiloLiterario?id=' + id);
   }
 }
+ */

@@ -33,7 +33,7 @@ export class ListadoBibliotecasComponent implements OnInit {
 
   private obterDadosDoListado(): void {
     this.bibliotecasService
-      .getListadoBibliotecasCosLivros()
+      .getListadoCosLivros()
       .pipe(first())
       .subscribe({
         next: (v) => this.listadoDados = this.dadosObtidos(v),
@@ -48,6 +48,7 @@ export class ListadoBibliotecasComponent implements OnInit {
     const dados = <ListadoBibliotecasData>data;
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
+      this.bibliotecasService.setListadoCosLivros(dados);
       resultados = dados.data;
     } else {
       resultados = [];
@@ -61,7 +62,7 @@ export class ListadoBibliotecasComponent implements OnInit {
     if (livros === 0) {
       if(confirm("Está certo de querer borrar a biblioteca " + nome + "?")) {
         this.bibliotecasService
-              .borrarBiblioteca(id)
+              .borrar(id)
               .pipe(first())
               .subscribe({
                 next: (v) => console.debug(v),

@@ -21,9 +21,11 @@
         <td (click)="onIrPagina('bibliotecas/biblioteca', entrada.id)">{{entrada.nome}}</td>
         <td (click)="onIrPagina('bibliotecas/biblioteca', entrada.id)">{{entrada.dataRenovacom ? (entrada.dataRenovacom | date:'dd/MM/yyyy') : '---'}}</td>
         <td (click)="onIrPagina('bibliotecas/biblioteca', entrada.id)">{{entrada.quantidadeLivros}}</td>
-        <td (click)="onBorrarElemento(entrada.id, entrada.nome, entrada.quantidadeLivros)">
-          <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
-        </td>
+        @if (!soVisualizar) {
+          <td (click)="onBorrarElemento(entrada.id, entrada.nome, entrada.quantidadeLivros)">
+            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+          </td>
+        }
       </tr>
     }
   </table>

@@ -70,7 +70,7 @@ export class EstiloLiterarioComponent implements OnInit {
 
   private obterDadosDoEstiloLiterario(id: string): void {
     this.estilosLiterariosService
-      .getEstiloLiterario(id)
+      .getPorId(id)
       .pipe(first())
       .subscribe({
         next: (v: object) => this.dadosDoEstiloLiterario = this.dadosObtidos(v),
@@ -129,7 +129,7 @@ export class EstiloLiterarioComponent implements OnInit {
     if (this.gf.nome.status === 'VALID' && this.gf.comentario.status === 'VALID') {
       let estiloLiterarioRepetido: EstiloLiterarioData;
       this.estilosLiterariosService
-        .getEstiloLiterarioPorNome(String(this.gf.nome.value).trim())
+        .getPorNome(String(this.gf.nome.value).trim())
         .pipe(first())
         .subscribe({
           next: (v: object) => estiloLiterarioRepetido = <EstiloLiterarioData>v,
@@ -156,7 +156,7 @@ export class EstiloLiterarioComponent implements OnInit {
 
       if (event.submitter.value === EstadosPagina.engadir) {
         this.estilosLiterariosService
-          .postEstiloLiterario(estiloLiterario)
+          .create(estiloLiterario)
           .pipe(first())
           .subscribe({
             next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, estiloLiterario)},
@@ -172,7 +172,7 @@ export class EstiloLiterarioComponent implements OnInit {
       }
       else {
         this.estilosLiterariosService
-          .putEstiloLiterario(estiloLiterario)
+          .update(estiloLiterario)
           .pipe(first())
           .subscribe({
             next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, estiloLiterario)},

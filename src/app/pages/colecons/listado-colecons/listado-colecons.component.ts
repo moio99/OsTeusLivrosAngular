@@ -34,10 +34,10 @@ export class ListadoColeconsComponent implements OnInit {
 
   private obterDadosDoListado(): void {
     this.coleconsService
-      .getListadoColeconsCosLivros()
+      .getListadoCosLivros()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidos(v),
+        next: (v: any) => this.listadoDados = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter as coleçons.'}); },
           // complete: () => console.info('completado listado de coleçons')
@@ -49,6 +49,7 @@ export class ListadoColeconsComponent implements OnInit {
     const dados = <ListadoColeconsData>data;
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
+      this.coleconsService.setListadoCosLivros(dados);
       resultados = dados.data;
     } else {
       resultados = [];
@@ -62,10 +63,10 @@ export class ListadoColeconsComponent implements OnInit {
     if (livros == 0) {
       if(confirm("Está certo de querer borrar a colecom " + nome + "?")) {
         this.coleconsService
-              .borrarColecom(id)
+              .borrar(id)
               .pipe(first())
               .subscribe({
-                next: (v: object) => console.debug(v),
+                next: (v: any) => console.debug(v),
                 error: (e: any) => { console.error(e),
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a coleçom.'}); },
                   complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();

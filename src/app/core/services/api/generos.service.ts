@@ -1,57 +1,20 @@
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { Genero } from '../../models/genero.interface';
+import { HttpClient } from '@angular/common/http';
+import { Genero, GeneroData } from '../../models/genero.interface';
+import { ListadoGenerosData } from '../../models/listado-generos.interface';
+import { BaseApiService } from './base-api.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GenerosService {
+export class GenerosService extends BaseApiService<Genero, GeneroData, ListadoGenerosData> {
+  protected rotaIntermedia = '/Generos';
 
-  private rotaIntermedia = '/Generos';
-
-  constructor(private http: HttpClient) {
+  constructor(override http: HttpClient) {
+    super(http);
   }
 
-  getListadoGeneros() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia);
-  }
-
-  getListadoGenerosCosLivros() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/GenerosCosLivros');
-  }
-
-  getGenero(id: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/Genero?id=' + id);
-  }
-
-  getGeneroPorNome(nome: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/GeneroPorNome?nome=' + nome);
-  }
-
-  getGeneroNome(id: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/GeneroNome?id=' + id);
-  }
-
-  postGenero(genero: Genero) {
-    console.debug('engadindo');
-    return this.http.post(environment.apiUrl + this.rotaIntermedia
-      + '/Genero', genero);
-  }
-
-  putGenero(genero: Genero) {
-    console.debug(genero);
-    return this.http.put(environment.apiUrl + this.rotaIntermedia
-      + '/Genero', genero);
-  }
-
-  borrarGenero(id: string) {
-    console.debug(id);
-    return this.http.delete(environment.apiUrl + this.rotaIntermedia
-      + '/Genero?id=' + id);
+  protected getEntityName(): string {
+    return 'Genero';
   }
 }

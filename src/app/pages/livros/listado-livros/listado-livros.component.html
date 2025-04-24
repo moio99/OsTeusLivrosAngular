@@ -79,8 +79,10 @@
     <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)">{{entrada.paginas || '---'}}</td>
     <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)">{{entrada.quantidadeRelecturas}}</td>
     <td>{{entrada.dataFimLeitura ? (entrada.dataFimLeitura | date:'dd/MM/yyyy') : '---'}}</td>
-    <td (click)="onBorrarElemento(entrada.id, entrada.titulo, entrada.quantidadeSerie, entrada.quantidadeRelecturas)">
-      <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
-    </td>
+    @if (!soVisualizar) {
+      <td (click)="onBorrarElemento(entrada.id, entrada.titulo, entrada.quantidadeSerie, entrada.quantidadeRelecturas)">
+        <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+      </td>
+    }
   </tr>
 </table>

@@ -73,7 +73,7 @@ export class EditorialComponent implements OnInit {
 
   private obterDadosDaEditorial(id: string): void {
     this.editoriaisService
-      .getEditorial(id)
+      .getPorId(id)
       .pipe(first())
       .subscribe({
         next: (v: object) => this.dadosDaEditorial = this.dadosObtidos(v),
@@ -135,7 +135,7 @@ export class EditorialComponent implements OnInit {
 
       let editorialRepetido: EditorialData;
       this.editoriaisService
-        .getEditorialPorNome(String(this.ef.nome.value).trim())
+        .getPorNome(String(this.ef.nome.value).trim())
         .pipe(first())
         .subscribe({
           next: (v: object) => editorialRepetido = <EditorialData>v,
@@ -164,7 +164,7 @@ export class EditorialComponent implements OnInit {
 
       if (event.submitter.value === EstadosPagina.engadir) {
         this.editoriaisService
-          .postEditorial(editorial)
+          .create(editorial)
           .pipe(first())
           .subscribe({
             next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, editorial)},
@@ -180,7 +180,7 @@ export class EditorialComponent implements OnInit {
       }
       else {
         this.editoriaisService
-          .putEditorial(editorial)
+          .update(editorial)
           .pipe(first())
           .subscribe({
             next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, editorial)},
