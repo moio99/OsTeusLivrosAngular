@@ -39,10 +39,10 @@ export class ListadoEstilosLiterariosComponent implements OnInit {
 
   private obterDadosDoListado(): void {
     this.estilosLiterariosService
-      .getListadoEstilosLiterariosCosLivros()
+      .getListadoCosLivros()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidos(v),
+        next: (v: any) => this.listadoDados = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
           // complete: () => console.info('completado listado de estilosLiterarios')
@@ -54,6 +54,7 @@ export class ListadoEstilosLiterariosComponent implements OnInit {
     const dados = <ListadoEstilosLiterariosData>data;
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.estilosLiterarios.length + ' registros obtidos'});
+      this.estilosLiterariosService.setListadoCosLivros(dados);
       resultados = dados.estilosLiterarios;
     } else {
       resultados = [];
@@ -67,10 +68,10 @@ export class ListadoEstilosLiterariosComponent implements OnInit {
     if (livros == 0) {
       if(confirm("Está certo de querer borrar o género " + nome + "?")) {
         this.estilosLiterariosService
-              .borrarEstiloLiterario(id)
+              .borrar(id)
               .pipe(first())
               .subscribe({
-                next: (v: object) => console.debug(v),
+                next: (v: any) => console.debug(v),
                 error: (e: any) => { console.error(e),
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o género.'}); },
                   complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();

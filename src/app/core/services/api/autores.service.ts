@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { environment, environments } from '../../../../environments/environment';
 import { ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
 import { Injectable } from '@angular/core';
 import { Autor } from '../../models/autor.interface';
+import { of } from 'rxjs';
+import { ListadoAutoresData } from '../../models/listado-autores.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -10,12 +12,28 @@ import { Autor } from '../../models/autor.interface';
 export class AutoresService {
 
   private rotaIntermedia = '/Autores';
+    private cacheListadoAutoresData: ListadoAutoresData | undefined = undefined;
 
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * Quando nom estea em local guarda umha caché
+   * @returns
+   */
   getListadoAutores() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia);
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (!isProdOrPre || !this.cacheListadoAutoresData) {
+      return this.http.get(environment.apiUrl + this.rotaIntermedia);
+    } else {
+      return of(this.cacheListadoAutoresData);
+    }
+  }
+  setListadoAutores(dados: ListadoAutoresData) {
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (isProdOrPre) {
+      this.cacheListadoAutoresData = dados;
+    }
   }
 
   getListadoAutoresPorNacons() {

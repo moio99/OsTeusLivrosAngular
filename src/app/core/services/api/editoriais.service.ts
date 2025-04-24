@@ -1,52 +1,20 @@
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { Editorial } from '../../models/editorial.interface';
+import { HttpClient } from '@angular/common/http';
+import { Editorial, EditorialData } from '../../models/editorial.interface';
+import { ListadoEditoriaisData } from '../../models/listado-editoriais.interface';
+import { BaseApiService } from './base-api.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EditoriaisService {
+export class EditoriaisService extends BaseApiService<Editorial, EditorialData, ListadoEditoriaisData> {
+  protected rotaIntermedia = '/Editoriais';
 
-  private rotaIntermedia = '/Editoriais';
-
-  constructor(private http: HttpClient) {
+  constructor(override http: HttpClient) {
+    super(http);
   }
 
-  getListadoEditoriais() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia);
-  }
-
-  getListadoEditoriaisCosLivros() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/EditoriaisCosLivros');
-  }
-
-  getEditorial(id: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/Editorial?id=' + id);
-  }
-
-  getEditorialPorNome(nome: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/EditorialPorNome?nome=' + nome);
-  }
-
-  postEditorial(editorial: Editorial) {
-    console.debug('engadindo');
-    return this.http.post(environment.apiUrl + this.rotaIntermedia
-      + '/Editorial', editorial);
-  }
-
-  putEditorial(editorial: Editorial) {
-    console.debug(editorial);
-    return this.http.put(environment.apiUrl + this.rotaIntermedia
-      + '/Editorial', editorial);
-  }
-
-  borrarEditorial(id: string) {
-    console.debug(id);
-    return this.http.delete(environment.apiUrl + this.rotaIntermedia
-      + '/Editorial?id=' + id);
+  protected getEntityName(): string {
+    return 'Editorial';
   }
 }

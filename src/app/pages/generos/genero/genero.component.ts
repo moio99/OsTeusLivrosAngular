@@ -72,7 +72,7 @@ export class GeneroComponent implements OnInit {
 
   private obterDadosDoGenero(id: string): void {
     this.generosService
-      .getGenero(id)
+      .getPorId(id)
       .pipe(first())
       .subscribe({
         next: (v: object) => this.dadosDoGenero = this.dadosObtidos(v),
@@ -131,7 +131,7 @@ export class GeneroComponent implements OnInit {
     if (this.gf.nome.status === 'VALID' && this.gf.comentario.status === 'VALID') {
       let generoRepetido: GeneroData;
       this.generosService
-        .getGeneroPorNome(String(this.gf.nome.value).trim())  // Para comprobar que nom exista já um género co mesmo nome
+        .getPorNome(String(this.gf.nome.value).trim())  // Para comprobar que nom exista já um género co mesmo nome
         .pipe(first())
         .subscribe({
           next: (v: object) => generoRepetido = <GeneroData>v,
@@ -158,7 +158,7 @@ export class GeneroComponent implements OnInit {
 
       if (event.submitter.value === EstadosPagina.engadir) {
         this.generosService
-          .postGenero(genero)
+          .create(genero)
           .pipe(first())
           .subscribe({
             next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, genero), this.usuarioAppService.setGenero(genero)},
@@ -174,7 +174,7 @@ export class GeneroComponent implements OnInit {
       }
       else {
         this.generosService
-          .putGenero(genero)
+          .update(genero)
           .pipe(first())
           .subscribe({
             next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, genero), this.usuarioAppService.setGenero(genero)},

@@ -1,52 +1,20 @@
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { Colecom } from '../../models/colecom.interface';
+import { HttpClient } from '@angular/common/http';
+import { Colecom, ColecomData } from '../../models/colecom.interface';
+import { ListadoColeconsData } from '../../models/listado-colecons.interface';
+import { BaseApiService } from './base-api.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ColeconsService {
+export class ColeconsService extends BaseApiService<Colecom, ColecomData, ListadoColeconsData> {
+  protected rotaIntermedia = '/Colecons';
 
-  private rotaIntermedia = '/Colecons';
-
-  constructor(private http: HttpClient) {
+  constructor(override http: HttpClient) {
+    super(http);
   }
 
-  getListadoColecons() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia);
-  }
-
-  getListadoColeconsCosLivros() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/ColeconsCosLivros');
-  }
-
-  getColecom(id: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/Colecom?id=' + id);
-  }
-
-  getColecomPorNome(nome: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/ColecomPorNome?nome=' + nome);
-  }
-
-  postColecom(colecom: Colecom) {
-    console.debug('engadindo');
-    return this.http.post(environment.apiUrl + this.rotaIntermedia
-      + '/Colecom', colecom);
-  }
-
-  putColecom(colecom: Colecom) {
-    console.debug(colecom);
-    return this.http.put(environment.apiUrl + this.rotaIntermedia
-      + '/Colecom', colecom);
-  }
-
-  borrarColecom(id: string) {
-    console.debug(id);
-    return this.http.delete(environment.apiUrl + this.rotaIntermedia
-      + '/Colecom?id=' + id);
+  protected getEntityName(): string {
+    return 'Colecom';
   }
 }

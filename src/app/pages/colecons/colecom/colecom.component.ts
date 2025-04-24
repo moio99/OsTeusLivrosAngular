@@ -73,7 +73,7 @@ export class ColecomComponent implements OnInit {
 
   private obterDadosDaColecom(id: string): void {
     this.coleconsService
-      .getColecom(id)
+      .getPorId(id)
       .pipe(first())
       .subscribe({
         next: (v: object) => this.dadosDaColecom = this.dadosObtidos(v),
@@ -134,7 +134,7 @@ export class ColecomComponent implements OnInit {
       && this.cf.web.status === 'VALID'  && this.cf.comentario.status === 'VALID') {
         let colecomRepetido: ColecomData;
         this.coleconsService
-          .getColecomPorNome(String(this.cf.nome.value).trim())
+          .getPorNome(String(this.cf.nome.value).trim())
           .pipe(first())
           .subscribe({
             next: (v: object) => colecomRepetido = <ColecomData>v,
@@ -163,7 +163,7 @@ export class ColecomComponent implements OnInit {
 
       if (event.submitter.value === EstadosPagina.engadir) {
         this.coleconsService
-          .postColecom(colecom)
+          .create(colecom)
           .pipe(first())
           .subscribe({
             next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, colecom)},
@@ -179,7 +179,7 @@ export class ColecomComponent implements OnInit {
       }
       else {
         this.coleconsService
-          .putColecom(colecom)
+          .update(colecom)
           .pipe(first())
           .subscribe({
             next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, colecom)},

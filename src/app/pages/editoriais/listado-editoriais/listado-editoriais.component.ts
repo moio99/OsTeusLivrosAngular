@@ -39,10 +39,10 @@ export class ListadoEditoriaisComponent implements OnInit {
 
   private obterDadosDoListado(): void {
     this.editoriaisService
-      .getListadoEditoriaisCosLivros()
+      .getListadoCosLivros()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidos(v),
+        next: (v: any) => this.listadoDados = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter as editoriais.'}); },
           // complete: () => console.info('completado listado de editoriais')
@@ -54,6 +54,7 @@ export class ListadoEditoriaisComponent implements OnInit {
     const dados = <ListadoEditoriaisData>data;
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
+      this.editoriaisService.setListadoCosLivros(dados);
       resultados = dados.data.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso));
     } else {
       resultados = [];
@@ -67,10 +68,10 @@ export class ListadoEditoriaisComponent implements OnInit {
     if (livros == 0) {
       if(confirm("Está certo de querer borrar a editorial " + nome + "?")) {
         this.editoriaisService
-              .borrarEditorial(id)
+              .borrar(id)
               .pipe(first())
               .subscribe({
-                next: (v: object) => console.debug(v),
+                next: (v: any) => console.debug(v),
                 error: (e: any) => { console.error(e),
                   this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a editirial.'}); },
                   complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();

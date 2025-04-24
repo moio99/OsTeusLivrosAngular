@@ -103,6 +103,7 @@ export class ListadoAutoresComponent implements OnInit {
     const dados = <ListadoAutoresData>data;
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
+      this.autoresService.setListadoAutores(dados);
       resultados = dados.data.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso));
     } else {
       resultados = [];

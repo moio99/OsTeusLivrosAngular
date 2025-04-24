@@ -33,6 +33,14 @@ export class UsuarioAppService {
   }
 
   /**
+   * Comproba se existen datos de outros no usuario.
+   * @returns {boolean} Verdadeiro se existen datos de outros, falso doutra maneira.
+   */
+  haDadosOutros(): boolean {
+    return !!this.dadosOutros;
+  }
+
+  /**
    * Engade ou actualiza un xenero nos datos do usuario.
    * Se o xenero xa existe, actualiza o seu rexistro. Se non existe, engade o novo rexistro.
    * Non modifica o estado do usuario se o xenero non se atopa entre os rexistros do usuario.

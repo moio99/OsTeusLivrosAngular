@@ -83,7 +83,7 @@ export class BibliotecaComponent implements OnInit {
 
   private obterDadosDaBiblioteca(id: string): void {
     this.bibliotecasService
-      .getBiblioteca(id)
+      .getPorId(id)
       .pipe(first())
       .subscribe({
         next: (v) => this.dadosDaBiblioteca = this.dadosObtidos(v),
@@ -151,7 +151,7 @@ export class BibliotecaComponent implements OnInit {
       let bibliotecaRepetida: BibliotecaData;
 
       this.bibliotecasService
-        .getBibliotecaPorNome(String(this.bf.nome.value).trim())
+        .getPorNome(String(this.bf.nome.value).trim())
         .pipe(first())
         .subscribe({
           next: (v) => bibliotecaRepetida = <BibliotecaData>v,
@@ -188,7 +188,7 @@ export class BibliotecaComponent implements OnInit {
 
       if (event.submitter.value === EstadosPagina.engadir) {
         this.bibliotecasService
-          .postBiblioteca(biblioteca)
+          .create(biblioteca)
           .pipe(first())
           .subscribe({
             next: (v) => {console.debug(v), this.gestionarRetroceso(v, biblioteca)},
@@ -204,7 +204,7 @@ export class BibliotecaComponent implements OnInit {
       }
       else {
         this.bibliotecasService
-          .putBiblioteca(biblioteca)
+          .update(biblioteca)
           .pipe(first())
           .subscribe({
             next: (v) => {console.debug(v), this.gestionarRetroceso(v, biblioteca)},

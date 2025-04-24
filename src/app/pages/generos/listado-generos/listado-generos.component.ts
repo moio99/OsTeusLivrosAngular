@@ -42,10 +42,10 @@ export class ListadoGenerosComponent implements OnInit {
 
   private obterDadosDoListado(): void {
     this.generosService
-      .getListadoGenerosCosLivros()
+      .getListadoCosLivros()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidos(v),
+        next: (v: any) => this.listadoDados = this.dadosObtidos(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
           // complete: () => console.info('completado listado de generos')
@@ -56,6 +56,7 @@ export class ListadoGenerosComponent implements OnInit {
     let resultados: ListadoGeneros[];
     const dados = <ListadoGenerosData>data;
     if (dados != null) {
+      this.generosService.setListadoCosLivros(dados);
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
       resultados = dados.data.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso));
     } else {
@@ -70,10 +71,10 @@ export class ListadoGenerosComponent implements OnInit {
     if (livros == 0) {
       if(confirm("Está certo de querer borrar o género " + nome + "?")) {
         this.generosService
-          .borrarGenero(id)
+          .borrar(id)
           .pipe(first())
           .subscribe({
-            next: (v: object) => this.usuarioAppService.removerGenero(id),
+            next: (v: any) => this.usuarioAppService.removerGenero(id),
             error: (e: any) => { console.error(e),
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o género.'}); },
               complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();

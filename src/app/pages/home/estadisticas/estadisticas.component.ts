@@ -149,7 +149,7 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
       .getGraficosPaginasPorIdiomaEAno()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.comprobarDadosObtidos(rota, v),
+        next: (v: any) => this.comprobarDadosObtidos(rota, v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
           // complete: () => console.info('completado listado de generos')
@@ -161,7 +161,7 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
       .getEstadisticas(EstadisticasTipo.Idioma)
       .pipe(first())
       .subscribe({
-        next: (v) => this.idiomasSignal.set(this.dadosObtidos(v)),
+        next: (v) => this.idiomasSignal.set(this.dadosObtidos(EstadisticasTipo.Idioma, v)),
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter as estadísticas por idiomas.'}); },
@@ -171,7 +171,7 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
       .getEstadisticas(EstadisticasTipo.Ano)
       .pipe(first())
       .subscribe({
-        next: (v) => this.anosSignal.set(this.dadosObtidos(v)),
+        next: (v) => this.anosSignal.set(this.dadosObtidos(EstadisticasTipo.Ano, v)),
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter as estadísticas por anos.'}); },
@@ -181,7 +181,7 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
       .getEstadisticas(EstadisticasTipo.Genero)
       .pipe(first())
       .subscribe({
-        next: (v) => this.generosSignal.set(this.dadosObtidos(v)),
+        next: (v) => this.generosSignal.set(this.dadosObtidos(EstadisticasTipo.Genero, v)),
         error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter as estadísticas por géneros.'}); },
@@ -189,10 +189,11 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
     });
   }
 
-  private dadosObtidos(data: object): Estadisticas[] {
+  private dadosObtidos(tipo: EstadisticasTipo, data: object): Estadisticas[] {
     let resultados: Estadisticas[];
     const dados = <EstadisticasData>data;
     if (dados != null) {
+      this.estadisticasService.setGraficosPaginasPorIdiomaEAno(tipo, dados);
       resultados = dados.data;
     } else {
       resultados = [];
@@ -207,6 +208,7 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
 
     const dados = <GraficosData>data;
     if (dados != null) {
+      this.graficosService.setGraficosPaginasPorIdiomaEAno(dados);
       this.router.navigate([rota], {
         state: { dados: dados.data },
       });
@@ -217,16 +219,20 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
   }
 
   private obterDadosOutros() {
-    this.outrosService.getTodo()
-      .pipe(first())
-      .subscribe({
-        next: (data) => {
-          this.isDadosCombosPendente = false;
-          this.usuarioApp.setDadosOutros(data);
-        },
-        error: () => {
-          this.isDadosCombosPendente = false;
-        },
-    });
+    if (this.usuarioApp.haDadosOutros()) {
+      this.isDadosCombosPendente = false;
+    } else {
+      this.outrosService.getTodo()
+        .pipe(first())
+        .subscribe({
+          next: (data) => {
+            this.isDadosCombosPendente = false;
+            this.usuarioApp.setDadosOutros(data);
+          },
+          error: () => {
+            this.isDadosCombosPendente = false;
+          },
+      });
+    }
   }
 }

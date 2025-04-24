@@ -93,7 +93,7 @@ export class ListadoLivrosComponent implements OnInit {
 
   private obterDadosDoListado(): void {
     if (this.parametros.tipo) {
-      switch (+this.parametros.tipo) {
+      switch (+this.parametros.tipo) {    // Póde-se chegar para amosar o listado de livros por Ano, por Idioma etc
         case EstadisticasTipo.Idioma:
           this.titulo = this.tituloListado + ' polo idioma ';
           this.livrosService
@@ -139,10 +139,10 @@ export class ListadoLivrosComponent implements OnInit {
                   mensagem: 'Nom se puiderom obter os livros polo género ' + this.parametros.id}); },
             //complete: () => console.info('completado listado de livros por Genero')
           });
-          this.generosService.getGeneroNome(this.parametros.id)
+          this.generosService.getPorNome(this.parametros.id)
             .pipe(first())
             .subscribe({
-              next: (v: object) => this.titulo += v,
+              next: (v: any) => this.titulo += v,
               error: (e: any) => { console.error(e) },
             //complete: () => console.info('completado listado de livros por Genero')
             });
