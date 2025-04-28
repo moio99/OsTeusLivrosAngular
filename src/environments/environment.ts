@@ -8,7 +8,7 @@ export enum environments {
 
 export const environment = {
   production: false,
-  whereIAm: environments.dev,
+  whereIAm: environments.pre,
   // whereIAm: environments.pre,
   apiUrl: "http://localhost:5002/api"
   // apiUrl: "https://osteuslivrosnodejs-production.up.railway.app/api"
