@@ -8,6 +8,6 @@ export interface Estadisticas {
   id: number;
   nome: string;
   quantidade: number;
-  quantidadePaginas: number;
+  quantidadepaginas: number;
   quantidadeRelecturas: number;
 }

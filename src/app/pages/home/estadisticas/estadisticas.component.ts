@@ -14,6 +14,7 @@ import { OutrosService } from '../../../core/services/api/outros.service';
 import { PeticomPendenteComponent } from '../../../peticom-pendente.guard';
 import { environment, environments } from '../../../../environments/environment';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'omla-estadisticas',
@@ -104,7 +105,7 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
     this.tipoOrdeacomAnos = this.ordePaginasAnos;
 
     this.anosSignal.update(listadoAnos => {
-      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.quantidadePaginas, b.quantidadePaginas, this.inversoAnos, false));
+      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.quantidadepaginas, b.quantidadepaginas, this.inversoAnos, false));
       return listadoAnos;
     });
   }
@@ -124,7 +125,7 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
     this.tipoOrdeacomGeneros = this.ordePaginasGeneros;
 
     this.generosSignal.update(listadoGeneros => {
-      listadoGeneros.sort((a,b) => new Ordeacom().ordear(a.quantidadePaginas, b.quantidadePaginas, this.inversoGeneros, false));
+      listadoGeneros.sort((a,b) => new Ordeacom().ordear(a.quantidadepaginas, b.quantidadepaginas, this.inversoGeneros, false));
       return listadoGeneros;
     });
   }
@@ -172,7 +173,32 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
   }
 
   private obterEstadisticas(): void {
-    this.estadisticasService
+
+    const observavel1 = this.estadisticasService
+      .getEstadisticas(EstadisticasTipo.Idioma); // Observavel 1
+    const observavel2 = this.estadisticasService
+      .getEstadisticas(EstadisticasTipo.Ano); // Observavel 2
+    const observavel3 = this.estadisticasService
+      .getEstadisticas(EstadisticasTipo.Genero); // Observavel 2
+
+    forkJoin([observavel1, observavel2, observavel3])
+      .subscribe({
+        next: ([res1, res2, res3]) => {
+          // só se ejecuta quando acabam as duas chamadas
+          this.idiomasSignal.set(this.dadosObtidos(EstadisticasTipo.Idioma, res1));
+          this.anosSignal.set(this.dadosObtidos(EstadisticasTipo.Ano, res2));
+          this.generosSignal.set(this.dadosObtidos(EstadisticasTipo.Genero, res3));
+        },
+        error: (err) => {
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+            mensagem: 'Nom se puiderom obter as estadísticas.'});
+        },
+        // complete: () => {
+        //   console.log('Todas las estadísticas cargadas');
+        // }
+    });
+
+    /* this.estadisticasService
       .getEstadisticas(EstadisticasTipo.Idioma)
       .pipe(first())
       .subscribe({
@@ -201,7 +227,7 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter as estadísticas por géneros.'}); },
           // complete: () => console.info('completado por Genero')
-    });
+    }); */
   }
 
   private dadosObtidos(tipo: EstadisticasTipo, data: object): Estadisticas[] {

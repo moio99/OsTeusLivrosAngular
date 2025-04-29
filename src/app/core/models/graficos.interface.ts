@@ -8,5 +8,5 @@ export interface Graficos {
   id: number;     // Ano
   idioma: string;
   idIdioma: number;
-  quantidadePaginas: number;
+  quantidadepaginas: number;
 }

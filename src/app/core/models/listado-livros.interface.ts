@@ -20,7 +20,7 @@ export interface ListadoLivros {
   nomeIdioma: string;
   lido: boolean;
   idAutor: number;
-  nomeAutor: string;
+  nomeautor: string;
   autores: Autores[];
   quantidadeSerie: number;
   quantidadeRelecturas: number;

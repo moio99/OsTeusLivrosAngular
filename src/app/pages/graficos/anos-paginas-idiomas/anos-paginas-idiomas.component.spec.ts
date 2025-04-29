@@ -43,10 +43,10 @@ describe('AnosPaginasIdiomasComponent', () => {
 
   it('Este é um privado, debe separar os dados por idioma e acumular as páginas', () => {
     const mockData = [
-      { id: 1998, idioma: 'Galician-AGAL', idIdioma: 1, quantidadePaginas: 100 },
-      { id: 1999, idioma: 'Galician-AGAL', idIdioma: 1, quantidadePaginas: 150 },
-      { id: 2000, idioma: 'Galician-AGAL', idIdioma: 1, quantidadePaginas: 200 },
-      { id: 1999, idioma: 'Portuguese', idIdioma: 3, quantidadePaginas: 80 },
+      { id: 1998, idioma: 'Galician-AGAL', idIdioma: 1, quantidadepaginas: 100 },
+      { id: 1999, idioma: 'Galician-AGAL', idIdioma: 1, quantidadepaginas: 150 },
+      { id: 2000, idioma: 'Galician-AGAL', idIdioma: 1, quantidadepaginas: 200 },
+      { id: 1999, idioma: 'Portuguese', idIdioma: 3, quantidadepaginas: 80 },
     ];
 
     component.coresIdiomas = { 1: {nome: 'Galician-AGAL', cor: '#215d9a'}, 3: { nome: 'Portuguese', cor: '#2f9736' } };

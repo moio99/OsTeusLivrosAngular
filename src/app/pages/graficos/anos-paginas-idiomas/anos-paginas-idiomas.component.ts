@@ -79,7 +79,7 @@ export class AnosPaginasIdiomasComponent implements OnInit {
         datosPorIdioma[dado.idioma + dado.id] = [];
       }
       datosPorIdioma[dado.idioma + dado.id].push(
-        { id: dado.id, idioma: dado.idioma, idIdioma: dado.idIdioma, quantidadePaginas: dado.quantidadePaginas }
+        { id: dado.id, idioma: dado.idioma, idIdioma: dado.idIdioma, quantidadepaginas: dado.quantidadepaginas }
       );
 
       if (!labelsAnos.includes(dado.id.toString())) {
@@ -103,7 +103,7 @@ export class AnosPaginasIdiomasComponent implements OnInit {
           previo = datosPorIdiomaComTodosOsAnos[idioma][datosPorIdiomaComTodosOsAnos[idioma].length - 1];
         }
         if (quantidade) {
-          datosPorIdiomaComTodosOsAnos[idioma].push(previo + quantidade[0].quantidadePaginas);
+          datosPorIdiomaComTodosOsAnos[idioma].push(previo + quantidade[0].quantidadepaginas);
         } else {
           datosPorIdiomaComTodosOsAnos[idioma].push(previo);
         }

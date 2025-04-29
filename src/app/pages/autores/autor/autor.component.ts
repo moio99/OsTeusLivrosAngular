@@ -21,6 +21,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { environment, environments } from '../../../../environments/environment';
+import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 
 @Component({
   selector: 'omla-autor',
@@ -87,6 +88,7 @@ export class AutorComponent implements OnInit {
     private layoutService: LayoutService,
     private fb: FormBuilder,
     private location: Location,
+    private usuarioAppService: UsuarioAppService,
     private outrosService: OutrosService,
     private autoresService: AutoresService,
     private livrosService: LivrosService,
@@ -106,7 +108,9 @@ export class AutorComponent implements OnInit {
     if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
       this.modo = EstadosPagina.soVisualizar;
     }
-    this.obterNacionalidades(state.id);
+
+    this.estabelecerDisponibilidade();
+    this.obterOutrosDados(state.id);
   }
 
   /**
@@ -175,6 +179,17 @@ export class AutorComponent implements OnInit {
       console.debug('Nom se obtiverom dados dos livros do autor');
     }
     return resultados
+  }
+
+  private obterOutrosDados(idAutor: string): void {
+    const dados = this.usuarioAppService.getDadosOutros();
+    if (dados) {                                            // Já os tinhamos
+      this.dadosNacionalidades = this.dadosNacionalidadesObtidas(dados.nacionalidades);
+      this.dadosPaises = this.dadosPaisesObtidos(dados.paises);
+      this.obterDadosDoAutor(idAutor);
+    } else {
+      this.obterNacionalidades(idAutor);
+    }
   }
 
   private obterNacionalidades(idAutor: string): void {
@@ -316,6 +331,14 @@ export class AutorComponent implements OnInit {
       resultados = undefined;
     }
     return resultados
+  }
+
+  private estabelecerDisponibilidade() {
+    if (this.modo === EstadosPagina.soVisualizar) {
+      this.autorForm.disable();
+    } else {
+      this.autorForm.enable();
+    }
   }
   //#region
 

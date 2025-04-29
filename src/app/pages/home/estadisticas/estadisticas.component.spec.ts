@@ -22,7 +22,7 @@ describe('EstadisticasComponent', () => {
         id: 1,
         nome: 'GAL',
         quantidade: 2,
-        quantidadePaginas: 200,
+        quantidadepaginas: 200,
         quantidadeRelecturas: 0}] })), // Valor por defecto (puedes ajustarlo según tus necesidades)
     } as any;
 
@@ -123,13 +123,13 @@ describe('EstadisticasComponent', () => {
     expect(component.generosSignal()).toEqual([{id: 1,
       nome: 'GAL',
       quantidade: 2,
-      quantidadePaginas: 200,
+      quantidadepaginas: 200,
       quantidadeRelecturas: 0}]);
   });
 
   it('SIGNAL, debe cambiar a ordeaçom da quantidade dos anos correctamente', () => {
-    const mockAnos = [{ id: 1, nome: '2021', quantidade: 5, quantidadePaginas: 110, quantidadeRelecturas: 0 },
-      { id: 2, nome: '2020', quantidade: 10, quantidadePaginas: 350, quantidadeRelecturas: 0 }];
+    const mockAnos = [{ id: 1, nome: '2021', quantidade: 5, quantidadepaginas: 110, quantidadeRelecturas: 0 },
+      { id: 2, nome: '2020', quantidade: 10, quantidadepaginas: 350, quantidadeRelecturas: 0 }];
     component.anosSignal.set(mockAnos);
     component.setOrdeAnos();
 
