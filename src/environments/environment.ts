@@ -12,6 +12,7 @@ export const environment = {
   // whereIAm: environments.pre,
   apiUrl: "http://localhost:5002/api"
   // apiUrl: "https://osteuslivrosnodejs-production.up.railway.app/api"
+  // apiUrl: "https://osteuslivrosnodejs.onrender.com/api"
 };
 
 /*

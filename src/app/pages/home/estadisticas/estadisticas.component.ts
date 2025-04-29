@@ -105,7 +105,7 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
     this.tipoOrdeacomAnos = this.ordePaginasAnos;
 
     this.anosSignal.update(listadoAnos => {
-      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.quantidadePaginas, b.quantidadePaginas, this.inversoAnos, false));
+      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.quantidadepaginas, b.quantidadepaginas, this.inversoAnos, false));
       return listadoAnos;
     });
   }
@@ -125,7 +125,7 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
     this.tipoOrdeacomGeneros = this.ordePaginasGeneros;
 
     this.generosSignal.update(listadoGeneros => {
-      listadoGeneros.sort((a,b) => new Ordeacom().ordear(a.quantidadePaginas, b.quantidadePaginas, this.inversoGeneros, false));
+      listadoGeneros.sort((a,b) => new Ordeacom().ordear(a.quantidadepaginas, b.quantidadepaginas, this.inversoGeneros, false));
       return listadoGeneros;
     });
   }

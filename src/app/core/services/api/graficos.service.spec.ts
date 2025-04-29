@@ -31,7 +31,7 @@ describe('GraficosService', () => {
         id: 2022,     // Ano
         idioma: 'GL',
         idIdioma: 1,
-        quantidadePaginas: 5000,
+        quantidadepaginas: 5000,
       }],
       meta: ''
     };
