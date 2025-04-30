@@ -70,6 +70,7 @@ export class EstiloLiterarioComponent implements OnInit {
   }
 
   private obterDadosDoEstiloLiterario(id: string): void {
+    console.log('estiloLiterario id aaaaaaaaaaaaaa', id);
     this.estilosLiterariosService
       .getPorId(id)
       .pipe(first())
@@ -84,6 +85,7 @@ export class EstiloLiterarioComponent implements OnInit {
   private dadosObtidos(data: object): EstiloLiterario  | undefined {
     let resultados: EstiloLiterario | undefined;
     const dados = <EstiloLiterarioData>data;
+    console.log('estiloLiterario id bbbbbbb', dados);
     if (dados.estiloLiterario.length > 0) {
       resultados = dados.estiloLiterario[0];
       if (resultados != undefined) {

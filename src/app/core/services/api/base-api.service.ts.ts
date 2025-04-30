@@ -33,6 +33,7 @@ export abstract class BaseApiService<T, DataT, ListadoT> {  // clase que a exten
   }
 
   getPorId(id: string): Observable<T> {
+    console.debug('dddddddddddddd', `${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}?id=${id}`);
     return this.http.get<T>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}?id=${id}`);
   }
 
