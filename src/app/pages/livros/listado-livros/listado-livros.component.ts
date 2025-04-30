@@ -240,7 +240,7 @@ export class ListadoLivrosComponent implements OnInit {
     this.inverso = (this.tipoOrdeacom == this.ordeAutorAlfabetico) ? !this.inverso : false;
     this.tipoOrdeacom = this.ordeAutorAlfabetico;
 
-    this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.nomeautor, b.nomeautor, this.inverso));
+    this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.nomeAutor, b.nomeAutor, this.inverso));
   }
 
   setOrdePaginas() {
