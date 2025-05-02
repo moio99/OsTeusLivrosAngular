@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
 import { Parametros } from '../../../core/models/autor.interface';
 import { environment, environments } from '../../../../environments/environment';
+import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 
 @Component({
   selector: 'omla-listado-autores',
@@ -20,7 +21,7 @@ import { environment, environments } from '../../../../environments/environment'
   templateUrl: './listado-autores.component.html',
   styleUrls: ['./listado-autores.component.scss']
 })
-export class ListadoAutoresComponent implements OnInit {
+export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores> implements OnInit {
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   nomeAlfabetico = ', alfabético';
@@ -29,14 +30,16 @@ export class ListadoAutoresComponent implements OnInit {
   filtroPaisOuNacionalidade = '';
   tipoOrdeacom = this.nomeAlfabetico;
   inverso = false;
-  listadoDados: ListadoAutores[] = [];
+  override listadoDados: ListadoAutores[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private layoutService: LayoutService,
     private autoresService: AutoresService,
-    private outrosService: OutrosService) { }
+    private outrosService: OutrosService,
+    layoutService: LayoutService) {
+      super(layoutService);
+    }
 
   ngOnInit(): void {
     this.route.queryParams
@@ -46,17 +49,17 @@ export class ListadoAutoresComponent implements OnInit {
           this.obterDadosDoListadoPorTipo(parametros);
         }
         else
-          this.obterDadosDoListado();
+          this.obterDadosDoListadoAA();
       }
     );
   }
 
-  private obterDadosDoListado(): void {
+  private obterDadosDoListadoAA(): void {
     this.autoresService
       .getListadoAutores()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidos(v),
+        next: (v: object) => this.listadoDados = this.dadosObtidosAA(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor'}); },
           // complete: () => console.info('completado listado de autores')
@@ -91,14 +94,14 @@ export class ListadoAutoresComponent implements OnInit {
       .getListadoAutoresFiltrados(parametros.id, parametros.tipo)
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidos(v),
+        next: (v: object) => this.listadoDados = this.dadosObtidosAA(v),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autores'}); },
           // complete: () => console.info('completado listado de autores')
     });
   }
 
-  private dadosObtidos(data: object): ListadoAutores[] {
+  private dadosObtidosAA(data: object): ListadoAutores[] {
     let resultados: ListadoAutores[];
     const dados = <ListadoAutoresData>data;
     if (dados != null) {
@@ -113,28 +116,15 @@ export class ListadoAutoresComponent implements OnInit {
     return resultados
   }
 
-  onBorrarElemento(id: number, nome: string, livros: number) {
-    if (livros == 0) {
-      if(confirm("Está certo de querer borrar o autor " + nome + "?")) {
-        this.autoresService
-              .borrarAutor(id)
-              .pipe(first())
-              .subscribe({
-                next: (v: object) => console.debug(v),
-                error: (e: any) => { console.error(e),
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o autor.'}); },
-                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro borrado.'}); }
-            });
-      }
-    }
-    else {
-      let pergunta = 'Nom se pode borrar o autor ' + nome + ' mentres tenha ' + livros;
-      let singular = ' livro asociado';
-      let plural = ' livros asociados';
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: pergunta});
-      alert(pergunta + ((livros == 1) ? singular : plural));
-    }
+  onBorrar(id: string, nome: string, quantidadeLivros: number) {
+    this.onBorrarElemento(
+      id,
+      quantidadeLivros,
+      nome,
+      'o autor',
+      'Autor borrado correctamente',
+      (id) => this.autoresService.borrarAutor(+id)
+    );
   }
 
   ordeAlfabetico() {
@@ -158,7 +148,7 @@ export class ListadoAutoresComponent implements OnInit {
     this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso, false));
   }
 
-  onIrPagina(rota: string, id: number): void{
+  onIrPagina(rota: string, id: string): void{
     this.layoutService.amosarInfo(undefined);
     //this.router.navigateByUrl(rota + '?id=' + id);  // Ponho o de abaixo para probar outro jeito de enviar os parámetros
     this.router.navigate([rota], {

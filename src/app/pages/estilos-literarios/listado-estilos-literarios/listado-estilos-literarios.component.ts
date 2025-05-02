@@ -10,6 +10,7 @@ import { EstiloLiterarioComponent } from '../estilo-literario/estilo-literario.c
 import { EstilosLiterariosService } from '../../../core/services/api/estilos-literarios.service';
 import { ListadoEstilosLiterarios, ListadoEstilosLiterariosData } from '../../../core/models/listado-estilos-literarios.interface';
 import { environment, environments } from '../../../../environments/environment';
+import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 
 @Component({
   selector: 'omla-listado-estilos-literarios',
@@ -18,7 +19,7 @@ import { environment, environments } from '../../../../environments/environment'
   templateUrl: './listado-estilos-literarios.component.html',
   styleUrls: ['./listado-estilos-literarios.component.scss']
 })
-export class ListadoEstilosLiterariosComponent implements OnInit {
+export class ListadoEstilosLiterariosComponent extends BaseListadoComponent<ListadoEstilosLiterarios> implements OnInit {
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   numeroLivros = ', número de livros';
@@ -26,66 +27,34 @@ export class ListadoEstilosLiterariosComponent implements OnInit {
   tipoOrdeacom = '';
   inverso = false;
   tipoListado = '';
-  listadoDados: ListadoEstilosLiterarios[] = [];
+  override listadoDados: ListadoEstilosLiterarios[] = [];
 
   constructor(
     private router: Router,
-    private layoutService: LayoutService,
-    private estilosLiterariosService: EstilosLiterariosService) { }
+    private estilosLiterariosService: EstilosLiterariosService,
+    layoutService: LayoutService) {
+      super(layoutService);
+    }
 
   ngOnInit(): void {
-    this.obterDadosDoListado();
+    super.obterDadosDoListado('os estilos literarios',
+      this.estilosLiterariosService.getListadoCosLivros(),
+      this.estilosLiterariosService.setListadoCosLivros.bind(this.estilosLiterariosService));
   }
 
-  private obterDadosDoListado(): void {
-    this.estilosLiterariosService
-      .getListadoCosLivros()
-      .pipe(first())
-      .subscribe({
-        next: (v: any) => this.listadoDados = this.dadosObtidos(v),
-        error: (e: any) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
-          // complete: () => console.info('completado listado de estilosLiterarios')
-    });
+  onBorrar(id: string, nome: string, quantidadeLivros: number) {
+    this.onBorrarElemento(
+      id,
+      quantidadeLivros,
+      nome,
+      'o Estilo Literario',
+      'Estilo Literario borrado correctamente',
+      (id) => this.estilosLiterariosService.borrar(id)
+    );
   }
 
-  private dadosObtidos(data: object): ListadoEstilosLiterarios[] {
-    let resultados: ListadoEstilosLiterarios[];
-    const dados = <ListadoEstilosLiterariosData>data;
-    if (dados != null) {
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.estilosLiterarios.length + ' registros obtidos'});
-      this.estilosLiterariosService.setListadoCosLivros(dados);
-      resultados = dados.estilosLiterarios;
-    } else {
-      resultados = [];
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
-      console.debug('Nom se obtiverom dados');
-    }
-    return resultados
-  }
-
-  onBorrarElemento(id: string, nome: string, livros: number) {
-    if (livros == 0) {
-      if(confirm("Está certo de querer borrar o género " + nome + "?")) {
-        this.estilosLiterariosService
-              .borrar(id)
-              .pipe(first())
-              .subscribe({
-                next: (v: any) => console.debug(v),
-                error: (e: any) => { console.error(e),
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o género.'}); },
-                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género borrado.'}); }
-            });
-      }
-    }
-    else {
-      let pergunta = 'Nom se pode borrar o Estilo Literario ' + nome + ' mentres tenha ' + livros;
-      let singular = ' livro asociado';
-      let plural = ' livros asociados';
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: pergunta + ((livros == 1) ? singular : plural)});
-      alert(pergunta + ((livros == 1) ? singular : plural));
-    }
+  trackById(index: number, item: any): number {
+    return item.id;
   }
 
   ordeNumeroLivros() {

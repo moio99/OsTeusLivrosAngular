@@ -19,13 +19,14 @@
       [actual]="this.tipoOrdeacom"
       [inverso]="this.inverso"></omla-orde-coluna></th>
   </tr>
-  <tr *ngFor="let entrada of this.listadoDados" class="listado-accom">
+  <tr *ngFor="let entrada of this.listadoDados; trackBy: trackById" class="listado-accom">
     <td (click)="onIrPagina('/editoriais/editorial', entrada.id)">{{entrada.nome}}</td>
     <td (click)="onIrPagina('/editoriais/editorial', entrada.id)">{{entrada.web || '---'}}</td>
     <td (click)="onIrPagina('/editoriais/editorial', entrada.id)">{{entrada.quantidadeLivros}}</td>
     @if (!soVisualizar) {
-      <td (click)="onBorrarElemento(entrada.id, entrada.nome, entrada.quantidadeLivros)">
-        <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+      <td (click)="$event.stopPropagation()">
+        <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar"
+          (click)="onBorrar(entrada.id, entrada.nome, entrada.quantidadeLivros)">
       </td>
     }
   </tr>

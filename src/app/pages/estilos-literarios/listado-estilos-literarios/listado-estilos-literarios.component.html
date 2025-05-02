@@ -31,8 +31,9 @@
         <td (click)="onIrPagina('/estilos-literarios/estilo-literario', entrada.id)">{{entrada.quantidadeLivros}}</td>
         <td (click)="onIrPagina('/estilos-literarios/estilo-literario', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>
         @if (!soVisualizar) {
-          <td (click)="onBorrarElemento(entrada.id, entrada.nome, entrada.quantidadeLivros)">
-            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+          <td (click)="$event.stopPropagation()">
+            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar"
+              (click)="onBorrar(entrada.id, entrada.nome, entrada.quantidadeLivros)">
           </td>
         }
       </tr>

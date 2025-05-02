@@ -8,6 +8,7 @@ import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { CommonModule } from '@angular/common';
 import { BibliotecaComponent } from '../biblioteca/biblioteca.component';
 import { environment, environments } from '../../../../environments/environment';
+import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 
 @Component({
   selector: 'omla-listado-bibliotecas',
@@ -16,70 +17,34 @@ import { environment, environments } from '../../../../environments/environment'
   templateUrl: './listado-bibliotecas.component.html',
   styleUrls: ['./listado-bibliotecas.component.scss']
 })
-export class ListadoBibliotecasComponent implements OnInit {
+export class ListadoBibliotecasComponent extends BaseListadoComponent<ListadoBibliotecas> implements OnInit {
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   tipoListado = '';
-  listadoDados: ListadoBibliotecas[] = [];
+  override listadoDados: ListadoBibliotecas[] = [];
 
   constructor(
     private router: Router,
-    private layoutService: LayoutService,
-    private bibliotecasService: BibliotecasService) { }
+    private bibliotecasService: BibliotecasService,
+    layoutService: LayoutService) {
+      super(layoutService);
+    }
 
   ngOnInit(): void {
-    this.obterDadosDoListado();
+    super.obterDadosDoListado('as bibliotecas',
+      this.bibliotecasService.getListadoCosLivros(),
+      this.bibliotecasService.setListadoCosLivros.bind(this.bibliotecasService));
   }
 
-  private obterDadosDoListado(): void {
-    this.bibliotecasService
-      .getListadoCosLivros()
-      .pipe(first())
-      .subscribe({
-        next: (v) => this.listadoDados = this.dadosObtidos(v),
-        error: (e) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter as biblioteca.'}); },
-          // complete: () => console.info('completado listado de bibliotecas')
-    });
-  }
-
-  private dadosObtidos(data: object): ListadoBibliotecas[] {
-    let resultados: ListadoBibliotecas[];
-    const dados = <ListadoBibliotecasData>data;
-    if (dados != null) {
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
-      this.bibliotecasService.setListadoCosLivros(dados);
-      resultados = dados.data;
-    } else {
-      resultados = [];
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
-      console.debug('Nom se obtiverom dados');
-    }
-    return resultados
-  }
-
-  onBorrarElemento(id: string, nome: string, livros: number) {
-    if (livros === 0) {
-      if(confirm("Está certo de querer borrar a biblioteca " + nome + "?")) {
-        this.bibliotecasService
-              .borrar(id)
-              .pipe(first())
-              .subscribe({
-                next: (v) => console.debug(v),
-                error: (e) => { console.error(e),
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a biblioteca.'}); },
-                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca borrada.'}); }
-            });
-      }
-    }
-    else {
-      let pergunta = 'Nom se pode borrar a biblioteca ' + nome + ' mentres tenha ' + livros;
-      let singular = ' livro asociado';
-      let plural = ' livros asociados';
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: pergunta + ((livros === 1) ? singular : plural)});
-      alert(pergunta + ((livros === 1) ? singular : plural));
-    }
+  onBorrar(id: string, nome: string, quantidadeLivros: number) {
+    this.onBorrarElemento(
+      id,
+      quantidadeLivros,
+      nome,
+      'a biblioteca',
+      'Biblioteca borrada correctamente',
+      (id) => this.bibliotecasService.borrar(id)
+    );
   }
 
   onIrPagina(rota: string, id: string): void{

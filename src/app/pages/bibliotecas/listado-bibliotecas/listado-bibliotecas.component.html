@@ -22,8 +22,9 @@
         <td (click)="onIrPagina('bibliotecas/biblioteca', entrada.id)">{{entrada.dataRenovacom ? (entrada.dataRenovacom | date:'dd/MM/yyyy') : '---'}}</td>
         <td (click)="onIrPagina('bibliotecas/biblioteca', entrada.id)">{{entrada.quantidadeLivros}}</td>
         @if (!soVisualizar) {
-          <td (click)="onBorrarElemento(entrada.id, entrada.nome, entrada.quantidadeLivros)">
-            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+          <td (click)="$event.stopPropagation()">
+            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar"
+              (click)="onBorrar(entrada.id, entrada.nome, entrada.quantidadeLivros)">
           </td>
         }
       </tr>
