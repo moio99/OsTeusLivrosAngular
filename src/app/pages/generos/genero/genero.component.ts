@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Genero, GeneroData } from '../../../core/models/genero.interface';
+import { Genero } from '../../../core/models/genero.interface';
 import { ListadoLivros, ListadoLivrosData } from '../../../core/models/listado-livros.interface';
 import { GenerosService } from '../../../core/services/api/generos.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
@@ -16,6 +16,7 @@ import { Parametros } from '../../../core/models/comun.interface';
 import { environment, environments } from '../../../../environments/environment';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
+import { BaseDadosApi } from '../../../core/models/base-dados-api';
 
 @Component({
   selector: 'omla-genero',
@@ -85,13 +86,13 @@ export class GeneroComponent implements OnInit {
 
   private dadosObtidos(data: object): Genero  | undefined {
     let resultados: Genero | undefined;
-    const dados = <GeneroData>data;
-    if (dados.genero.length > 0) {
-      resultados = dados.genero[0];
+    const dados = <BaseDadosApi<Genero>>data;
+    if (dados.data.length > 0) {
+      resultados = dados.data[0];
       if (resultados != undefined) {
-        this.gf.nome.setValue(dados.genero[0].nome);
-        if (dados.genero[0].comentario)
-          this.gf.comentario.setValue(dados.genero[0].comentario);
+        this.gf.nome.setValue(dados.data[0].nome);
+        if (dados.data[0].comentario)
+          this.gf.comentario.setValue(dados.data[0].comentario);
       }
     }
     else{
@@ -130,12 +131,12 @@ export class GeneroComponent implements OnInit {
 
   onSubmit(event: any) {
     if (this.gf.nome.status === 'VALID' && this.gf.comentario.status === 'VALID') {
-      let generoRepetido: GeneroData;
+      let generoRepetido: BaseDadosApi<Genero>;
       this.generosService
         .getPorNome(String(this.gf.nome.value).trim())  // Para comprobar que nom exista já um género co mesmo nome
         .pipe(first())
         .subscribe({
-          next: (v: object) => generoRepetido = <GeneroData>v,
+          next: (v: object) => generoRepetido = <BaseDadosApi<Genero>>v,
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do género.'}); },
             complete: () => this.guardarGenero(event, generoRepetido)
@@ -143,7 +144,7 @@ export class GeneroComponent implements OnInit {
     }
   }
 
-  private guardarGenero(event: any, generoRepetido: GeneroData) {
+  private guardarGenero(event: any, generoRepetido: BaseDadosApi<Genero>) {
     if (generoRepetido != undefined && generoRepetido.meta.quantidade > 0 && (
       (event.submitter.value === EstadosPagina.engadir)
       ||

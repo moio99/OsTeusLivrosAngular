@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Routes } from '@angular/router';
-import { first } from 'rxjs';
 import { GeneroComponent } from '../genero/genero.component';
 import { CommonModule } from '@angular/common';
-import { ListadoGeneros, ListadoGenerosData } from '../../../core/models/listado-generos.interface';
+import { ListadoGeneros } from '../../../core/models/listado-generos.interface';
 import { GenerosService } from '../../../core/services/api/generos.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
-import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
 import { environment, environments } from '../../../../environments/environment';
-import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 
 @Component({
@@ -39,7 +36,8 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
     }
 
   ngOnInit(): void {
-    super.obterDadosDoListado('as editoriais',
+    super.obterDadosDoListado(
+      'as editoriais',
       this.generosService.getListadoCosLivros(),
       this.generosService.setListadoCosLivros.bind(this.generosService));
   }
@@ -50,8 +48,8 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
       id,
       quantidadeLivros,
       nome,
-      'a coleçom',
-      'Coleçom borrada correctamente',
+      'o género',
+      'Género borrada correctamente',
       (id) => this.generosService.borrar(id)
     );
   }

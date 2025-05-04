@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Editorial, EditorialData } from '../../models/editorial.interface';
-import { ListadoEditoriaisData } from '../../models/listado-editoriais.interface';
+import { Editorial } from '../../models/editorial.interface';
 import { BaseApiService } from './base-api.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EditoriaisService extends BaseApiService<Editorial, EditorialData, ListadoEditoriaisData> {
+export class EditoriaisService extends BaseApiService<Editorial> {
   protected rotaIntermedia = '/Editoriais';
 
   constructor(override http: HttpClient) {

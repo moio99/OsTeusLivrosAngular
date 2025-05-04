@@ -11,10 +11,11 @@ import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.s
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Parametros } from '../../../core/models/comun.interface';
-import { EstiloLiterario, EstiloLiterarioData } from '../../../core/models/estilos-literarios.interface';
+import { EstiloLiterario } from '../../../core/models/estilos-literarios.interface';
 import { EstilosLiterariosService } from '../../../core/services/api/estilos-literarios.service';
 import { environment, environments } from '../../../../environments/environment';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
+import { BaseDadosApi } from '../../../core/models/base-dados-api';
 
 @Component({
   selector: 'omla-estilo-literario',
@@ -83,13 +84,13 @@ export class EstiloLiterarioComponent implements OnInit {
 
   private dadosObtidos(data: object): EstiloLiterario  | undefined {
     let resultados: EstiloLiterario | undefined;
-    const dados = <EstiloLiterarioData>data;
-    if (dados.estiloLiterario.length > 0) {
-      resultados = dados.estiloLiterario[0];
+    const dados = <BaseDadosApi<EstiloLiterario>>data;
+    if (dados.data.length > 0) {
+      resultados = dados.data[0];
       if (resultados != undefined) {
-        this.gf.nome.setValue(dados.estiloLiterario[0].nome);
-        if (dados.estiloLiterario[0].comentario)
-          this.gf.comentario.setValue(dados.estiloLiterario[0].comentario);
+        this.gf.nome.setValue(dados.data[0].nome);
+        if (dados.data[0].comentario)
+          this.gf.comentario.setValue(dados.data[0].comentario);
       }
     }
     else{
@@ -128,12 +129,12 @@ export class EstiloLiterarioComponent implements OnInit {
 
   onSubmit(event: any) {
     if (this.gf.nome.status === 'VALID' && this.gf.comentario.status === 'VALID') {
-      let estiloLiterarioRepetido: EstiloLiterarioData;
+      let estiloLiterarioRepetido: BaseDadosApi<EstiloLiterario>;
       this.estilosLiterariosService
         .getPorNome(String(this.gf.nome.value).trim())
         .pipe(first())
         .subscribe({
-          next: (v: object) => estiloLiterarioRepetido = <EstiloLiterarioData>v,
+          next: (v: object) => estiloLiterarioRepetido = <BaseDadosApi<EstiloLiterario>>v,
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do género.'}); },
             complete: () => this.guardarEstiloLiterario(event, estiloLiterarioRepetido)
@@ -141,7 +142,7 @@ export class EstiloLiterarioComponent implements OnInit {
     }
   }
 
-  guardarEstiloLiterario(event: any, estiloLiterarioRepetido: EstiloLiterarioData) {
+  guardarEstiloLiterario(event: any, estiloLiterarioRepetido: BaseDadosApi<EstiloLiterario>) {
     if (estiloLiterarioRepetido != undefined && estiloLiterarioRepetido.meta.quantidade > 0 && (
       (event.submitter.value === EstadosPagina.engadir)
       ||

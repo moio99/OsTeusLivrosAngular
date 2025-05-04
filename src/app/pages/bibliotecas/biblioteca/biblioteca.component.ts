@@ -10,7 +10,7 @@ import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.s
 import { DateConvert } from '../../../shared/classes/date-convert';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { ListadoLivros, ListadoLivrosData } from '../../../core/models/listado-livros.interface';
-import { Biblioteca, BibliotecaData } from '../../../core/models/biblioteca.interface';
+import { Biblioteca } from '../../../core/models/biblioteca.interface';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -18,6 +18,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { Parametros } from '../../../core/models/comun.interface';
 import { environment, environments } from '../../../../environments/environment';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
+import { BaseDadosApi } from '../../../core/models/base-dados-api';
 
 @Component({
   selector: 'omla-biblioteca',
@@ -97,17 +98,17 @@ export class BibliotecaComponent implements OnInit {
 
   private dadosObtidos(data: object): Biblioteca  | undefined {
     let resultados: Biblioteca | undefined;
-    const dados = <BibliotecaData>data;
-    if (dados.biblioteca.length > 0) {
-      resultados = dados.biblioteca[0];
+    const dados = <BaseDadosApi<Biblioteca>>data;
+    if (dados.data.length > 0) {
+      resultados = dados.data[0];
       if (resultados != undefined) {
-        this.bf.nome.setValue(dados.biblioteca[0].nome);
-        this.bf.endereco.setValue(dados.biblioteca[0].endereco);
-        this.bf.localidade.setValue(dados.biblioteca[0].localidade);
-        this.bf.telefone.setValue(dados.biblioteca[0].telefone);
-        this.bf.dataAsociamento.setValue(dados.biblioteca[0].dataAsociamento);
-        this.bf.dataRenovacom.setValue(dados.biblioteca[0].dataRenovacom, { onlySelf: true});
-        this.bf.comentario.setValue(dados.biblioteca[0].comentario);
+        this.bf.nome.setValue(dados.data[0].nome);
+        this.bf.endereco.setValue(dados.data[0].endereco);
+        this.bf.localidade.setValue(dados.data[0].localidade);
+        this.bf.telefone.setValue(dados.data[0].telefone);
+        this.bf.dataAsociamento.setValue(dados.data[0].dataAsociamento);
+        this.bf.dataRenovacom.setValue(dados.data[0].dataRenovacom, { onlySelf: true});
+        this.bf.comentario.setValue(dados.data[0].comentario);
       }
     }
     else{
@@ -149,13 +150,13 @@ export class BibliotecaComponent implements OnInit {
       && this.bf.localidade.status === 'VALID' && this.bf.telefone.status === 'VALID'
       && this.bf.dataAsociamento.status === 'VALID' && this.bf.dataRenovacom.status === 'VALID'
       && this.bf.comentario.status === 'VALID') {
-      let bibliotecaRepetida: BibliotecaData;
+      let bibliotecaRepetida: BaseDadosApi<Biblioteca>;
 
       this.bibliotecasService
         .getPorNome(String(this.bf.nome.value).trim())
         .pipe(first())
         .subscribe({
-          next: (v) => bibliotecaRepetida = <BibliotecaData>v,
+          next: (v) => bibliotecaRepetida = <BaseDadosApi<Biblioteca>>v,
           error: (e) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados da biblioteca.'}); },
             complete: () => this.guardarBiblioteca(event, bibliotecaRepetida)
@@ -163,7 +164,7 @@ export class BibliotecaComponent implements OnInit {
     }
   }
 
-  guardarBiblioteca(event: any, bibliotecaRepetida: BibliotecaData) {
+  guardarBiblioteca(event: any, bibliotecaRepetida: BaseDadosApi<Biblioteca>) {
     if (bibliotecaRepetida != undefined && bibliotecaRepetida.meta.quantidade > 0 && (
       (event.submitter.value === EstadosPagina.engadir)
       ||

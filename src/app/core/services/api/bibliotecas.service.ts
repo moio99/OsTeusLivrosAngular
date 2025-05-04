@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ListadoBibliotecasData } from '../../models/listado-bibliotecas.interface';
 import { BaseApiService } from './base-api.service.ts';
-import { Biblioteca, BibliotecaData } from '../../models/biblioteca.interface';
+import { Biblioteca } from '../../models/biblioteca.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class BibliotecasService extends BaseApiService<Biblioteca, BibliotecaData, ListadoBibliotecasData> {
+export class BibliotecasService extends BaseApiService<Biblioteca> {
   protected rotaIntermedia = '/Bibliotecas';
 
   constructor(override http: HttpClient) {

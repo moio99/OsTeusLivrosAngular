@@ -1,8 +1,3 @@
-export interface BibliotecaData {
-  biblioteca: Biblioteca[];
-  meta: {id:number, quantidade:number};
-}
-
 export interface Biblioteca {
   id: number;
   nome: string;

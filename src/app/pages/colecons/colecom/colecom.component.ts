@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Colecom, ColecomData } from '../../../core/models/colecom.interface';
+import { Colecom } from '../../../core/models/colecom.interface';
 import { ListadoLivros, ListadoLivrosData } from '../../../core/models/listado-livros.interface';
 import { ColeconsService } from '../../../core/services/api/colecons.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
@@ -15,6 +15,7 @@ import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Parametros } from '../../../core/models/comun.interface';
 import { environment, environments } from '../../../../environments/environment';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
+import { BaseDadosApi } from '../../../core/models/base-dados-api';
 
 @Component({
   selector: 'omla-colecom',
@@ -86,14 +87,14 @@ export class ColecomComponent implements OnInit {
 
   private dadosObtidos(data: object): Colecom  | undefined {
     let resultados: Colecom | undefined;
-    const dados = <ColecomData>data;
-    if (dados.colecom.length > 0) {
-      resultados = dados.colecom[0];
+    const dados = <BaseDadosApi<Colecom>>data;
+    if (dados.data.length > 0) {
+      resultados = dados.data[0];
       if (resultados != undefined) {
-        this.cf.nome.setValue(dados.colecom[0].nome);
-        this.cf.isbn.setValue(dados.colecom[0].isbn);
-        this.cf.web.setValue(dados.colecom[0].web);
-        this.cf.comentario.setValue(dados.colecom[0].comentario);
+        this.cf.nome.setValue(dados.data[0].nome);
+        this.cf.isbn.setValue(dados.data[0].isbn);
+        this.cf.web.setValue(dados.data[0].web);
+        this.cf.comentario.setValue(dados.data[0].comentario);
       }
     }
     else{
@@ -133,12 +134,12 @@ export class ColecomComponent implements OnInit {
   onSubmit(event: any) {
     if (this.cf.nome.status === 'VALID'  && this.cf.isbn.status === 'VALID'
       && this.cf.web.status === 'VALID'  && this.cf.comentario.status === 'VALID') {
-        let colecomRepetido: ColecomData;
+        let colecomRepetido: BaseDadosApi<Colecom>;
         this.coleconsService
           .getPorNome(String(this.cf.nome.value).trim())
           .pipe(first())
           .subscribe({
-            next: (v: object) => colecomRepetido = <ColecomData>v,
+            next: (v: object) => colecomRepetido = <BaseDadosApi<Colecom>>v,
             error: (e: any) => { console.error(e),
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados da coleçom.'}); },
               complete: () => this.guardarColecom(event, colecomRepetido)
@@ -146,7 +147,7 @@ export class ColecomComponent implements OnInit {
     }
   }
 
-  guardarColecom(event: any, colecomRepetido: ColecomData) {
+  guardarColecom(event: any, colecomRepetido: BaseDadosApi<Colecom>) {
     if (colecomRepetido != undefined && colecomRepetido.meta.quantidade > 0 && (
       (event.submitter.value === EstadosPagina.engadir)
       ||

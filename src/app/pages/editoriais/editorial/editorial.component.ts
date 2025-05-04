@@ -3,7 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
-import { Editorial, EditorialData } from '../../../core/models/editorial.interface';
+import { Editorial } from '../../../core/models/editorial.interface';
 import { ListadoLivros, ListadoLivrosData } from '../../../core/models/listado-livros.interface';
 import { EditoriaisService } from '../../../core/services/api/editoriais.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Parametros } from '../../../core/models/comun.interface';
 import { environment, environments } from '../../../../environments/environment';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
+import { BaseDadosApi } from '../../../core/models/base-dados-api';
 
 @Component({
   selector: 'omla-editorial',
@@ -86,14 +87,14 @@ export class EditorialComponent implements OnInit {
 
   private dadosObtidos(data: object): Editorial  | undefined {
     let resultados: Editorial | undefined;
-    const dados = <EditorialData>data;
-    if (dados.editorial.length > 0) {
-      resultados = dados.editorial[0];
+    const dados = <BaseDadosApi<Editorial>>data;
+    if (dados.data.length > 0) {
+      resultados = dados.data[0];
       if (resultados != undefined) {
-        this.ef.nome.setValue(dados.editorial[0].nome);
-        this.ef.direicom.setValue(dados.editorial[0].direicom);
-        this.ef.web.setValue(dados.editorial[0].web);
-        this.ef.comentario.setValue(dados.editorial[0].comentario);
+        this.ef.nome.setValue(dados.data[0].nome);
+        this.ef.direicom.setValue(dados.data[0].direicom);
+        this.ef.web.setValue(dados.data[0].web);
+        this.ef.comentario.setValue(dados.data[0].comentario);
       }
     }
     else{
@@ -134,12 +135,12 @@ export class EditorialComponent implements OnInit {
     if (this.ef.nome.status === 'VALID' && this.ef.direicom.status === 'VALID'
       && this.ef.web.status === 'VALID' && this.ef.comentario.status === 'VALID') {
 
-      let editorialRepetido: EditorialData;
+      let editorialRepetido: BaseDadosApi<Editorial>;
       this.editoriaisService
         .getPorNome(String(this.ef.nome.value).trim())
         .pipe(first())
         .subscribe({
-          next: (v: object) => editorialRepetido = <EditorialData>v,
+          next: (v: object) => editorialRepetido = <BaseDadosApi<Editorial>>v,
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados da editorial.'}); },
             complete: () => this.guardarEditorial(event, editorialRepetido)
@@ -147,7 +148,7 @@ export class EditorialComponent implements OnInit {
     }
   }
 
-  guardarEditorial(event: any, editorialRepetido: EditorialData) {
+  guardarEditorial(event: any, editorialRepetido: BaseDadosApi<Editorial>) {
     if (editorialRepetido != undefined && editorialRepetido.meta.quantidade > 0 && (
       (event.submitter.value === EstadosPagina.engadir)
       ||
