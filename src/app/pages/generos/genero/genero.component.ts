@@ -84,7 +84,7 @@ export class GeneroComponent implements OnInit {
     });
   }
 
-  private dadosObtidos(data: object): Genero  | undefined {
+  private dadosObtidos(data: object): Genero | undefined {
     let resultados: Genero | undefined;
     const dados = <BaseDadosApi<Genero>>data;
     if (dados.data.length > 0) {

@@ -22,6 +22,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { environment, environments } from '../../../../environments/environment';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
+import { BaseDadosApi } from '../../../core/models/base-dados-api';
 
 @Component({
   selector: 'omla-autor',
@@ -291,39 +292,39 @@ export class AutorComponent implements OnInit {
     }
   }
 
-  private dadosAutorObtidos(data: object): Autor  | undefined {
+  private dadosAutorObtidos(data: object): Autor | undefined {
     let resultados: Autor | undefined;
-    const dados = <AutorData>data;
-    if (dados.autor.length > 0) {
-      resultados = dados.autor[0];
+    const dados = <AutorData<Autor>>data;
+    if (dados.data.length > 0) {
+      resultados = dados.data[0];
       if (resultados != undefined) {
-        this.af.nome.setValue(dados.autor[0].nome);
-        this.af.nomeReal.setValue(dados.autor[0].nomeReal);
-        this.af.lugarNacemento.setValue(dados.autor[0].lugarNacemento);
-        if (dados.autor[0].idNacionalidade != null) {
-          const findResource = this.dadosNacionalidadesCombo.find(x => x.id == dados.autor[0].idNacionalidade);
+        this.af.nome.setValue(dados.data[0].nome);
+        this.af.nomeReal.setValue(dados.data[0].nomeReal);
+        this.af.lugarNacemento.setValue(dados.data[0].lugarNacemento);
+        if (dados.data[0].idNacionalidade != null) {
+          const findResource = this.dadosNacionalidadesCombo.find(x => x.id == dados.data[0].idNacionalidade);
           if (findResource !== undefined)
             this.af.nacom.setValue(findResource.value);
         }
-        if (dados.autor[0].idPais != null) {
-          const findResource = this.dadosPaisesCombo.find(x => x.id == dados.autor[0].idPais);
+        if (dados.data[0].idPais != null) {
+          const findResource = this.dadosPaisesCombo.find(x => x.id == dados.data[0].idPais);
           if (findResource !== undefined)
             this.af.pais.setValue(findResource.value);
         }
         let dateConvert = new DateConvert();
-        let dN = dateConvert.getDateFromMySQL(dados.autor[0].dataNacemento);
+        let dN = dateConvert.getDateFromMySQL(dados.data[0].dataNacemento);
         if (dN.year > 0) {
           let data = <FormControl>this.af.dataNacemento;
           data.setValue(new Date(dN.year, dN.month - 1, dN.day));
         }
-        let dD = dateConvert.getDateFromMySQL(dados.autor[0].dataDefuncom);
+        let dD = dateConvert.getDateFromMySQL(dados.data[0].dataDefuncom);
         if (dD.year > 0) {
           let data = <FormControl>this.af.dataDefuncom;
           data.setValue(new Date(dD.year, dD.month - 1, dD.day));
         }
 
-        this.af.web.setValue(dados.autor[0].web);
-        this.af.comentario.setValue(dados.autor[0].comentario);
+        this.af.web.setValue(dados.data[0].web);
+        this.af.comentario.setValue(dados.data[0].comentario);
       }
     }
     else{
@@ -348,12 +349,12 @@ export class AutorComponent implements OnInit {
       && this.af.dataNacemento.status === 'VALID' && this.af.dataDefuncom.status === 'VALID'
       && this.af.premios.status === 'VALID' && this.af.web.status === 'VALID') {
 
-      let autorRepetido: AutorData;
+      let autorRepetido: AutorData<Autor>;
       this.autoresService
         .getAutorPorNome(String(this.af.nome.value).trim())
         .pipe(first())
         .subscribe({
-          next: (v: object) => autorRepetido = <AutorData>v,
+          next: (v: object) => autorRepetido = <AutorData<Autor>>v,
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor.'}); },
             complete: () => this.guardarAutor(event, autorRepetido)
@@ -361,7 +362,7 @@ export class AutorComponent implements OnInit {
     }
   }
 
-  guardarAutor(event: any, autorRepetido: AutorData) {
+  guardarAutor(event: any, autorRepetido: AutorData<Autor>) {
     if (autorRepetido != undefined && autorRepetido.meta.quantidade > 0 && (
       (event.submitter.value === EstadosPagina.engadir)
       ||

@@ -20,7 +20,7 @@ import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Title } from '@angular/platform-browser';
 import { EngadirEditarData } from '../../../shared/models/datas';
 import { RelecturasService } from '../../../core/services/api/relecturas.service';
-import { ObjetoSimpleIdNome, datasUltimosAnos, Livro, LivroData, Outros } from '../../../core/models/livro.interface';
+import { ObjetoSimpleIdNome, datasUltimosAnos, Livro, Outros } from '../../../core/models/livro.interface';
 import { Genero } from '../../../core/models/genero.interface';
 import { Relectura, ListadoRelecturas, RelecturasData, RelecturaData } from '../../../core/models/relectura.interface';
 import { SimpleObjet } from '../../../shared/models/outros.model';
@@ -31,6 +31,7 @@ import { Parametros } from '../../../core/models/comun.interface';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { environment, environments } from '../../../../environments/environment';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
+import { BaseDadosApi } from '../../../core/models/base-dados-api';
 
 export enum MultiGestom {
   autores = 1,
@@ -659,10 +660,10 @@ export class LivroComponent implements OnInit {
 
   private dadosObtidosDoLivro(data: object) {
     let resultados: Livro;
-    const dados = <LivroData>data;
-    resultados = dados.livro;
-    if (resultados) {
-      this.dadosDoLivro = dados.livro;
+    const dados = <BaseDadosApi<Livro>>data;
+    if (dados.data.length > 0) {
+      resultados = dados.data[0];
+      this.dadosDoLivro = dados.data[0];
       this.setDadosLivroForm();
 
       if (this.idRelectura !== '0') {
@@ -901,12 +902,12 @@ export class LivroComponent implements OnInit {
     }
     else {
       if (this.livroForm.valid) {
-        let livroRepetido: LivroData;
+        let livroRepetido: BaseDadosApi<Livro>;
         this.livrosService
           .getLivroPorTitulo(String(this.lf.titulo.value).trim())
           .pipe(first())
           .subscribe({
-            next: (v: object) => livroRepetido = <LivroData>v,
+            next: (v: object) => livroRepetido = <BaseDadosApi<Livro>>v,
             error: (e: any) => { console.error(e),
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro.'}); },
               complete: () => this.guardarLivro(event, livroRepetido)
@@ -915,7 +916,7 @@ export class LivroComponent implements OnInit {
     }
   }
 
-  guardarLivro(event: any, livroRepetido: LivroData) {
+  guardarLivro(event: any, livroRepetido: BaseDadosApi<Livro>) {
     if (livroRepetido != undefined && livroRepetido.meta.quantidade > 0 && (
       (event.submitter.value === EstadosPagina.engadir)
       ||
