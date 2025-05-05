@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
 import { Editorial } from '../../../core/models/editorial.interface';
@@ -12,10 +12,10 @@ import { LayoutService } from '../../../core/services/flow/layout.service';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Parametros } from '../../../core/models/comun.interface';
 import { environment, environments } from '../../../../environments/environment';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { BaseDadosApi } from '../../../core/models/base-dados-api';
+import { BaseElementoComponent } from '../../../core/components/base/elemento/base-elemento.component';
 
 @Component({
   selector: 'omla-editorial',
@@ -24,10 +24,10 @@ import { BaseDadosApi } from '../../../core/models/base-dados-api';
   templateUrl: './editorial.component.html',
   styleUrls: ['./editorial.component.scss']
 })
-export class EditorialComponent implements OnInit {
+export class EditorialComponent extends BaseElementoComponent<Editorial> {
+  ef: FormGroup;
 
   estadosPagina = EstadosPagina;
-  modo = EstadosPagina.soVisualizar;
   disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
   dadosDaEditorial: Editorial | undefined = {
     id: 0,
@@ -38,106 +38,64 @@ export class EditorialComponent implements OnInit {
   };
   dadosLivrosDaEditorial: ListadoLivros[] = [];
 
-  editorialForm = new FormGroup({
-    nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
-    direicom: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
-    web: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
-    comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
-  });
-  get ef() { return this.editorialForm.controls; }
+  protected get form(): any {
+    return this.ef;
+  }
 
   constructor(
-    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    route: ActivatedRoute,
     private router: Router,
-    private layoutService: LayoutService,
+    layoutService: LayoutService,
     private location: Location,
     private editoriaisService: EditoriaisService,
     private livrosService: LivrosService,
-    private dadosPaginasService: DadosPaginasService) { }
+    private dadosPaginasService: DadosPaginasService
+  ) {
+      super(route, layoutService);
 
-  ngOnInit(): void {
-    this.route.queryParams
-      .subscribe(params => {
-        let parametros = params as Parametros;
-        if (parametros.id === '0')
-          this.modo = EstadosPagina.engadir;
-        else {
-          this.modo = EstadosPagina.guardar;
-          this.obterDadosDaEditorial(parametros.id);
-        }
+      this.ef = new FormGroup({
+        nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
+        direicom: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
+        web: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
+        comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
+      });
+    }
 
-        if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
-          this.modo = EstadosPagina.soVisualizar;
-        }
-      }
-    );
+  protected serviceGetById(id: string) {
+    return this.editoriaisService.getPorId(id);
   }
 
-  private obterDadosDaEditorial(id: string): void {
-    this.editoriaisService
-      .getPorId(id)
-      .pipe(first())
-      .subscribe({
-        next: (v: object) => this.dadosDaEditorial = this.dadosObtidos(v),
-        error: (e: any) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados da editorial.'}); },
-          complete: () => this.obterLivros(id)
+  protected serviceGetLivros(id: string) {
+    return this.livrosService.getLivrosPorEditorial(id);
+  }
+
+  protected updateFormValues(editorial: Editorial) {
+    this.ef.patchValue({
+      nome: editorial.nome,
+      direicom: editorial.direicom,
+      web: editorial.web,
+      comentario: editorial.comentario
     });
   }
 
-  private dadosObtidos(data: object): Editorial  | undefined {
-    let resultados: Editorial | undefined;
-    const dados = <BaseDadosApi<Editorial>>data;
-    if (dados.data.length > 0) {
-      resultados = dados.data[0];
-      if (resultados != undefined) {
-        this.ef.nome.setValue(dados.data[0].nome);
-        this.ef.direicom.setValue(dados.data[0].direicom);
-        this.ef.web.setValue(dados.data[0].web);
-        this.ef.comentario.setValue(dados.data[0].comentario);
-      }
-    }
-    else{
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados da editorial'});
-      resultados = undefined;
-    }
-    return resultados
+  protected getErrorMessage(context: string): string {
+    return context === 'obtención'
+      ? 'Nom se puiderom obter os dados da editorial.'
+      : 'Nom chegarom dados da editorial';
   }
 
-  private obterLivros(id: string): void {
-    console.debug('completada a obtençom dos dados da editorial')
-    this.livrosService
-      .getLivrosPorEditorial(id)
-      .pipe(first())
-      .subscribe({
-        next: (v: object) => this.dadosLivrosDaEditorial = this.dadosLivrosObtidos(v),
-        error: (e: any) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os Livros da editorial.'}); },
-          complete: () => console.debug('completada a obtençom dos livros da editorial')
-    });
-  }
-
-  private dadosLivrosObtidos(data: object): ListadoLivros[] {
-    let resultados: ListadoLivros[];
-    const dados = <ListadoLivrosData>data;
-    if (dados != null) {
-      console.debug('quantidade: ' + dados.meta.quantidade + ' ' + dados.data);
-      console.debug(dados.data);
-      resultados = dados.data;
-    } else {
-      resultados = [];
-      console.debug('Nom se obtiverom dados');
-    }
-    return resultados
+  protected getLivrosErrorMessage(): string {
+    return 'Nom se puiderom obter os Livros da editorial.';
   }
 
   onSubmit(event: any) {
-    if (this.ef.nome.status === 'VALID' && this.ef.direicom.status === 'VALID'
-      && this.ef.web.status === 'VALID' && this.ef.comentario.status === 'VALID') {
+    if (this.form.nome.status === 'VALID' && this.form.direicom.status === 'VALID'
+      && this.form.web.status === 'VALID' && this.form.comentario.status === 'VALID') {
 
       let editorialRepetido: BaseDadosApi<Editorial>;
       this.editoriaisService
-        .getPorNome(String(this.ef.nome.value).trim())
+        .getPorNome(String(this.form.nome.value).trim())
         .pipe(first())
         .subscribe({
           next: (v: object) => editorialRepetido = <BaseDadosApi<Editorial>>v,
@@ -158,10 +116,10 @@ export class EditorialComponent implements OnInit {
     else {
       const editorial: Editorial = {
         id: Number(this.dadosDaEditorial?.id),
-        nome: String(this.ef.nome.value),
-        direicom: (this.ef.direicom.value == null) ? null : String(this.ef.direicom.value).trim(),
-        web: (this.ef.web.value == null) ? null : String(this.ef.web.value).trim(),
-        comentario: (this.ef.comentario.value == null) ? null : String(this.ef.comentario.value).trim()
+        nome: String(this.form.nome.value),
+        direicom: (this.form.direicom.value == null) ? null : String(this.form.direicom.value).trim(),
+        web: (this.form.web.value == null) ? null : String(this.form.web.value).trim(),
+        comentario: (this.form.comentario.value == null) ? null : String(this.form.comentario.value).trim()
       };
 
       if (event.submitter.value === EstadosPagina.engadir) {
