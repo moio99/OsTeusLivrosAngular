@@ -1,5 +1,5 @@
 
-<form [formGroup]="ef" (ngSubmit)="onSubmit($event)">
+<form [formGroup]="form" (ngSubmit)="onSubmit($event)">
   @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
     <button color="primary" type="submit" value="{{this.modo}}">
       <i class="icon-disk"></i> {{this.modo}}
@@ -11,35 +11,35 @@
   <div class="formulario-dados">
     <mat-form-field [style.width.px]=500>
       <mat-label>Nome:</mat-label>
-      <input matInput [formControl]="form.nome" width="200">
-      <mat-error *ngIf="form.nome.hasError('maxlength')">
+      <input matInput [formControl]="form.get('nome')" width="200">
+      <mat-error *ngIf="form.get('nome')?.hasError('maxlength')">
         A longitude nom debe superar os 150 caracteres
       </mat-error>
-      <mat-error *ngIf="form.nome.hasError('required')">
+      <mat-error *ngIf="form.get('nome')?.hasError('required')">
         O Nome é obrigatorio
       </mat-error>
     </mat-form-field>
 
     <mat-form-field [style.width.px]=500>
       <mat-label>Direiçom:</mat-label>
-      <input matInput [formControl]="form.direicom">
-      <mat-error *ngIf="form.direicom.hasError('maxlength')">
+      <input matInput [formControl]="form.get('direicom')">
+      <mat-error *ngIf="form.get('direicom')?.hasError('maxlength')">
         A longitude nom debe superar os 150 caracteres
       </mat-error>
     </mat-form-field>
 
     <mat-form-field [style.width.px]=500>
       <mat-label>web:</mat-label>
-      <input matInput [formControl]="form.web">
-      <mat-error *ngIf="form.web.hasError('maxlength')">
+      <input matInput [formControl]="form.get('web')">
+      <mat-error *ngIf="form.get('web')?.hasError('maxlength')">
         A longitude nom debe superar os 100 caracteres
       </mat-error>
     </mat-form-field>
 
     <mat-form-field [style.width.px]=500>
       <mat-label>Comentario:</mat-label>
-      <textarea matInput [formControl]="form.comentario" rows="4"></textarea>
-      <mat-error *ngIf="form.comentario.hasError('maxlength')">
+      <textarea matInput [formControl]="form.get('comentario')" rows="4"></textarea>
+      <mat-error *ngIf="form.get('comentario')?.hasError('maxlength')">
         A longitude nom debe superar os 5000 caracteres
       </mat-error>
     </mat-form-field>

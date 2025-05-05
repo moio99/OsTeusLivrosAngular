@@ -1,13 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, Routes } from '@angular/router';
-import { first } from 'rxjs';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
-import { ListadoEditoriais, ListadoEditoriaisData } from '../../../core/models/listado-editoriais.interface';
+import { ListadoEditoriais } from '../../../core/models/listado-editoriais.interface';
 import { EditoriaisService } from '../../../core/services/api/editoriais.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
-import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { EditorialComponent } from '../editorial/editorial.component';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';

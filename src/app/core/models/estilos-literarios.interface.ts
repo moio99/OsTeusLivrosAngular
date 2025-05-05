@@ -1,5 +1,5 @@
-export interface EstiloLiterario {
-  id: number;
-  nome: string;
+import { BaseElemento } from "./base-dados-api";
+
+export interface EstiloLiterario extends BaseElemento {
   comentario?: string | null;
 }

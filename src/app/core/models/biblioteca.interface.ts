@@ -1,6 +1,6 @@
-export interface Biblioteca {
-  id: number;
-  nome: string;
+import { BaseElemento } from "./base-dados-api";
+
+export interface Biblioteca extends BaseElemento {
   endereco: string | null,
   localidade: string | null,
   telefone: string | null,
