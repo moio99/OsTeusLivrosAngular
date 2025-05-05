@@ -3,16 +3,14 @@ import { CommonModule, Location } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Editorial } from '../../../core/models/editorial.interface';
-import { ListadoLivros } from '../../../core/models/listado-livros.interface';
 import { EditoriaisService } from '../../../core/services/api/editoriais.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { environment, environments } from '../../../../environments/environment';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { BaseElementoComponent } from '../../../core/components/base/elemento/base-elemento.component';
+import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 
 @Component({
   selector: 'omla-editorial',
@@ -31,7 +29,6 @@ export class EditorialComponent extends BaseElementoComponent<Editorial, Editori
     direicom: '',
     comentario: ''
   };
-  dadosLivrosDaEditorial: ListadoLivros[] = [];
 
   constructor(
     route: ActivatedRoute,
@@ -40,9 +37,10 @@ export class EditorialComponent extends BaseElementoComponent<Editorial, Editori
     location: Location,
     editoriaisService: EditoriaisService,
     dadosPaginasService: DadosPaginasService,
+    usuarioAppService: UsuarioAppService,
     private livrosService: LivrosService,
   ) {
-    super(route, router, layoutService, location, dadosPaginasService, editoriaisService);
+    super(route, router, layoutService, location, dadosPaginasService, usuarioAppService, editoriaisService);
 
     this.ef = new FormGroup({
       nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),

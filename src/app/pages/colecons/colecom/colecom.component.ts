@@ -5,14 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Colecom } from '../../../core/models/colecom.interface';
-import { ListadoLivros } from '../../../core/models/listado-livros.interface';
 import { ColeconsService } from '../../../core/services/api/colecons.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
-import { environment, environments } from '../../../../environments/environment';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { BaseElementoComponent } from '../../../core/components/base/elemento/base-elemento.component';
+import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 
 @Component({
   selector: 'omla-colecom',
@@ -31,7 +29,6 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
     web: '',
     comentario: ''
   };
-  dadosLivrosDaColecom: ListadoLivros[] = [];
 
   constructor(
     route: ActivatedRoute,
@@ -40,9 +37,10 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
     layoutService: LayoutService,
     coleconsService: ColeconsService,
     dadosPaginasService: DadosPaginasService,
+    usuarioAppService: UsuarioAppService,
     private livrosService: LivrosService
   ) {
-    super(route, router, layoutService, location, dadosPaginasService, coleconsService);
+    super(route, router, layoutService, location, dadosPaginasService, usuarioAppService, coleconsService);
 
     this.ef = new FormGroup({
       nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),

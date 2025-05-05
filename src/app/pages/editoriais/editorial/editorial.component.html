@@ -46,15 +46,15 @@
   </div>
 </form>
 
-<h3 *ngIf="dadosLivrosDaEditorial.length > 0">Listado de livros</h3>
+<h3 *ngIf="livrosDoElemento.length > 0">Listado de livros</h3>
 
-<table *ngIf="this.dadosLivrosDaEditorial.length > 0">
+<table *ngIf="this.livrosDoElemento.length > 0">
   <tr>
     <th>Titulo</th>
     <th>TituloOriginal</th>
     <th>Autor</th>
   </tr>
-  <tr *ngFor="let entrada of this.dadosLivrosDaEditorial" class="listado-accom">
+  <tr *ngFor="let entrada of this.livrosDoElemento" class="listado-accom">
     <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
     <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
     <td class="lista-com-comas">

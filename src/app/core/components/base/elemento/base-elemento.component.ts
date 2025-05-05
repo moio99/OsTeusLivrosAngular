@@ -11,7 +11,9 @@ import { BaseDadosApi, BaseElemento } from '../../../models/base-dados-api';
 import { BaseApiService } from '../../../services/api/base-api.service.ts';
 import { DadosPaginasService } from '../../../services/flow/dados-paginas.service';
 import { ParametrosId } from '../../../models/comun.interface';
-import { ListadoLivrosData } from '../../../models/listado-livros.interface';
+import { ListadoLivros, ListadoLivrosData } from '../../../models/listado-livros.interface';
+import { Genero } from '../../../models/genero.interface';
+import { UsuarioAppService } from '../../../services/flow/usuario-app.service';
 
 @Component({
   template: ''
@@ -24,7 +26,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   modo: EstadosPagina = EstadosPagina.engadir;
   protected elementoId: string | null = null;
   protected dadosDoElemento: TElemento | undefined;
-  protected dadosLivros: any[] = [];
+  protected livrosDoElemento: ListadoLivros[] = [];
 
   protected abstract get formuario(): FormGroup;
   protected abstract serviceGetLivros(id: string): any;
@@ -41,6 +43,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     protected layoutService: LayoutService,
     protected location: Location,
     protected dadosPaginasService: DadosPaginasService,
+    protected usuarioAppService: UsuarioAppService,
     @Inject('MyServiceToken') protected servicoElemento: TServico
   ) {}
 
@@ -73,10 +76,14 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     this.location.back();
   }
 
-  onIrPagina(rota: string, id: string): void{
+  onIrPagina(rota: string, id: string, idRelectura: string = '0'): void{
     //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
     this.layoutService.amosarInfo(undefined);
-    this.router.navigateByUrl(rota + '?id=' + id);
+
+    const relectura = idRelectura != '0' ? `&idRelectura=${idRelectura}` : '';
+    const rotaCompleta = `${rota}?id=${id}${relectura}`;
+
+    this.router.navigateByUrl(rotaCompleta);
     // this.router.navigate([rota], {relativeTo: id});
     // this.router.navigate([rota], {dadoQueVai: id});
   }
@@ -120,7 +127,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     this.serviceGetLivros(id)
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.dadosLivros = this.dadosLivrosObtidos(v),
+        next: (v: object) => this.livrosDoElemento = this.dadosLivrosObtidos(v),
         error: (e: any) => {
           console.error(e);
           this.layoutService.amosarInfo({
@@ -224,11 +231,18 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   private handleSaveSuccess(data: any, elemento: TElemento) {
     console.debug(data);
     if (data.idResult > 0) {
+      if (this.eGenero(elemento)) {
+        this.usuarioAppService.setGenero(elemento);
+      }
       this.handleNavigation(data, elemento);
       this.modo = EstadosPagina.guardar;
     } else {
       this.amosarMensagemErro();
     }
+  }
+
+  private eGenero(elemento: Genero | TElemento): elemento is Genero {
+    return 'tipo' in elemento && elemento.tipo === 'propriedade para saver que o tipo é Género';
   }
 
   private amosarMensagemErro() {
