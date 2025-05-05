@@ -10,10 +10,8 @@ import { FormGroup } from '@angular/forms';
 import { BaseDadosApi, BaseElemento } from '../../../models/base-dados-api';
 import { BaseApiService } from '../../../services/api/base-api.service.ts';
 import { DadosPaginasService } from '../../../services/flow/dados-paginas.service';
-
-interface Parametros {
-  id: string;
-}
+import { ParametrosId } from '../../../models/comun.interface';
+import { ListadoLivrosData } from '../../../models/listado-livros.interface';
 
 @Component({
   template: ''
@@ -21,19 +19,21 @@ interface Parametros {
 export abstract class BaseElementoComponent<TElemento extends BaseElemento, TServico extends BaseApiService<TElemento>>
     implements OnInit {
 
+  disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
+  estadosPagina = EstadosPagina;
   modo: EstadosPagina = EstadosPagina.engadir;
-  protected entityId: string | null = null;
+  protected elementoId: string | null = null;
   protected dadosDoElemento: TElemento | undefined;
   protected dadosLivros: any[] = [];
 
-  protected abstract get form(): FormGroup;
+  protected abstract get formuario(): FormGroup;
   protected abstract serviceGetLivros(id: string): any;
-  protected abstract updateFormValues(entity: TElemento): void;
-
-  protected abstract createElementoForm(): TElemento;
-  protected abstract getEntityName(): string;
+  protected abstract getNomeElemento(): string;
   protected abstract getErrorMessage(context: string): string;
   protected abstract getLivrosErrorMessage(): string;
+
+  protected abstract updateFormValues(eleemnto: TElemento): void;
+  protected abstract createElementoForm(): TElemento;
 
   constructor(
     protected route: ActivatedRoute,
@@ -46,8 +46,8 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      const parametros = params as Parametros;
-      this.entityId = parametros.id;
+      const parametros = params as ParametrosId;
+      this.elementoId = parametros.id;
 
       if (parametros.id === '0') {
         this.modo = EstadosPagina.engadir;
@@ -103,7 +103,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   }
 
   protected dadosObtidos(data: any): TElemento | undefined {
-    const dados = data as { data: TElemento[] };
+    const dados = data as BaseDadosApi<TElemento>;
     if (dados?.data?.length > 0) {
       return dados.data[0];
     } else {
@@ -133,16 +133,16 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   }
 
   protected dadosLivrosObtidos(data: object): any[] {
-    const dados = data as { data: any[], meta?: any };
+    const dados = data as ListadoLivrosData;
     return dados?.data ?? [];
   }
 
   protected isFormValid(): boolean {
-    return Object.values(this.form.controls).every(control => control.status === 'VALID');
+    return Object.values(this.formuario.controls).every(control => control.status === 'VALID');
   }
 
   protected checkForDuplicates(event: SubmitEvent) {
-    const nameValue = String(this.form.get('nome')?.value).trim();
+    const nameValue = String(this.formuario.get('nome')?.value).trim();
 
     this.servicoElemento.getPorNome(nameValue)
       .pipe(first())
@@ -153,15 +153,15 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
       });
   }
 
-  protected handleDuplicateCheck(event: SubmitEvent, existingEntity: BaseDadosApi<TElemento>) {
-    const isDuplicate = existingEntity?.meta?.quantidade > 0 &&
+  protected handleDuplicateCheck(event: SubmitEvent, elementoExistente: BaseDadosApi<TElemento>) {
+    const isDuplicate = elementoExistente?.meta?.quantidade > 0 &&
       (this.isAdding(event) ||
-       (!this.isAdding(event) && existingEntity.meta.id !== (this.dadosDoElemento as any)?.id));
+       (!this.isAdding(event) && elementoExistente.meta.id !== (this.dadosDoElemento as any)?.id));
 
     if (isDuplicate) {
       this.layoutService.amosarInfo({
         tipo: InformacomPeTipo.Aviso,
-        mensagem: `O nome ${this.getEntityName()} já existe na base de dados`
+        mensagem: `O nome ${this.getNomeElemento()} já existe na base de dados`
       });
     } else {
       this.saveElemento(event);
@@ -177,7 +177,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     const action = this.modo === EstadosPagina.engadir ? 'engadida' : 'guardada';
     this.layoutService.amosarInfo({
       tipo: InformacomPeTipo.Sucesso,
-      mensagem: `${this.getEntityName()} ${action}.`
+      mensagem: `${this.getNomeElemento()} ${action}.`
     });
   }
 
@@ -185,7 +185,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     console.error(error);
     this.layoutService.amosarInfo({
       tipo: InformacomPeTipo.Erro,
-      mensagem: `Nom se puiderom obter os dados ${this.getEntityName()}.`
+      mensagem: `Nom se puiderom obter os dados ${this.getNomeElemento()}.`
     });
   }
 
@@ -221,10 +221,10 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     });
   }
 
-  private handleSaveSuccess(data: any, entity: TElemento) {
+  private handleSaveSuccess(data: any, elemento: TElemento) {
     console.debug(data);
     if (data.idResult > 0) {
-      this.handleNavigation(data, entity);
+      this.handleNavigation(data, elemento);
       this.modo = EstadosPagina.guardar;
     } else {
       this.amosarMensagemErro();
@@ -235,7 +235,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     const action = this.modo === EstadosPagina.engadir ? 'engadir' : 'guardar';
     this.layoutService.amosarInfo({
       tipo: InformacomPeTipo.Erro,
-      mensagem: `Nom se puido ${action} ${this.getEntityName()}.`
+      mensagem: `Nom se puido ${action} ${this.getNomeElemento()}.`
     });
   }
 }

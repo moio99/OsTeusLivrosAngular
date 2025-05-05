@@ -22,10 +22,8 @@ import { BaseElementoComponent } from '../../../core/components/base/elemento/ba
   styleUrls: ['./editorial.component.scss']
 })
 export class EditorialComponent extends BaseElementoComponent<Editorial, EditoriaisService> {
-  ef: FormGroup;
 
-  estadosPagina = EstadosPagina;
-  disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
+  ef: FormGroup;
   override dadosDoElemento: Editorial | undefined = {
     id: 0,
     nome: '',
@@ -41,8 +39,8 @@ export class EditorialComponent extends BaseElementoComponent<Editorial, Editori
     layoutService: LayoutService,
     location: Location,
     editoriaisService: EditoriaisService,
+    dadosPaginasService: DadosPaginasService,
     private livrosService: LivrosService,
-    dadosPaginasService: DadosPaginasService
   ) {
     super(route, router, layoutService, location, dadosPaginasService, editoriaisService);
 
@@ -54,7 +52,7 @@ export class EditorialComponent extends BaseElementoComponent<Editorial, Editori
     });
   }
 
-  protected get form(): any {
+  protected get formuario(): any {
     return this.ef;
   }
 
@@ -84,15 +82,15 @@ export class EditorialComponent extends BaseElementoComponent<Editorial, Editori
   protected createElementoForm(): Editorial {
     const editorial: Editorial = {
       id: Number(this.dadosDoElemento?.id),
-      nome: String(this.form.get('nome').value),
-      direicom: (this.form.get('direicom').value == null) ? null : String(this.form.get('direicom').value).trim(),
-      web: (this.form.get('web').value == null) ? null : String(this.form.get('web').value).trim(),
-      comentario: (this.form.get('comentario').value == null) ? null : String(this.form.get('comentario').value).trim()
+      nome: String(this.formuario.get('nome').value),
+      direicom: (this.formuario.get('direicom').value == null) ? null : String(this.formuario.get('direicom').value).trim(),
+      web: (this.formuario.get('web').value == null) ? null : String(this.formuario.get('web').value).trim(),
+      comentario: (this.formuario.get('comentario').value == null) ? null : String(this.formuario.get('comentario').value).trim()
     };
     return editorial;
   }
 
-  protected getEntityName(): string {
+  protected getNomeElemento(): string {
     return 'da editorial';
   }
 }
