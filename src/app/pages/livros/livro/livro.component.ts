@@ -638,24 +638,39 @@ export class LivroComponent implements OnInit {
           break
         }
         case DadosComplentarios.Biblioteca: {
+          this.actualizarCombo(this.bibliotecasCombo, novoDado.elemento);
           this.dadosDoLivro.idBiblioteca = novoDado.elemento.id;
           break
         }
         case DadosComplentarios.Editorial: {
+          this.actualizarCombo(this.editoriaisCombo, novoDado.elemento);
           this.dadosDoLivro.idEditorial = novoDado.elemento.id;
           break
         }
         case DadosComplentarios.Colecom: {
+          this.actualizarCombo(this.coleconsCombo, novoDado.elemento);
           this.dadosDoLivro.idColecom = novoDado.elemento.id;
           break
         }
         case DadosComplentarios.EstiloLiterario: {
+          this.actualizarCombo(this.estilosCombo, novoDado.elemento);
           this.dadosDoLivro.idEstilo = novoDado.elemento.id;
           break
         }
       }
     }
     this.dadosPaginasService.setNovoDado(undefined);
+  }
+
+  private actualizarCombo(combo: SimpleObjet[], novoElemento: SimpleObjet): void {
+    const index = combo.findIndex(item => item.id === novoElemento.id);
+
+    if (index < 0) {
+      combo.push(novoElemento);
+    } else {
+      combo[index] = novoElemento;
+    }
+    combo.sort((a, b) => a.value.localeCompare(b.value));
   }
 
   private dadosObtidosDoLivro(data: object) {
@@ -817,6 +832,7 @@ export class LivroComponent implements OnInit {
     if (biblioteca) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+      this.dadosPaginasService.setNovoDado({tipo: DadosComplentarios.Biblioteca, elemento: biblioteca});
       this.layoutService.amosarInfo(undefined);
       this.router.navigateByUrl(rota + '?id=' + biblioteca.id);
     }
@@ -827,6 +843,7 @@ export class LivroComponent implements OnInit {
     if (editorial) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+      this.dadosPaginasService.setNovoDado({tipo: DadosComplentarios.Editorial, elemento: editorial});
       this.layoutService.amosarInfo(undefined);
       this.router.navigateByUrl(rota + '?id=' + editorial.id);
     }
@@ -837,6 +854,7 @@ export class LivroComponent implements OnInit {
     if (colecom) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+      this.dadosPaginasService.setNovoDado({tipo: DadosComplentarios.Colecom, elemento: colecom});
       this.layoutService.amosarInfo(undefined);
       this.router.navigateByUrl(rota + '?id=' + colecom.id);
     }
@@ -847,6 +865,7 @@ export class LivroComponent implements OnInit {
     if (estilo) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+      this.dadosPaginasService.setNovoDado({tipo: DadosComplentarios.EstiloLiterario, elemento: estilo});
       this.layoutService.amosarInfo(undefined);
       this.router.navigateByUrl(rota + '?id=' + estilo.id);
     }

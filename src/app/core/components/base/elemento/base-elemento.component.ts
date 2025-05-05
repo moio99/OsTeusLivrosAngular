@@ -14,6 +14,7 @@ import { ParametrosId } from '../../../models/comun.interface';
 import { ListadoLivros, ListadoLivrosData } from '../../../models/listado-livros.interface';
 import { Genero } from '../../../models/genero.interface';
 import { UsuarioAppService } from '../../../services/flow/usuario-app.service';
+import { SimpleObjet } from '../../../../shared/models/outros.model';
 
 @Component({
   template: ''
@@ -175,6 +176,20 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     }
   }
 
+  private saveElemento(event: SubmitEvent) {
+    const elemento = this.createElementoForm();
+
+    const serviceCall = this.isAdding(event)
+      ? this.servicoElemento.create(elemento)
+      : this.servicoElemento.update(elemento);
+
+    serviceCall.pipe(first()).subscribe({
+      next: (v: any) => this.handleSaveSuccess(v, elemento),
+      error: (e: any) => this.handleSaveError(e),
+      complete: () => this.handleSaveComplete()
+    });
+  }
+
   protected handleSaveError(error: any) {
     console.error(error);
     this.amosarMensagemErro();
@@ -200,36 +215,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     return (event.submitter as HTMLButtonElement)?.value === EstadosPagina.engadir;
   }
 
-  protected handleNavigation(data: any, elemento: TElemento) {
-    const dados = data as { meta: { id: number } };
-    if (dados) {
-      elemento.id = dados.meta.id;
-      this.dadosDoElemento = elemento;
-      const novoDado = this.dadosPaginasService.getNovoDado();
-      if (novoDado) {
-        novoDado.elemento = elemento;
-        this.layoutService.amosarInfo(undefined);
-        this.location.back();
-      }
-    }
-  }
-
-  private saveElemento(event: SubmitEvent) {
-    const elemento = this.createElementoForm();
-
-    const serviceCall = this.isAdding(event)
-      ? this.servicoElemento.create(elemento)
-      : this.servicoElemento.update(elemento);
-
-    serviceCall.pipe(first()).subscribe({
-      next: (v: any) => this.handleSaveSuccess(v, elemento),
-      error: (e: any) => this.handleSaveError(e),
-      complete: () => this.handleSaveComplete()
-    });
-  }
-
   private handleSaveSuccess(data: any, elemento: TElemento) {
-    console.debug(data);
     if (data.idResult > 0) {
       if (this.eGenero(elemento)) {
         this.usuarioAppService.setGenero(elemento);
@@ -238,6 +224,22 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
       this.modo = EstadosPagina.guardar;
     } else {
       this.amosarMensagemErro();
+    }
+  }
+
+  protected handleNavigation(data: any, elemento: TElemento) {
+    const dados = data as { meta: { id: number } };
+    if (dados) {
+      elemento.id = dados.meta.id;
+      this.dadosDoElemento = elemento;
+      const dadoRequerido = this.dadosPaginasService.getNovoDado();
+      if (dadoRequerido) {
+        const novoDado: SimpleObjet = { id: elemento.id, value: elemento.nome };
+        dadoRequerido.elemento = novoDado;
+        this.dadosPaginasService.setNovoDado(dadoRequerido);
+        this.layoutService.amosarInfo(undefined);
+        this.location.back();
+      }
     }
   }
 
