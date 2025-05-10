@@ -662,15 +662,15 @@ export class LivroComponent implements OnInit {
     this.dadosPaginasService.setNovoDado(undefined);
   }
 
-  private actualizarCombo(combo: SimpleObjet[], novoElemento: SimpleObjet): void {
-    const index = combo.findIndex(item => item.id === novoElemento.id);
+  private actualizarCombo(elementosCombo: SimpleObjet[], novoElemento: SimpleObjet): void {
+    const index = elementosCombo.findIndex(item => item.id === novoElemento.id);
 
     if (index < 0) {
-      combo.push(novoElemento);
+      elementosCombo.push(novoElemento);
     } else {
-      combo[index] = novoElemento;
+      elementosCombo.splice(index, 1, novoElemento);
     }
-    combo.sort((a, b) => a.value.localeCompare(b.value));
+    elementosCombo.sort((a, b) => a.value.localeCompare(b.value));
   }
 
   private dadosObtidosDoLivro(data: object) {
