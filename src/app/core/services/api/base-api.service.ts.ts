@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
+import { BaseDadosApi } from '../../models/base-dados-api';
 
-export abstract class BaseApiService<T, DataT, ListadoT> {  // clase que a extende BaseApiService<Colecom, ListadoColeconsData>
+export abstract class BaseApiService<T> {  // clase que a extende BaseApiService<Colecom>
   protected abstract rotaIntermedia: string;              	// De obrigada implementaçom na clase que a extende
-  protected cacheData: ListadoT | undefined = undefined;
+  protected cacheData: BaseDadosApi<T> | undefined = undefined;
 
   constructor(protected http: HttpClient) {}
 
@@ -17,16 +18,16 @@ export abstract class BaseApiService<T, DataT, ListadoT> {  // clase que a exten
    * Quando nom estea em local guarda umha caché
    * @returns
    */
-  getListadoCosLivros(): Observable<ListadoT> {
+  getListadoCosLivros(): Observable<BaseDadosApi<T>> {
     const isProdOrPre = this.isProdOrPre();
     if (!isProdOrPre || !this.cacheData) {
-      return this.http.get<ListadoT>(`${environment.apiUrl}${this.rotaIntermedia}/${this.rotaIntermedia}CosLivros`);
+      return this.http.get<BaseDadosApi<T>>(`${environment.apiUrl}${this.rotaIntermedia}/${this.rotaIntermedia}CosLivros`);
     } else {
       return of(this.cacheData);
     }
   }
 
-  setListadoCosLivros(dados: ListadoT): void {
+  setListadoCosLivros(dados: BaseDadosApi<T>): void {
     if (this.isProdOrPre()) {
       this.cacheData = dados;
     }
@@ -36,8 +37,8 @@ export abstract class BaseApiService<T, DataT, ListadoT> {  // clase que a exten
     return this.http.get<T>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}?id=${id}`);
   }
 
-  getPorNome(nome: string): Observable<DataT> {
-    return this.http.get<DataT>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}PorNome?nome=${nome}`);
+  getPorNome(nome: string): Observable<BaseDadosApi<T>> {
+    return this.http.get<BaseDadosApi<T>>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}PorNome?nome=${nome}`);
   }
 
   create(item: T): Observable<T> {

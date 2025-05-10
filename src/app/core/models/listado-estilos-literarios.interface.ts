@@ -1,5 +1,5 @@
 export interface ListadoEstilosLiterariosData {
-  estilosLiterarios: ListadoEstilosLiterarios[];
+  data: ListadoEstilosLiterarios[];
   meta: any;
 }
 

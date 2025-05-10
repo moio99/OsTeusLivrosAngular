@@ -20,7 +20,7 @@ import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Title } from '@angular/platform-browser';
 import { EngadirEditarData } from '../../../shared/models/datas';
 import { RelecturasService } from '../../../core/services/api/relecturas.service';
-import { ObjetoSimpleIdNome, datasUltimosAnos, Livro, LivroData, Outros } from '../../../core/models/livro.interface';
+import { ObjetoSimpleIdNome, datasUltimosAnos, Livro, Outros } from '../../../core/models/livro.interface';
 import { Genero } from '../../../core/models/genero.interface';
 import { Relectura, ListadoRelecturas, RelecturasData, RelecturaData } from '../../../core/models/relectura.interface';
 import { SimpleObjet } from '../../../shared/models/outros.model';
@@ -31,6 +31,7 @@ import { Parametros } from '../../../core/models/comun.interface';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { environment, environments } from '../../../../environments/environment';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
+import { BaseDadosApi } from '../../../core/models/base-dados-api';
 
 export enum MultiGestom {
   autores = 1,
@@ -637,18 +638,22 @@ export class LivroComponent implements OnInit {
           break
         }
         case DadosComplentarios.Biblioteca: {
+          this.actualizarCombo(this.bibliotecasCombo, novoDado.elemento);
           this.dadosDoLivro.idBiblioteca = novoDado.elemento.id;
           break
         }
         case DadosComplentarios.Editorial: {
+          this.actualizarCombo(this.editoriaisCombo, novoDado.elemento);
           this.dadosDoLivro.idEditorial = novoDado.elemento.id;
           break
         }
         case DadosComplentarios.Colecom: {
+          this.actualizarCombo(this.coleconsCombo, novoDado.elemento);
           this.dadosDoLivro.idColecom = novoDado.elemento.id;
           break
         }
         case DadosComplentarios.EstiloLiterario: {
+          this.actualizarCombo(this.estilosCombo, novoDado.elemento);
           this.dadosDoLivro.idEstilo = novoDado.elemento.id;
           break
         }
@@ -657,12 +662,23 @@ export class LivroComponent implements OnInit {
     this.dadosPaginasService.setNovoDado(undefined);
   }
 
+  private actualizarCombo(elementosCombo: SimpleObjet[], novoElemento: SimpleObjet): void {
+    const index = elementosCombo.findIndex(item => item.id === novoElemento.id);
+
+    if (index < 0) {
+      elementosCombo.push(novoElemento);
+    } else {
+      elementosCombo.splice(index, 1, novoElemento);
+    }
+    elementosCombo.sort((a, b) => a.value.localeCompare(b.value));
+  }
+
   private dadosObtidosDoLivro(data: object) {
     let resultados: Livro;
-    const dados = <LivroData>data;
-    resultados = dados.livro;
-    if (resultados) {
-      this.dadosDoLivro = dados.livro;
+    const dados = <BaseDadosApi<Livro>>data;
+    if (dados.data.length > 0) {
+      resultados = dados.data[0];
+      this.dadosDoLivro = dados.data[0];
       this.setDadosLivroForm();
 
       if (this.idRelectura !== '0') {
@@ -816,6 +832,7 @@ export class LivroComponent implements OnInit {
     if (biblioteca) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+      this.dadosPaginasService.setNovoDado({tipo: DadosComplentarios.Biblioteca, elemento: biblioteca});
       this.layoutService.amosarInfo(undefined);
       this.router.navigateByUrl(rota + '?id=' + biblioteca.id);
     }
@@ -826,6 +843,7 @@ export class LivroComponent implements OnInit {
     if (editorial) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+      this.dadosPaginasService.setNovoDado({tipo: DadosComplentarios.Editorial, elemento: editorial});
       this.layoutService.amosarInfo(undefined);
       this.router.navigateByUrl(rota + '?id=' + editorial.id);
     }
@@ -836,6 +854,7 @@ export class LivroComponent implements OnInit {
     if (colecom) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+      this.dadosPaginasService.setNovoDado({tipo: DadosComplentarios.Colecom, elemento: colecom});
       this.layoutService.amosarInfo(undefined);
       this.router.navigateByUrl(rota + '?id=' + colecom.id);
     }
@@ -846,6 +865,7 @@ export class LivroComponent implements OnInit {
     if (estilo) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+      this.dadosPaginasService.setNovoDado({tipo: DadosComplentarios.EstiloLiterario, elemento: estilo});
       this.layoutService.amosarInfo(undefined);
       this.router.navigateByUrl(rota + '?id=' + estilo.id);
     }
@@ -901,12 +921,12 @@ export class LivroComponent implements OnInit {
     }
     else {
       if (this.livroForm.valid) {
-        let livroRepetido: LivroData;
+        let livroRepetido: BaseDadosApi<Livro>;
         this.livrosService
           .getLivroPorTitulo(String(this.lf.titulo.value).trim())
           .pipe(first())
           .subscribe({
-            next: (v: object) => livroRepetido = <LivroData>v,
+            next: (v: object) => livroRepetido = <BaseDadosApi<Livro>>v,
             error: (e: any) => { console.error(e),
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro.'}); },
               complete: () => this.guardarLivro(event, livroRepetido)
@@ -915,7 +935,7 @@ export class LivroComponent implements OnInit {
     }
   }
 
-  guardarLivro(event: any, livroRepetido: LivroData) {
+  guardarLivro(event: any, livroRepetido: BaseDadosApi<Livro>) {
     if (livroRepetido != undefined && livroRepetido.meta.quantidade > 0 && (
       (event.submitter.value === EstadosPagina.engadir)
       ||

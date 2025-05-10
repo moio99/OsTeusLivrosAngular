@@ -282,15 +282,15 @@ export class ListadoLivrosComponent implements OnInit {
       if (relecturas == undefined || relecturas == 0) {
         if(confirm("Está certo de querer borrar o livro " + nome + "?")) {
           this.livrosService
-                .borrarLivro(id)
-                .pipe(first())
-                .subscribe({
-                  next: (v: object) => console.debug(v),
-                  error: (e: any) => { console.error(e),
-                    this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o livro.'}); },
-                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
-                    this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro borrado.'}); }
-              });
+            .borrarLivro(id)
+            .pipe(first())
+            .subscribe({
+              next: (v: object) => console.debug(v),
+              error: (e: any) => { console.error(e),
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o livro.'}); },
+              complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro borrado.'}); }
+          });
         }
       }
       else {

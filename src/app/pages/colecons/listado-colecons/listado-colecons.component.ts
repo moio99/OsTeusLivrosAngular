@@ -9,6 +9,7 @@ import { ColeconsService } from '../../../core/services/api/colecons.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { environment, environments } from '../../../../environments/environment';
+import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 
 @Component({
   selector: 'omla-listado-colecons',
@@ -17,70 +18,38 @@ import { environment, environments } from '../../../../environments/environment'
   templateUrl: './listado-colecons.component.html',
   styleUrls: ['./listado-colecons.component.scss']
 })
-export class ListadoColeconsComponent implements OnInit {
+export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColecons> implements OnInit {
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   tipoListado = '';
-  listadoDados: ListadoColecons[] = [];
+  override listadoDados: ListadoColecons[] = [];
 
   constructor(
     private router: Router,
-    private layoutService: LayoutService,
-    private coleconsService: ColeconsService) { }
+    private coleconsService: ColeconsService,
+    layoutService: LayoutService) {
+      super(layoutService);
+    }
 
   ngOnInit(): void {
-    this.obterDadosDoListado();
+    super.obterDadosDoListado('as coleçons',
+      this.coleconsService.getListadoCosLivros(),
+      this.coleconsService.setListadoCosLivros.bind(this.coleconsService));
   }
 
-  private obterDadosDoListado(): void {
-    this.coleconsService
-      .getListadoCosLivros()
-      .pipe(first())
-      .subscribe({
-        next: (v: any) => this.listadoDados = this.dadosObtidos(v),
-        error: (e: any) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter as coleçons.'}); },
-          // complete: () => console.info('completado listado de coleçons')
-    });
+  onBorrar(id: string, nome: string, quantidadeLivros: number) {
+    this.onBorrarElemento(
+      id,
+      quantidadeLivros,
+      nome,
+      'a coleçom',
+      'Coleçom borrada correctamente',
+      (id) => this.coleconsService.borrar(id)
+    );
   }
 
-  private dadosObtidos(data: object): ListadoColecons[] {
-    let resultados: ListadoColecons[];
-    const dados = <ListadoColeconsData>data;
-    if (dados != null) {
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
-      this.coleconsService.setListadoCosLivros(dados);
-      resultados = dados.data;
-    } else {
-      resultados = [];
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
-      console.debug('Nom se obtiverom dados');
-    }
-    return resultados
-  }
-
-  onBorrarElemento(id: string, nome: string, livros: number) {
-    if (livros == 0) {
-      if(confirm("Está certo de querer borrar a colecom " + nome + "?")) {
-        this.coleconsService
-              .borrar(id)
-              .pipe(first())
-              .subscribe({
-                next: (v: any) => console.debug(v),
-                error: (e: any) => { console.error(e),
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a coleçom.'}); },
-                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Coleçom borrada.'}); }
-            });
-      }
-    }
-    else {
-      let pergunta = 'Nom se pode borrar a colecom ' + nome + ' mentres tenha ' + livros;
-      let singular = ' livro asociado.';
-      let plural = ' livros asociados.';
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: pergunta + ((livros == 1) ? singular : plural)});
-      alert(pergunta + ((livros == 1) ? singular : plural));
-    }
+  trackById(index: number, item: any): number {
+    return item.id;
   }
 
   onIrPagina(rota: string, id: string): void{

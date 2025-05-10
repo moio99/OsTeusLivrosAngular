@@ -19,7 +19,7 @@ export enum DadosComplentarios {
   Biblioteca = 3,
   Editorial = 4,
   Colecom = 5,
-  EstiloLiterario = 5
+  EstiloLiterario = 6
 };
 
 export enum ListadosAutoresTipos {

@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { DadosComplentarios } from "../../../shared/enums/estadisticasTipos";
+import { SimpleObjet } from "../../../shared/models/outros.model";
 
 export interface DadosPagina {
   id: string;
@@ -9,7 +10,7 @@ export interface DadosPagina {
 
 export interface NovoDado {
   tipo: DadosComplentarios;
-  elemento: any;
+  elemento: any | SimpleObjet;
 }
 
 @Injectable({

@@ -1,10 +1,6 @@
-export interface GeneroData {
-  genero: Genero[];
-  meta: {id:number, quantidade:number};
-}
+import { BaseElemento } from "./base-dados-api";
 
-export interface Genero {
-  id: number;
-  nome: string;
+export interface Genero extends BaseElemento {
+  tipo?: 'propriedade para saver que o tipo é Género';
   comentario?: string | null;
 }

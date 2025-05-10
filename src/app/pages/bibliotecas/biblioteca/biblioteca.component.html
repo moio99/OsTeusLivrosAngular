@@ -1,4 +1,4 @@
-<form [formGroup]="bibliotecaForm" (ngSubmit)="onSubmit($event)">
+<form [formGroup]="formuario" (ngSubmit)="onSubmit($event)">
   @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
     <button color="primary" type="submit" value="{{this.modo}}">
       <i class="icon-disk"></i> {{this.modo}}
@@ -11,11 +11,11 @@
     <div>
       <mat-form-field [style.width.px]=500>
         <mat-label>Nome:</mat-label>
-        <input matInput [formControl]="bf.nome" width="200">
-        <mat-error *ngIf="bf.nome.hasError('maxlength')">
+        <input matInput [formControl]="formuario.get('nome')" width="200">
+        <mat-error *ngIf="formuario.get('nome').hasError('maxlength')">
           A longitude nom debe superar os 150 caracteres
         </mat-error>
-        <mat-error *ngIf="bf.nome.hasError('required')">
+        <mat-error *ngIf="formuario.get('nome').hasError('required')">
           O Nome é obrigatorio
         </mat-error>
       </mat-form-field>
@@ -24,8 +24,8 @@
     <div>
       <mat-form-field [style.width.px]=500>
         <mat-label>Endereço:</mat-label>
-        <input matInput [formControl]="bf.endereco">
-        <mat-error *ngIf="bf.endereco.hasError('maxlength')">
+        <input matInput [formControl]="formuario.get('endereco')">
+        <mat-error *ngIf="formuario.get('endereco').hasError('maxlength')">
           A longitude nom debe superar os 150 caracteres
         </mat-error>
       </mat-form-field>
@@ -34,8 +34,8 @@
     <div>
       <mat-form-field [style.width.px]=300>
         <mat-label>Localidade:</mat-label>
-        <input matInput [formControl]="bf.localidade">
-        <mat-error *ngIf="bf.localidade.hasError('maxlength')">
+        <input matInput [formControl]="formuario.get('localidade')">
+        <mat-error *ngIf="formuario.get('localidade').hasError('maxlength')">
           A longitude nom debe superar os 150 caracteres
         </mat-error>
       </mat-form-field>
@@ -44,8 +44,8 @@
     <div>
       <mat-form-field [style.width.px]=150>
         <mat-label>Telefone:</mat-label>
-        <input matInput [formControl]="bf.telefone">
-        <mat-error *ngIf="bf.telefone.hasError('maxlength')">
+        <input matInput [formControl]="formuario.get('telefone')">
+        <mat-error *ngIf="formuario.get('telefone').hasError('maxlength')">
           A longitude nom debe superar os 50 caracteres
         </mat-error>
       </mat-form-field>
@@ -54,10 +54,10 @@
     <div class="data-criacom">
       <mat-form-field class="ancho-inputs" [style.width.px]=170>
         <mat-label>Data de asociamento</mat-label>
-        <input matInput [matDatepicker]="fDateAso" [formControl]="bf.dataAsociamento" (keydown.enter)="onKeyDownImpedirEnvio($event)">
+        <input matInput [matDatepicker]="fDateAso" [formControl]="formuario.get('dataAsociamento')" (keydown.enter)="onKeyDownImpedirEnvio($event)">
         <mat-datepicker-toggle matSuffix [for]="fDateAso"></mat-datepicker-toggle>
         <mat-datepicker #fDateAso></mat-datepicker>
-        <mat-error *ngIf="bf.dataAsociamento.hasError('matDatepickerParse')"
+        <mat-error *ngIf="formuario.get('dataAsociamento').hasError('matDatepickerParse')"
           [innerHTML]="'O formato válido é dd/mm/aaaa'">
         </mat-error>
       </mat-form-field>
@@ -66,10 +66,10 @@
     <div class="data-criacom">
       <mat-form-field class="ancho-inputs" [style.width.px]=170>
         <mat-label>Data de renovaçom</mat-label>
-        <input matInput [matDatepicker]="fDateRe" [formControl]="bf.dataRenovacom" (keydown.enter)="onKeyDownImpedirEnvio($event)">
+        <input matInput [matDatepicker]="fDateRe" [formControl]="formuario.get('dataRenovacom')" (keydown.enter)="onKeyDownImpedirEnvio($event)">
         <mat-datepicker-toggle matSuffix [for]="fDateRe"></mat-datepicker-toggle>
         <mat-datepicker #fDateRe></mat-datepicker>
-        <mat-error *ngIf="bf.dataRenovacom.hasError('matDatepickerParse')"
+        <mat-error *ngIf="formuario.get('dataRenovacom').hasError('matDatepickerParse')"
           [innerHTML]="'O formato válido é dd/mm/aaaa'">
         </mat-error>
       </mat-form-field>
@@ -78,8 +78,8 @@
     <div>
       <mat-form-field [style.width.px]=500>
         <mat-label>Comentario:</mat-label>
-        <textarea matInput [formControl]="bf.comentario" rows="4"></textarea>
-        <mat-error *ngIf="bf.comentario.hasError('maxlength')">
+        <textarea matInput [formControl]="formuario.get('comentario')" rows="4"></textarea>
+        <mat-error *ngIf="formuario.get('comentario').hasError('maxlength')">
           A longitude nom debe superar os 5000 caracteres
         </mat-error>
       </mat-form-field>
@@ -88,15 +88,15 @@
   </div>
 </form>
 
-<h3 *ngIf="dadosLivrosDaBiblioteca.length > 0">Listado de livros</h3>
+<h3 *ngIf="livrosDoElemento.length > 0">Listado de livros</h3>
 
-<table *ngIf="this.dadosLivrosDaBiblioteca.length > 0">
+<table *ngIf="this.livrosDoElemento.length > 0">
   <tr>
     <th>Titulo</th>
     <th>TituloOriginal</th>
     <th>Autor</th>
   </tr>
-  <tr *ngFor="let entrada of this.dadosLivrosDaBiblioteca" class="listado-accom">
+  <tr *ngFor="let entrada of this.livrosDoElemento" class="listado-accom">
     <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
     <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
     <td class="lista-com-comas">

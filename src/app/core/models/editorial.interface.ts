@@ -1,11 +1,6 @@
-export interface EditorialData {
-  editorial: Editorial[];
-  meta: {id:number, quantidade:number};
-}
+import { BaseElemento } from "./base-dados-api";
 
-export interface Editorial {
-  id: number;
-  nome: string;
+export interface Editorial extends BaseElemento {
   direicom: string | null,
   web: string | null,
   comentario: string | null,

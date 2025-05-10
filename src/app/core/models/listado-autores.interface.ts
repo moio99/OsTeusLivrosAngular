@@ -11,7 +11,7 @@ export interface ListadoAutoresData {
 }
 
 export interface ListadoAutores {
-  id: number;
+  id: string;
   nome: string;
   quantidadeLivros: number;
   quantidadeLidos: number;

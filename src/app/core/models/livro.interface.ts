@@ -5,11 +5,6 @@ import { Editorial } from "./editorial.interface";
 import { EstiloLiterario } from "./estilos-literarios.interface";
 import { Genero } from "./genero.interface";
 
-export interface LivroData {
-  livro: Livro;
-  meta: any;
-}
-
 export interface Livro {
   id: string;
   titulo: string;

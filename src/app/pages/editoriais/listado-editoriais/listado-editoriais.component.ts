@@ -1,15 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, Routes } from '@angular/router';
-import { first } from 'rxjs';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
-import { ListadoEditoriais, ListadoEditoriaisData } from '../../../core/models/listado-editoriais.interface';
+import { ListadoEditoriais } from '../../../core/models/listado-editoriais.interface';
 import { EditoriaisService } from '../../../core/services/api/editoriais.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
-import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { EditorialComponent } from '../editorial/editorial.component';
 import { environment, environments } from '../../../../environments/environment';
+import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 
 @Component({
   selector: 'omla-listado-editoriais',
@@ -18,7 +17,7 @@ import { environment, environments } from '../../../../environments/environment'
   templateUrl: './listado-editoriais.component.html',
   styleUrls: ['./listado-editoriais.component.scss']
 })
-export class ListadoEditoriaisComponent implements OnInit {
+export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEditoriais> implements OnInit {
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   nomeAlfabetico = ', alfabético';
@@ -26,66 +25,34 @@ export class ListadoEditoriaisComponent implements OnInit {
   tipoOrdeacom = this.nomeAlfabetico;
   inverso = false;
   tipoListado = '';
-  listadoDados: ListadoEditoriais[] = [];
+  override listadoDados: ListadoEditoriais[] = [];
 
   constructor(
     private router: Router,
-    private layoutService: LayoutService,
-    private editoriaisService: EditoriaisService) { }
+    private editoriaisService: EditoriaisService,
+    layoutService: LayoutService) {
+      super(layoutService);
+    }
 
   ngOnInit(): void {
-    this.obterDadosDoListado();
+    super.obterDadosDoListado('as editoriais',
+      this.editoriaisService.getListadoCosLivros(),
+      this.editoriaisService.setListadoCosLivros.bind(this.editoriaisService));
   }
 
-  private obterDadosDoListado(): void {
-    this.editoriaisService
-      .getListadoCosLivros()
-      .pipe(first())
-      .subscribe({
-        next: (v: any) => this.listadoDados = this.dadosObtidos(v),
-        error: (e: any) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter as editoriais.'}); },
-          // complete: () => console.info('completado listado de editoriais')
-    });
+  onBorrar(id: string, nome: string, quantidadeLivros: number) {
+    this.onBorrarElemento(
+      id,
+      quantidadeLivros,
+      nome,
+      'a editorial',
+      'Editorial borrada correctamente',
+      (id) => this.editoriaisService.borrar(id)
+    );
   }
 
-  private dadosObtidos(data: object): ListadoEditoriais[] {
-    let resultados: ListadoEditoriais[];
-    const dados = <ListadoEditoriaisData>data;
-    if (dados != null) {
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
-      this.editoriaisService.setListadoCosLivros(dados);
-      resultados = dados.data.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso));
-    } else {
-      resultados = [];
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
-      console.debug('Nom se obtiverom dados');
-    }
-    return resultados
-  }
-
-  onBorrarElemento(id: string, nome: string, livros: number) {
-    if (livros == 0) {
-      if(confirm("Está certo de querer borrar a editorial " + nome + "?")) {
-        this.editoriaisService
-              .borrar(id)
-              .pipe(first())
-              .subscribe({
-                next: (v: any) => console.debug(v),
-                error: (e: any) => { console.error(e),
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a editirial.'}); },
-                  complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
-                  this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Editorial borrada.'}); }
-            });
-      }
-    }
-    else {
-      let pergunta = 'Nom se pode borrar a editorial ' + nome + ' mentres tenha ' + livros;
-      let singular = ' livro asociado';
-      let plural = ' livros asociados';
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: pergunta + ((livros == 1) ? singular : plural)});
-      alert(pergunta + ((livros == 1) ? singular : plural));
-    }
+  trackById(index: number, item: any): number {
+    return item.id;
   }
 
   ordeAlfabetico() {

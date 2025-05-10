@@ -9,7 +9,7 @@
     <li><a routerLink="/autores/porPais">Por Pais</a></li>
     <li>
       @if (!soVisualizar) {
-        <button class="botom-novo-resgistro" (click)="onIrPagina('autores/autor', 0)">
+        <button class="botom-novo-resgistro" (click)="onIrPagina('autores/autor', '0')">
           Novo Autor
         </button>
       }
@@ -37,8 +37,9 @@
     <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLivros}}</td>
     <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>
     @if (!soVisualizar) {
-      <td (click)="onBorrarElemento(entrada.id, entrada.nome, entrada.quantidadeLivros)">
-        <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+      <td (click)="$event.stopPropagation()">
+        <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar"
+          (click)="onBorrar(entrada.id, entrada.nome, entrada.quantidadeLivros)">
       </td>
     }
   </tr>

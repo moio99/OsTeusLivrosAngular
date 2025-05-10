@@ -1,12 +1,12 @@
 import { ListadosAutoresTipos } from "../../shared/enums/estadisticasTipos";
+import { BaseDadosApi } from "./base-dados-api";
 
 export interface Parametros {
   id: number;
   tipo: ListadosAutoresTipos;
 }
 
-export interface AutorData {
-  autor: Autor[];
+export interface AutorData<Autor> extends BaseDadosApi<Autor> {
   meta: {id:number, quantidade:number};
 }
 

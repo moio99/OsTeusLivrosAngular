@@ -1,5 +1,5 @@
 
-<form [formGroup]="editorialForm" (ngSubmit)="onSubmit($event)">
+<form [formGroup]="formuario" (ngSubmit)="onSubmit($event)">
   @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
     <button color="primary" type="submit" value="{{this.modo}}">
       <i class="icon-disk"></i> {{this.modo}}
@@ -11,50 +11,50 @@
   <div class="formulario-dados">
     <mat-form-field [style.width.px]=500>
       <mat-label>Nome:</mat-label>
-      <input matInput [formControl]="ef.nome" width="200">
-      <mat-error *ngIf="ef.nome.hasError('maxlength')">
+      <input matInput [formControl]="formuario.get('nome')" width="200">
+      <mat-error *ngIf="formuario.get('nome')?.hasError('maxlength')">
         A longitude nom debe superar os 150 caracteres
       </mat-error>
-      <mat-error *ngIf="ef.nome.hasError('required')">
+      <mat-error *ngIf="formuario.get('nome')?.hasError('required')">
         O Nome é obrigatorio
       </mat-error>
     </mat-form-field>
 
     <mat-form-field [style.width.px]=500>
       <mat-label>Direiçom:</mat-label>
-      <input matInput [formControl]="ef.direicom">
-      <mat-error *ngIf="ef.direicom.hasError('maxlength')">
+      <input matInput [formControl]="formuario.get('direicom')">
+      <mat-error *ngIf="formuario.get('direicom')?.hasError('maxlength')">
         A longitude nom debe superar os 150 caracteres
       </mat-error>
     </mat-form-field>
 
     <mat-form-field [style.width.px]=500>
       <mat-label>web:</mat-label>
-      <input matInput [formControl]="ef.web">
-      <mat-error *ngIf="ef.web.hasError('maxlength')">
+      <input matInput [formControl]="formuario.get('web')">
+      <mat-error *ngIf="formuario.get('web')?.hasError('maxlength')">
         A longitude nom debe superar os 100 caracteres
       </mat-error>
     </mat-form-field>
 
     <mat-form-field [style.width.px]=500>
       <mat-label>Comentario:</mat-label>
-      <textarea matInput [formControl]="ef.comentario" rows="4"></textarea>
-      <mat-error *ngIf="ef.comentario.hasError('maxlength')">
+      <textarea matInput [formControl]="formuario.get('comentario')" rows="4"></textarea>
+      <mat-error *ngIf="formuario.get('comentario')?.hasError('maxlength')">
         A longitude nom debe superar os 5000 caracteres
       </mat-error>
     </mat-form-field>
   </div>
 </form>
 
-<h3 *ngIf="dadosLivrosDaEditorial.length > 0">Listado de livros</h3>
+<h3 *ngIf="livrosDoElemento.length > 0">Listado de livros</h3>
 
-<table *ngIf="this.dadosLivrosDaEditorial.length > 0">
+<table *ngIf="this.livrosDoElemento.length > 0">
   <tr>
     <th>Titulo</th>
     <th>TituloOriginal</th>
     <th>Autor</th>
   </tr>
-  <tr *ngFor="let entrada of this.dadosLivrosDaEditorial" class="listado-accom">
+  <tr *ngFor="let entrada of this.livrosDoElemento" class="listado-accom">
     <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
     <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
     <td class="lista-com-comas">

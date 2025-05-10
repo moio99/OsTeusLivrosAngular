@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Routes } from '@angular/router';
-import { first } from 'rxjs';
 import { GeneroComponent } from '../genero/genero.component';
 import { CommonModule } from '@angular/common';
-import { ListadoGeneros, ListadoGenerosData } from '../../../core/models/listado-generos.interface';
+import { ListadoGeneros } from '../../../core/models/listado-generos.interface';
 import { GenerosService } from '../../../core/services/api/generos.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
-import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
 import { environment, environments } from '../../../../environments/environment';
-import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
+import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 
 @Component({
   selector: 'omla-listado-generos',
@@ -19,7 +17,7 @@ import { UsuarioAppService } from '../../../core/services/flow/usuario-app.servi
   templateUrl: './listado-generos.component.html',
   styleUrls: ['./listado-generos.component.scss']
 })
-export class ListadoGenerosComponent implements OnInit {
+export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros> implements OnInit {
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   nomeAlfabetico = ', alfabético';
@@ -28,67 +26,36 @@ export class ListadoGenerosComponent implements OnInit {
   tipoOrdeacom = this.nomeAlfabetico;
   inverso = false;
   tipoListado = '';
-  listadoDados: ListadoGeneros[] = [];
+  override listadoDados: ListadoGeneros[] = [];
 
   constructor(
     private router: Router,
-    private layoutService: LayoutService,
-    private usuarioAppService: UsuarioAppService,
-    private generosService: GenerosService) { }
+    private generosService: GenerosService,
+    layoutService: LayoutService) {
+      super(layoutService);
+    }
 
   ngOnInit(): void {
-    this.obterDadosDoListado();
+    super.obterDadosDoListado(
+      'as editoriais',
+      this.generosService.getListadoCosLivros(),
+      this.generosService.setListadoCosLivros.bind(this.generosService));
   }
 
-  private obterDadosDoListado(): void {
-    this.generosService
-      .getListadoCosLivros()
-      .pipe(first())
-      .subscribe({
-        next: (v: any) => this.listadoDados = this.dadosObtidos(v),
-        error: (e: any) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
-          // complete: () => console.info('completado listado de generos')
-    });
+  onBorrar(id: string, nome: string, quantidadeLivros: number) {
+    // TODO: this.usuarioAppService.removerGenero(id); Gestionar o borrado da chaché
+    this.onBorrarElemento(
+      id,
+      quantidadeLivros,
+      nome,
+      'o género',
+      'Género borrada correctamente',
+      (id) => this.generosService.borrar(id)
+    );
   }
 
-  private dadosObtidos(data: object): ListadoGeneros[] {
-    let resultados: ListadoGeneros[];
-    const dados = <ListadoGenerosData>data;
-    if (dados != null) {
-      this.generosService.setListadoCosLivros(dados);
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
-      resultados = dados.data.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso));
-    } else {
-      resultados = [];
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
-      console.debug('Nom se obtiverom dados');
-    }
-    return resultados
-  }
-
-  onBorrarElemento(id: string, nome: string, livros: number) {
-    if (livros == 0) {
-      if(confirm("Está certo de querer borrar o género " + nome + "?")) {
-        this.generosService
-          .borrar(id)
-          .pipe(first())
-          .subscribe({
-            next: (v: any) => this.usuarioAppService.removerGenero(id),
-            error: (e: any) => { console.error(e),
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o género.'}); },
-              complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Género borrado.'}); }
-        });
-      }
-    }
-    else {
-      let pergunta = 'Nom se pode borrar o genero ' + nome + ' mentres tenha ' + livros;
-      let singular = ' livro asociado';
-      let plural = ' livros asociados';
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: pergunta + ((livros == 1) ? singular : plural)});
-      alert(pergunta + ((livros == 1) ? singular : plural));
-    }
+  trackById(index: number, item: any): number {
+    return item.id;
   }
 
   ordeAlfabetico() {

@@ -1,11 +1,6 @@
-export interface ColecomData {
-  colecom: Colecom[];
-  meta: {id:number, quantidade:number};
-}
+import { BaseElemento } from "./base-dados-api";
 
-export interface Colecom {
-  id: number;
-  nome: string;
+export interface Colecom extends BaseElemento {
   isbn: string | null,
   web: string | null,
   comentario: string | null,

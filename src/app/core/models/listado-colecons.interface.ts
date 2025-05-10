@@ -1,6 +1,6 @@
-export interface ListadoColeconsData {
-  data: ListadoColecons[];
-  meta: any;
+import { BaseDadosApi } from "./base-dados-api";
+
+export interface ListadoColeconsData extends BaseDadosApi<ListadoColecons> {
 }
 
 export interface ListadoColecons {
