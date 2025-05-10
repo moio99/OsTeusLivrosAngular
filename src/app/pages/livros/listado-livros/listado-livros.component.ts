@@ -100,7 +100,7 @@ export class ListadoLivrosComponent implements OnInit {
             .getListadoLivrosPorIdioma(this.parametros.id)
             .pipe(first())
             .subscribe({
-              next: (v: object) => this.listadoDados = this.dadosObtidos(v),
+              next: (v: object) => this.listadoDados = this.dadosObtidos(v, false),
               error: (e: any) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
                   mensagem: 'Nom se puiderom obter os livros polo idioma ' + this.parametros.id}); },
@@ -120,7 +120,7 @@ export class ListadoLivrosComponent implements OnInit {
             .getListadoLivrosPorAno(this.parametros.id)
             .pipe(first())
             .subscribe({
-              next: (v: object) => this.listadoDados = this.dadosObtidos(v, true),
+              next: (v: object) => this.listadoDados = this.dadosObtidos(v, false, true),
               error: (e: any) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
                   mensagem: 'Nom se puiderom obter os livros polo ano ' + this.parametros.id}); },
@@ -133,7 +133,7 @@ export class ListadoLivrosComponent implements OnInit {
             .getListadoLivrosPorGenero(this.parametros.id)
             .pipe(first())
             .subscribe({
-              next: (v: object) => this.listadoDados = this.dadosObtidos(v, true),
+              next: (v: object) => this.listadoDados = this.dadosObtidos(v, false, true),
               error: (e: any) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
                   mensagem: 'Nom se puiderom obter os livros polo género ' + this.parametros.id}); },
@@ -172,18 +172,21 @@ export class ListadoLivrosComponent implements OnInit {
         }) */
       )
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidos(v),
+        next: (v: object) => this.listadoDados = this.dadosObtidos(v, false),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os livros.'}); },
       //complete: () => console.info('completado listado de livros')
     });
   }
 
-  private dadosObtidos(data: object, amosarGrafico?: boolean): ListadoLivros[] {
+  private dadosObtidos(data: object, listadoCompleto: boolean, amosarGrafico?: boolean): ListadoLivros[] {
     let resultados: ListadoLivros[];
     const dados = <ListadoLivrosData>data;
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidossss'});
+      if (listadoCompleto) {
+        this.livrosService.setListadoLivros(dados);   // Se é o listado completo vou guardar os dados na cache
+      }
       resultados = dados.data.sort((a,b) => new Ordeacom().ordear(
         a.titulo.replace(/[¿?¡!]/g,''), b.titulo.replace(/[¿?¡!]/g,'').replace('¡',''), this.inverso));
       if (amosarGrafico) {
