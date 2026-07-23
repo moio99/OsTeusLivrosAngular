@@ -7,6 +7,7 @@
     "startNoNecesario": "ng serve --port 4210 --proxy-config proxy.conf.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "gerar:apiBackend": "openapi-generator-cli generate -i http://localhost:5002/api-docs.json -g typescript-angular -o src/app/core/api-backend",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
@@ -33,6 +34,7 @@
     "@angular-devkit/build-angular": "^17.3.8",
     "@angular/cli": "^17.3.8",
     "@angular/compiler-cli": "^17.3.0",
+    "@openapitools/openapi-generator-cli": "^2.29.0",
     "@types/jest": "^29.5.12",
     "jest-preset-angular": "^14.2.2",
     "typescript": "~5.4.2"
