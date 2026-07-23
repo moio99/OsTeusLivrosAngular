@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "configurations": [
     {
+      // para que funcione, lanzar o npm run dev e despues o depurador
       "name": "probas no chrome",
       "type": "chrome",
       "request": "launch",

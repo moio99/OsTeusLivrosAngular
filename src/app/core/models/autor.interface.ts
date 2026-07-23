@@ -6,7 +6,7 @@ export interface Parametros {
   tipo: ListadosAutoresTipos;
 }
 
-export interface AutorData<Autor> extends BaseDadosApi<Autor> {
+export interface AutorData<T> extends BaseDadosApi<T> {
   meta: {id:number, quantidade:number};
 }
 
