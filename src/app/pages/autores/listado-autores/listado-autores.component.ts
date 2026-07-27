@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, Routes } from '@angular/router';
 import { first } from 'rxjs';
 import { ListadoAutores, ListadoAutoresData } from '../../../core/models/listado-autores.interface';
@@ -30,7 +30,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   filtroPaisOuNacionalidade = '';
   tipoOrdeacom = this.nomeAlfabetico;
   inverso = false;
-  override listadoDados: ListadoAutores[] = [];
+  override listadoDados = signal<ListadoAutores[]>([]);
 
   constructor(
     private route: ActivatedRoute,
@@ -59,7 +59,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       .getListadoAutores()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidosAA(v),
+        next: (v: object) => this.listadoDados.set(this.dadosObtidosAA(v)),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor'}); },
           // complete: () => console.info('completado listado de autores')
@@ -94,7 +94,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       .getListadoAutoresFiltrados(parametros.id, parametros.tipo)
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidosAA(v),
+        next: (v: object) => this.listadoDados.set(this.dadosObtidosAA(v)),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autores'}); },
           // complete: () => console.info('completado listado de autores')
@@ -131,21 +131,27 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     this.inverso = (this.tipoOrdeacom == this.nomeAlfabetico) ? !this.inverso : false;
     this.tipoOrdeacom = this.nomeAlfabetico;
 
-    this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso));
+    this.listadoDados.update(dados =>
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso))
+    );
   }
 
   ordeNumeroLivros() {
     this.inverso = (this.tipoOrdeacom == this.numeroLivros) ? !this.inverso : false;
     this.tipoOrdeacom = this.numeroLivros;
 
-    this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso, false));
+    this.listadoDados.update(dados =>
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso, false))
+    );
   }
 
   ordeNumeroLivrosLidos() {
     this.inverso = (this.tipoOrdeacom == this.numeroLivrosLidos) ? !this.inverso : false;
     this.tipoOrdeacom = this.numeroLivrosLidos;
 
-    this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso, false));
+    this.listadoDados.update(dados =>
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso, false))
+    );
   }
 
   onIrPagina(rota: string, id: string): void{

@@ -14,8 +14,8 @@
     <div class="titulo">
       <mat-form-field class="ancho-inputs">
         <mat-label>Título</mat-label>
-        <input matInput [formControl]="lf.titulo" maxlength="100">
-        <mat-error *ngIf="lf.titulo.hasError('maxlength')">
+        <input matInput [formControl]="livroForm.controls.titulo" maxlength="100">
+        <mat-error *ngIf="livroForm.controls.titulo.hasError('maxlength')">
           Máximo 100 caracteres
         </mat-error>
       </mat-form-field>
@@ -49,8 +49,8 @@
     <div class="titulo-original" *ngIf="!modoRelectura">
       <mat-form-field class="ancho-inputs">
         <mat-label>Título original</mat-label>
-        <input matInput [formControl]="lf.tituloOriginal" maxlength="100">
-        <mat-error *ngIf="lf.tituloOriginal.hasError('maxlength')">
+        <input matInput [formControl]="livroForm.controls.tituloOriginal" maxlength="100">
+        <mat-error *ngIf="livroForm.controls.tituloOriginal.hasError('maxlength')">
           Máximo 100 caracteres
         </mat-error>
       </mat-form-field>
@@ -88,7 +88,7 @@
               aria-label="Number"
               matInput
               (focus)="focusTrigger.next()"
-              [formControl]="lf.idBiblioteca"
+              [formControl]="livroForm.controls.idBiblioteca"
               [matAutocomplete]="idbiblio">
         <mat-autocomplete #idbiblio="matAutocomplete">
           @for (option of bibliotecas | async; track option) {
@@ -103,7 +103,7 @@
             Engadir
           </button>
           <button type="button" mat-icon-button
-            *ngIf="lf.idBiblioteca.getRawValue()"
+            *ngIf="livroForm.controls.idBiblioteca.getRawValue()"
             (click)="onIrPaginaBiblioteca('/bibliotecas/biblioteca')">
             Editar
           </button>
@@ -117,7 +117,7 @@
               aria-label="Number"
               matInput
               (focus)="focusTrigger.next()"
-              [formControl]="lf.idEditorial"
+              [formControl]="livroForm.controls.idEditorial"
               [matAutocomplete]="idedito">
         <mat-autocomplete #idedito="matAutocomplete">
           @for (option of editoriais | async; track option) {
@@ -132,7 +132,7 @@
             Engadir
           </button>
           <button type="button" mat-icon-button
-            *ngIf="lf.idEditorial.getRawValue()"
+            *ngIf="livroForm.controls.idEditorial.getRawValue()"
             (click)="onIrPaginaEditorial('/editoriais/editorial')">
             Editar
           </button>
@@ -146,7 +146,7 @@
               aria-label="Number"
               matInput
               (focus)="focusTrigger.next()"
-              [formControl]="lf.idColecom"
+              [formControl]="livroForm.controls.idColecom"
               [matAutocomplete]="idcoleC">
         <mat-autocomplete #idcoleC="matAutocomplete">
           @for (option of colecons | async; track option) {
@@ -161,7 +161,7 @@
             Engadir
           </button>
           <button type="button" mat-icon-button
-            *ngIf="lf.idColecom.getRawValue()"
+            *ngIf="livroForm.controls.idColecom.getRawValue()"
             (click)="onIrPaginaColecom('/colecons/colecom')">
             Editar
           </button>
@@ -175,7 +175,7 @@
               aria-label="Number"
               matInput
               (focus)="focusTrigger.next()"
-              [formControl]="lf.idEstilo"
+              [formControl]="livroForm.controls.idEstilo"
               [matAutocomplete]="idestiloLi">
         <mat-autocomplete #idestiloLi="matAutocomplete">
           @for (option of estilos | async; track option) {
@@ -190,7 +190,7 @@
             Engadir
           </button>
           <button type="button" mat-icon-button
-            *ngIf="lf.idEstilo.getRawValue()"
+            *ngIf="livroForm.controls.idEstilo.getRawValue()"
             (click)="onIrPaginaEstilo('/estilos-literarios/estilo-literario')">
             Editar
           </button>
@@ -201,8 +201,8 @@
     <div class="paginas">
       <mat-form-field class="ancho-inputs">
         <mat-label>Páginas</mat-label>
-        <input matInput [formControl]="lf.paginas" maxlength="7">
-        <mat-error *ngIf="lf.paginas.hasError('pattern')">
+        <input matInput [formControl]="livroForm.controls.paginas" maxlength="7">
+        <mat-error *ngIf="livroForm.controls.paginas.hasError('pattern')">
           Valor correto de 0 a 1000000
         </mat-error>
       </mat-form-field>
@@ -210,8 +210,8 @@
     <div class="paginas-lidas">
       <mat-form-field class="ancho-inputs">
         <mat-label>Páginas lidas</mat-label>
-        <input matInput [formControl]="lf.paginasLidas" maxlength="7">
-        <mat-error *ngIf="lf.paginasLidas.hasError('pattern')">
+        <input matInput [formControl]="livroForm.controls.paginasLidas" maxlength="7">
+        <mat-error *ngIf="livroForm.controls.paginasLidas.hasError('pattern')">
           Valor correto de 0 a 1000000
         </mat-error>
       </mat-form-field>
@@ -219,26 +219,26 @@
     <div class="isbn">
       <mat-form-field class="ancho-inputs">
         <mat-label>ISBN:</mat-label>
-        <input type="text" matInput [formControl]="lf.isbn" rows="4">
-        <mat-error *ngIf="lf.isbn.hasError('maxlength')">
+        <input type="text" matInput [formControl]="livroForm.controls.isbn" rows="4">
+        <mat-error *ngIf="livroForm.controls.isbn.hasError('maxlength')">
           Máximo 20 caracteres
         </mat-error>
       </mat-form-field>
     </div>
     <div class="lido">
-      <mat-checkbox [formControl]="lf.lido">Lido</mat-checkbox>
+      <mat-checkbox [formControl]="livroForm.controls.lido">Lido</mat-checkbox>
     </div>
 
     <div class="data-criacom" *ngIf="!modoRelectura">
       <mat-form-field class="ancho-inputs">
         <mat-label>Data de criaçom</mat-label>
-        <input matInput [matDatepicker]="fDateCri" [formControl]="lf.dataCriacom">
+        <input matInput [matDatepicker]="fDateCri" [formControl]="livroForm.controls.dataCriacom">
         <mat-datepicker-toggle matSuffix [for]="fDateCri"></mat-datepicker-toggle>
         <mat-datepicker #fDateCri></mat-datepicker>
-        <mat-error *ngIf="lf.dataCriacom.hasError('matDatepickerParse')"
+        <mat-error *ngIf="livroForm.controls.dataCriacom.hasError('matDatepickerParse')"
           [innerHTML]="'O formato válido é dd/mm/aaaa'">
         </mat-error>
-        <mat-error *ngIf="lf.dataCriacom.hasError('datasInvalidas')">
+        <mat-error *ngIf="livroForm.controls.dataCriacom.hasError('datasInvalidas')">
           A data da criaçom nom pode ser superior á data da ediçom
         </mat-error>
       </mat-form-field>
@@ -246,13 +246,13 @@
     <div class="data-edicom">
       <mat-form-field class="ancho-inputs">
         <mat-label>Data da ediçom</mat-label>
-        <input matInput [matDatepicker]="fDateEdi" [formControl]="lf.dataEdicom">
+        <input matInput [matDatepicker]="fDateEdi" [formControl]="livroForm.controls.dataEdicom">
         <mat-datepicker-toggle matSuffix [for]="fDateEdi"></mat-datepicker-toggle>
         <mat-datepicker #fDateEdi></mat-datepicker>
-        <mat-error *ngIf="lf.dataEdicom.hasError('matDatepickerParse')"
+        <mat-error *ngIf="livroForm.controls.dataEdicom.hasError('matDatepickerParse')"
           [innerHTML]="'O formato válido é dd/mm/aaaa'">
         </mat-error>
-        <mat-error *ngIf="lf.dataEdicom.hasError('datasInvalidas')">
+        <mat-error *ngIf="livroForm.controls.dataEdicom.hasError('datasInvalidas')">
           A data da ediçom nom pode ser inferior á data de criaçom
         </mat-error>
       </mat-form-field>
@@ -260,8 +260,8 @@
     <div class="numero-edicom">
       <mat-form-field class="ancho-inputs">
         <mat-label>Número da ediçom</mat-label>
-        <input matInput [formControl]="lf.numeroEdicom" maxlength="4">
-        <mat-error *ngIf="lf.diasLeitura.hasError('pattern')">
+        <input matInput [formControl]="livroForm.controls.numeroEdicom" maxlength="4">
+        <mat-error *ngIf="livroForm.controls.diasLeitura.hasError('pattern')">
           Valor correto de 0 1000
         </mat-error>
       </mat-form-field>
@@ -269,8 +269,8 @@
     <div class="dias-leitura">
       <mat-form-field class="ancho-inputs">
         <mat-label>Dias leitura <span *ngIf="this.idLivro === '0'">(incluido hoje)</span></mat-label>
-        <input matInput [formControl]="lf.diasLeitura" maxlength="4">
-        <mat-error *ngIf="lf.diasLeitura.hasError('pattern')">
+        <input matInput [formControl]="livroForm.controls.diasLeitura" maxlength="4">
+        <mat-error *ngIf="livroForm.controls.diasLeitura.hasError('pattern')">
           Valor correto de 0 a 1000
         </mat-error>
       </mat-form-field>
@@ -280,10 +280,10 @@
     <div class="data-fim-leiturata">
       <mat-form-field class="ancho-inputs ancho-inputs">
         <mat-label>Data da fim da leitura</mat-label>
-        <input matInput [matDatepicker]="fDateFimL" [formControl]="lf.dataFimLeiturata">
+        <input matInput [matDatepicker]="fDateFimL" [formControl]="livroForm.controls.dataFimLeiturata">
         <mat-datepicker-toggle matSuffix [for]="fDateFimL"></mat-datepicker-toggle>
         <mat-datepicker #fDateFimL></mat-datepicker>
-        <mat-error *ngIf="lf.dataFimLeiturata.hasError('matDatepickerParse')"
+        <mat-error *ngIf="livroForm.controls.dataFimLeiturata.hasError('matDatepickerParse')"
           [innerHTML]="'O formato válido é dd/mm/aaaa'">
         </mat-error>
       </mat-form-field>
@@ -295,7 +295,7 @@
               aria-label="Number"
               matInput
               (focus)="focusTrigger.next()"
-              [formControl]="lf.idioma"
+              [formControl]="livroForm.controls.idioma"
               [matAutocomplete]="idiomaC">
         <mat-autocomplete #idiomaC="matAutocomplete">
           @for (option of idiomas | async; track option) {
@@ -311,7 +311,7 @@
               aria-label="Number"
               matInput
               (focus)="focusTrigger.next()"
-              [formControl]="lf.idiomaOriginal"
+              [formControl]="livroForm.controls.idiomaOriginal"
               [matAutocomplete]="idiomaOrig">
         <mat-autocomplete #idiomaOrig="matAutocomplete">
           @for (option of idiomasOriginais | async; track option) {
@@ -321,11 +321,11 @@
       </mat-form-field>
     </div>
     <div class="electronico">
-      <mat-checkbox [formControl]="lf.electronico">Electrónico</mat-checkbox>
+      <mat-checkbox [formControl]="livroForm.controls.electronico">Electrónico</mat-checkbox>
     </div>
 
     <div class="som-serie">
-      <mat-checkbox (change)="onSomSerie($event)" [formControl]="lf.somSerie">Som Serie</mat-checkbox>
+      <mat-checkbox (change)="onSomSerie($event)" [formControl]="livroForm.controls.somSerie">Som Serie</mat-checkbox>
     </div>
     <div class="serie-combo">
       <mat-form-field class="ancho-inputs">
@@ -334,7 +334,7 @@
               aria-label="Number"
               matInput
               (focus)="focusTrigger.next()"
-              [formControl]="lf.serie"
+              [formControl]="livroForm.controls.serie"
               [matAutocomplete]="serieLivro">
         <mat-autocomplete #serieLivro="matAutocomplete">
           @for (option of seriesLivro | async; track option) {
@@ -350,8 +350,8 @@
     <div class="premios" *ngIf="!modoRelectura">
       <mat-form-field class="ancho-inputs">
         <mat-label>Prémios:</mat-label>
-        <textarea matInput [formControl]="lf.premios" rows="4"></textarea>
-        <mat-error *ngIf="lf.premios.hasError('maxlength')">
+        <textarea matInput [formControl]="livroForm.controls.premios" rows="4"></textarea>
+        <mat-error *ngIf="livroForm.controls.premios.hasError('maxlength')">
           Máximo 255 caracteres
         </mat-error>
       </mat-form-field>
@@ -359,8 +359,8 @@
     <div class="descricom" *ngIf="!modoRelectura">
       <mat-form-field class="ancho-inputs">
         <mat-label>Descriçom:</mat-label>
-        <textarea matInput [formControl]="lf.descricom" rows="4"></textarea>
-        <mat-error *ngIf="lf.descricom.hasError('maxlength')">
+        <textarea matInput [formControl]="livroForm.controls.descricom" rows="4"></textarea>
+        <mat-error *ngIf="livroForm.controls.descricom.hasError('maxlength')">
           Máximo 50000 caracteres
         </mat-error>
       </mat-form-field>
@@ -368,8 +368,8 @@
     <div class="comentario">
       <mat-form-field class="ancho-inputs">
         <mat-label>Comentario:</mat-label>
-        <textarea matInput [formControl]="lf.comentario" rows="4"></textarea>
-        <mat-error *ngIf="lf.comentario.hasError('maxlength')">
+        <textarea matInput [formControl]="livroForm.controls.comentario" rows="4"></textarea>
+        <mat-error *ngIf="livroForm.controls.comentario.hasError('maxlength')">
           Máximo 50000 caracteres
         </mat-error>
       </mat-form-field>

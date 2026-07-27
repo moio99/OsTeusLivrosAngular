@@ -12,7 +12,7 @@
   <h1>Listado {{this.tipoListado}}</h1>
 }
 
-@if(this.listadoDados.length > 0) {
+@if(this.listadoDados().length > 0) {
   <table class="taboas-listado">
     <tr>
       <th>Nome</th>
@@ -25,7 +25,7 @@
         [actual]="this.tipoOrdeacom"
         [inverso]="this.inverso"></omla-orde-coluna></th>
     </tr>
-    @for (entrada of this.listadoDados; track entrada) {
+    @for (entrada of this.listadoDados(); track entrada.id) {
       <tr class="listado-accom">
         <td (click)="onIrPagina('/estilos-literarios/estilo-literario', entrada.id)">{{entrada.nome}}</td>
         <td (click)="onIrPagina('/estilos-literarios/estilo-literario', entrada.id)">{{entrada.quantidadeLivros}}</td>

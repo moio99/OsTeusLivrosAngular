@@ -1,4 +1,4 @@
-@import "../../../../src/assets/styles/constans.scss";
+@use "../../../../src/assets/styles/constans.scss";
 
 $contedor: "contedor";
 
@@ -7,7 +7,7 @@ $contedor: "contedor";
   display: grid;
   width: 100vw;
   height: 100vh;
-  grid-template-columns: $ancho-menu 1fr;
+  grid-template-columns: constans.$ancho-menu 1fr;
   grid-template-rows: 50px 1fr 30px;
   // overscroll-behavior-y: none;
   /* grid-template-areas:

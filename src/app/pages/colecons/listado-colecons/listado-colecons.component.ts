@@ -1,28 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
-import { first } from 'rxjs';
 import { ColecomComponent } from '../colecom/colecom.component';
 import { CommonModule } from '@angular/common';
-import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
-import { ListadoColecons, ListadoColeconsData } from '../../../core/models/listado-colecons.interface';
+import { ListadoColecons } from '../../../core/models/listado-colecons.interface';
 import { ColeconsService } from '../../../core/services/api/colecons.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
-import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 
 @Component({
   selector: 'omla-listado-colecons',
   standalone: true,
-  imports: [CommonModule, OrdeColunaComponent],
+  imports: [CommonModule],
   templateUrl: './listado-colecons.component.html',
   styleUrls: ['./listado-colecons.component.scss']
 })
 export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColecons> implements OnInit {
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
-  tipoListado = '';
-  override listadoDados: ListadoColecons[] = [];
+  override listadoDados = signal<ListadoColecons[]>([]);
 
   constructor(
     private router: Router,
@@ -48,9 +44,6 @@ export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColeco
     );
   }
 
-  trackById(index: number, item: any): number {
-    return item.id;
-  }
 
   onIrPagina(rota: string, id: string): void{
     //this.userService.setModuleData(moduleData);   // Os dados vam no serviço

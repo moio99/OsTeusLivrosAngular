@@ -12,19 +12,19 @@
     <div>
       <mat-form-field [style.width.px]=400>
         <mat-label>Nome:</mat-label>
-        <input matInput [formControl]="af.nome">
-        <mat-error *ngIf="af.nome.hasError('maxlength')">
+        <input matInput [formControl]="autorForm.controls.nome">
+        <mat-error *ngIf="autorForm.controls.nome.hasError('maxlength')">
           A longitude nom debe superar os 150 caracteres
         </mat-error>
-        <mat-error *ngIf="af.nome.hasError('required')">
+        <mat-error *ngIf="autorForm.controls.nome.hasError('required')">
           O Nome é obrigatorio
         </mat-error>
       </mat-form-field>
 
       <mat-form-field [style.width.px]=400>
         <mat-label>Nome real:</mat-label>
-        <input matInput [formControl]="af.nomeReal">
-        <mat-error *ngIf="af.nomeReal.hasError('maxlength')">
+        <input matInput [formControl]="autorForm.controls.nomeReal">
+        <mat-error *ngIf="autorForm.controls.nomeReal.hasError('maxlength')">
           A longitude nom debe superar os 150 caracteres
         </mat-error>
       </mat-form-field>
@@ -32,16 +32,16 @@
     <div>
       <mat-form-field [style.width.px]=400>
         <mat-label>Lugar de nacemento:</mat-label>
-        <input matInput [formControl]="af.lugarNacemento">
-        <mat-error *ngIf="af.lugarNacemento.hasError('maxlength')">
+        <input matInput [formControl]="autorForm.controls.lugarNacemento">
+        <mat-error *ngIf="autorForm.controls.lugarNacemento.hasError('maxlength')">
           A longitude nom debe superar os 150 caracteres
         </mat-error>
       </mat-form-field>
 
       <mat-form-field [style.width.px]=300>
         <mat-label>Web:</mat-label>
-        <input matInput [formControl]="af.web">
-        <mat-error *ngIf="af.web.hasError('maxlength')">
+        <input matInput [formControl]="autorForm.controls.web">
+        <mat-error *ngIf="autorForm.controls.web.hasError('maxlength')">
           A longitude nom debe superar os 150 caracteres
         </mat-error>
       </mat-form-field>
@@ -49,28 +49,32 @@
     <div>
       <mat-form-field class="ancho-inputs" [style.width.px]=170>
         <mat-label>Data de nacemento</mat-label>
-        <input matInput [matDatepicker]="fDateN" [formControl]="af.dataNacemento">
+        <input matInput [matDatepicker]="fDateN" [formControl]="autorForm.controls.dataNacemento">
         <mat-datepicker-toggle matSuffix [for]="fDateN"></mat-datepicker-toggle>
         <mat-datepicker #fDateN></mat-datepicker>
-        <mat-error *ngIf="af.dataNacemento.hasError('matDatepickerParse')"
+        <mat-error *ngIf="autorForm.controls.dataNacemento.hasError('matDatepickerParse')"
           [innerHTML]="'O formato válido é dd/mm/aaaa'">
         </mat-error>
-        <mat-error *ngIf="af.dataNacemento.hasError('datasInvalidas')">
+        <mat-error *ngIf="autorForm.controls.dataNacemento.hasError('datasInvalidas')">
           A data de nacemento nom pode ser superior á data de defunçom
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="ancho-inputs" [style.width.px]=170>
         <mat-label>Data de defuncom</mat-label>
-        <input matInput [matDatepicker]="fDateD" [formControl]="af.dataDefuncom">
+        <input matInput [matDatepicker]="fDateD" [formControl]="autorForm.controls.dataDefuncom">
         <mat-datepicker-toggle matSuffix [for]="fDateD"></mat-datepicker-toggle>
         <mat-datepicker #fDateD></mat-datepicker>
-        <mat-error *ngIf="af.dataDefuncom.hasError('matDatepickerParse')"
-          [innerHTML]="'O formato válido é dd/mm/aaaa'">
-        </mat-error>
-        <mat-error *ngIf="af.dataDefuncom.hasError('datasInvalidas')">
-          A data de defunçom nom pode ser inferior á data de nacemento
-        </mat-error>
+        @if (autorForm.controls.dataDefuncom.hasError('matDatepickerParse')) {
+          <mat-error>
+            [innerHTML]="'O formato válido é dd/mm/aaaa'">
+          </mat-error>
+        }
+        @if (autorForm.controls.dataDefuncom.hasError('datasInvalidas')) {
+          <mat-error>
+            A data de defunçom nom pode ser inferior á data de nacemento
+          </mat-error>
+        }
       </mat-form-field>
 
 
@@ -79,7 +83,7 @@
               placeholder="Nacionalidade:"
               aria-label="Number"
               matInput
-              [formControl]="af.nacom"
+              [formControl]="autorForm.controls.idNacionalidade"
               [matAutocomplete]="autoNacionalidades">
         <mat-autocomplete #autoNacionalidades="matAutocomplete">
           <mat-option *ngFor="let element of dadosNacionalidadesFiltradas | async" [value]="element.value">
@@ -93,7 +97,7 @@
               placeholder="País:"
               aria-label="Number"
               matInput
-              [formControl]="af.pais"
+              [formControl]="autorForm.controls.idPais"
               [matAutocomplete]="autoPaises">
         <mat-autocomplete #autoPaises="matAutocomplete">
           <mat-option *ngFor="let element of dadosPaisesFiltrados | async" [value]="element.value">
@@ -105,7 +109,7 @@
     <div>
       <mat-form-field [style.width.px]=700>
         <mat-label>Comentario:</mat-label>
-        <textarea matInput [formControl]="af.comentario" rows="4"></textarea>
+        <textarea matInput [formControl]="autorForm.controls.comentario" rows="4"></textarea>
       </mat-form-field>
     </div>
 

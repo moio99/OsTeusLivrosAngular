@@ -5,10 +5,7 @@
   </button>
 }
 
-@if (tipoListado.length > 0) {
-  <h1>Listado {{this.tipoListado}}</h1>
-}
-@if (this.listadoDados.length > 0) {
+@if (this.listadoDados().length > 0) {
   <table class="taboas-listado">
     <tr>
       <th>Nome</th>
@@ -16,7 +13,7 @@
       <th>Livros</th>
     </tr>
 
-    @for (entrada of this.listadoDados; track entrada) {
+    @for (entrada of this.listadoDados(); track entrada.id) {
       <tr class="listado-accom">
         <td (click)="onIrPagina('bibliotecas/biblioteca', entrada.id)">{{entrada.nome}}</td>
         <td (click)="onIrPagina('bibliotecas/biblioteca', entrada.id)">{{entrada.dataRenovacom ? (entrada.dataRenovacom | date:'dd/MM/yyyy') : '---'}}</td>

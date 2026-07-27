@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { GeneroComponent } from '../genero/genero.component';
 import { CommonModule } from '@angular/common';
@@ -26,7 +26,7 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
   tipoOrdeacom = this.nomeAlfabetico;
   inverso = false;
   tipoListado = '';
-  override listadoDados: ListadoGeneros[] = [];
+  override listadoDados = signal<ListadoGeneros[]>([]);
 
   constructor(
     private router: Router,
@@ -62,21 +62,27 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
     this.inverso = (this.tipoOrdeacom == this.nomeAlfabetico) ? !this.inverso : false;
     this.tipoOrdeacom = this.nomeAlfabetico;
 
-    this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso));
+    this.listadoDados.update(dados =>
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso))
+    );
   }
 
   ordeNumeroLivros() {
     this.inverso = (this.tipoOrdeacom == this.numeroLivros) ? !this.inverso : false;
     this.tipoOrdeacom = this.numeroLivros;
 
-    this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso, false));
+    this.listadoDados.update(dados =>
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso, false))
+    );
   }
 
   ordeNumeroLivrosLidos() {
     this.inverso = (this.tipoOrdeacom == this.numeroLivrosLidos) ? !this.inverso : false;
     this.tipoOrdeacom = this.numeroLivrosLidos;
 
-    this.listadoDados.sort((a,b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso, false));
+    this.listadoDados.update(dados =>
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso, false))
+    );
   }
 
   onIrPagina(rota: string, id: string): void{

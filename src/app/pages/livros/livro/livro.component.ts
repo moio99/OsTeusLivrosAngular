@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { CommonModule } from '@angular/common';
 import { FormControl,
-  ReactiveFormsModule, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors, FormsModule } from '@angular/forms';
+  ReactiveFormsModule, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors, FormsModule,
+  FormGroup} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -20,7 +21,7 @@ import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Title } from '@angular/platform-browser';
 import { EngadirEditarData } from '../../../shared/models/datas';
 import { RelecturasService } from '../../../core/services/api/relecturas.service';
-import { ObjetoSimpleIdNome, datasUltimosAnos, Livro, Outros } from '../../../core/models/livro.interface';
+import { ObjetoSimpleIdNome, datasUltimosAnos, Livro, Outros, LivroForm } from '../../../core/models/livro.interface';
 import { Genero } from '../../../core/models/genero.interface';
 import { Relectura, ListadoRelecturas, RelecturasData, RelecturaData } from '../../../core/models/relectura.interface';
 import { SimpleObjet } from '../../../shared/models/outros.model';
@@ -82,39 +83,7 @@ export class LivroComponent implements OnInit {
 
   rex1000000 = '([1-1][0-0]{6,6}|[0-9]{1,6})';
   rex1000 = '([1-1][0-0]{3,3}|[0-9]{1,3})';
-  livroForm = this.fb.group({
-    titulo: new FormControl({ value: '', disabled: this.disabledFormulario}, {
-        validators: [
-           Validators.required,
-           Validators.maxLength(100)
-        ],
-        // asyncValidators: [ ... array of asynchronous validators ...]
-        updateOn: 'blur' // 'change' or 'blur' or 'submit'
-    }),
-    tituloOriginal: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(100)] }),
-    idBiblioteca: new FormControl({ value: '', disabled: this.disabledFormulario}),
-    idEditorial: new FormControl({ value: '', disabled: this.disabledFormulario}),
-    idColecom: new FormControl({ value: '', disabled: this.disabledFormulario}),
-    idEstilo: new FormControl({ value: '', disabled: this.disabledFormulario}),
-    isbn: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(20)] }),
-    paginas: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000000)] }),
-    paginasLidas: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000000)] }),
-    lido: [{ value: false, disabled: this.disabledFormulario}],
-    diasLeitura: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000)] }),
-    dataFimLeiturata: new FormControl({ value: '', disabled: this.disabledFormulario}),
-    idioma: new FormControl({ value: '', disabled: this.disabledFormulario}),
-    idiomaOriginal: new FormControl({ value: '', disabled: this.disabledFormulario}),
-    dataCriacom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [ this.checkDuasDatasValidator() ] }),
-    dataEdicom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [ this.checkDuasDatasValidator() ] }),
-    numeroEdicom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000)] }),
-    electronico: new FormControl({ value: false, disabled: this.disabledFormulario}),
-    somSerie: new FormControl({ value: false, disabled: this.disabledFormulario}),
-    serie: new FormControl({ value: '', disabled: this.disabledFormulario}),
-    premios: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(255)] }),
-    descricom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(50000)] }),
-    comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(50000)] }),
-  });
-  get lf() { return this.livroForm.controls; }
+  livroForm!: FormGroup<LivroForm>;
   pontuacomEstrelas: number | undefined;
 
   constructor(
@@ -123,12 +92,44 @@ export class LivroComponent implements OnInit {
     private layoutService: LayoutService,
     private usuarioAppService: UsuarioAppService,
     private title: Title,
-    private fb: FormBuilder,
     private outrosService: OutrosService,
     private livrosService: LivrosService,
     private relecturasService: RelecturasService,
     private dialog: MatDialog,
-    private dadosPaginasService: DadosPaginasService ) { }
+    private dadosPaginasService: DadosPaginasService ) {
+      this.livroForm = new FormGroup<LivroForm>({
+        titulo: new FormControl({ value: '', disabled: this.disabledFormulario}, {
+            validators: [
+              Validators.required,
+              Validators.maxLength(100)
+            ],
+            // asyncValidators: [ ... array of asynchronous validators ...]
+            updateOn: 'blur' // 'change' or 'blur' or 'submit'
+        }),
+        tituloOriginal: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(100)] }),
+        idBiblioteca: new FormControl({ value: '', disabled: this.disabledFormulario}),
+        idEditorial: new FormControl({ value: '', disabled: this.disabledFormulario}),
+        idColecom: new FormControl({ value: '', disabled: this.disabledFormulario}),
+        idEstilo: new FormControl({ value: '', disabled: this.disabledFormulario}),
+        isbn: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(20)] }),
+        paginas: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000000)] }),
+        paginasLidas: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000000)] }),
+        lido: new FormControl({ value: false, disabled: this.disabledFormulario}),
+        diasLeitura: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000)] }),
+        dataFimLeiturata: new FormControl({ value: '', disabled: this.disabledFormulario}),
+        idioma: new FormControl({ value: '', disabled: this.disabledFormulario}),
+        idiomaOriginal: new FormControl({ value: '', disabled: this.disabledFormulario}),
+        dataCriacom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [ this.checkDuasDatasValidator() ] }),
+        dataEdicom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [ this.checkDuasDatasValidator() ] }),
+        numeroEdicom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000)] }),
+        electronico: new FormControl({ value: false, disabled: this.disabledFormulario}),
+        somSerie: new FormControl({ value: false, disabled: this.disabledFormulario}),
+        serie: new FormControl({ value: '', disabled: this.disabledFormulario}),
+        premios: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(255)] }),
+        descricom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(50000)] }),
+        comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(50000)] }),
+      });
+    }
 
   ngOnInit(): void {
     let id = '0';
@@ -177,7 +178,7 @@ export class LivroComponent implements OnInit {
       if (dados.bibliotecas?.data) {
         const result = this.processarDadosCombo(
           dados.bibliotecas.data,
-          this.lf.idBiblioteca
+          this.livroForm.controls.idBiblioteca
         );
         this.bibliotecasCombo = result.combo;
         this.bibliotecas = result.observable;
@@ -186,7 +187,7 @@ export class LivroComponent implements OnInit {
       if (dados.editoriais?.data) {
         const result = this.processarDadosCombo(
           dados.editoriais.data,
-          this.lf.idEditorial
+          this.livroForm.controls.idEditorial
         );
         this.editoriaisCombo = result.combo;
         this.editoriais = result.observable;
@@ -195,7 +196,7 @@ export class LivroComponent implements OnInit {
       if (dados.colecons?.data) {
         const result = this.processarDadosCombo(
           dados.colecons.data,
-          this.lf.idColecom
+          this.livroForm.controls.idColecom
         );
         this.coleconsCombo = result.combo;
         this.colecons = result.observable;
@@ -204,7 +205,7 @@ export class LivroComponent implements OnInit {
       if (dados.estilos?.data) {
         const result = this.processarDadosCombo(
           dados.estilos.data,
-          this.lf.idEstilo
+          this.livroForm.controls.idEstilo
         );
         this.estilosCombo = result.combo;
         this.estilos = result.observable;
@@ -213,14 +214,14 @@ export class LivroComponent implements OnInit {
       if (dados.idiomas?.data) {
         const result = this.processarDadosCombo(
           dados.idiomas.data,
-          this.lf.idioma
+          this.livroForm.controls.idioma
         );
         this.idiomasCombo = result.combo;
         this.idiomas = result.observable;
 
         const resultIdiomaOriginal = this.processarDadosCombo(
           dados.idiomas.data,
-          this.lf.idiomaOriginal
+          this.livroForm.controls.idiomaOriginal
         );
         this.idiomasCombo = resultIdiomaOriginal.combo;
         this.idiomasOriginais = resultIdiomaOriginal.observable;
@@ -231,7 +232,7 @@ export class LivroComponent implements OnInit {
           .sort((a, b) => a.nome.localeCompare(b.nome));
         const result = this.processarDadosCombo(
           [{id: 0, nome: 'Som o primeiro'}, ...dadosSeries],
-          this.lf.serie, false
+          this.livroForm.controls.serie, false
         );
         this.seriesLivrosCombo = result.combo;
         this.seriesLivro = result.observable;
@@ -242,7 +243,7 @@ export class LivroComponent implements OnInit {
         let data = dateConvert.getDateFromMySQL(dados.ultimaLeitura);
         console.log('ultima Leitura anterior:', data);
         const dias = this.getDiasDendeUltimaLeitura(data);
-        this.lf.diasLeitura.setValue(dias.toString());
+        this.livroForm.controls.diasLeitura.setValue(dias.toString());
       } */
 
       if (dados.ultimasLeituras && dados.ultimasLeituras.length > 0) {
@@ -325,7 +326,7 @@ export class LivroComponent implements OnInit {
     // console.log('maior data', maiorData);
     this.diasLeitura = this.getDiasDendeUltimaLeitura(maiorData);
     if (this.modo === EstadosPagina.engadir) {
-      this.lf.diasLeitura.setValue(this.diasLeitura.toString());
+      this.livroForm.controls.diasLeitura.setValue(this.diasLeitura.toString());
     }
   }
 
@@ -357,8 +358,8 @@ export class LivroComponent implements OnInit {
   onGestomNovaRelectura() {
     // Obtem os dados do livro para guardalos mentres se crea a relectura, e assim poder voltar a eles
     this.dadosDoLivro = this.setDadosLivro();
-    this.lf.dataFimLeiturata.setValue('');
-    this.lf.diasLeitura.setValue(this.diasLeitura.toString());
+    this.livroForm.controls.dataFimLeiturata.setValue('');
+    this.livroForm.controls.diasLeitura.setValue(this.diasLeitura.toString());
     this.modoSalvadoRelectura = this.modo;
     this.modo = EstadosPagina.engadir;
     this.modoRelectura = true;
@@ -423,22 +424,22 @@ export class LivroComponent implements OnInit {
    */
   private setDadosRelecturaForm() {
     if (this.dadosDaRelectura) {
-      this.lf.titulo.setValue(this.dadosDaRelectura.titulo);
-      this.setCombo(this.dadosDaRelectura.idBiblioteca, this.bibliotecasCombo, this.lf.idBiblioteca);
-      this.setCombo(this.dadosDaRelectura.idEditorial, this.editoriaisCombo, this.lf.idEditorial);
-      this.lf.isbn.setValue(this.dadosDaRelectura.isbn);
-      this.lf.paginas.setValue(this.dadosDaRelectura.paginas);
-      this.lf.paginasLidas.setValue(this.dadosDaRelectura.paginasLidas);
-      this.lf.lido.setValue(this.dadosDaRelectura.lido);
-      this.lf.diasLeitura.setValue(this.dadosDaRelectura.diasLeitura);
-      this.setData(this.dadosDaRelectura.dataFimLeitura, this.lf.dataFimLeiturata);
-      this.setCombo(this.dadosDaRelectura.idIdioma, this.idiomasCombo, this.lf.idioma);
-      this.lf.numeroEdicom.setValue(this.dadosDaRelectura.numeroEdicom);
-      this.lf.electronico.setValue(this.dadosDaRelectura.electronico);
-      this.setData(this.dadosDaRelectura.dataEdicom, this.lf.dataEdicom);
-      this.lf.somSerie.setValue(this.dadosDaRelectura.somSerie);
-      this.setCombo(this.dadosDaRelectura.idSerie, this.seriesLivrosCombo, this.lf.serie);
-      this.lf.comentario.setValue(this.dadosDaRelectura.comentario);
+      this.livroForm.controls.titulo.setValue(this.dadosDaRelectura.titulo);
+      this.setCombo(this.dadosDaRelectura.idBiblioteca, this.bibliotecasCombo, this.livroForm.controls.idBiblioteca);
+      this.setCombo(this.dadosDaRelectura.idEditorial, this.editoriaisCombo, this.livroForm.controls.idEditorial);
+      this.livroForm.controls.isbn.setValue(this.dadosDaRelectura.isbn);
+      this.livroForm.controls.paginas.setValue(this.dadosDaRelectura.paginas);
+      this.livroForm.controls.paginasLidas.setValue(this.dadosDaRelectura.paginasLidas);
+      this.livroForm.controls.lido.setValue(this.dadosDaRelectura.lido);
+      this.livroForm.controls.diasLeitura.setValue(this.dadosDaRelectura.diasLeitura);
+      this.setData(this.dadosDaRelectura.dataFimLeitura, this.livroForm.controls.dataFimLeiturata);
+      this.setCombo(this.dadosDaRelectura.idIdioma, this.idiomasCombo, this.livroForm.controls.idioma);
+      this.livroForm.controls.numeroEdicom.setValue(this.dadosDaRelectura.numeroEdicom);
+      this.livroForm.controls.electronico.setValue(this.dadosDaRelectura.electronico);
+      this.setData(this.dadosDaRelectura.dataEdicom, this.livroForm.controls.dataEdicom);
+      this.livroForm.controls.somSerie.setValue(this.dadosDaRelectura.somSerie);
+      this.setCombo(this.dadosDaRelectura.idSerie, this.seriesLivrosCombo, this.livroForm.controls.serie);
+      this.livroForm.controls.comentario.setValue(this.dadosDaRelectura.comentario);
       this.pontuacomEstrelas = this.dadosDaRelectura.pontuacom;
     }
   }
@@ -480,35 +481,35 @@ export class LivroComponent implements OnInit {
 
   setDadosRelectura(): Relectura {
     let dateConvert = new DateConvert();
-    let dFL = dateConvert.getDate(this.lf.dataFimLeiturata.value);
-    let dE = dateConvert.getDate(this.lf.dataEdicom.value);
+    let dFL = dateConvert.getDate(this.livroForm.controls.dataFimLeiturata.value);
+    let dE = dateConvert.getDate(this.livroForm.controls.dataEdicom.value);
 
-    let biblioteca = this.bibliotecasCombo.find(option => option.value === this.lf.idBiblioteca.value);
-    let editorial = this.editoriaisCombo.find(option => option.value === this.lf.idEditorial.value);
-    let colecom = this.coleconsCombo.find(option => option.value === this.lf.idColecom.value);
-    let idioma = this.idiomasCombo.find(option => option.value === this.lf.idioma.value);
-    let serie = this.seriesLivrosCombo.find(option => option.value === this.lf.serie.value);
+    let biblioteca = this.bibliotecasCombo.find(option => option.value === this.livroForm.controls.idBiblioteca.value);
+    let editorial = this.editoriaisCombo.find(option => option.value === this.livroForm.controls.idEditorial.value);
+    let colecom = this.coleconsCombo.find(option => option.value === this.livroForm.controls.idColecom.value);
+    let idioma = this.idiomasCombo.find(option => option.value === this.livroForm.controls.idioma.value);
+    let serie = this.seriesLivrosCombo.find(option => option.value === this.livroForm.controls.serie.value);
 
     let relectura: Relectura = {
       id: (this.dadosDaRelectura) ? this.dadosDaRelectura.id :'0',
       idLivro: this.dadosDoLivro!.id,
-      titulo: String(this.lf.titulo.value),
+      titulo: String(this.livroForm.controls.titulo.value),
       idBiblioteca: (biblioteca) ? biblioteca.id : null,
       idEditorial: (editorial) ? editorial.id : null,
       idColecom: (colecom) ? colecom.id : null,
-      isbn: (this.lf.isbn.value) ? String(this.lf.isbn.value) : null,
-      paginas: (this.lf.paginas.value) ? String(this.lf.paginas.value) : null,
-      paginasLidas: (!this.lf.paginasLidas.value) ? null : String(this.lf.paginasLidas.value),
-      lido: (!this.lf.lido.value) ? false : this.lf.lido.value,
-      diasLeitura: (this.lf.diasLeitura.value) ? String(this.lf.diasLeitura.value) : null,
+      isbn: (this.livroForm.controls.isbn.value) ? String(this.livroForm.controls.isbn.value) : null,
+      paginas: (this.livroForm.controls.paginas.value) ? String(this.livroForm.controls.paginas.value) : null,
+      paginasLidas: (!this.livroForm.controls.paginasLidas.value) ? null : String(this.livroForm.controls.paginasLidas.value),
+      lido: (!this.livroForm.controls.lido.value) ? false : this.livroForm.controls.lido.value,
+      diasLeitura: (this.livroForm.controls.diasLeitura.value) ? String(this.livroForm.controls.diasLeitura.value) : null,
       dataFimLeitura: (dFL.year > 0) ? dFL.year + '-' + dFL.month + '-' + dFL.day : '',
       idIdioma: (idioma) ? idioma.id : null,
       dataEdicom: (dE.year > 0) ? dE.year + '-' + dE.month + '-' + dE.day : '',
-      numeroEdicom: (this.lf.numeroEdicom.value) ? String(this.lf.numeroEdicom.value) : null,
-      electronico: (!this.lf.electronico.value) ? false : this.lf.electronico.value,
-      somSerie: (!this.lf.somSerie.value) ? false : this.lf.somSerie.value,
+      numeroEdicom: (this.livroForm.controls.numeroEdicom.value) ? String(this.livroForm.controls.numeroEdicom.value) : null,
+      electronico: (!this.livroForm.controls.electronico.value) ? false : this.livroForm.controls.electronico.value,
+      somSerie: (!this.livroForm.controls.somSerie.value) ? false : this.livroForm.controls.somSerie.value,
       idSerie: (serie) ? serie.id : null,
-      comentario: (this.lf.comentario.value) ? String(this.lf.comentario.value) : null,
+      comentario: (this.livroForm.controls.comentario.value) ? String(this.livroForm.controls.comentario.value) : null,
       pontuacom: this.pontuacomEstrelas,
       // nom necesarios
       biblioteca: '',
@@ -590,29 +591,29 @@ export class LivroComponent implements OnInit {
       });
       this.autoresLivro = autoresL;
 
-      this.lf.titulo.setValue(this.dadosDoLivro.titulo);
-      this.lf.tituloOriginal.setValue(this.dadosDoLivro.tituloOriginal);
-      this.setCombo(this.dadosDoLivro.idBiblioteca, this.bibliotecasCombo, this.lf.idBiblioteca);
-      this.setCombo(this.dadosDoLivro.idEditorial, this.editoriaisCombo, this.lf.idEditorial);
-      this.setCombo(this.dadosDoLivro.idColecom, this.coleconsCombo, this.lf.idColecom);
-      this.setCombo(this.dadosDoLivro.idEstilo, this.estilosCombo, this.lf.idEstilo);
-      this.lf.isbn.setValue(this.dadosDoLivro.isbn);
-      this.lf.paginas.setValue(this.dadosDoLivro.paginas);
-      this.lf.paginasLidas.setValue(this.dadosDoLivro.paginasLidas);
-      this.lf.lido.setValue(this.dadosDoLivro.lido);
-      this.lf.diasLeitura.setValue(this.dadosDoLivro.diasLeitura);
-      this.setData(this.dadosDoLivro.dataFimLeitura, this.lf.dataFimLeiturata);
-      this.setCombo(this.dadosDoLivro.idIdioma, this.idiomasCombo, this.lf.idioma);
-      this.setCombo(this.dadosDoLivro.idIdiomaOriginal, this.idiomasCombo, this.lf.idiomaOriginal);
-      this.lf.numeroEdicom.setValue(this.dadosDoLivro.numeroEdicom);
-      this.lf.electronico.setValue(this.dadosDoLivro.electronico);
-      this.setData(this.dadosDoLivro.dataCriacom, this.lf.dataCriacom);
-      this.setData(this.dadosDoLivro.dataEdicom, this.lf.dataEdicom);
-      this.lf.somSerie.setValue(this.dadosDoLivro.somSerie);
-      this.setCombo(this.dadosDoLivro.idSerie, this.seriesLivrosCombo, this.lf.serie);
-      this.lf.premios.setValue(this.dadosDoLivro.premios);
-      this.lf.descricom.setValue(this.dadosDoLivro.descricom);
-      this.lf.comentario.setValue(this.dadosDoLivro.comentario);
+      this.livroForm.controls.titulo.setValue(this.dadosDoLivro.titulo);
+      this.livroForm.controls.tituloOriginal.setValue(this.dadosDoLivro.tituloOriginal);
+      this.setCombo(this.dadosDoLivro.idBiblioteca, this.bibliotecasCombo, this.livroForm.controls.idBiblioteca);
+      this.setCombo(this.dadosDoLivro.idEditorial, this.editoriaisCombo, this.livroForm.controls.idEditorial);
+      this.setCombo(this.dadosDoLivro.idColecom, this.coleconsCombo, this.livroForm.controls.idColecom);
+      this.setCombo(this.dadosDoLivro.idEstilo, this.estilosCombo, this.livroForm.controls.idEstilo);
+      this.livroForm.controls.isbn.setValue(this.dadosDoLivro.isbn);
+      this.livroForm.controls.paginas.setValue(this.dadosDoLivro.paginas);
+      this.livroForm.controls.paginasLidas.setValue(this.dadosDoLivro.paginasLidas);
+      this.livroForm.controls.lido.setValue(this.dadosDoLivro.lido);
+      this.livroForm.controls.diasLeitura.setValue(this.dadosDoLivro.diasLeitura);
+      this.setData(this.dadosDoLivro.dataFimLeitura, this.livroForm.controls.dataFimLeiturata);
+      this.setCombo(this.dadosDoLivro.idIdioma, this.idiomasCombo, this.livroForm.controls.idioma);
+      this.setCombo(this.dadosDoLivro.idIdiomaOriginal, this.idiomasCombo, this.livroForm.controls.idiomaOriginal);
+      this.livroForm.controls.numeroEdicom.setValue(this.dadosDoLivro.numeroEdicom);
+      this.livroForm.controls.electronico.setValue(this.dadosDoLivro.electronico);
+      this.setData(this.dadosDoLivro.dataCriacom, this.livroForm.controls.dataCriacom);
+      this.setData(this.dadosDoLivro.dataEdicom, this.livroForm.controls.dataEdicom);
+      this.livroForm.controls.somSerie.setValue(this.dadosDoLivro.somSerie);
+      this.setCombo(this.dadosDoLivro.idSerie, this.seriesLivrosCombo, this.livroForm.controls.serie);
+      this.livroForm.controls.premios.setValue(this.dadosDoLivro.premios);
+      this.livroForm.controls.descricom.setValue(this.dadosDoLivro.descricom);
+      this.livroForm.controls.comentario.setValue(this.dadosDoLivro.comentario);
       this.pontuacomEstrelas = this.dadosDoLivro.pontuacom;
     }
     else
@@ -828,7 +829,7 @@ export class LivroComponent implements OnInit {
   }
 
   onIrPaginaBiblioteca(rota: string): void{
-    let biblioteca = this.bibliotecasCombo.find(option => option.value === this.lf.idBiblioteca.value);
+    let biblioteca = this.bibliotecasCombo.find(option => option.value === this.livroForm.controls.idBiblioteca.value);
     if (biblioteca) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
@@ -839,7 +840,7 @@ export class LivroComponent implements OnInit {
   }
 
   onIrPaginaEditorial(rota: string): void{
-    let editorial = this.editoriaisCombo.find(option => option.value === this.lf.idEditorial.value);
+    let editorial = this.editoriaisCombo.find(option => option.value === this.livroForm.controls.idEditorial.value);
     if (editorial) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
@@ -850,7 +851,7 @@ export class LivroComponent implements OnInit {
   }
 
   onIrPaginaColecom(rota: string): void{
-    let colecom = this.coleconsCombo.find(option => option.value === this.lf.idColecom.value);
+    let colecom = this.coleconsCombo.find(option => option.value === this.livroForm.controls.idColecom.value);
     if (colecom) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
@@ -861,7 +862,7 @@ export class LivroComponent implements OnInit {
   }
 
   onIrPaginaEstilo(rota: string): void{
-    let estilo = this.estilosCombo.find(option => option.value === this.lf.idEstilo.value);
+    let estilo = this.estilosCombo.find(option => option.value === this.livroForm.controls.idEstilo.value);
     if (estilo) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
@@ -892,11 +893,11 @@ export class LivroComponent implements OnInit {
 
   onSomSerie(event:MatCheckboxChange) {
     if (event.checked) {
-      this.lf.serie.enable();
+      this.livroForm.controls.serie.enable();
     }
     else {
-      this.lf.serie.setValue('');
-      this.lf.serie.disable();
+      this.livroForm.controls.serie.setValue('');
+      this.livroForm.controls.serie.disable();
     }
   }
 
@@ -923,7 +924,7 @@ export class LivroComponent implements OnInit {
       if (this.livroForm.valid) {
         let livroRepetido: BaseDadosApi<Livro>;
         this.livrosService
-          .getLivroPorTitulo(String(this.lf.titulo.value).trim())
+          .getLivroPorTitulo(String(this.livroForm.controls.titulo.value).trim())
           .pipe(first())
           .subscribe({
             next: (v: object) => livroRepetido = <BaseDadosApi<Livro>>v,
@@ -980,17 +981,17 @@ export class LivroComponent implements OnInit {
 
   setDadosLivro(): Livro {
     let dateConvert = new DateConvert();
-    let dFL = dateConvert.getDate(this.lf.dataFimLeiturata.value);
-    let dC = dateConvert.getDate(this.lf.dataCriacom.value);
-    let dE = dateConvert.getDate(this.lf.dataEdicom.value);
+    let dFL = dateConvert.getDate(this.livroForm.controls.dataFimLeiturata.value);
+    let dC = dateConvert.getDate(this.livroForm.controls.dataCriacom.value);
+    let dE = dateConvert.getDate(this.livroForm.controls.dataEdicom.value);
 
-    let biblioteca = this.bibliotecasCombo.find(option => option.value === this.lf.idBiblioteca.value);
-    let editorial = this.editoriaisCombo.find(option => option.value === this.lf.idEditorial.value);
-    let colecom = this.coleconsCombo.find(option => option.value === this.lf.idColecom.value);
-    let estilo = this.estilosCombo.find(option => option.value === this.lf.idEstilo.value);
-    let idioma = this.idiomasCombo.find(option => option.value === this.lf.idioma.value);
-    let idiomaOriginal = this.idiomasCombo.find(option => option.value === this.lf.idiomaOriginal.value);
-    let serie = this.seriesLivrosCombo.find(option => option.value === this.lf.serie.value);
+    let biblioteca = this.bibliotecasCombo.find(option => option.value === this.livroForm.controls.idBiblioteca.value);
+    let editorial = this.editoriaisCombo.find(option => option.value === this.livroForm.controls.idEditorial.value);
+    let colecom = this.coleconsCombo.find(option => option.value === this.livroForm.controls.idColecom.value);
+    let estilo = this.estilosCombo.find(option => option.value === this.livroForm.controls.idEstilo.value);
+    let idioma = this.idiomasCombo.find(option => option.value === this.livroForm.controls.idioma.value);
+    let idiomaOriginal = this.idiomasCombo.find(option => option.value === this.livroForm.controls.idiomaOriginal.value);
+    let serie = this.seriesLivrosCombo.find(option => option.value === this.livroForm.controls.serie.value);
 
     let autores: ObjetoSimpleIdNome[] = [];
     this.autoresLivro.forEach(function (value) {
@@ -1012,31 +1013,31 @@ export class LivroComponent implements OnInit {
 
     let livro: Livro = {
       id: (this.dadosDoLivro) ? this.dadosDoLivro.id : '0',
-      titulo: String(this.lf.titulo.value),
+      titulo: String(this.livroForm.controls.titulo.value),
       autores: autores,
-      tituloOriginal: (this.lf.tituloOriginal.value) ? String(this.lf.tituloOriginal.value) : null,
+      tituloOriginal: (this.livroForm.controls.tituloOriginal.value) ? String(this.livroForm.controls.tituloOriginal.value) : null,
       generos: generos,
       idBiblioteca: (biblioteca) ? biblioteca.id : null,
       idEditorial: (editorial) ? editorial.id : null,
       idColecom: (colecom) ? colecom.id : null,
       idEstilo: (estilo) ? estilo.id : null,
-      isbn: (this.lf.isbn.value) ? String(this.lf.isbn.value) : null,
-      paginas: (this.lf.paginas.value) ? String(this.lf.paginas.value) : null,
-      paginasLidas: (!this.lf.paginasLidas.value) ? null : String(this.lf.paginasLidas.value),
-      lido: (!this.lf.lido.value) ? false : this.lf.lido.value,
-      diasLeitura: (this.lf.diasLeitura.value) ? String(this.lf.diasLeitura.value) : null,
+      isbn: (this.livroForm.controls.isbn.value) ? String(this.livroForm.controls.isbn.value) : null,
+      paginas: (this.livroForm.controls.paginas.value) ? String(this.livroForm.controls.paginas.value) : null,
+      paginasLidas: (!this.livroForm.controls.paginasLidas.value) ? null : String(this.livroForm.controls.paginasLidas.value),
+      lido: (!this.livroForm.controls.lido.value) ? false : this.livroForm.controls.lido.value,
+      diasLeitura: (this.livroForm.controls.diasLeitura.value) ? String(this.livroForm.controls.diasLeitura.value) : null,
       dataFimLeitura: (dFL.year > 0) ? dFL.year + '-' + dFL.month + '-' + dFL.day : '',
       idIdioma: (idioma) ? idioma.id : null,
       idIdiomaOriginal: (idiomaOriginal) ? idiomaOriginal.id : null,
       dataCriacom: (dC.year > 0) ? dC.year + '-' + dC.month + '-' + dC.day : '',
       dataEdicom: (dE.year > 0) ? dE.year + '-' + dE.month + '-' + dE.day : '',
-      numeroEdicom: (this.lf.numeroEdicom.value) ? String(this.lf.numeroEdicom.value) : null,
-      electronico: (!this.lf.electronico.value) ? false : this.lf.electronico.value,
-      somSerie: (!this.lf.somSerie.value) ? false : this.lf.somSerie.value,
+      numeroEdicom: (this.livroForm.controls.numeroEdicom.value) ? String(this.livroForm.controls.numeroEdicom.value) : null,
+      electronico: (!this.livroForm.controls.electronico.value) ? false : this.livroForm.controls.electronico.value,
+      somSerie: (!this.livroForm.controls.somSerie.value) ? false : this.livroForm.controls.somSerie.value,
       idSerie: (serie) ? serie.id : null,
-      premios: (this.lf.premios.value) ? String(this.lf.premios.value) : null,
-      descricom: (this.lf.descricom.value) ? String(this.lf.descricom.value) : null,
-      comentario: (this.lf.comentario.value) ? String(this.lf.comentario.value) : null,
+      premios: (this.livroForm.controls.premios.value) ? String(this.livroForm.controls.premios.value) : null,
+      descricom: (this.livroForm.controls.descricom.value) ? String(this.livroForm.controls.descricom.value) : null,
+      comentario: (this.livroForm.controls.comentario.value) ? String(this.livroForm.controls.comentario.value) : null,
       pontuacom: this.dadosDoLivro?.pontuacom,
       // nom necesarios
       biblioteca: '',

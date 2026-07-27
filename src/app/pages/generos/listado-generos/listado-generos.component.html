@@ -9,7 +9,7 @@
 }
 <h1 *ngIf="tipoListado.length > 0">Listado {{this.tipoListado}}</h1>
 
-<table *ngIf="this.listadoDados.length > 0" class="taboas-listado">
+<table *ngIf="this.listadoDados().length > 0" class="taboas-listado">
   <tr>
     <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna
       [nome]="this.nomeAlfabetico"
@@ -24,7 +24,7 @@
       [actual]="this.tipoOrdeacom"
       [inverso]="this.inverso"></omla-orde-coluna></th>
   </tr>
-  <tr *ngFor="let entrada of this.listadoDados; trackBy: trackById" class="listado-accom">
+  <tr *ngFor="let entrada of this.listadoDados(); trackBy: trackById" class="listado-accom">
     <td (click)="onIrPagina('/generos/genero', entrada.id)">{{entrada.nome}}</td>
     <td (click)="onIrPagina('/generos/genero', entrada.id)">{{entrada.quantidadeLivros}}</td>
     <td (click)="onIrPagina('/generos/genero', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>

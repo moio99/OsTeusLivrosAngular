@@ -3,6 +3,7 @@ import { LayoutService } from '../../core/services/flow/layout.service';
 import { MatIconModule } from '@angular/material/icon';
 import { CarregandoService } from '../../core/services/tools/carregando.service';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'omla-header',
@@ -13,12 +14,14 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent implements OnInit {
 
-  isAmosarCarregando = this.carregandoService.carregando$;
+  isAmosarCarregando$!: Observable<boolean>;
 
   constructor(
     private layoutService: LayoutService,
     private carregandoService: CarregandoService
-  ) { }
+  ) {
+    this.isAmosarCarregando$ = this.carregandoService.carregando$;
+  }
 
   ngOnInit(): void {
   }

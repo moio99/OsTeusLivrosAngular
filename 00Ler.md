@@ -4,7 +4,7 @@ lanzar npm start
 # Criaçom inicial
 
 ```
-ng new OsMeusLivrosW
+ng new OsMeusLivros
 ng add @angular/material
 ```
 
@@ -15,7 +15,7 @@ npm remove @types/jasmine jasmine-core karma karma-chrome-launcher karma-coverag
 ```
 # Replace the test script:
 ```
-C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosW\package.json
+C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosAPP\package.json
 "test": "jest",
 "test:watch": "jest --watch",
 "test:coverage": "jest --coverage",
@@ -29,7 +29,7 @@ npm install --save-dev @types/jest jest-preset-angular
 
 # jest.config.js
 ```
-engadir C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosW\jest.config.js
+engadir C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosAPP\jest.config.js
 module.exports = {
   preset: 'jest-preset-angular',
   setupFilesAfterEnv: ['<rootDir>/src/setup.jest.ts'],
@@ -38,7 +38,7 @@ module.exports = {
 
 # tsconfig.spec.json
 ```
-C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosW\tsconfig.spec.json
+C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosAPP\tsconfig.spec.json
     "types": [
       "jest",
       "node"
@@ -52,6 +52,6 @@ C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosW\tsconfig.spec.json
 # setup.jest.ts
 
 ```
-C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosW\src\setup.jest.ts
+C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosAPP\src\setup.jest.ts
 import 'jest-preset-angular/setup-jest';
 ```

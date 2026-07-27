@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, effect, input, Input, signal } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService } from '../../../services/flow/layout.service';
@@ -8,10 +8,16 @@ import { Observable } from 'rxjs';
   template: '' // Componente abstracto, nom precisa template
 })
 export abstract class BaseListadoComponent<T extends { id: string }> {
-  @Input() listadoDados: T[] = [];
+  listadoDadosInput = input<T[]>([]);
+  listadoDados = signal<T[]>([]);
+
 
   constructor(
-    protected layoutService: LayoutService) {}
+    protected layoutService: LayoutService) {
+    effect(() => {
+      this.listadoDados.set(this.listadoDadosInput());
+    });
+  }
 
   protected obterDadosDoListado<TData extends IData>(
     nomePlural: string,
@@ -21,7 +27,7 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
     serviceCall
       .pipe(first())
       .subscribe({
-        next: (v: any) => this.listadoDados = this.dadosObtidos(v, serviceSetCache),
+        next: (v: any) => this.listadoDados.set(this.dadosObtidos(v, serviceSetCache)),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: `Nom se puiderom obter ${nomePlural}.`}); },
           // complete: () => console.info('completado listado de coleçons')
@@ -60,8 +66,8 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
           .pipe(first())
           .subscribe({
             next: (v: any) => {
-              this.listadoDados = this.listadoDados.filter(
-                item => item.id.toString() !== v.idResult?.toString()
+              this.listadoDados.update(dados =>
+                dados.filter(item => item.id.toString() !== v.idResult?.toString())
               );
               this.layoutService.amosarInfo({
                 tipo: InformacomPeTipo.Sucesso,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { first } from 'rxjs';
 import { ListadoBibliotecas, ListadoBibliotecasData } from '../../../core/models/listado-bibliotecas.interface';
@@ -20,8 +20,7 @@ import { BaseListadoComponent } from '../../../core/components/base/listado/base
 export class ListadoBibliotecasComponent extends BaseListadoComponent<ListadoBibliotecas> implements OnInit {
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
-  tipoListado = '';
-  override listadoDados: ListadoBibliotecas[] = [];
+  override listadoDados = signal<ListadoBibliotecas[]>([]);
 
   constructor(
     private router: Router,

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
 import { ListadoConcretoAutores, ListadoConcretoAutoresData } from '../../../../core/models/listado-autores.interface';
@@ -18,7 +18,7 @@ export class PorTiposComponent implements OnInit {
 
   tipos = ListadosAutoresTipos;
   tipo = ListadosAutoresTipos.porNacionalidade;
-  listadoDados: ListadoConcretoAutores[] = [];
+  listadoDados = signal<ListadoConcretoAutores[]>([]);
 
   constructor(
     private route: ActivatedRoute,
@@ -42,7 +42,7 @@ export class PorTiposComponent implements OnInit {
       .getListadoAutoresPorNacons()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidos(v, true),
+        next: (v: object) => this.listadoDados.set(this.dadosObtidos(v, true)),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puido obter o listado de autores por paises.'}); },
@@ -55,7 +55,7 @@ export class PorTiposComponent implements OnInit {
       .getListadoAutoresPorPaises()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados = this.dadosObtidos(v, false),
+        next: (v: object) => this.listadoDados.set(this.dadosObtidos(v, false)),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puido obter o listado de autores por naçons.'}); },

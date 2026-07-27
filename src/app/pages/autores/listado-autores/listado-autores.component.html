@@ -17,30 +17,34 @@
   </ul>
 </div>
 
-<table *ngIf="this.listadoDados.length > 0" class="taboas-listado">
-  <tr>
-    <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna
-      [nome]="this.nomeAlfabetico"
-      [actual]="this.tipoOrdeacom"
-      [inverso]="this.inverso"></omla-orde-coluna></th>
-    <th (click)="ordeNumeroLivros()">Livros<omla-orde-coluna
-      [nome]="this.numeroLivros"
-      [actual]="this.tipoOrdeacom"
-      [inverso]="this.inverso"></omla-orde-coluna></th>
-    <th (click)="ordeNumeroLivrosLidos()">Lidos<omla-orde-coluna
-      [nome]="this.numeroLivrosLidos"
-      [actual]="this.tipoOrdeacom"
-      [inverso]="this.inverso"></omla-orde-coluna></th>
-  </tr>
-  <tr *ngFor="let entrada of this.listadoDados" class="listado-accom">
-    <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.nome}}</td>
-    <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLivros}}</td>
-    <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>
-    @if (!soVisualizar) {
-      <td (click)="$event.stopPropagation()">
-        <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar"
-          (click)="onBorrar(entrada.id, entrada.nome, entrada.quantidadeLivros)">
-      </td>
+@if (this.listadoDados().length > 0) {
+  <table class="taboas-listado">
+    <tr>
+      <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna
+        [nome]="this.nomeAlfabetico"
+        [actual]="this.tipoOrdeacom"
+        [inverso]="this.inverso"></omla-orde-coluna></th>
+      <th (click)="ordeNumeroLivros()">Livros<omla-orde-coluna
+        [nome]="this.numeroLivros"
+        [actual]="this.tipoOrdeacom"
+        [inverso]="this.inverso"></omla-orde-coluna></th>
+      <th (click)="ordeNumeroLivrosLidos()">Lidos<omla-orde-coluna
+        [nome]="this.numeroLivrosLidos"
+        [actual]="this.tipoOrdeacom"
+        [inverso]="this.inverso"></omla-orde-coluna></th>
+    </tr>
+      @for (entrada of this.listadoDados(); track entrada.id) {
+      <tr class="listado-accom">
+        <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.nome}}</td>
+        <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLivros}}</td>
+        <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>
+        @if (!soVisualizar) {
+          <td (click)="$event.stopPropagation()">
+            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar"
+              (click)="onBorrar(entrada.id, entrada.nome, entrada.quantidadeLivros)">
+          </td>
+        }
+      </tr>
     }
-  </tr>
-</table>
+  </table>
+}

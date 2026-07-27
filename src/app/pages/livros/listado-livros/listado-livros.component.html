@@ -1,7 +1,9 @@
 
 <h3>
   {{titulo}}{{tipoOrdeacom}}
-  <span *ngIf="inverso"> inverso </span>
+  @if (this.inverso) {
+    <span> inverso</span>
+  }
   <span>(lidos e nom lidos)</span>
 </h3>
 
@@ -25,64 +27,68 @@
   </div>
 }
 
-<table *ngIf="listadoDados.length > 0" class="taboas-listado">
-  <tr>
-    <th (click)="setOrdeTituloAlfabetico()">Título<omla-orde-coluna
-      [nome]="this.ordeTituloAlfabetico"
-      [actual]="this.tipoOrdeacom"
-      [inverso]="this.inverso"></omla-orde-coluna></th>
-    <th>Título Original</th>
-    <th (click)="setOrdeAutorAlfabetico()">Autor/es<omla-orde-coluna
-      [nome]="this.ordeAutorAlfabetico"
-      [actual]="this.tipoOrdeacom"
-      [inverso]="this.inverso"></omla-orde-coluna></th>
-    <th (click)="setOrdePaginas()">
-      <div style="display: flex;">
-        Páginas
-        <omla-orde-coluna
-          [nome]="this.ordePaginas"
-          [actual]="this.tipoOrdeacom"
-          [inverso]="this.inverso"></omla-orde-coluna>
-      </div>
-    </th>
-    <th (click)="setOrdeRelecturas()">
-      <div style="display: flex;">
-        Relecturas
-        <omla-orde-coluna
-          [nome]="this.ordeRelecturas"
-          [actual]="this.tipoOrdeacom"
-          [inverso]="this.inverso"></omla-orde-coluna>
-      </div>
-    </th>
-    <th (click)="setOrdeUltmaLectura()">
-      <span class="cabeceira-pequena">
-        Fim Leitura
-        <omla-orde-coluna
-          [nome]="this.tituloUltimaLectura"
-          [actual]="this.tipoOrdeacom"
-          [inverso]="this.inverso"></omla-orde-coluna>
-      </span>
-    </th>
-    <th></th>
-  </tr>
-  <tr *ngFor="let entrada of this.listadoDados" class="listado-accom">
-    <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)"
-      [ngClass]="{ 'titulo-galego': entrada.idioma < 3 }"
-      >{{entrada.titulo}}</td>
-    <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)">{{entrada.tituloOriginal || '---'}}</td>
-    <td class="lista-com-comas">
-      <ul>
-        <li *ngFor="let autor of entrada.autores" [ngStyle]="{'cursor': (autor.id ? 'inherit' : 'default')}"
-          (click)="onIrPagina('/autores/autor', autor.id)">{{autor.nome || '---'}}</li>
-      </ul>
-    </td>
-    <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)">{{entrada.paginas || '---'}}</td>
-    <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)">{{entrada.quantidadeRelecturas}}</td>
-    <td>{{entrada.dataFimLeitura ? (entrada.dataFimLeitura | date:'dd/MM/yyyy') : '---'}}</td>
-    @if (!soVisualizar) {
-      <td (click)="onBorrarElemento(entrada.id, entrada.titulo, entrada.quantidadeSerie, entrada.quantidadeRelecturas)">
-        <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
-      </td>
+@if (this.listadoDados().length > 0) {
+  <table class="taboas-listado">
+    <tr>
+      <th (click)="setOrdeTituloAlfabetico()">Título<omla-orde-coluna
+        [nome]="this.ordeTituloAlfabetico"
+        [actual]="this.tipoOrdeacom"
+        [inverso]="this.inverso"></omla-orde-coluna></th>
+      <th>Título Original</th>
+      <th (click)="setOrdeAutorAlfabetico()">Autor/es<omla-orde-coluna
+        [nome]="this.ordeAutorAlfabetico"
+        [actual]="this.tipoOrdeacom"
+        [inverso]="this.inverso"></omla-orde-coluna></th>
+      <th (click)="setOrdePaginas()">
+        <div style="display: flex;">
+          Páginas
+          <omla-orde-coluna
+            [nome]="this.ordePaginas"
+            [actual]="this.tipoOrdeacom"
+            [inverso]="this.inverso"></omla-orde-coluna>
+        </div>
+      </th>
+      <th (click)="setOrdeRelecturas()">
+        <div style="display: flex;">
+          Relecturas
+          <omla-orde-coluna
+            [nome]="this.ordeRelecturas"
+            [actual]="this.tipoOrdeacom"
+            [inverso]="this.inverso"></omla-orde-coluna>
+        </div>
+      </th>
+      <th (click)="setOrdeUltmaLectura()">
+        <span class="cabeceira-pequena">
+          Fim Leitura
+          <omla-orde-coluna
+            [nome]="this.tituloUltimaLectura"
+            [actual]="this.tipoOrdeacom"
+            [inverso]="this.inverso"></omla-orde-coluna>
+        </span>
+      </th>
+      <th></th>
+    </tr>
+    @for (entrada of this.listadoDados(); track entrada.id) {
+      <tr class="listado-accom">
+        <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)"
+          [ngClass]="{ 'titulo-galego': entrada.idioma < 3 }"
+          >{{entrada.titulo}}</td>
+        <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)">{{entrada.tituloOriginal || '---'}}</td>
+        <td class="lista-com-comas">
+          <ul>
+            <li *ngFor="let autor of entrada.autores" [ngStyle]="{'cursor': (autor.id ? 'inherit' : 'default')}"
+              (click)="onIrPagina('/autores/autor', autor.id)">{{autor.nome || '---'}}</li>
+          </ul>
+        </td>
+        <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)">{{entrada.paginas || '---'}}</td>
+        <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)">{{entrada.quantidadeRelecturas}}</td>
+        <td>{{entrada.dataFimLeitura ? (entrada.dataFimLeitura | date:'dd/MM/yyyy') : '---'}}</td>
+        @if (!soVisualizar) {
+          <td (click)="onBorrarElemento(entrada.id, entrada.titulo, entrada.quantidadeSerie, entrada.quantidadeRelecturas)">
+            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+          </td>
+        }
+      </tr>
     }
-  </tr>
-</table>
+  </table>
+}

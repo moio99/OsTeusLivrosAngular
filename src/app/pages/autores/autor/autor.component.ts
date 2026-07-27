@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { Validators, ValidatorFn, FormBuilder, AbstractControl, ValidationErrors, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Validators, ValidatorFn, FormBuilder, FormGroup, AbstractControl, ValidationErrors, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first, map, Observable, startWith } from 'rxjs';
 import { AutorData } from '../../../core/models/autor.interface';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { ListadoLivros, ListadoLivrosData } from '../../../core/models/listado-livros.interface';
-import { Autor } from '../../../core/models/livro.interface';
+import { Autor, AutorForm } from '../../../core/models/livro.interface';
 import { AutoresService } from '../../../core/services/api/autores.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { OutrosService } from '../../../core/services/api/outros.service';
@@ -62,38 +62,60 @@ export class AutorComponent implements OnInit {
   dadosPaisesFiltrados: Observable<SimpleObjet[]> | undefined;
   date= new Date();
 
-  autorForm = this.fb.group({
-    nome: ['', {
-        validators: [
-           Validators.required,
-           Validators.maxLength(150)
-        ],
-        // asyncValidators: [ ... array of asynchronous validators ...]
-        updateOn: 'blur' // 'change' or 'blur' or 'submit'
-    }],
-    nomeReal: ['', { validators: [Validators.maxLength(150)] }],
-    lugarNacemento: ['', { validators: [Validators.maxLength(150)] }],
-    nacom: [''],
-    pais: [''],
-    dataNacemento: ['', { validators: [ this.checkDuasDatasValidator() ] }],
-    dataDefuncom: ['', { validators: [ this.checkDuasDatasValidator() ] }],
-    premios: ['', { validators: [Validators.maxLength(500)] }],
-    web: ['', { validators: [Validators.maxLength(100)] }],
-    comentario: [''],
-  });
-  get af() { return this.autorForm.controls; }
+  autorForm!: FormGroup<AutorForm>;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private layoutService: LayoutService,
-    private fb: FormBuilder,
     private location: Location,
     private usuarioAppService: UsuarioAppService,
     private outrosService: OutrosService,
     private autoresService: AutoresService,
     private livrosService: LivrosService,
-    private dadosPaginasService: DadosPaginasService) { }
+    private dadosPaginasService: DadosPaginasService) {
+      this.autorForm = new FormGroup<AutorForm>({
+        nome: new FormControl('', {
+            validators: [
+               Validators.required,
+               Validators.maxLength(150)
+            ],
+            // asyncValidators: [ ... array of asynchronous validators ...]
+            updateOn: 'blur' // 'change' or 'blur' or 'submit'
+        },),
+        nomeReal: new FormControl('', { validators: [Validators.maxLength(150)] }),
+        lugarNacemento: new FormControl('', { validators: [Validators.maxLength(150)] }),
+        dataNacemento: new FormControl(null, { validators: [ this.checkDuasDatasValidator() ] }),
+        dataDefuncom: new FormControl(null, { validators: [ this.checkDuasDatasValidator() ] }),
+        premios: new FormControl(null),
+        web: new FormControl('', { validators: [Validators.maxLength(100)] }),
+        comentario: new FormControl(null),
+        idNacionalidade: new FormControl(null),
+        nomeNacionalidade: new FormControl(null),
+        idPais: new FormControl(null),
+        nomePais: new FormControl(null),
+        quantidade: new FormControl(null),
+      });
+
+      // this.fb.group({
+      //   nome: ['', {
+      //       validators: [
+      //          Validators.required,
+      //          Validators.maxLength(150)
+      //       ],
+      //       // asyncValidators: [ ... array of asynchronous validators ...]
+      //       updateOn: 'blur' // 'change' or 'blur' or 'submit'
+      //   }],
+      //   nomeReal: ['', { validators: [Validators.maxLength(150)] }],
+      //   lugarNacemento: ['', { validators: [Validators.maxLength(150)] }],
+      //   nacom: [''],
+      //   pais: [''],
+      //   dataNacemento: ['', { validators: [ this.checkDuasDatasValidator() ] }],
+      //   dataDefuncom: ['', { validators: [ this.checkDuasDatasValidator() ] }],
+      //   premios: ['', { validators: [Validators.maxLength(500)] }],
+      //   web: ['', { validators: [Validators.maxLength(100)] }],
+      //   comentario: [''],
+      // });
+    }
 
   ngOnInit(): void {
     const state = history.state;
@@ -215,7 +237,7 @@ export class AutorComponent implements OnInit {
       });
       this.dadosNacionalidadesCombo = dadosReducidos;
 
-      this.dadosNacionalidadesFiltradas = this.af.nacom.valueChanges
+      this.dadosNacionalidadesFiltradas = this.autorForm.controls.idNacionalidade.valueChanges
         .pipe(
           startWith(''),
           map(value => this.filtroDeNacionalidades(value as string))
@@ -257,7 +279,7 @@ export class AutorComponent implements OnInit {
       });
       this.dadosPaisesCombo = dadosReducidos;
 
-      this.dadosPaisesFiltrados = this.af.pais.valueChanges
+      this.dadosPaisesFiltrados = this.autorForm.controls.idPais.valueChanges
         .pipe(
           startWith(''),
           map(value => this.filtroDePaises(value as string))
@@ -298,33 +320,30 @@ export class AutorComponent implements OnInit {
     if (dados.data.length > 0) {
       resultados = dados.data[0];
       if (resultados != undefined) {
-        this.af.nome.setValue(dados.data[0].nome);
-        this.af.nomeReal.setValue(dados.data[0].nomeReal);
-        this.af.lugarNacemento.setValue(dados.data[0].lugarNacemento);
-        if (dados.data[0].idNacionalidade != null) {
-          const findResource = this.dadosNacionalidadesCombo.find(x => x.id == dados.data[0].idNacionalidade);
-          if (findResource !== undefined)
-            this.af.nacom.setValue(findResource.value);
-        }
-        if (dados.data[0].idPais != null) {
-          const findResource = this.dadosPaisesCombo.find(x => x.id == dados.data[0].idPais);
-          if (findResource !== undefined)
-            this.af.pais.setValue(findResource.value);
-        }
-        let dateConvert = new DateConvert();
-        let dN = dateConvert.getDateFromMySQL(dados.data[0].dataNacemento);
-        if (dN.year > 0) {
-          let data = <FormControl>this.af.dataNacemento;
-          data.setValue(new Date(dN.year, dN.month - 1, dN.day));
-        }
-        let dD = dateConvert.getDateFromMySQL(dados.data[0].dataDefuncom);
-        if (dD.year > 0) {
-          let data = <FormControl>this.af.dataDefuncom;
-          data.setValue(new Date(dD.year, dD.month - 1, dD.day));
+        this.autorForm.controls.nome.setValue(dados.data[0].nome);
+        this.autorForm.controls.nomeReal.setValue(dados.data[0].nomeReal);
+        this.autorForm.controls.lugarNacemento.setValue(dados.data[0].lugarNacemento);
+
+        const idNac = dados.data?.[0]?.idNacionalidade;
+        if (idNac != null) this.autorForm.controls.idNacionalidade.setValue(idNac);
+
+        const idPais = dados.data?.[0]?.idPais;
+        if (idPais != null) this.autorForm.controls.idPais.setValue(idPais);
+
+        const dN = new DateConvert().getDateFromMySQL(dados.data?.[0]?.dataNacemento);
+        if (dN?.year > 0) {
+          const dataModificada = new Date(dN.year, dN.month - 1, dN.day);
+          this.autorForm.controls.dataNacemento.setValue(dataModificada);
         }
 
-        this.af.web.setValue(dados.data[0].web);
-        this.af.comentario.setValue(dados.data[0].comentario);
+        const dD = new DateConvert().getDateFromMySQL(dados.data?.[0]?.dataDefuncom);
+        if (dD?.year > 0) {
+          const dataModificada = new Date(dD.year, dD.month - 1, dD.day);
+          this.autorForm.controls.dataDefuncom.setValue(dataModificada);
+        }
+
+        this.autorForm.controls.web.setValue(dados.data[0].web);
+        this.autorForm.controls.comentario.setValue(dados.data[0].comentario);
       }
     }
     else{
@@ -344,14 +363,14 @@ export class AutorComponent implements OnInit {
   //#region
 
   onSubmit(event: any) {
-    if (this.af.nome.status === 'VALID' && this.af.nomeReal.status === 'VALID'
-      && this.af.lugarNacemento.status === 'VALID'
-      && this.af.dataNacemento.status === 'VALID' && this.af.dataDefuncom.status === 'VALID'
-      && this.af.premios.status === 'VALID' && this.af.web.status === 'VALID') {
+    if (this.autorForm.controls.nome.status === 'VALID' && this.autorForm.controls.nomeReal.status === 'VALID'
+      && this.autorForm.controls.lugarNacemento.status === 'VALID'
+      && this.autorForm.controls.dataNacemento.status === 'VALID' && this.autorForm.controls.dataDefuncom.status === 'VALID'
+      && this.autorForm.controls.premios.status === 'VALID' && this.autorForm.controls.web.status === 'VALID') {
 
       let autorRepetido: AutorData<Autor>;
       this.autoresService
-        .getAutorPorNome(String(this.af.nome.value).trim())
+        .getAutorPorNome(String(this.autorForm.controls.nome.value).trim())
         .pipe(first())
         .subscribe({
           next: (v: object) => autorRepetido = <AutorData<Autor>>v,
@@ -372,23 +391,23 @@ export class AutorComponent implements OnInit {
     else {
 
       let dateConvert = new DateConvert();
-      let dN = dateConvert.getDate(this.af.dataNacemento.value);
-      let dD = dateConvert.getDate(this.af.dataDefuncom.value);
+      let dN = dateConvert.getDate(this.autorForm.controls.dataNacemento.value);
+      let dD = dateConvert.getDate(this.autorForm.controls.dataDefuncom.value);
 
-      let nacom = this.dadosNacionalidadesCombo.find(option => option.value === this.af.nacom.value);
-      let pais = this.dadosPaisesCombo.find(option => option.value === this.af.pais.value);
+      let nacom = this.dadosNacionalidadesCombo.find(option => option.id === this.autorForm.controls.idNacionalidade.value);
+      let pais = this.dadosPaisesCombo.find(option => option.id === this.autorForm.controls.idPais.value);
       const autor: Autor = {
         id: Number(this.dadosDoAutor?.id),
-        nome: String(this.af.nome.value).trim(),
-        nomeReal: (this.af.nomeReal.value == null) ? null : String(this.af.nomeReal.value).trim(),
-        lugarNacemento: (this.af.lugarNacemento.value == null) ? null : String(this.af.lugarNacemento.value).trim(),
+        nome: String(this.autorForm.controls.nome.value).trim(),
+        nomeReal: (this.autorForm.controls.nomeReal.value == null) ? null : String(this.autorForm.controls.nomeReal.value).trim(),
+        lugarNacemento: (this.autorForm.controls.lugarNacemento.value == null) ? null : String(this.autorForm.controls.lugarNacemento.value).trim(),
         dataNacemento: (dN.year > 0) ? dN.year + '-' + dN.month + '-' + dN.day : '',
         dataDefuncom: (dD.year > 0) ? dD.year + '-' + dD.month + '-' + dD.day : '',
         idNacionalidade: (nacom != undefined) ? nacom.id : null,
         idPais: (pais != undefined) ? pais.id : null,
-        premios: (this.af.premios.value == null) ? null : String(this.af.premios.value).trim(),
-        web: (this.af.web.value == null) ? null : String(this.af.web.value).trim(),
-        comentario: (this.af.comentario.value == null) ? null : String(this.af.comentario.value).trim(),
+        premios: (this.autorForm.controls.premios.value == null) ? null : String(this.autorForm.controls.premios.value).trim(),
+        web: (this.autorForm.controls.web.value == null) ? null : String(this.autorForm.controls.web.value).trim(),
+        comentario: (this.autorForm.controls.comentario.value == null) ? null : String(this.autorForm.controls.comentario.value).trim(),
         nomeNacionalidade: '',
         nomePais: '',
         quantidade: 0
