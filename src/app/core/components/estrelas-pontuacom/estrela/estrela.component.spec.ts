@@ -41,21 +41,21 @@ describe('EstrelaComponent', () => {
     expect(component.imagemAmosar).toBe(component.imagemOriginal);
   });
 
-  it('should update imagemOriginal and imagemAmosar when estavelecerNonovaPontuacom changes', () => {
+  it('should update imagemOriginal and imagemAmosar when estavelecerNovaPontuacom changes', () => {
     // Test when novoNumero is defined and greater than or equal to component numero
     component.numero = 2;
-    component.estavelecerNonovaPontuacom = 3;
+    component.estavelecerNovaPontuacom = 3;
     expect(component.imagemOriginal).toBe(component.estrelaVermelha);
     expect(component.imagemAmosar).toBe(component.estrelaVermelha);
 
     // Test when novoNumero is defined and less than component numero
     component.numero = 4;
-    component.estavelecerNonovaPontuacom = 3;
+    component.estavelecerNovaPontuacom = 3;
     expect(component.imagemOriginal).toBe(component.estrelaBranca);
     expect(component.imagemAmosar).toBe(component.estrelaBranca);
 
     // Test when novoNumero is undefined
-    component.estavelecerNonovaPontuacom = undefined;
+    component.estavelecerNovaPontuacom = undefined;
     expect(component.imagemOriginal).toBe(component.estrelaBranca);
     expect(component.imagemAmosar).toBe(component.estrelaBranca);
   });

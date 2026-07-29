@@ -3,7 +3,7 @@
   (mouseover)="entrouORato()"
   (mouseout)="saiuORato()"
   (mousedown)="ratoPicou()">
-  <img [ngClass]="{'imagem': numero % 1 != 0}"
-    [src]="imagemAmosar"
-    alt="{{numero}}">
+  <img [class.imagem]="numero() % 1 != 0"
+    [src]="imagemAmosar()"
+    alt="{{numero()}}">
 </div>

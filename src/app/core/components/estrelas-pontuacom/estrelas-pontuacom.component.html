@@ -1,17 +1,20 @@
-
 <div class="estrelas">
   <div class="bloco-estrelas">
-      <div *ngFor="let estrela of estrelas" class="estrela"
-        [ngClass]="{ 'estrelaEnteira': estrela.numero % 1 == 0, 'estrelaDecimal': estrela.numero % 1 != 0 }">
+    @for (estrela of estrelas(); track estrela.numero) {
+      <div class="estrela" [class.estrelaEnteira]="estrela.numero % 1 === 0"
+                           [class.estrelaDecimal]="estrela.numero % 1 !== 0">
         <omla-estrela
           [numero]="estrela.numero"
           (simulacomEvent)="onSimulacom($event)"
           (estavelecerPontuacomEvent)="onEstavelecerPontuacom($event)"
-          [simulandoPontuacom]="estrelaSimulando"
-          [estavelecerNonovaPontuacom]="novaPontuacom"></omla-estrela>
+          [simulandoPontuacom]="estrelaSimulando()"
+          [estavelecerNovaPontuacom]="novaPontuacom()">
+        </omla-estrela>
       </div>
+    }
   </div>
   <div class="bloco-numero">
-    {{numeroActual}}
+    {{ numeroActual() }}
   </div>
 </div>
+

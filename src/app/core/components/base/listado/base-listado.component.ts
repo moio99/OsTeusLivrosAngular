@@ -8,14 +8,14 @@ import { Observable } from 'rxjs';
   template: '' // Componente abstracto, nom precisa template
 })
 export abstract class BaseListadoComponent<T extends { id: string }> {
-  listadoDadosInput = input<T[]>([]);
+  listadoDadosInput = input<T[]>([]); // nom o neccesito
   listadoDados = signal<T[]>([]);
 
 
   constructor(
     protected layoutService: LayoutService) {
     effect(() => {
-      this.listadoDados.set(this.listadoDadosInput());
+      this.listadoDados.set(this.listadoDadosInput()); // nom o neccesito, mas este sería o jeito de atender o dado que chegase do pai
     });
   }
 
