@@ -1,13 +1,8 @@
 import { EstadisticasTipo } from "../../shared/enums/estadisticasTipos";
 
 export interface Parametros {
-  tipo: EstadisticasTipo;
   id: string;
-}
-
-export interface ListadoLivrosData {
-  data: ListadoLivros[];
-  meta: Meta;
+  tipo: EstadisticasTipo;
 }
 
 export interface ListadoLivros {

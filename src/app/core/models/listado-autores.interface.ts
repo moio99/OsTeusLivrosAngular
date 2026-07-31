@@ -1,20 +1,12 @@
 import { ListadosAutoresTipos } from "../../shared/enums/estadisticasTipos";
+import { BaseElemento, BaseListado, BaseQuantidadesLivros } from "./base-dados-api.interface";
 
 export interface Parametros {
   id: string;
   tipo: ListadosAutoresTipos;
 }
 
-export interface ListadoAutoresData {
-  data: ListadoAutores[];
-  meta: any;
-}
-
-export interface ListadoAutores {
-  id: string;
-  nome: string;
-  quantidadeLivros: number;
-  quantidadeLidos: number;
+export interface ListadoAutores extends BaseListado, BaseQuantidadesLivros {
 }
 
 export interface ListadoConcretoAutoresData {
@@ -22,8 +14,6 @@ export interface ListadoConcretoAutoresData {
   meta: any;
 }
 
-export interface ListadoConcretoAutores {
-  id: number;
-  nome: string;
+export interface ListadoConcretoAutores extends BaseElemento {
   quantidadeAutores: number;
 }

@@ -1,11 +1,7 @@
-import { BaseDadosApi } from "./base-dados-api";
+import { BaseComLivros, BaseListadoDadosApi, BaseListado } from "./base-dados-api.interface";
 
-export interface ListadoColeconsData extends BaseDadosApi<ListadoColecons> {
+export interface ListadoColeconsData extends BaseListadoDadosApi<ListadoColecons> {
 }
 
-export interface ListadoColecons {
-  id: string;
-  nome: string;
-  web: string;
-  quantidadeLivros: number;
+export interface ListadoColecons extends BaseListado, BaseComLivros {
 }

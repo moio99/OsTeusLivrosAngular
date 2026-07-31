@@ -7,11 +7,10 @@ import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService } from '../../../services/flow/layout.service';
 import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 import { FormGroup } from '@angular/forms';
-import { BaseDadosApi, BaseElemento } from '../../../models/base-dados-api';
+import { BaseListadoDadosApi, BaseElemento, ParametrosId } from '../../../models/base-dados-api.interface';
 import { BaseApiService } from '../../../services/api/base-api.service.ts';
 import { DadosPaginasService } from '../../../services/flow/dados-paginas.service';
-import { ParametrosId } from '../../../models/comun.interface';
-import { ListadoLivros, ListadoLivrosData } from '../../../models/listado-livros.interface';
+import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { Genero } from '../../../models/genero.interface';
 import { UsuarioAppService } from '../../../services/flow/usuario-app.service';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
@@ -111,7 +110,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   }
 
   protected dadosObtidos(data: any): TElemento | undefined {
-    const dados = data as BaseDadosApi<TElemento>;
+    const dados = data as BaseListadoDadosApi<TElemento>;
     if (dados?.data?.length > 0) {
       return dados.data[0];
     } else {
@@ -141,7 +140,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   }
 
   protected dadosLivrosObtidos(data: object): any[] {
-    const dados = data as ListadoLivrosData;
+    const dados = data as BaseListadoDadosApi<ListadoLivros>;
     return dados?.data ?? [];
   }
 
@@ -155,13 +154,13 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     this.servicoElemento.getPorNome(nameValue)
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.handleDuplicateCheck(event, v as BaseDadosApi<TElemento>),
+        next: (v: object) => this.handleDuplicateCheck(event, v as BaseListadoDadosApi<TElemento>),
         error: (e: any) => this.handleError('obtención', e),
         complete: () => {}
       });
   }
 
-  protected handleDuplicateCheck(event: SubmitEvent, elementoExistente: BaseDadosApi<TElemento>) {
+  protected handleDuplicateCheck(event: SubmitEvent, elementoExistente: BaseListadoDadosApi<TElemento>) {
     const isDuplicate = elementoExistente?.meta?.quantidade > 0 &&
       (this.isAdding(event) ||
        (!this.isAdding(event) && elementoExistente.meta.id !== (this.dadosDoElemento as any)?.id));

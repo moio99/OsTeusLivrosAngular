@@ -1,4 +1,4 @@
-import { BaseElemento } from "./base-dados-api";
+import { BaseElemento } from "./base-dados-api.interface";
 
 export interface Biblioteca extends BaseElemento {
   endereco: string | null,

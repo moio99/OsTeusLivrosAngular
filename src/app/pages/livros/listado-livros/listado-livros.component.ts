@@ -10,7 +10,7 @@ import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo, ListadosLivrosTipos } from '../../../shared/enums/estadisticasTipos';
 import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
-import { ListadoLivros, ListadoLivrosData, Parametros } from '../../../core/models/listado-livros.interface';
+import { ListadoLivros, Parametros } from '../../../core/models/listado-livros.interface';
 import { LivroComponent } from '../livro/livro.component';
 import {
   ChartComponent,
@@ -20,6 +20,7 @@ import { TartaChartOptions } from '../../../core/types/chart.options';
 import { CoresIdiomasService } from '../../../core/services/flow/cores-idiomas.sevice';
 import { CoresIdioma } from '../../../shared/cores.idiomas.config';
 import { environment, environments } from '../../../../environments/environment';
+import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
 
 @Component({
   selector: 'omla-listado-livros',
@@ -167,7 +168,7 @@ export class ListadoLivrosComponent implements OnInit {
           // console.log(v)
         }),
         /* map((v) => {
-          const dados = <ListadoLivrosData>v;
+          const dados = <BaseDadosApi<ListadoLivros>>v;
           return dados.data;
         }) */
       )
@@ -181,7 +182,7 @@ export class ListadoLivrosComponent implements OnInit {
 
   private dadosObtidos(data: object, listadoCompleto: boolean, amosarGrafico?: boolean): ListadoLivros[] {
     let resultados: ListadoLivros[];
-    const dados = <ListadoLivrosData>data;
+    const dados = <BaseListadoDadosApi<ListadoLivros>>data;
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidossss'});
       if (listadoCompleto) {

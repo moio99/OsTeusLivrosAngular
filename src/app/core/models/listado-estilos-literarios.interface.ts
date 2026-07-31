@@ -1,11 +1,10 @@
-export interface ListadoEstilosLiterariosData {
-  data: ListadoEstilosLiterarios[];
+import { BaseListado, BaseQuantidadesLivros } from "./base-dados-api.interface";
+
+export interface ListadoEstilosLiterariosData<T = any> {
+  data: T[];
   meta: any;
 }
+// haberia que chamalo:   const listado: ListadoEstilosLiterariosData<ListadoEstilosLiterarios>;
 
-export interface ListadoEstilosLiterarios {
-  id: string;
-  nome: string;
-  quantidadeLivros: number;
-  quantidadeLidos: number;
+export interface ListadoEstilosLiterarios extends BaseListado, BaseQuantidadesLivros {
 }

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { Validators, ValidatorFn, FormBuilder, FormGroup, AbstractControl, ValidationErrors, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Validators, ValidatorFn, FormGroup, AbstractControl, ValidationErrors, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { first, map, Observable, startWith } from 'rxjs';
-import { AutorData } from '../../../core/models/autor.interface';
+import { Autor, AutorData, AutorForm } from '../../../core/models/autor.interface';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
-import { ListadoLivros, ListadoLivrosData } from '../../../core/models/listado-livros.interface';
-import { Autor, AutorForm } from '../../../core/models/livro.interface';
+import { ListadoLivros } from '../../../core/models/listado-livros.interface';
 import { AutoresService } from '../../../core/services/api/autores.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { OutrosService } from '../../../core/services/api/outros.service';
@@ -22,7 +21,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { environment, environments } from '../../../../environments/environment';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
-import { BaseDadosApi } from '../../../core/models/base-dados-api';
+import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
 
 @Component({
   selector: 'omla-autor',
@@ -193,7 +192,7 @@ export class AutorComponent implements OnInit {
 
   private dadosLivrosObtidos(data: object): ListadoLivros[] {
     let resultados: ListadoLivros[];
-    const dados = <ListadoLivrosData>data;
+    const dados = <BaseListadoDadosApi<ListadoLivros>>data;
     if (dados != null) {
       resultados = dados.data;
     } else {
@@ -253,7 +252,7 @@ export class AutorComponent implements OnInit {
   * @param value Filtro inserido polo usuario.
   */
   private filtroDeNacionalidades(value: string): SimpleObjet[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = (value || '').toLowerCase();
 
     return this.dadosNacionalidadesCombo.filter(option => option.value.toLowerCase().includes(filterValue));
   }
@@ -295,7 +294,7 @@ export class AutorComponent implements OnInit {
   * @param value Filtro inserido polo usuario.
   */
    private filtroDePaises(value: string): SimpleObjet[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = (value || '').toLowerCase();
 
     return this.dadosPaisesCombo.filter(option => option.value.toLowerCase().includes(filterValue));
   }
@@ -447,7 +446,7 @@ export class AutorComponent implements OnInit {
   }
 
   private gestionarRetroceso(data: object, autor: Autor) {
-    const dados = <ListadoLivrosData>data;
+    const dados = <BaseListadoDadosApi<ListadoLivros>>data;
     if (dados) {
       autor.id = dados.meta.id;
       this.dadosDoAutor = autor;

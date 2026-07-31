@@ -1,14 +1,12 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
-import { first } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
-import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
 import { EstiloLiterarioComponent } from '../estilo-literario/estilo-literario.component';
 import { EstilosLiterariosService } from '../../../core/services/api/estilos-literarios.service';
-import { ListadoEstilosLiterarios, ListadoEstilosLiterariosData } from '../../../core/models/listado-estilos-literarios.interface';
+import { ListadoEstilosLiterarios } from '../../../core/models/listado-estilos-literarios.interface';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 

@@ -28,11 +28,10 @@ import { SimpleObjet } from '../../../shared/models/outros.model';
 import { MultiDados, MultiSelecomDialogComponent } from '../../../core/components/multi-selecom-dialog/multi-selecom-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { EstrelasPontuacomComponent } from '../../../core/components/estrelas-pontuacom/estrelas-pontuacom.component';
-import { Parametros } from '../../../core/models/comun.interface';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { environment, environments } from '../../../../environments/environment';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
-import { BaseDadosApi } from '../../../core/models/base-dados-api';
+import { BaseListadoDadosApi, Parametros } from '../../../core/models/base-dados-api.interface';
 
 export enum MultiGestom {
   autores = 1,
@@ -676,7 +675,7 @@ export class LivroComponent implements OnInit {
 
   private dadosObtidosDoLivro(data: object) {
     let resultados: Livro;
-    const dados = <BaseDadosApi<Livro>>data;
+    const dados = <BaseListadoDadosApi<Livro>>data;
     if (dados.data.length > 0) {
       resultados = dados.data[0];
       this.dadosDoLivro = dados.data[0];
@@ -922,12 +921,12 @@ export class LivroComponent implements OnInit {
     }
     else {
       if (this.livroForm.valid) {
-        let livroRepetido: BaseDadosApi<Livro>;
+        let livroRepetido: BaseListadoDadosApi<Livro>;
         this.livrosService
           .getLivroPorTitulo(String(this.livroForm.controls.titulo.value).trim())
           .pipe(first())
           .subscribe({
-            next: (v: object) => livroRepetido = <BaseDadosApi<Livro>>v,
+            next: (v: object) => livroRepetido = <BaseListadoDadosApi<Livro>>v,
             error: (e: any) => { console.error(e),
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro.'}); },
               complete: () => this.guardarLivro(event, livroRepetido)
@@ -936,7 +935,7 @@ export class LivroComponent implements OnInit {
     }
   }
 
-  guardarLivro(event: any, livroRepetido: BaseDadosApi<Livro>) {
+  guardarLivro(event: any, livroRepetido: BaseListadoDadosApi<Livro>) {
     if (livroRepetido != undefined && livroRepetido.meta.quantidade > 0 && (
       (event.submitter.value === EstadosPagina.engadir)
       ||

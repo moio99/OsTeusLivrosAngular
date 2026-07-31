@@ -6,20 +6,20 @@ import { LayoutService } from '../../../core/services/flow/layout.service';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
-import { Estadisticas, EstadisticasData } from '../../../core/models/estadisticas.interface';
+import { Estadisticas } from '../../../core/models/estadisticas.interface';
 import { GraficosData } from '../../../core/models/graficos.interface';
 import { GraficosService } from '../../../core/services/api/graficos.service';
-import { HttpClientModule } from '@angular/common/http';
 import { OutrosService } from '../../../core/services/api/outros.service';
 import { PeticomPendenteComponent } from '../../../peticom-pendente.guard';
 import { environment, environments } from '../../../../environments/environment';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 import { forkJoin } from 'rxjs';
+import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
 
 @Component({
   selector: 'omla-estadisticas',
   standalone: true,
-  imports: [OrdeColunaComponent, HttpClientModule],
+  imports: [OrdeColunaComponent],
   templateUrl: './estadisticas.component.html',
   styleUrls: ['./estadisticas.component.scss']
 })
@@ -197,42 +197,11 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
         //   console.log('Todas las estadísticas cargadas');
         // }
     });
-
-    /* this.estadisticasService
-      .getEstadisticas(EstadisticasTipo.Idioma)
-      .pipe(first())
-      .subscribe({
-        next: (v) => this.idiomasSignal.set(this.dadosObtidos(EstadisticasTipo.Idioma, v)),
-        error: (e) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-            mensagem: 'Nom se puiderom obter as estadísticas por idiomas.'}); },
-          // complete: () => console.info('completado por Idiomas')
-    });
-    this.estadisticasService
-      .getEstadisticas(EstadisticasTipo.Ano)
-      .pipe(first())
-      .subscribe({
-        next: (v) => this.anosSignal.set(this.dadosObtidos(EstadisticasTipo.Ano, v)),
-        error: (e) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-            mensagem: 'Nom se puiderom obter as estadísticas por anos.'}); },
-          complete: () => console.info('completado por Anos')
-    });
-    this.estadisticasService
-      .getEstadisticas(EstadisticasTipo.Genero)
-      .pipe(first())
-      .subscribe({
-        next: (v) => this.generosSignal.set(this.dadosObtidos(EstadisticasTipo.Genero, v)),
-        error: (e) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-            mensagem: 'Nom se puiderom obter as estadísticas por géneros.'}); },
-          // complete: () => console.info('completado por Genero')
-    }); */
   }
 
   private dadosObtidos(tipo: EstadisticasTipo, data: object): Estadisticas[] {
     let resultados: Estadisticas[];
-    const dados = <EstadisticasData>data;
+    const dados = <BaseListadoDadosApi<Estadisticas>>data;
     if (dados != null) {
       this.estadisticasService.setGraficosPaginasPorIdiomaEAno(tipo, dados);
       resultados = dados.data;

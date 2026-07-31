@@ -1,22 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Genero } from '../../../core/models/genero.interface';
-import { ListadoLivros, ListadoLivrosData } from '../../../core/models/listado-livros.interface';
 import { GenerosService } from '../../../core/services/api/generos.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
-import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
-import { Parametros } from '../../../core/models/comun.interface';
-import { environment, environments } from '../../../../environments/environment';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
-import { BaseDadosApi } from '../../../core/models/base-dados-api';
 import { BaseElementoComponent } from '../../../core/components/base/elemento/base-elemento.component';
 
 @Component({

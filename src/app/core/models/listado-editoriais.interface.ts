@@ -1,11 +1,10 @@
-export interface ListadoEditoriaisData {
-  data: ListadoEditoriais[];
+import { BaseComLivros, BaseListado } from "./base-dados-api.interface";
+
+export interface ListadoEditoriaisData<T = any> {
+  data: T[];
   meta: any;
 }
+// haberia que chamalo:   const listado: ListadoEditoriaisData<ListadoEditoriais>;
 
-export interface ListadoEditoriais {
-  id: string;
-  nome: string;
-  web: string;
-  quantidadeLivros: number;
+export interface ListadoEditoriais extends BaseListado, BaseComLivros {
 }

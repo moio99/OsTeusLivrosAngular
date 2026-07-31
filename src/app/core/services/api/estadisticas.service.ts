@@ -3,16 +3,17 @@ import { environment, environments } from '../../../../environments/environment'
 import { EstadisticasTipo } from '../../../shared/enums/estadisticasTipos';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { EstadisticasData } from '../../models/estadisticas.interface';
+import { BaseListadoDadosApi } from '../../models/base-dados-api.interface';
+import { Estadisticas } from '../../models/estadisticas.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EstadisticasService {
 
-  private cacheEstadisticasDataIdioma: EstadisticasData | undefined = undefined;
-  private cacheEstadisticasDataAno: EstadisticasData | undefined = undefined;
-  private cacheEstadisticasDataGenero: EstadisticasData | undefined = undefined;
+  private cacheEstadisticasDataIdioma: BaseListadoDadosApi<Estadisticas> | undefined = undefined;
+  private cacheEstadisticasDataAno: BaseListadoDadosApi<Estadisticas> | undefined = undefined;
+  private cacheEstadisticasDataGenero: BaseListadoDadosApi<Estadisticas> | undefined = undefined;
 
   constructor(private http: HttpClient) {
   }
@@ -46,7 +47,7 @@ export class EstadisticasService {
     }
     return this.http.get(environment.apiUrl + '/Estadisticas?tipo=' + tipo);
   }
-  setGraficosPaginasPorIdiomaEAno(tipo: EstadisticasTipo, dados: EstadisticasData) {
+  setGraficosPaginasPorIdiomaEAno(tipo: EstadisticasTipo, dados: BaseListadoDadosApi<Estadisticas>) {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (isProdOrPre) {
       switch (tipo) {

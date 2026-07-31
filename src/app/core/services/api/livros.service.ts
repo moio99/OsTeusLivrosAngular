@@ -3,7 +3,8 @@ import { environment, environments } from '../../../../environments/environment'
 import { Injectable } from '@angular/core';
 import { Livro } from '../../models/livro.interface';
 import { delay, of } from 'rxjs';
-import { ListadoLivrosData } from '../../models/listado-livros.interface';
+import { ListadoLivros } from '../../models/listado-livros.interface';
+import { BaseListadoDadosApi } from '../../models/base-dados-api.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ import { ListadoLivrosData } from '../../models/listado-livros.interface';
 export class LivrosService {
 
   private rotaIntermedia = '/Livros';
-  private cacheListadoLivrosData: ListadoLivrosData | undefined = undefined;
+  private cacheListadoLivrosData: BaseListadoDadosApi<ListadoLivros> | undefined = undefined;
 
   constructor(private http: HttpClient) {
   }
@@ -28,7 +29,7 @@ export class LivrosService {
       return of(this.cacheListadoLivrosData);
     }
   }
-  setListadoLivros(dados: ListadoLivrosData) {
+  setListadoLivros(dados: BaseListadoDadosApi<ListadoLivros>) {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (isProdOrPre) {
       this.cacheListadoLivrosData = dados;

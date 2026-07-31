@@ -4,7 +4,8 @@ import { ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
 import { Injectable } from '@angular/core';
 import { Autor } from '../../models/autor.interface';
 import { of } from 'rxjs';
-import { ListadoAutoresData, ListadoConcretoAutoresData } from '../../models/listado-autores.interface';
+import { ListadoAutores, ListadoConcretoAutoresData } from '../../models/listado-autores.interface';
+import { BaseListadoDadosApi } from '../../models/base-dados-api.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ import { ListadoAutoresData, ListadoConcretoAutoresData } from '../../models/lis
 export class AutoresService {
 
   private rotaIntermedia = '/Autores';
-  private cacheListadoAutoresData: ListadoAutoresData | undefined = undefined;
+  private cacheListadoAutoresData: BaseListadoDadosApi<ListadoAutores> | undefined = undefined;
   private cacheListadoAutoresPorNacons: ListadoConcretoAutoresData | undefined = undefined;
   private cacheListadoAutoresPorPaises: ListadoConcretoAutoresData | undefined = undefined;
 
@@ -31,7 +32,7 @@ export class AutoresService {
       return of(this.cacheListadoAutoresData);
     }
   }
-  setListadoAutores(dados: ListadoAutoresData) {
+  setListadoAutores(dados: BaseListadoDadosApi<ListadoAutores>) {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (isProdOrPre) {
       this.cacheListadoAutoresData = dados;

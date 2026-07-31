@@ -1,12 +1,13 @@
+import { FormControl } from "@angular/forms";
 import { ListadosAutoresTipos } from "../../shared/enums/estadisticasTipos";
-import { BaseDadosApi } from "./base-dados-api";
+import { BaseListadoDadosApi } from "./base-dados-api.interface";
 
 export interface Parametros {
   id: number;
   tipo: ListadosAutoresTipos;
 }
 
-export interface AutorData<T> extends BaseDadosApi<T> {
+export interface AutorData<T> extends BaseListadoDadosApi<T> {
   meta: {id:number, quantidade:number};
 }
 
@@ -25,4 +26,20 @@ export interface Autor {
   idPais: number | null;
   nomePais: string | null;
   quantidade: number
+}
+
+export interface AutorForm {
+  nome: FormControl<string | null>;
+  nomeReal: FormControl<string | null>;
+  lugarNacemento: FormControl<string | null>;
+  dataNacemento: FormControl<Date | null>;
+  dataDefuncom: FormControl<Date | null>;
+  premios: FormControl<string | null>;
+  web: FormControl<string | null>;
+  comentario: FormControl<string | null>;
+  idNacionalidade: FormControl<number | null>;
+  nomeNacionalidade: FormControl<string | null>;
+  idPais: FormControl<number | null>;
+  nomePais: FormControl<string | null>;
+  quantidade: FormControl<number | null>;
 }

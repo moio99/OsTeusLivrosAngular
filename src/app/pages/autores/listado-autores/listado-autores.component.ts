@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, Routes } from '@angular/router';
 import { first } from 'rxjs';
-import { ListadoAutores, ListadoAutoresData } from '../../../core/models/listado-autores.interface';
+import { ListadoAutores } from '../../../core/models/listado-autores.interface';
 import { AutoresService } from '../../../core/services/api/autores.service';
 import { OutrosService } from '../../../core/services/api/outros.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
@@ -13,6 +13,7 @@ import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-c
 import { Parametros } from '../../../core/models/autor.interface';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
+import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
 
 @Component({
   selector: 'omla-listado-autores',
@@ -103,7 +104,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
 
   private dadosObtidosAA(data: object): ListadoAutores[] {
     let resultados: ListadoAutores[];
-    const dados = <ListadoAutoresData>data;
+    const dados = <BaseListadoDadosApi<ListadoAutores>>data;
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
       this.autoresService.setListadoAutores(dados);
