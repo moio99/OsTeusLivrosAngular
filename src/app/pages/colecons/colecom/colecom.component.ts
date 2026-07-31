@@ -4,7 +4,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Colecom } from '../../../core/models/colecom.interface';
+import { Colecom, ColecomForm } from '../../../core/models/colecom.interface';
 import { ColeconsService } from '../../../core/services/api/colecons.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
@@ -21,7 +21,7 @@ import { UsuarioAppService } from '../../../core/services/flow/usuario-app.servi
 })
 export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsService> {
 
-  ef: FormGroup;
+  colecomForm!: FormGroup<ColecomForm>;
   override dadosDoElemento: Colecom | undefined = {
     id: 0,
     nome: '',
@@ -42,7 +42,7 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
   ) {
     super(route, router, layoutService, location, dadosPaginasService, usuarioAppService, coleconsService);
 
-    this.ef = new FormGroup({
+    this.colecomForm = new FormGroup<ColecomForm>({
       nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
       isbn: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(20)]),
       web: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(150)]),
@@ -51,7 +51,7 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
   }
 
   protected get formuario(): any {
-    return this.ef;
+    return this.colecomForm;
   }
 
   protected serviceGetLivros(id: string) {
@@ -59,7 +59,7 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
   }
 
   protected updateFormValues(colecom: Colecom) {
-    this.ef.patchValue({
+    this.colecomForm.patchValue({
       nome: colecom.nome,
       isbn: colecom.isbn,
       web: colecom.web,
@@ -70,10 +70,10 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
   protected createElementoForm(): Colecom {
     const colecom: Colecom = {
       id: Number(this.dadosDoElemento?.id),
-      nome: String(this.formuario.get('nome').value),
-      isbn: (this.formuario.get('isbn').value == null) ? null : String(this.formuario.get('isbn').value).trim(),
-      web: (this.formuario.get('web').value == null) ? null : String(this.formuario.get('web').value).trim(),
-      comentario: (this.formuario.get('comentario').value == null) ? null : String(this.formuario.get('comentario').value).trim()
+      nome: String(this.colecomForm.controls.nome.value),
+      isbn: (this.colecomForm.controls.isbn.value == null) ? null : String(this.colecomForm.controls.isbn.value).trim(),
+      web: (this.colecomForm.controls.web.value == null) ? null : String(this.colecomForm.controls.web.value).trim(),
+      comentario: (this.colecomForm.controls.comentario.value == null) ? null : String(this.colecomForm.controls.comentario.value).trim()
     };
     return colecom;
   }

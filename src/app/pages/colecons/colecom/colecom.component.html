@@ -10,56 +10,71 @@
   <div class="formulario-dados">
     <mat-form-field [style.width.px]=500>
       <mat-label>Nome:</mat-label>
-      <input matInput [formControl]="formuario.get('nome')" width="200">
-      <mat-error *ngIf="formuario.get('nome').hasError('maxlength')">
-        A longitude nom debe superar os 150 caracteres
-      </mat-error>
-      <mat-error *ngIf="formuario.get('nome').hasError('required')">
-        O Nome é obrigatorio
-      </mat-error>
+      <input matInput [formControl]="colecomForm.controls.nome" width="200">
+      @if (colecomForm.controls.nome.hasError('maxlength')) {
+        <mat-error>
+          A longitude nom debe superar os 150 caracteres
+        </mat-error>
+      }
+      @if (colecomForm.controls.nome.hasError('required')) {
+        <mat-error>
+          O Nome é obrigatorio
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field [style.width.px]=150>
       <mat-label>ISBN:</mat-label>
-      <input matInput [formControl]="formuario.get('isbn')">
-      <mat-error *ngIf="formuario.get('isbn').hasError('maxlength')">
-        A longitude nom debe superar os 20 caracteres
-      </mat-error>
+      <input matInput [formControl]="colecomForm.controls.isbn">
+      @if (colecomForm.controls.isbn.hasError('maxlength')) {
+        <mat-error>
+          A longitude nom debe superar os 20 caracteres
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field [style.width.px]=300>
       <mat-label>web:</mat-label>
-      <input matInput [formControl]="formuario.get('web')">
-      <mat-error *ngIf="formuario.get('web').hasError('maxlength')">
-        A longitude nom debe superar os 150 caracteres
-      </mat-error>
+      <input matInput [formControl]="colecomForm.controls.web">
+      @if (colecomForm.controls.web.hasError('maxlength')) {
+        <mat-error>
+          A longitude nom debe superar os 150 caracteres
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field [style.width.px]=500>
       <mat-label>Comentario:</mat-label>
-      <textarea matInput [formControl]="formuario.get('comentario')" rows="4"></textarea>
-      <mat-error *ngIf="formuario.get('comentario').hasError('maxlength')">
-        A longitude nom debe superar os 5000 caracteres
-      </mat-error>
+      <textarea matInput [formControl]="colecomForm.controls.comentario" rows="4"></textarea>
+      @if (colecomForm.controls.comentario.hasError('maxlength')) {
+        <mat-error>
+          A longitude nom debe superar os 5000 caracteres
+        </mat-error>
+      }
     </mat-form-field>
   </div>
 </form>
 
-<h3 *ngIf="livrosDoElemento.length > 0">Listado de livros</h3>
+@if (this.livrosDoElemento.length > 0) {
+  <h3>Listado de livros</h3>
 
-<table *ngIf="this.livrosDoElemento.length > 0">
-  <tr>
-    <th>Titulo</th>
-    <th>TituloOriginal</th>
-    <th>Autor</th>
-  </tr>
-  <tr *ngFor="let entrada of this.livrosDoElemento" class="listado-accom">
-    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
-    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
-    <td class="lista-com-comas">
-      <ul>
-        <li *ngFor="let autor of entrada.autores" (click)="onIrPagina('/autores/autor', autor.id)">{{autor.nome}}</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+  <table>
+    <tr>
+      <th>Titulo</th>
+      <th>TituloOriginal</th>
+      <th>Autor</th>
+    </tr>
+
+    @for (entrada of this.livrosDoElemento; track entrada.id) {
+      <tr class="listado-accom">
+        <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
+        <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
+        <td class="lista-com-comas">
+          <ul>
+            <li *ngFor="let autor of entrada.autores" (click)="onIrPagina('/autores/autor', autor.id)">{{autor.nome}}</li>
+          </ul>
+        </td>
+      </tr>
+    }
+  </table>
+}

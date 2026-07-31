@@ -11,98 +11,118 @@
     <div>
       <mat-form-field [style.width.px]=500>
         <mat-label>Nome:</mat-label>
-        <input matInput [formControl]="formuario.get('nome')" width="200">
-        <mat-error *ngIf="formuario.get('nome').hasError('maxlength')">
-          A longitude nom debe superar os 150 caracteres
-        </mat-error>
-        <mat-error *ngIf="formuario.get('nome').hasError('required')">
-          O Nome é obrigatorio
-        </mat-error>
+        <input matInput [formControl]="bibliotecaForm.controls.nome" width="200">
+        @if (bibliotecaForm.controls.nome.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 150 caracteres
+          </mat-error>
+        }
+        @if (bibliotecaForm.controls.nome.hasError('required')) {
+          <mat-error>
+            O Nome é obrigatorio
+          </mat-error>
+        }
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field [style.width.px]=500>
         <mat-label>Endereço:</mat-label>
-        <input matInput [formControl]="formuario.get('endereco')">
-        <mat-error *ngIf="formuario.get('endereco').hasError('maxlength')">
-          A longitude nom debe superar os 150 caracteres
-        </mat-error>
+        <input matInput [formControl]="bibliotecaForm.controls.endereco">
+        @if (bibliotecaForm.controls.endereco.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 150 caracteres
+          </mat-error>
+        }
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field [style.width.px]=300>
         <mat-label>Localidade:</mat-label>
-        <input matInput [formControl]="formuario.get('localidade')">
-        <mat-error *ngIf="formuario.get('localidade').hasError('maxlength')">
-          A longitude nom debe superar os 150 caracteres
-        </mat-error>
+        <input matInput [formControl]="bibliotecaForm.controls.localidade">
+        @if (bibliotecaForm.controls.localidade.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 150 caracteres
+          </mat-error>
+        }
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field [style.width.px]=150>
         <mat-label>Telefone:</mat-label>
-        <input matInput [formControl]="formuario.get('telefone')">
-        <mat-error *ngIf="formuario.get('telefone').hasError('maxlength')">
-          A longitude nom debe superar os 50 caracteres
-        </mat-error>
+        <input matInput [formControl]="bibliotecaForm.controls.telefone">
+        @if (bibliotecaForm.controls.telefone.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 50 caracteres
+          </mat-error>
+        }
       </mat-form-field>
     </div>
 
     <div class="data-criacom">
       <mat-form-field class="ancho-inputs" [style.width.px]=170>
         <mat-label>Data de asociamento</mat-label>
-        <input matInput [matDatepicker]="fDateAso" [formControl]="formuario.get('dataAsociamento')" (keydown.enter)="onKeyDownImpedirEnvio($event)">
+        <input matInput [matDatepicker]="fDateAso" [formControl]="bibliotecaForm.controls.dataAsociamento" (keydown.enter)="onKeyDownImpedirEnvio($event)">
         <mat-datepicker-toggle matSuffix [for]="fDateAso"></mat-datepicker-toggle>
         <mat-datepicker #fDateAso></mat-datepicker>
-        <mat-error *ngIf="formuario.get('dataAsociamento').hasError('matDatepickerParse')"
-          [innerHTML]="'O formato válido é dd/mm/aaaa'">
-        </mat-error>
+        @if (bibliotecaForm.controls.dataAsociamento.hasError('matDatepickerParse')) {
+          <mat-error
+            [innerHTML]="'O formato válido é dd/mm/aaaa'">
+          </mat-error>
+        }
       </mat-form-field>
     </div>
 
     <div class="data-criacom">
       <mat-form-field class="ancho-inputs" [style.width.px]=170>
         <mat-label>Data de renovaçom</mat-label>
-        <input matInput [matDatepicker]="fDateRe" [formControl]="formuario.get('dataRenovacom')" (keydown.enter)="onKeyDownImpedirEnvio($event)">
+        <input matInput [matDatepicker]="fDateRe" [formControl]="bibliotecaForm.controls.dataRenovacom" (keydown.enter)="onKeyDownImpedirEnvio($event)">
         <mat-datepicker-toggle matSuffix [for]="fDateRe"></mat-datepicker-toggle>
         <mat-datepicker #fDateRe></mat-datepicker>
-        <mat-error *ngIf="formuario.get('dataRenovacom').hasError('matDatepickerParse')"
-          [innerHTML]="'O formato válido é dd/mm/aaaa'">
-        </mat-error>
+        @if (bibliotecaForm.controls.dataRenovacom.hasError('matDatepickerParse')) {
+          <mat-error
+            [innerHTML]="'O formato válido é dd/mm/aaaa'">
+          </mat-error>
+        }
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field [style.width.px]=500>
         <mat-label>Comentario:</mat-label>
-        <textarea matInput [formControl]="formuario.get('comentario')" rows="4"></textarea>
-        <mat-error *ngIf="formuario.get('comentario').hasError('maxlength')">
-          A longitude nom debe superar os 5000 caracteres
-        </mat-error>
+        <textarea matInput [formControl]="bibliotecaForm.controls.comentario" rows="4"></textarea>
+        @if (bibliotecaForm.controls.comentario.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 5000 caracteres
+          </mat-error>
+        }
       </mat-form-field>
     </div>
 
   </div>
 </form>
 
-<h3 *ngIf="livrosDoElemento.length > 0">Listado de livros</h3>
+@if (livrosDoElemento.length > 0) {
+  <h3>Listado de livros</h3>
+  <table>
+    <tr>
+      <th>Titulo</th>
+      <th>TituloOriginal</th>
+      <th>Autor</th>
+    </tr>
 
-<table *ngIf="this.livrosDoElemento.length > 0">
-  <tr>
-    <th>Titulo</th>
-    <th>TituloOriginal</th>
-    <th>Autor</th>
-  </tr>
-  <tr *ngFor="let entrada of this.livrosDoElemento" class="listado-accom">
-    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
-    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
-    <td class="lista-com-comas">
-      <ul>
-        <li *ngFor="let autor of entrada.autores" (click)="onIrPagina('/autores/autor', autor.id)">{{autor.nome}}</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+    @for (entrada of this.livrosDoElemento; track entrada.id) {
+      <tr class="listado-accom">
+        <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
+        <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
+        <td class="lista-com-comas">
+          <ul>
+            <li *ngFor="let autor of entrada.autores" (click)="onIrPagina('/autores/autor', autor.id)">{{autor.nome}}</li>
+          </ul>
+        </td>
+      </tr>
+    }
+  </table>
+}

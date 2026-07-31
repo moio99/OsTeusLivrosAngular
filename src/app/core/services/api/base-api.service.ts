@@ -3,7 +3,15 @@ import { Observable, of } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoDadosApi } from '../../models/base-dados-api.interface';
 
-export abstract class BaseApiService<T> {  // clase que a extende BaseApiService<Colecom>
+export abstract class BaseApiService<T> {
+
+  /*
+
+  clase que a herda e o fai deste jeito:
+  export class ColeconsService extends BaseApiService<Colecom> {
+
+  */
+
   protected abstract rotaIntermedia: string;              	// De obrigada implementaçom na clase que a extende
   protected cacheData: BaseListadoDadosApi<T> | undefined = undefined;
 
@@ -33,8 +41,8 @@ export abstract class BaseApiService<T> {  // clase que a extende BaseApiService
     }
   }
 
-  getPorId(id: string): Observable<T> {
-    return this.http.get<T>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}?id=${id}`);
+  getPorId(id: string): Observable<BaseListadoDadosApi<T>> {
+    return this.http.get<BaseListadoDadosApi<T>>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}?id=${id}`);
   }
 
   getPorNome(nome: string): Observable<BaseListadoDadosApi<T>> {

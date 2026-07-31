@@ -7,7 +7,7 @@ import { LayoutService } from '../../../core/services/flow/layout.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
 import { DateConvert } from '../../../shared/classes/date-convert';
-import { Biblioteca } from '../../../core/models/biblioteca.interface';
+import { Biblioteca, BibliotecaForm } from '../../../core/models/biblioteca.interface';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -25,7 +25,7 @@ import { UsuarioAppService } from '../../../core/services/flow/usuario-app.servi
 })
 export class BibliotecaComponent extends BaseElementoComponent<Biblioteca, BibliotecasService> {
 
-  ef: FormGroup;
+  bibliotecaForm!: FormGroup<BibliotecaForm>;
   override dadosDoElemento: Biblioteca | undefined = {
     id: 0,
     nome: '',
@@ -49,13 +49,13 @@ export class BibliotecaComponent extends BaseElementoComponent<Biblioteca, Bibli
   ) {
     super(route, router, layoutService, location, dadosPaginasService, usuarioAppService, bibliotecasService);
 
-    this.ef = new FormGroup({
+    this.bibliotecaForm = new FormGroup<BibliotecaForm>({
       nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
       endereco: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(150)]),
       localidade: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(100)]),
       telefone: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(50)]),
-      dataAsociamento: new FormControl({ value: '', disabled: this.disabledFormulario}),
-      dataRenovacom: new FormControl({ value: '', disabled: this.disabledFormulario}),
+      dataAsociamento: new FormControl({ value: null, disabled: this.disabledFormulario}),
+      dataRenovacom: new FormControl({ value: null, disabled: this.disabledFormulario}),
       comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
     });
   }
@@ -72,7 +72,7 @@ export class BibliotecaComponent extends BaseElementoComponent<Biblioteca, Bibli
   }
 
   protected get formuario(): any {
-    return this.ef;
+    return this.bibliotecaForm;
   }
 
   protected serviceGetLivros(id: string) {
@@ -80,31 +80,41 @@ export class BibliotecaComponent extends BaseElementoComponent<Biblioteca, Bibli
   }
 
   protected updateFormValues(biblioteca: Biblioteca) {
-    this.ef.patchValue({
+    const dD = new DateConvert().getDateFromMySQL(biblioteca.dataAsociamento);
+    if (dD?.year > 0) {
+      const dataAsociamento = new Date(dD.year, dD.month - 1, dD.day);
+      this.bibliotecaForm.controls.dataAsociamento.setValue(dataAsociamento);
+    }
+
+    const dR = new DateConvert().getDateFromMySQL(biblioteca.dataRenovacom);
+    if (dR?.year > 0) {
+      const dataRenovacom = new Date(dR.year, dR.month - 1, dR.day);
+      this.bibliotecaForm.controls.dataRenovacom.setValue(dataRenovacom);
+    }
+
+    this.bibliotecaForm.patchValue({
       nome: biblioteca.nome,
       endereco: biblioteca.endereco,
       localidade: biblioteca.localidade,
       telefone: biblioteca.telefone,
-      dataAsociamento: biblioteca.dataAsociamento,
-      dataRenovacom: biblioteca.dataRenovacom,
       comentario: biblioteca.comentario
     });
   }
 
   protected createElementoForm(): Biblioteca {
     let dateConvert = new DateConvert();
-    let dA = dateConvert.getDate(this.formuario.get('dataAsociamento').value);
-    let dR = dateConvert.getDate(this.formuario.get('dataRenovacom').value);
+    let dA = dateConvert.getDate(this.bibliotecaForm.controls.dataAsociamento.value);
+    let dR = dateConvert.getDate(this.bibliotecaForm.controls.dataRenovacom.value);
 
     const biblioteca: Biblioteca = {
       id: Number(this.dadosDoElemento?.id),
-      nome: String(this.formuario.get('nome').value),
-      endereco: (this.formuario.get('endereco').value === null) ? null : String(this.formuario.get('endereco').value).trim(),
-      localidade: (this.formuario.get('localidade').value === null) ? null : String(this.formuario.get('localidade').value).trim(),
-      telefone: (this.formuario.get('telefone').value === null) ? null : String(this.formuario.get('telefone').value).trim(),
+      nome: String(this.bibliotecaForm.controls.nome.value),
+      endereco: (this.bibliotecaForm.controls.endereco.value === null) ? null : String(this.bibliotecaForm.controls.endereco.value).trim(),
+      localidade: (this.bibliotecaForm.controls.localidade.value === null) ? null : String(this.bibliotecaForm.controls.localidade.value).trim(),
+      telefone: (this.bibliotecaForm.controls.telefone.value === null) ? null : String(this.bibliotecaForm.controls.telefone.value).trim(),
       dataAsociamento: (dA.year > 0) ? dA.year + '-' + dA.month + '-' + dA.day : '',
       dataRenovacom: (dR.year > 0) ? dR.year + '-' + dR.month + '-' + dR.day : '',
-      comentario: (this.formuario.get('comentario').value === null) ? null : String(this.formuario.get('comentario').value).trim()
+      comentario: (this.bibliotecaForm.controls.comentario.value === null) ? null : String(this.bibliotecaForm.controls.comentario.value).trim()
     };
     return biblioteca;
   }

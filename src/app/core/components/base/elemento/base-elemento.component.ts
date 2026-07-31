@@ -8,7 +8,7 @@ import { LayoutService } from '../../../services/flow/layout.service';
 import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 import { FormGroup } from '@angular/forms';
 import { BaseListadoDadosApi, BaseElemento, ParametrosId } from '../../../models/base-dados-api.interface';
-import { BaseApiService } from '../../../services/api/base-api.service.ts';
+import { BaseApiService } from '../../../services/api/base-api.service';
 import { DadosPaginasService } from '../../../services/flow/dados-paginas.service';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { Genero } from '../../../models/genero.interface';

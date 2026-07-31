@@ -94,26 +94,6 @@ export class AutorComponent implements OnInit {
         nomePais: new FormControl(null),
         quantidade: new FormControl(null),
       });
-
-      // this.fb.group({
-      //   nome: ['', {
-      //       validators: [
-      //          Validators.required,
-      //          Validators.maxLength(150)
-      //       ],
-      //       // asyncValidators: [ ... array of asynchronous validators ...]
-      //       updateOn: 'blur' // 'change' or 'blur' or 'submit'
-      //   }],
-      //   nomeReal: ['', { validators: [Validators.maxLength(150)] }],
-      //   lugarNacemento: ['', { validators: [Validators.maxLength(150)] }],
-      //   nacom: [''],
-      //   pais: [''],
-      //   dataNacemento: ['', { validators: [ this.checkDuasDatasValidator() ] }],
-      //   dataDefuncom: ['', { validators: [ this.checkDuasDatasValidator() ] }],
-      //   premios: ['', { validators: [Validators.maxLength(500)] }],
-      //   web: ['', { validators: [Validators.maxLength(100)] }],
-      //   comentario: [''],
-      // });
     }
 
   ngOnInit(): void {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BaseApiService } from './base-api.service.ts';
+import { BaseApiService } from './base-api.service';
 import { Biblioteca } from '../../models/biblioteca.interface';
 
 @Injectable({

@@ -4,7 +4,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Genero } from '../../../core/models/genero.interface';
+import { Genero, GeneroForm } from '../../../core/models/genero.interface';
 import { GenerosService } from '../../../core/services/api/generos.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
@@ -22,7 +22,7 @@ import { BaseElementoComponent } from '../../../core/components/base/elemento/ba
 })
 export class GeneroComponent extends BaseElementoComponent<Genero, GenerosService> {
 
-  ef: FormGroup;
+  generoForm!: FormGroup<GeneroForm>;
   override dadosDoElemento: Genero | undefined = {
     id: 0,
     nome: '',
@@ -41,14 +41,14 @@ export class GeneroComponent extends BaseElementoComponent<Genero, GenerosServic
   ) {
     super(route, router, layoutService, location, dadosPaginasService, usuarioAppService, generosService);
 
-    this.ef = new FormGroup({
-      nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
+    this.generoForm = new FormGroup<GeneroForm>({
+      nome: new FormControl({value: '', disabled: this.disabledFormulario}, { validators: [Validators.required, Validators.maxLength(150)]} ),
       comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
-    });
+    })
   }
 
   protected get formuario(): any {
-    return this.ef;
+    return this.generoForm;
   }
 
   protected serviceGetLivros(id: string) {
@@ -56,7 +56,7 @@ export class GeneroComponent extends BaseElementoComponent<Genero, GenerosServic
   }
 
   protected updateFormValues(estiloLiterario: Genero) {
-    this.ef.patchValue({
+    this.generoForm.patchValue({
       nome: estiloLiterario.nome,
       comentario: estiloLiterario.comentario
     });
@@ -66,8 +66,8 @@ export class GeneroComponent extends BaseElementoComponent<Genero, GenerosServic
     const estiloLiterario: Genero = {
       tipo: 'propriedade para saver que o tipo é Género',
       id: Number(this.dadosDoElemento?.id),
-      nome: String(this.formuario.get('nome').value),
-      comentario: (this.formuario.get('comentario').value == null) ? null : String(this.formuario.get('comentario').value).trim()
+      nome: String(this.generoForm.controls.nome.value),
+      comentario: (this.generoForm.controls.comentario.value == null) ? null : String(this.generoForm.controls.comentario.value).trim()
     };
     return estiloLiterario;
   }

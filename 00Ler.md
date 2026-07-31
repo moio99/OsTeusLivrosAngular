@@ -55,3 +55,7 @@ C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosAPP\tsconfig.spec.json
 C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosAPP\src\setup.jest.ts
 import 'jest-preset-angular/setup-jest';
 ```
+
+
+para lanzar um so test:
+npm test -- --runTestsByPath src/app/pages/generos/genero/genero.component.spec.ts --silent
