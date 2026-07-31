@@ -54,10 +54,6 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
     );
   }
 
-  trackById(index: number, item: any): number {
-    return item.id;
-  }
-
   ordeAlfabetico() {
     this.inverso = (this.tipoOrdeacom == this.nomeAlfabetico) ? !this.inverso : false;
     this.tipoOrdeacom = this.nomeAlfabetico;
