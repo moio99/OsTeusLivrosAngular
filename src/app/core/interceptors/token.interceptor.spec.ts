@@ -1,54 +1,89 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { TokenInterceptor } from './token.interceptor';
-import { Observable } from 'rxjs';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { tokenInterceptor } from './token.interceptor'; // Axusta a ruta do teu ficheiro
+import { AuthService } from '../services/flow/auth.service';
 
-describe('TokenInterceptor', () => {
-  let httpMock: HttpTestingController;
+describe('tokenInterceptor', () => {
   let httpClient: HttpClient;
+  let httpMock: HttpTestingController;
+  let authServiceMock: jest.Mocked<AuthService>;
 
   beforeEach(() => {
+    // 1. Crear un mock do AuthService para controlar o que devolve en cada test
+    authServiceMock = {
+      getToken: jest.fn(),
+      getUsuarioLogado: jest.fn(),
+    } as any;
+
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: TokenInterceptor,
-          multi: true,
-        },
+        // Inxectar o mock en lugar do servizo real
+        { provide: AuthService, useValue: authServiceMock },
+        // Configurar HttpClient cos interceptores funcionais
+        provideHttpClient(withInterceptors([tokenInterceptor])),
+        // Provedor necesario para usar HttpTestingController
+        provideHttpClientTesting(),
       ],
     });
 
-    httpMock = TestBed.inject(HttpTestingController);
     httpClient = TestBed.inject(HttpClient);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpMock.verify(); // Verifica que no haya solicitudes pendientes
+    // Verificar que non queden peticións HTTP sen responder entre test e test
+    httpMock.verify();
   });
 
-  it('debería agregar los headers correctos a la solicitud', () => {
-    const testUrl = '/api/test';
-    const testData = { data: 'test' };
+  it('debe engadir as cabeceiras se hai token e usuario logueado', () => {
+    // Configurar o mock para que simule un usuario conectado
+    authServiceMock.getToken.mockReturnValue('meu-token-jwt');
+    authServiceMock.getUsuarioLogado.mockReturnValue({ nome: 'André', id: 42, idioma: 3 });
 
-    httpClient.get(testUrl).subscribe(response => {
-      expect(response).toBeTruthy();
-    });
+    // Facer unha petición HTTP de proba
+    httpClient.get('/api/datos').subscribe();
 
-    const httpRequest = httpMock.expectOne(testUrl);
+    // Interceptar a petición simulada
+    const req = httpMock.expectOne('/api/datos');
 
-    // Verifica que los headers se hayan añadido correctamente
-    expect(httpRequest.request.headers.has('usuarinho')).toBeTruthy();
-    expect(httpRequest.request.headers.get('usuarinho')).toEqual('Lector01');
+    // Verificar que as cabeceiras modificadas se engadiron correctamente
+    expect(req.request.headers.get('usuarinho')).toBe('André');
+    expect(req.request.headers.get('rolroleiro')).toBe('42'); // Comproba que se pasou a String
+    expect(req.request.headers.get('authorization')).toBe('Bearer meu-token-jwt');
 
-    expect(httpRequest.request.headers.has('rolroleiro')).toBeTruthy();
-    expect(httpRequest.request.headers.get('rolroleiro')).toEqual('Usuario');
+    // Responder á petición para pechar o fluxo
+    req.flush({});
+  });
 
-    expect(httpRequest.request.headers.has('authorization')).toBeTruthy();
-    expect(httpRequest.request.headers.get('authorization')).toEqual('Bearer tocotom-tocotom-pom-pom');
+  it('NON debe modificar as cabeceiras se o token é undefined', () => {
+    // Caso: Usuario non autenticado
+    authServiceMock.getToken.mockReturnValue(undefined);
+    authServiceMock.getUsuarioLogado.mockReturnValue(undefined);
 
-    // Responde con datos simulados
-    httpRequest.flush(testData);
+    httpClient.get('/api/datos').subscribe();
+
+    const req = httpMock.expectOne('/api/datos');
+
+    // Verificar que ningunha das cabeceiras especiais existe na petición
+    expect(req.request.headers.has('usuarinho')).toBeFalsy();
+    expect(req.request.headers.has('rolroleiro')).toBeFalsy();
+    expect(req.request.headers.has('authorization')).toBeFalsy();
+
+    req.flush({});
+  });
+
+  it('NON debe modificar as cabeceiras se o token existe pero o usuario é undefined', () => {
+    // Caso estraño/inconsistente: hai token pero non obxecto de usuario
+    authServiceMock.getToken.mockReturnValue('meu-token-jwt');
+    authServiceMock.getUsuarioLogado.mockReturnValue(undefined);
+
+    httpClient.get('/api/datos').subscribe();
+
+    const req = httpMock.expectOne('/api/datos');
+
+    expect(req.request.headers.has('authorization')).toBeFalsy();
+
+    req.flush({});
   });
 });

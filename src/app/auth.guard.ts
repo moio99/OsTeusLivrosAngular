@@ -16,13 +16,11 @@ export const authGuard = (        // Isto é umha funçom
   | Promise<boolean | UrlTree>
   | boolean
   | UrlTree => {
-  const authService = inject(AuthService); // Obtener el servicio usando `inject`
-  const router = inject(Router); // Obtener el Router usando `inject`
 
-  if (authService.estaAutenticado(route.url[0].path)) {
+  if (inject(AuthService).estaAutenticado(route.url[0].path)) {
     return true;
   } else {
-    router.navigate(['/login']);
+    inject(Router).navigate(['/login']);
     return false;
   }
 };

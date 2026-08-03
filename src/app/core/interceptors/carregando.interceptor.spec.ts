@@ -1,88 +1,73 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpHandler,
-  HttpRequest,
-  HttpResponse,
-} from '@angular/common/http';
-import { of } from 'rxjs';
-import { CarregandoInterceptor } from './carregando.interceptor';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { carregandoInterceptor } from './carregando.interceptor'; // Axusta a ruta do teu ficheiro
 import { CarregandoService } from '../services/tools/carregando.service';
 
-describe('CarregandoInterceptor', () => {
-  let interceptor: CarregandoInterceptor;
-  let carregandoService: jest.Mocked<CarregandoService>;
-  let httpHandler: jest.Mocked<HttpHandler>;
+describe('carregandoInterceptor', () => {
+  let httpClient: HttpClient;
+  let httpMock: HttpTestingController;
+  let carregandoServiceMock: jest.Mocked<CarregandoService>;
 
   beforeEach(() => {
-    // Mockear el CarregandoService
-    carregandoService = {
+    // 1. Crear un mock do CarregandoService con Jest
+    carregandoServiceMock = {
       amosar: jest.fn(),
       ocultar: jest.fn(),
     } as any;
 
-    // Mockear el HttpHandler
-    httpHandler = {
-      handle: jest.fn().mockReturnValue(of(new HttpResponse({ status: 200 }))),
-    } as any;
-
-    // Configurar el interceptor
     TestBed.configureTestingModule({
       providers: [
-        CarregandoInterceptor,
-        { provide: CarregandoService, useValue: carregandoService },
+        // Substituír o servizo real polo noso mock controlado
+        { provide: CarregandoService, useValue: carregandoServiceMock },
+        // Configurar HttpClient co interceptor funcional de carga
+        provideHttpClient(withInterceptors([carregandoInterceptor])),
+        // Provedor para simular e controlar as respostas HTTP
+        provideHttpClientTesting(),
       ],
     });
 
-    interceptor = TestBed.inject(CarregandoInterceptor);
+    httpClient = TestBed.inject(HttpClient);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  it('debería crear el interceptor', () => {
-    expect(interceptor).toBeTruthy();
+  afterEach(() => {
+    // Asegurar que non quedan peticións pendentes
+    httpMock.verify();
   });
 
-  it('debería llamar a amosar() al iniciar una solicitud', () => {
-    const req = new HttpRequest('GET', '/api/data');
+  it('debe chamar a amosar() ao iniciar a petición e a ocultar() ao finalizar con éxito', () => {
+    // 1. Lanzamos a petición HTTP (é asíncrona, polo que aínda non se completou)
+    httpClient.get('/api/test').subscribe();
 
-    interceptor.intercept(req, httpHandler).subscribe();
+    // VERIFICACIÓN 1: O spinner debe amosarse de inmediato
+    expect(carregandoServiceMock.amosar).toHaveBeenCalledTimes(1);
+    // O spinner NON debe ocultarse aínda porque a petición segue en curso
+    expect(carregandoServiceMock.ocultar).not.toHaveBeenCalled();
 
-    // Verificar que amosar() fue llamado
-    expect(carregandoService.amosar).toHaveBeenCalled();
+    // 2. Simulamos que o servidor responde con éxito (completa a petición)
+    const req = httpMock.expectOne('/api/test');
+    req.flush({ data: 'ok' });
+
+    // VERIFICACIÓN 2: Unha vez completada, finalize debe chamar a ocultar()
+    expect(carregandoServiceMock.ocultar).toHaveBeenCalledTimes(1);
   });
 
-  it('debería llamar a ocultar() al finalizar una solicitud', () => {
-    const req = new HttpRequest('GET', '/api/data');
-
-    interceptor.intercept(req, httpHandler).subscribe();
-
-    // Verificar que ocultar() fue llamado
-    expect(carregandoService.ocultar).toHaveBeenCalled();
-  });
-
-  it('debería manejar la solicitud HTTP correctamente', () => {
-    const req = new HttpRequest('GET', '/api/data');
-    const mockResponse = new HttpResponse({ status: 200 });
-
-    httpHandler.handle.mockReturnValue(of(mockResponse));
-
-    interceptor.intercept(req, httpHandler).subscribe((event) => {
-      expect(event).toEqual(mockResponse); // Verificar que la respuesta es correcta
+  it('debe chamar a ocultar() tamén se a petición falla con un erro', () => {
+    // 1. Lanzamos a petición (manexamos o erro no subscribe para que o test non falle)
+    httpClient.get('/api/test-error').subscribe({
+      error: () => {}
     });
 
-    // Verificar que handle() fue llamado
-    expect(httpHandler.handle).toHaveBeenCalledWith(req);
-  });
+    // O spinner amósase ao arrincar
+    expect(carregandoServiceMock.amosar).toHaveBeenCalledTimes(1);
+    expect(carregandoServiceMock.ocultar).not.toHaveBeenCalled();
 
-  it('debería llamar a ocultar() incluso si la solicitud falla', () => {
-    const req = new HttpRequest('GET', '/api/data');
-    const mockError = new Error('Error en la solicitud');
+    // 2. Simulamos un erro de rede ou de servidor (500 Internal Server Error)
+    const req = httpMock.expectOne('/api/test-error');
+    req.flush('Erro no servidor', { status: 500, statusText: 'Server Error' });
 
-    httpHandler.handle.mockReturnValue(of(new HttpResponse({ status: 500 })));
-
-    interceptor.intercept(req, httpHandler).subscribe({
-      error: () => {
-        // Verificar que ocultar() fue llamado incluso en caso de error
-        expect(carregandoService.ocultar).toHaveBeenCalled();
-      },
-    });
+    // VERIFICACIÓN: O operador finalize debe asegurar que ocultar() se executa igual
+    expect(carregandoServiceMock.ocultar).toHaveBeenCalledTimes(1);
   });
 });
