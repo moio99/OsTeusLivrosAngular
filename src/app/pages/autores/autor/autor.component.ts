@@ -219,7 +219,7 @@ export class AutorComponent implements OnInit {
       this.dadosNacionalidadesFiltradas = this.autorForm.controls.idNacionalidade.valueChanges
         .pipe(
           startWith(''),
-          map(value => this.filtroDeNacionalidades(value as string))
+          map(value => this.filtroDeNacionalidades(value?.toString() || ''))
         );
 
       return dados.data;
@@ -232,7 +232,7 @@ export class AutorComponent implements OnInit {
   * @param value Filtro inserido polo usuario.
   */
   private filtroDeNacionalidades(value: string): SimpleObjet[] {
-    const filterValue = (value || '').toLowerCase();
+    const filterValue = value.toLowerCase();
 
     return this.dadosNacionalidadesCombo.filter(option => option.value.toLowerCase().includes(filterValue));
   }
@@ -293,36 +293,48 @@ export class AutorComponent implements OnInit {
     }
   }
 
+  amosarNacionalidade = (id: number | null): string => {
+    if (!id) return '';
+    const nacionalidade = this.dadosNacionalidadesCombo.find(n => n.id === id);
+    return nacionalidade ? nacionalidade.value : '';
+  };
+
+  amosarPais = (id: number | null): string => {
+    if (!id) return '';
+    const pais = this.dadosPaisesCombo.find(n => n.id === id);
+    return pais ? pais.value : '';
+  };
+
   private dadosAutorObtidos(data: object): Autor | undefined {
     let resultados: Autor | undefined;
     const dados = <AutorData<Autor>>data;
-    if (dados.data.length > 0) {
+    if (dados.data != null && dados.data.length > 0) {
       resultados = dados.data[0];
-      if (resultados != undefined) {
-        this.autorForm.controls.nome.setValue(dados.data[0].nome);
-        this.autorForm.controls.nomeReal.setValue(dados.data[0].nomeReal);
-        this.autorForm.controls.lugarNacemento.setValue(dados.data[0].lugarNacemento);
+      if (resultados) {
+        this.autorForm.controls.nome.setValue(resultados.nome);
+        this.autorForm.controls.nomeReal.setValue(resultados.nomeReal);
+        this.autorForm.controls.lugarNacemento.setValue(resultados.lugarNacemento);
 
-        const idNac = dados.data?.[0]?.idNacionalidade;
-        if (idNac != null) this.autorForm.controls.idNacionalidade.setValue(idNac);
+        const idNac = resultados.idNacionalidade;
+        if (idNac) this.autorForm.controls.idNacionalidade.setValue(idNac);
 
-        const idPais = dados.data?.[0]?.idPais;
-        if (idPais != null) this.autorForm.controls.idPais.setValue(idPais);
+        const idPais = resultados.idPais;
+        if (idPais) this.autorForm.controls.idPais.setValue(idPais);
 
-        const dN = new DateConvert().getDateFromMySQL(dados.data?.[0]?.dataNacemento);
+        const dN = new DateConvert().getDateFromMySQL(resultados?.dataNacemento);
         if (dN?.year > 0) {
           const dataModificada = new Date(dN.year, dN.month - 1, dN.day);
           this.autorForm.controls.dataNacemento.setValue(dataModificada);
         }
 
-        const dD = new DateConvert().getDateFromMySQL(dados.data?.[0]?.dataDefuncom);
+        const dD = new DateConvert().getDateFromMySQL(resultados?.dataDefuncom);
         if (dD?.year > 0) {
           const dataModificada = new Date(dD.year, dD.month - 1, dD.day);
           this.autorForm.controls.dataDefuncom.setValue(dataModificada);
         }
 
-        this.autorForm.controls.web.setValue(dados.data[0].web);
-        this.autorForm.controls.comentario.setValue(dados.data[0].comentario);
+        this.autorForm.controls.web.setValue(resultados.web);
+        this.autorForm.controls.comentario.setValue(resultados.comentario);
       }
     }
     else{

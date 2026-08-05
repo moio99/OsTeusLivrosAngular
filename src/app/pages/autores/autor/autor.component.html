@@ -13,37 +13,47 @@
       <mat-form-field [style.width.px]=400>
         <mat-label>Nome:</mat-label>
         <input matInput [formControl]="autorForm.controls.nome">
-        <mat-error *ngIf="autorForm.controls.nome.hasError('maxlength')">
-          A longitude nom debe superar os 150 caracteres
-        </mat-error>
-        <mat-error *ngIf="autorForm.controls.nome.hasError('required')">
-          O Nome é obrigatorio
-        </mat-error>
+        @if (autorForm.controls.nome.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 150 caracteres
+          </mat-error>
+        }
+        @if (autorForm.controls.nome.hasError('required')) {
+          <mat-error>
+            O Nome é obrigatorio
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field [style.width.px]=400>
         <mat-label>Nome real:</mat-label>
         <input matInput [formControl]="autorForm.controls.nomeReal">
-        <mat-error *ngIf="autorForm.controls.nomeReal.hasError('maxlength')">
-          A longitude nom debe superar os 150 caracteres
-        </mat-error>
+        @if (autorForm.controls.nomeReal.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 150 caracteres
+          </mat-error>
+        }
       </mat-form-field>
     </div>
     <div>
       <mat-form-field [style.width.px]=400>
         <mat-label>Lugar de nacemento:</mat-label>
         <input matInput [formControl]="autorForm.controls.lugarNacemento">
-        <mat-error *ngIf="autorForm.controls.lugarNacemento.hasError('maxlength')">
-          A longitude nom debe superar os 150 caracteres
-        </mat-error>
+        @if (autorForm.controls.lugarNacemento.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 150 caracteres
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field [style.width.px]=300>
         <mat-label>Web:</mat-label>
         <input matInput [formControl]="autorForm.controls.web">
-        <mat-error *ngIf="autorForm.controls.web.hasError('maxlength')">
-          A longitude nom debe superar os 150 caracteres
-        </mat-error>
+        @if (autorForm.controls.web.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 150 caracteres
+          </mat-error>
+        }
       </mat-form-field>
     </div>
     <div>
@@ -52,12 +62,14 @@
         <input matInput [matDatepicker]="fDateN" [formControl]="autorForm.controls.dataNacemento">
         <mat-datepicker-toggle matSuffix [for]="fDateN"></mat-datepicker-toggle>
         <mat-datepicker #fDateN></mat-datepicker>
-        <mat-error *ngIf="autorForm.controls.dataNacemento.hasError('matDatepickerParse')"
-          [innerHTML]="'O formato válido é dd/mm/aaaa'">
-        </mat-error>
-        <mat-error *ngIf="autorForm.controls.dataNacemento.hasError('datasInvalidas')">
-          A data de nacemento nom pode ser superior á data de defunçom
-        </mat-error>
+        @if (autorForm.controls.dataNacemento.hasError('matDatepickerParse')) {
+          <mat-error [innerHTML]="'O formato válido é dd/mm/aaaa'" />
+        }
+        @if (autorForm.controls.dataNacemento.hasError('datasInvalidas')) {
+          <mat-error>
+            A data de nacemento nom pode ser superior á data de defunçom
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field class="ancho-inputs" [style.width.px]=170>
@@ -66,9 +78,7 @@
         <mat-datepicker-toggle matSuffix [for]="fDateD"></mat-datepicker-toggle>
         <mat-datepicker #fDateD></mat-datepicker>
         @if (autorForm.controls.dataDefuncom.hasError('matDatepickerParse')) {
-          <mat-error>
-            [innerHTML]="'O formato válido é dd/mm/aaaa'">
-          </mat-error>
+          <mat-error [innerHTML]="'O formato válido é dd/mm/aaaa'" />
         }
         @if (autorForm.controls.dataDefuncom.hasError('datasInvalidas')) {
           <mat-error>
@@ -77,7 +87,6 @@
         }
       </mat-form-field>
 
-
       <mat-form-field>
         <input type="text"
               placeholder="Nacionalidade:"
@@ -85,10 +94,10 @@
               matInput
               [formControl]="autorForm.controls.idNacionalidade"
               [matAutocomplete]="autoNacionalidades">
-        <mat-autocomplete #autoNacionalidades="matAutocomplete">
-          <mat-option *ngFor="let element of dadosNacionalidadesFiltradas | async" [value]="element.value">
-            {{element.value}}
-          </mat-option>
+        <mat-autocomplete #autoNacionalidades="matAutocomplete" [displayWith]="amosarNacionalidade">
+          @for (element of dadosNacionalidadesFiltradas | async; track element.id) {
+            <mat-option [value]="element.id">{{element.value}}</mat-option>
+          }
         </mat-autocomplete>
       </mat-form-field>
 
@@ -99,10 +108,10 @@
               matInput
               [formControl]="autorForm.controls.idPais"
               [matAutocomplete]="autoPaises">
-        <mat-autocomplete #autoPaises="matAutocomplete">
-          <mat-option *ngFor="let element of dadosPaisesFiltrados | async" [value]="element.value">
-            {{element.value}}
-          </mat-option>
+        <mat-autocomplete #autoPaises="matAutocomplete" [displayWith]="amosarNacionalidade">
+          @for (element of dadosPaisesFiltrados | async; track element.id) {
+            <mat-option [value]="element.id">{{element.value}}</mat-option>
+          }
         </mat-autocomplete>
       </mat-form-field>
     </div>
@@ -116,19 +125,22 @@
   </div>
 </form>
 
-<h3 *ngIf="dadosLivrosDoAutor.length > 0">Listado de livros</h3>
-
-<table *ngIf="this.dadosLivrosDoAutor.length > 0">
-  <tr>
-    <th>Titulo</th>
-    <th>TituloOriginal</th>
-    <th>Lido</th>
-    <th>Autor</th>
-  </tr>
-  <tr *ngFor="let entrada of this.dadosLivrosDoAutor" class="listado-accom">
-    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
-    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
-    <td>{{entrada.lido ? 'Si' : 'Nom'}}</td>
-    <td>{{entrada.nomeAutor}}</td>
-  </tr>
-</table>
+@if(dadosLivrosDoAutor.length > 0) {
+  <h3>Listado de livros</h3>
+  <table>
+    <tr>
+      <th>Titulo</th>
+      <th>TituloOriginal</th>
+      <th>Lido</th>
+      <th>Autor</th>
+    </tr>
+    @for (entrada of dadosLivrosDoAutor; track entrada.id) {
+      <tr class="listado-accom">
+        <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
+        <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
+        <td>{{entrada.lido ? 'Si' : 'Nom'}}</td>
+        <td>{{entrada.nomeAutor}}</td>
+      </tr>
+    }
+  </table>
+}
