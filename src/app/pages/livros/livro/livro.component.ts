@@ -258,7 +258,7 @@ export class LivroComponent implements OnInit {
    * simples com id e value, ordenado por value, e um observable que
    * filtra o array com base no valor de um campo de formulario.
    * @param data Array de objetos com id e nome.
-   * @param controlFormulario Campo do formul rio cujo valor ser  usado para
+   * @param controlFormulario Campo do formulario cujo valor sera usado para
    * filtrar o array.
    * @param ordenar Se true, ordena o array por value.
    * @returns Um objeto com o array de objetos simples e o observable.

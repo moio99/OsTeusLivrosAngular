@@ -1,4 +1,4 @@
-<div [@amosarOcultarMensagem]="visivel ? 'amosando' : 'ocultando'" class="contido">
+<div class="contido mensagem-box" [class.is-visible]="visivel">
 
   @if (tipo === tipos.Info) {
     <div class="contido__marco info">

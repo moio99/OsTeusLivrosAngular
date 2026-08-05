@@ -11,7 +11,9 @@ export class CarregandoService {
   carregando$ = this.carregandoSubject.asObservable();
 
   amosar(): void {
-    this.carregandoSubject.next(true);
+    if (this.contadorPeticiones === 0) {
+      this.carregandoSubject.next(true);
+    }
     this.contadorPeticiones++;
   }
 
