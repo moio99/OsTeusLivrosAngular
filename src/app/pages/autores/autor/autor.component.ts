@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed, signal, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule, Location } from '@angular/common';
-import { Validators, ValidatorFn, FormGroup, AbstractControl, ValidationErrors, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Validators, ValidatorFn, AbstractControl, ValidationErrors, FormControl, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first, map, Observable, startWith } from 'rxjs';
 import { Autor, AutorData, AutorForm } from '../../../core/models/autor.interface';
@@ -52,27 +53,12 @@ export class AutorComponent implements OnInit {
     quantidade: 0
   };
   dadosLivrosDoAutor: ListadoLivros[] = [];
-
   dadosNacionalidades: Nacionalidade[] = [];
-  dadosNacionalidadesCombo: SimpleObjet[] = [];
-  dadosNacionalidadesFiltradas: Observable<SimpleObjet[]> | undefined;
   dadosPaises: Pais[] = [];
-  dadosPaisesCombo: SimpleObjet[] = [];
-  dadosPaisesFiltrados: Observable<SimpleObjet[]> | undefined;
-  date= new Date();
+  date = new Date();
 
-  autorForm!: FormGroup<AutorForm>;
-
-  constructor(
-    private router: Router,
-    private layoutService: LayoutService,
-    private location: Location,
-    private usuarioAppService: UsuarioAppService,
-    private outrosService: OutrosService,
-    private autoresService: AutoresService,
-    private livrosService: LivrosService,
-    private dadosPaginasService: DadosPaginasService) {
-      this.autorForm = new FormGroup<AutorForm>({
+  private fb = inject(FormBuilder);
+  autorForm = this.fb.group<AutorForm>({
         nome: new FormControl('', {
             validators: [
                Validators.required,
@@ -94,6 +80,62 @@ export class AutorComponent implements OnInit {
         nomePais: new FormControl(null),
         quantidade: new FormControl(null),
       });
+
+  private idNacionalidadeSignal = toSignal(
+    // startWith('') // Para que emita um valor inicial '' cando o usuario inda nom escreveu nada e for do combo itere o listado completo
+    this.autorForm.controls.idNacionalidade.valueChanges.pipe(startWith(''))
+  );
+  private dadosNacionalidadesComboSignal = signal<SimpleObjet[]>([]);
+  // Creamos un signal auxiliar para controlar cando se forza ver todo o listado
+  private forzarListaCompletaNacionalidades = signal<boolean>(false);
+
+  private idPaisSignal = toSignal(
+    // startWith('') // Para que emita um valor inicial '' cando o usuario inda nom escreveu nada e for do combo itere o listado completo
+    this.autorForm.controls.idPais.valueChanges.pipe(startWith(''))
+  );
+  private dadosPaisesComboSignal = signal<SimpleObjet[]>([]);
+  // Creamos un signal auxiliar para controlar cando se forza ver todo o listado
+  private forzarListaCompletaPaises = signal<boolean>(false);
+
+  // O filtro é un Signal derivado ('computed'). Reexecútase só cando cambia o input ou o combo.
+  dadosNacionalidadesFiltradas = computed(() => {
+    const listaCompleta = this.dadosNacionalidadesComboSignal();    // se cambia este lanza o computed
+    if (this.forzarListaCompletaNacionalidades()) {
+      return this.filtroDeNacionalidades('');
+    }
+    const valorInput = this.idNacionalidadeSignal();                // se cambia este lanza o computed
+
+    // Se o valor é un número (un ID), tamén queremos que por defecto amose todo o listado ao abrir
+    if (typeof valorInput === 'number' || !isNaN(Number(valorInput))) {
+      return this.filtroDeNacionalidades('');
+    }
+    return this.filtroDeNacionalidades(valorInput?.toString() || '');
+  });
+
+  // O filtro é un Signal derivado ('computed'). Reexecútase só cando cambia o input ou o combo.
+  dadosPaisesFiltrados = computed(() => {
+    const listaCompleta = this.dadosPaisesComboSignal();    // se cambia este lanza o computed
+    if (this.forzarListaCompletaPaises()) {
+      return this.filtroDePaises('');
+    }
+    const valorInput = this.idPaisSignal();                 // se cambia este lanza o computed
+
+    // Se o valor é un número (un ID), tamén queremos que por defecto amose todo o listado ao abrir
+    if (typeof valorInput === 'number' || !isNaN(Number(valorInput))) {
+      return this.filtroDePaises('');
+    }
+    return this.filtroDePaises(valorInput?.toString() || '');
+  });
+
+  constructor(
+    private router: Router,
+    private layoutService: LayoutService,
+    private location: Location,
+    private usuarioAppService: UsuarioAppService,
+    private outrosService: OutrosService,
+    private autoresService: AutoresService,
+    private livrosService: LivrosService,
+    private dadosPaginasService: DadosPaginasService) {
     }
 
   ngOnInit(): void {
@@ -214,27 +256,13 @@ export class AutorComponent implements OnInit {
       dados.data.forEach(function (value) {
         dadosReducidos.push({id: value.id, value: value.nome});
       });
-      this.dadosNacionalidadesCombo = dadosReducidos;
 
-      this.dadosNacionalidadesFiltradas = this.autorForm.controls.idNacionalidade.valueChanges
-        .pipe(
-          startWith(''),
-          map(value => this.filtroDeNacionalidades(value?.toString() || ''))
-        );
+      // Isto actualizará o Signal automaticamente
+      this.dadosNacionalidadesComboSignal.set(dadosReducidos);
 
       return dados.data;
     }
-    else return [];
-  }
-
-  /**
-  * Filtra os valores do despregável.
-  * @param value Filtro inserido polo usuario.
-  */
-  private filtroDeNacionalidades(value: string): SimpleObjet[] {
-    const filterValue = value.toLowerCase();
-
-    return this.dadosNacionalidadesCombo.filter(option => option.value.toLowerCase().includes(filterValue));
+    return [];
   }
 
   private obterPaises(idAutor: string): void {
@@ -256,13 +284,9 @@ export class AutorComponent implements OnInit {
       dados.data.forEach(function (value) {
         dadosReducidos.push({id: value.id, value: value.nome});
       });
-      this.dadosPaisesCombo = dadosReducidos;
 
-      this.dadosPaisesFiltrados = this.autorForm.controls.idPais.valueChanges
-        .pipe(
-          startWith(''),
-          map(value => this.filtroDePaises(value as string))
-        );
+      // Isto actualizará o Signal automaticamente
+      this.dadosPaisesComboSignal.set(dadosReducidos);
 
       return dados.data;
     }
@@ -273,10 +297,20 @@ export class AutorComponent implements OnInit {
   * Filtra os valores do despregável.
   * @param value Filtro inserido polo usuario.
   */
-   private filtroDePaises(value: string): SimpleObjet[] {
-    const filterValue = (value || '').toLowerCase();
+  private filtroDeNacionalidades(value: string): SimpleObjet[] {
+    const filterValue = value.toLowerCase();
 
-    return this.dadosPaisesCombo.filter(option => option.value.toLowerCase().includes(filterValue));
+    return this.dadosNacionalidadesComboSignal().filter(option => option.value.toLowerCase().includes(filterValue));
+  }
+
+  /**
+  * Filtra os valores do despregável.
+  * @param value Filtro inserido polo usuario.
+  */
+  private filtroDePaises(value: string): SimpleObjet[] {
+    const filterValue = value.toLowerCase();
+
+    return this.dadosPaisesComboSignal().filter(option => option.value.toLowerCase().includes(filterValue));
   }
 
   private obterDadosDoAutor(id: string): void {
@@ -295,13 +329,13 @@ export class AutorComponent implements OnInit {
 
   amosarNacionalidade = (id: number | null): string => {
     if (!id) return '';
-    const nacionalidade = this.dadosNacionalidadesCombo.find(n => n.id === id);
+    const nacionalidade = this.dadosNacionalidadesComboSignal().find(n => n.id === id);
     return nacionalidade ? nacionalidade.value : '';
   };
 
   amosarPais = (id: number | null): string => {
     if (!id) return '';
-    const pais = this.dadosPaisesCombo.find(n => n.id === id);
+    const pais = this.dadosPaisesComboSignal().find(n => n.id === id);
     return pais ? pais.value : '';
   };
 
@@ -385,8 +419,8 @@ export class AutorComponent implements OnInit {
       let dN = dateConvert.getDate(this.autorForm.controls.dataNacemento.value);
       let dD = dateConvert.getDate(this.autorForm.controls.dataDefuncom.value);
 
-      let nacom = this.dadosNacionalidadesCombo.find(option => option.id === this.autorForm.controls.idNacionalidade.value);
-      let pais = this.dadosPaisesCombo.find(option => option.id === this.autorForm.controls.idPais.value);
+      let nacom = this.dadosNacionalidadesComboSignal().find(option => option.id === this.autorForm.controls.idNacionalidade.value);
+      let pais = this.dadosPaisesComboSignal().find(option => option.id === this.autorForm.controls.idPais.value);
       const autor: Autor = {
         id: Number(this.dadosDoAutor?.id),
         nome: String(this.autorForm.controls.nome.value).trim(),

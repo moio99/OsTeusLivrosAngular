@@ -95,7 +95,7 @@
               [formControl]="autorForm.controls.idNacionalidade"
               [matAutocomplete]="autoNacionalidades">
         <mat-autocomplete #autoNacionalidades="matAutocomplete" [displayWith]="amosarNacionalidade">
-          @for (element of dadosNacionalidadesFiltradas | async; track element.id) {
+          @for (element of dadosNacionalidadesFiltradas(); track element.id) {
             <mat-option [value]="element.id">{{element.value}}</mat-option>
           }
         </mat-autocomplete>
@@ -108,8 +108,8 @@
               matInput
               [formControl]="autorForm.controls.idPais"
               [matAutocomplete]="autoPaises">
-        <mat-autocomplete #autoPaises="matAutocomplete" [displayWith]="amosarNacionalidade">
-          @for (element of dadosPaisesFiltrados | async; track element.id) {
+        <mat-autocomplete #autoPaises="matAutocomplete" [displayWith]="amosarPais">
+          @for (element of dadosPaisesFiltrados(); track element.id) {
             <mat-option [value]="element.id">{{element.value}}</mat-option>
           }
         </mat-autocomplete>
