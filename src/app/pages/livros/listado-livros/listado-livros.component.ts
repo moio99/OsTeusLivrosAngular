@@ -41,8 +41,8 @@ export class ListadoLivrosComponent implements OnInit {
   ordePaginas = ', páginas';
   ordeRelecturas = ', relecturas';
   tituloUltimaLectura = ', última lectura';
-  tipoOrdeacom = this.ordeTituloAlfabetico;
-  inverso = false;
+  tipoOrdeacom = signal<string>(this.ordeTituloAlfabetico);
+  inverso = signal<boolean>(false);
   listadoDados = signal<ListadoLivros[]>([]);
   tipo = ListadosLivrosTipos.alfabetico;
   tipos = ListadosLivrosTipos;
@@ -101,17 +101,21 @@ export class ListadoLivrosComponent implements OnInit {
             .getListadoLivrosPorIdioma(this.parametros.id)
             .pipe(first())
             .subscribe({
-              next: (v: object) => this.listadoDados.set(this.dadosObtidos(v, false)),
-              error: (e: any) => { console.error(e),
-                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-                  mensagem: 'Nom se puiderom obter os livros polo idioma ' + this.parametros.id}); },
-            //complete: () => console.info('completado listado de livros por Idioma')
+              next: (v) => {
+                if (v) this.listadoDados.set(this.dadosObtidos(v, false));
+              },
+              error: (e) => { console.error(e),
+                this.layoutService.amosarInfo({
+                  tipo: InformacomPeTipo.Erro,
+                  mensagem: `Nom se puiderom obter os livros polo idioma ${this.parametros.id}`
+                }); },
+              //complete: () => console.info('completado listado de livros por Idioma')
           });
           this.outrosService.getIdiomaNome(this.parametros.id)
             .pipe(first())
             .subscribe({
-              next: (v: object) => this.titulo.update((textoOriginal) => `${textoOriginal}${v}`),
-              error: (e: any) => { console.error(e) },
+              next: (v) => this.titulo.update((textoOriginal) => `${textoOriginal}${v}`),
+              error: (e) => { console.error(e) },
             //complete: () => console.info('completado listado de livros por Idioma')
             });
           break;
@@ -121,24 +125,31 @@ export class ListadoLivrosComponent implements OnInit {
             .getListadoLivrosPorAno(this.parametros.id)
             .pipe(first())
             .subscribe({
-              next: (v: object) =>this.listadoDados.set(this.dadosObtidos(v, false, true)),
-              error: (e: any) => { console.error(e),
-                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-                  mensagem: 'Nom se puiderom obter os livros polo ano ' + this.parametros.id}); },
+              next: (v) => {
+                if (v) this.listadoDados.set(this.dadosObtidos(v, false, true));
+              },
+              error: (e) => { console.error(e),
+                this.layoutService.amosarInfo({
+                  tipo: InformacomPeTipo.Erro,
+                  mensagem: `Nom se puiderom obter os livros polo ano ${this.parametros.id}`
+                }); },
             //complete: () => console.info('completado listado de livros por Ano')
           });
           break;
         case EstadisticasTipo.Genero:
           this.titulo.set(`${this.tituloListado} polo género`);
-          this.livrosService
-            .getListadoLivrosPorGenero(this.parametros.id)
+          this.livrosService.getListadoLivrosPorGenero(this.parametros.id)
             .pipe(first())
             .subscribe({
-              next: (v: object) => this.listadoDados.set(this.dadosObtidos(v, false, true)),
-              error: (e: any) => { console.error(e),
-                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-                  mensagem: 'Nom se puiderom obter os livros polo género ' + this.parametros.id}); },
-            //complete: () => console.info('completado listado de livros por Genero')
+              next: (v) => {
+                if (v) this.listadoDados.set(this.dadosObtidos(v, false, true));
+              },
+              error: (e) => { console.error(e),
+                this.layoutService.amosarInfo({
+                  tipo: InformacomPeTipo.Erro,
+                  mensagem: `Nom se puiderom obter os livros polo género ${this.parametros.id}`
+                }); },
+              //complete: () => console.info('completado listado de livros por Genero')
           });
           this.generosService.getPorNome(this.parametros.id)
             .pipe(
@@ -146,10 +157,8 @@ export class ListadoLivrosComponent implements OnInit {
               map(res => res.data[0])
             )
             .subscribe({
-              next: (genero) => {
-                if (genero) {
-                  this.titulo.update(textoActual => textoActual + genero.nome);
-                }
+              next: (v) => {
+                if (v) this.titulo.update(textoActual => textoActual + v.nome);
               },
               error: (e) => console.error(e)
               //complete: () => console.info('completado listado de livros por Genero')
@@ -180,8 +189,8 @@ export class ListadoLivrosComponent implements OnInit {
         }) */
       )
       .subscribe({
-        next: (v: object) => this.listadoDados.set(this.dadosObtidos(v, false)),
-        error: (e: any) => { console.error(e),
+        next: (v) => this.listadoDados.set(this.dadosObtidos(v, false)),
+        error: (e) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os livros.'}); },
       //complete: () => console.info('completado listado de livros')
     });
@@ -196,7 +205,7 @@ export class ListadoLivrosComponent implements OnInit {
         this.livrosService.setListadoLivros(dados);   // Se é o listado completo vou guardar os dados na cache
       }
       resultados = dados.data.sort((a,b) => new Ordeacom().ordear(
-        a.titulo.replace(/[¿?¡!]/g,''), b.titulo.replace(/[¿?¡!]/g,'').replace('¡',''), this.inverso));
+        a.titulo.replace(/[¿?¡!]/g,''), b.titulo.replace(/[¿?¡!]/g,'').replace('¡',''), this.inverso()));
       if (amosarGrafico) {
         this.separarDadosGrafico(resultados);
       }
@@ -239,48 +248,48 @@ export class ListadoLivrosComponent implements OnInit {
   }
 
   setOrdeTituloAlfabetico() {
-    this.inverso = (this.tipoOrdeacom === this.ordeTituloAlfabetico) ? !this.inverso : false;
-    this.tipoOrdeacom = this.ordeTituloAlfabetico;
+    this.inverso.update((v) => this.tipoOrdeacom() === this.ordeTituloAlfabetico ? !v : false);
+    this.tipoOrdeacom.set(this.ordeTituloAlfabetico);
 
     this.listadoDados.update(dados =>
       [...dados].sort((a, b) => new Ordeacom().ordear(
-        a.titulo.replace(/[¿?¡!]/g,''), b.titulo.replace(/[¿?¡!]/g,''), this.inverso))
+        a.titulo.replace(/[¿?¡!]/g,''), b.titulo.replace(/[¿?¡!]/g,''), this.inverso()))
     );
   }
 
   setOrdeAutorAlfabetico() {
-    this.inverso = (this.tipoOrdeacom == this.ordeAutorAlfabetico) ? !this.inverso : false;
-    this.tipoOrdeacom = this.ordeAutorAlfabetico;
+    this.inverso.update((v) => this.tipoOrdeacom() === this.ordeAutorAlfabetico ? !v : false);
+    this.tipoOrdeacom.set(this.ordeAutorAlfabetico);
 
     this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.nomeAutor, b.nomeAutor, this.inverso))
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.nomeAutor, b.nomeAutor, this.inverso()))
     );
   }
 
   setOrdePaginas() {
-    this.inverso = (this.tipoOrdeacom == this.ordePaginas) ? !this.inverso : false;
-    this.tipoOrdeacom = this.ordePaginas;
+    this.inverso.update((v) => this.tipoOrdeacom() === this.ordePaginas ? !v : false);
+    this.tipoOrdeacom.set(this.ordePaginas);
 
     this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.paginas, b.paginas, this.inverso, false))
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.paginas, b.paginas, this.inverso(), false))
     );
   }
 
   setOrdeRelecturas() {
-    this.inverso = (this.tipoOrdeacom == this.ordeRelecturas) ? !this.inverso : false;
-    this.tipoOrdeacom = this.ordeRelecturas;
+    this.inverso.update((v) => this.tipoOrdeacom() === this.ordeRelecturas ? !v : false);
+    this.tipoOrdeacom.set(this.ordeRelecturas);
 
     this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeRelecturas, b.quantidadeRelecturas, this.inverso, false))
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeRelecturas, b.quantidadeRelecturas, this.inverso(), false))
     );
   }
 
   setOrdeUltmaLectura() {
-    this.inverso = (this.tipoOrdeacom == this.tituloUltimaLectura) ? !this.inverso : false;
-    this.tipoOrdeacom = this.tituloUltimaLectura;
+    this.inverso.update((v) => this.tipoOrdeacom() === this.tituloUltimaLectura ? !v : false);
+    this.tipoOrdeacom.set(this.tituloUltimaLectura);
 
     this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.dataFimLeitura, b.dataFimLeitura, this.inverso, false))
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.dataFimLeitura, b.dataFimLeitura, this.inverso(), false))
     );
   }
 
@@ -305,8 +314,8 @@ export class ListadoLivrosComponent implements OnInit {
             .borrarLivro(id)
             .pipe(first())
             .subscribe({
-              next: (v: object) => console.debug(v),
-              error: (e: any) => { console.error(e),
+              next: (v) => console.debug(v),
+              error: (e) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o livro.'}); },
               complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro borrado.'}); }

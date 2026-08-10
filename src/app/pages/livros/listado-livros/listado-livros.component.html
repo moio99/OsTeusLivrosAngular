@@ -1,8 +1,8 @@
 
 <h3>
-  {{titulo}}{{tipoOrdeacom}}
-  @if (this.inverso) {
-    <span> inverso</span>
+  {{titulo()}}{{tipoOrdeacom()}}
+  @if (this.inverso()) {
+    <span> inverso </span>
   }
   <span>(lidos e nom lidos)</span>
 </h3>
@@ -32,20 +32,20 @@
     <tr>
       <th (click)="setOrdeTituloAlfabetico()">Título<omla-orde-coluna
         [nome]="this.ordeTituloAlfabetico"
-        [actual]="this.tipoOrdeacom"
-        [inverso]="this.inverso"></omla-orde-coluna></th>
+        [actual]="this.tipoOrdeacom()"
+        [inverso]="this.inverso()"></omla-orde-coluna></th>
       <th>Título Original</th>
       <th (click)="setOrdeAutorAlfabetico()">Autor/es<omla-orde-coluna
         [nome]="this.ordeAutorAlfabetico"
-        [actual]="this.tipoOrdeacom"
-        [inverso]="this.inverso"></omla-orde-coluna></th>
+        [actual]="this.tipoOrdeacom()"
+        [inverso]="this.inverso()"></omla-orde-coluna></th>
       <th (click)="setOrdePaginas()">
         <div style="display: flex;">
           Páginas
           <omla-orde-coluna
             [nome]="this.ordePaginas"
-            [actual]="this.tipoOrdeacom"
-            [inverso]="this.inverso"></omla-orde-coluna>
+            [actual]="this.tipoOrdeacom()"
+            [inverso]="this.inverso()"></omla-orde-coluna>
         </div>
       </th>
       <th (click)="setOrdeRelecturas()">
@@ -53,8 +53,8 @@
           Relecturas
           <omla-orde-coluna
             [nome]="this.ordeRelecturas"
-            [actual]="this.tipoOrdeacom"
-            [inverso]="this.inverso"></omla-orde-coluna>
+            [actual]="this.tipoOrdeacom()"
+            [inverso]="this.inverso()"></omla-orde-coluna>
         </div>
       </th>
       <th (click)="setOrdeUltmaLectura()">
@@ -62,8 +62,8 @@
           Fim Leitura
           <omla-orde-coluna
             [nome]="this.tituloUltimaLectura"
-            [actual]="this.tipoOrdeacom"
-            [inverso]="this.inverso"></omla-orde-coluna>
+            [actual]="this.tipoOrdeacom()"
+            [inverso]="this.inverso()"></omla-orde-coluna>
         </span>
       </th>
       <th></th>

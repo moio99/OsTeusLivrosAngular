@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { environment, environments } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Livro } from '../../models/livro.interface';
-import { delay, of } from 'rxjs';
+import { delay, Observable, of } from 'rxjs';
 import { ListadoLivros } from '../../models/listado-livros.interface';
 import { BaseListadoDadosApi } from '../../models/base-dados-api.interface';
+import { Genero } from '../../models/genero.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -60,8 +61,8 @@ export class LivrosService {
       + '/PorAutor?id=' + id);
   }
 
-  getListadoLivrosPorGenero(id: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getListadoLivrosPorGenero(id: string): Observable<BaseListadoDadosApi<Genero>> {
+    return this.http.get<BaseListadoDadosApi<Genero>>(environment.apiUrl + this.rotaIntermedia
       + '/PorGenero?Genero=' + id);
   }
 
