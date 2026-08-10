@@ -1,47 +1,26 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'omla-orde-coluna',
+  standalone: true,
   templateUrl: './orde-coluna.component.html',
   styleUrls: ['./orde-coluna.component.scss']
 })
-export class OrdeColunaComponent implements OnInit {
+export class OrdeColunaComponent {
+  // Inputs baseados en Signals con valores por defecto
+  abcd = input<string>('↓');
+  dcba = input<string>('↑');
+  nome = input<string>('');
 
-  caracter = '';
-  valorActual = '';
-  valorInverso = false;
+  // Inputs con alias (reemprazan os antigos setters)
+  actual = input<string>('', { alias: 'actual' });
+  inverso = input<boolean>(false, { alias: 'inverso' });
 
-  @Input() abcd: string = '↓';
-  @Input() dcba: string = '↑';
-  @Input() nome: string = '';
-  //@Input() actual: string = '';
-  @Input('actual')
-  set actual(data: string) {
-    this.valorActual = data;
-    this.amosarResultado();
-  }
-  @Input('inverso')
-  set inverso(data: boolean) {
-    this.valorInverso = data;
-    this.amosarResultado();
-  }
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-  private amosarResultado() {
-    if (this.valorActual == this.nome){
-      if (this.valorInverso) {
-        this.caracter = this.dcba;
-      }
-      else {
-        this.caracter = this.abcd;
-      }
+  // Sinal computado: calcúlase automaticamente cando cambia calquera input
+  caracter = computed(() => {
+    if (this.actual() === this.nome()) {
+      return this.inverso() ? this.dcba() : this.abcd();
     }
-    else {
-      this.caracter = '';
-    }
-  }
+    return '';
+  });
 }

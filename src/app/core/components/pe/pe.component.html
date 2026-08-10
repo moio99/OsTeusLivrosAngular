@@ -1,26 +1,35 @@
-<div [@amosarOcultarMensagem]="visivel ? 'amosando' : 'ocultando'" class="contido">
-  <div class="contido__marco info" *ngIf="tipo == tipos.Info">
-    <div class="contido__informacom">
-      <img src="../../../../assets/images/informacom.png" alt="{{mensagem}}">
-      <span>{{mensagem}}</span>
+<div class="contido mensagem-box" [class.is-visible]="visivel()">
+
+  @if (tipo() === tipos.Info) {
+    <div class="contido__marco info">
+      <div class="contido__informacom">
+        <img src="../../../../assets/images/informacom.png" alt="{{mensagem()}}">
+        <span>{{mensagem()}}</span>
+      </div>
     </div>
-  </div>
-  <div class="contido__marco sucesso" *ngIf="tipo == tipos.Sucesso">
-    <div class="contido__informacom">
-      <img src="../../../../assets/images/sucesso.png" alt="{{mensagem}}">
-      <span>{{mensagem}}</span>
+  }
+  @if (tipo() === tipos.Sucesso) {
+    <div class="contido__marco sucesso">
+      <div class="contido__informacom">
+        <img src="../../../../assets/images/sucesso.png" alt="{{mensagem()}}">
+        <span>{{mensagem()}}</span>
+      </div>
     </div>
-  </div>
-  <div class="contido__marco aviso" *ngIf="tipo == tipos.Aviso">
-    <div class="contido__informacom">
-      <img src="../../../../assets/images/aviso.png" alt="{{mensagem}}">
-      <span>{{mensagem}}</span>
+  }
+  @if (tipo() === tipos.Aviso) {
+    <div class="contido__marco aviso">
+      <div class="contido__informacom">
+        <img src="../../../../assets/images/aviso.png" alt="{{mensagem()}}">
+        <span>{{mensagem()}}</span>
+      </div>
     </div>
-  </div>
-  <div class="contido__marco erro" *ngIf="tipo == tipos.Erro">
-    <div class="contido__informacom">
-      <img src="../../../../assets/images/erro.png" alt="{{mensagem}}">
-      <span>{{mensagem}}</span>
+  }
+  @if (tipo() === tipos.Erro) {
+    <div class="contido__marco erro">
+      <div class="contido__informacom">
+        <img src="../../../../assets/images/erro.png" alt="{{mensagem()}}">
+        <span>{{mensagem()}}</span>
+      </div>
     </div>
-  </div>
+  }
 </div>

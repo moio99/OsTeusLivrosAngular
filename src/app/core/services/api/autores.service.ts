@@ -1,25 +1,80 @@
 import { HttpClient } from '@angular/common/http';
-import { Autor } from 'src/app/modules/livros/livro/livro.interface';
-import { ListadosAutoresTipos } from 'src/app/shared/enums/estadisticasTipos';
-import { environment } from 'src/environments/environment';
+import { environment, environments } from '../../../../environments/environment';
+import { ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
+import { Injectable } from '@angular/core';
+import { Autor } from '../../models/autor.interface';
+import { of } from 'rxjs';
+import { ListadoAutores, ListadoConcretoAutoresData } from '../../models/listado-autores.interface';
+import { BaseListadoDadosApi } from '../../models/base-dados-api.interface';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class AutoresService {
 
   private rotaIntermedia = '/Autores';
+  private cacheListadoAutoresData: BaseListadoDadosApi<ListadoAutores> | undefined = undefined;
+  private cacheListadoAutoresPorNacons: ListadoConcretoAutoresData | undefined = undefined;
+  private cacheListadoAutoresPorPaises: ListadoConcretoAutoresData | undefined = undefined;
 
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * Quando nom estea em local guarda umha caché
+   * @returns
+   */
   getListadoAutores() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia);
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (!isProdOrPre || !this.cacheListadoAutoresData) {
+      return this.http.get(environment.apiUrl + this.rotaIntermedia);
+    } else {
+      return of(this.cacheListadoAutoresData);
+    }
+  }
+  setListadoAutores(dados: BaseListadoDadosApi<ListadoAutores>) {
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (isProdOrPre) {
+      this.cacheListadoAutoresData = dados;
+    }
   }
 
+  /**
+   * Quando nom estea em local guarda umha caché
+   * @returns
+   */
   getListadoAutoresPorNacons() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia + '/AutoresPorNacons');
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (!isProdOrPre || !this.cacheListadoAutoresPorNacons) {
+      return this.http.get(environment.apiUrl + this.rotaIntermedia + '/AutoresPorNacons');
+    } else {
+      return of(this.cacheListadoAutoresPorNacons);
+    }
+  }
+  setListadoAutoresPorNacons(dados: ListadoConcretoAutoresData) {
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (isProdOrPre) {
+      this.cacheListadoAutoresPorNacons = dados;
+    }
   }
 
+  /**
+   * Quando nom estea em local guarda umha caché
+   * @returns
+   */
   getListadoAutoresPorPaises() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia + '/AutoresPorPaises');
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (!isProdOrPre || !this.cacheListadoAutoresPorPaises) {
+      return this.http.get(environment.apiUrl + this.rotaIntermedia + '/AutoresPorPaises');
+    } else {
+      return of(this.cacheListadoAutoresPorPaises);
+    }
+  }
+  setListadoAutoresPorPaises(dados: ListadoConcretoAutoresData) {
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (isProdOrPre) {
+      this.cacheListadoAutoresPorPaises = dados;
+    }
   }
 
   getListadoAutoresFiltrados(id: number, tipo: ListadosAutoresTipos) {
@@ -27,7 +82,7 @@ export class AutoresService {
       + '/AutoresFiltrados?id=' + id + '&tipo=' + tipo);
   }
 
-  getAutor(id: number) {
+  getAutor(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Autor?id=' + id);
   }

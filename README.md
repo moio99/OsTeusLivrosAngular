@@ -1,6 +1,9 @@
-# OsMeusLivrosApp
+# https://osteuslivrosangular-production.up.railway.app
+# https://osteuslivrosangular.onrender.com
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.1.
+# OsMeusLivros
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.8.
 
 ## Development server
 

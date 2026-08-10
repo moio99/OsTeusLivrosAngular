@@ -5,8 +5,8 @@ export class Ordeacom {
     // -1 é orde correcto, o pom ao principio. 1 é invertir a por b, o pom ao final.
 
     // Os nulos os mando sempre ao final.
-    if (a == null) return 1;
-    if (b == null) return -1;
+    if (a === null) return 1;
+    if (b === null) return -1;
 
     if (alfabetico) {
       if (inverso)

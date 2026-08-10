@@ -1,10 +1,36 @@
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Biblioteca } from 'src/app/modules/bibliotecas/biblioteca/biblioteca.interface';
-import { environment } from 'src/environments/environment';
+import { BaseApiService } from './base-api.service';
+import { Biblioteca } from '../../models/biblioteca.interface';
 
+@Injectable({
+  providedIn: 'root',
+})
+export class BibliotecasService extends BaseApiService<Biblioteca> {
+  protected rotaIntermedia = '/Bibliotecas';
+
+  constructor(override http: HttpClient) {
+    super(http);
+  }
+
+  protected getEntityName(): string {
+    return 'Biblioteca';
+  }
+}
+/* import { HttpClient } from '@angular/common/http';
+import { environment, environments } from '../../../../environments/environment';
+import { Injectable } from '@angular/core';
+import { Biblioteca } from '../../models/biblioteca.interface';
+import { of } from 'rxjs';
+import { ListadoBibliotecasData } from '../../models/listado-bibliotecas.interface';
+
+@Injectable({
+  providedIn: 'root',
+})
 export class BibliotecasService {
 
   private rotaIntermedia = '/Bibliotecas';
+  private cacheListadoBibliotecasData: ListadoBibliotecasData | undefined = undefined;
 
   constructor(private http: HttpClient) {
   }
@@ -14,11 +40,21 @@ export class BibliotecasService {
   }
 
   getListadoBibliotecasCosLivros() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/BibliotecasCosLivros');
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (!isProdOrPre || !this.cacheListadoBibliotecasData) {
+      return this.http.get(environment.apiUrl + this.rotaIntermedia + '/BibliotecasCosLivros');
+    } else {
+      return of(this.cacheListadoBibliotecasData);
+    }
+  }
+  setListadoBibliotecasCosLivros(dados: ListadoBibliotecasData) {
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (isProdOrPre) {
+      this.cacheListadoBibliotecasData = dados;
+    }
   }
 
-  getBiblioteca(id: number) {
+  getBiblioteca(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Biblioteca?id=' + id);
   }
@@ -40,9 +76,10 @@ export class BibliotecasService {
       + '/Biblioteca', biblioteca);
   }
 
-  borrarBiblioteca(id: number) {
+  borrarBiblioteca(id: string) {
     console.debug(id);
     return this.http.delete(environment.apiUrl + this.rotaIntermedia
       + '/Biblioteca?id=' + id);
   }
 }
+ */

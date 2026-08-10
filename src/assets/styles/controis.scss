@@ -19,27 +19,34 @@ button:hover {
 }
 
 .botom-novo-resgistro {
-  background: url(~/src/assets/images/novo.png) no-repeat;
+  background: url(../images/novo.png) no-repeat;
   background-position: right -25px;
   background-color: #0e8210;
   padding-right: 30px;
 }
 
 .botom-guardar-resgistro {
-  background: url(~/src/assets/images/guardar.png) no-repeat;
+  background: url(../images/guardar.png) no-repeat;
   background-size: 15px;
   background-position: right;
   background-color: #0e8210;
   padding-right: 20px;
 }
 
-.popup-multiselecom mat-dialog-container {
-  background: #1d1d1e url(~/src/assets/images/fundoAzul.png) repeat left top;
+.popup-multiselecom {
+  background: #1d1d1e url(../images/fundoAzul.png) repeat left top;
   color: rgb(211, 207, 248);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.ancho-inputs {
+  width: 100%;
 }
 
 @media (max-width: 650px) {   // Actua com umha resoluçom por debaixo de 651px
-  .popup-multiselecom mat-dialog-container {
+  .popup-multiselecom {
     padding: 1px;
   }
 }

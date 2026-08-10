@@ -1,0 +1,55 @@
+
+<form [formGroup]="formuario" (ngSubmit)="onSubmit($event)">
+  @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+    <button color="primary" type="submit" value="{{this.modo}}">
+      <i class="icon-disk"></i> {{this.modo}}
+    </button>
+    <button color="primary" type="button" (click)="onCancelar()">
+      <i class="icon-disk"></i> Retroceder
+    </button>
+  }
+  <div class="formulario-dados">
+    <mat-form-field [style.width.px]=500>
+      <mat-label>Nome:</mat-label>
+      <input matInput [formControl]="formuario.controls.nome" width="200">
+      <mat-error *ngIf="formuario.controls.nome.hasError('maxlength')">
+        A longitude nom debe superar os 150 caracteres
+      </mat-error>
+      <mat-error *ngIf="formuario.controls.nome.hasError('required')">
+        O Nome é obrigatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field [style.width.px]=500>
+      <mat-label>Comentario:</mat-label>
+      <textarea matInput [formControl]="formuario.controls.comentario" rows="4"></textarea>
+      @if (formuario.controls.comentario.hasError('maxlength')) {
+        <mat-error>
+          A longitude nom debe superar os 50000 caracteres
+        </mat-error>
+      }
+    </mat-form-field>
+  </div>
+</form>
+
+@if (livrosDoElemento.length > 0) {
+  <h3>Listado de livros</h3>
+  <table>
+    <tr>
+      <th>Titulo</th>
+      <th>TituloOriginal</th>
+      <th>Autor</th>
+    </tr>
+    @for (entrada of this.livrosDoElemento; track entrada.id) {
+      <tr class="listado-accom">
+        <td (click)="onIrPagina('/livros/livro', entrada.id, entrada.idRelectura)">{{entrada.titulo}}</td>
+        <td (click)="onIrPagina('/livros/livro', entrada.id, entrada.idRelectura)">{{entrada.tituloOriginal}}</td>
+        <td class="lista-com-comas">
+          <ul>
+            <li *ngFor="let autor of entrada.autores" (click)="onIrPagina('/autores/autor', autor.id)">{{autor.nome}}</li>
+          </ul>
+        </td>
+      </tr>
+    }
+  </table>
+}

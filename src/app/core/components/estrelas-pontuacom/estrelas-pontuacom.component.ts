@@ -1,64 +1,67 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, computed, effect, input, linkedSignal, output, signal } from '@angular/core';
 import { Estrela } from './estrelas-pontuacom.interface';
+import { EstrelaComponent } from './estrela/estrela.component';
 
 @Component({
   selector: 'omla-estrelas-pontuacom',
+  standalone: true,
+  imports: [ EstrelaComponent ],
   templateUrl: './estrelas-pontuacom.component.html',
   styleUrls: ['./estrelas-pontuacom.component.scss']
 })
-export class EstrelasPontuacomComponent implements OnInit {
+export class EstrelasPontuacomComponent {
 
-  cantidade: number = 10;
-  estrelas: Estrela[] = [];
-  estrelaSimulando?: Estrela = undefined;
-  novaPontuacom?: number = undefined;
+  // Inputs e Outputs modernos baseados en Signals
+  pontuacomPai = input<number | undefined>(undefined, { alias: 'pontuacom' });
+  numero = output<number | undefined>();
 
-  //@Input() pontuacom: number | undefined;
-  @Input('pontuacom')
-  set pontuacom(data: number | undefined) {
-    this.novaPontuacom = data;
-    this.numeroActual = data ? data : 0;
-  }
-  @Output() public numero = new EventEmitter<number | undefined>();
+  // SOLUCIÓN: Copia automaticamente o valor de pontuacom() ao arrincar
+  // e cada vez que cambie desde o pai, pero permite facerlle .set() desde dentro.
+  novaPontuacom = linkedSignal(() => this.pontuacomPai());
 
-  numeroActual = 0;
+  // Estado interno gestionado com Signals reactivos
+  cantidade = 10;
+  estrelaSimulando = signal<Estrela | undefined>(undefined);
 
-  constructor() { }
+  // Estado derivado
+  numeroActual = computed(() => {
+    // Se se está simulando (hover), amosa o valor simulado
+    const simulando = this.estrelaSimulando();
+    if (simulando !== undefined) {
+      return simulando.numero;
+    }
 
-  ngOnInit(): void {
-    for(let i = 1; i < this.cantidade + 1; i++){
-      let estrela = { numero: i, marcada: (this.pontuacom != undefined && i <= this.pontuacom) };
-      this.estrelas.push(estrela);
+    // Se nom, amosa a nova pontuaçom elixida
+    return this.novaPontuacom() ?? 0;
+  });
+
+  // Recheo dinámico das estrelas: reacciona só cando cambia 'numeroActual'
+  estrelas = computed<Estrela[]>(() => {
+    const lista: Estrela[] = [];
+    const puntuacionReferencia = this.numeroActual();
+
+    for (let i = 1; i <= this.cantidade; i++) {
+      lista.push({
+        numero: i,
+        marcada: i <= puntuacionReferencia
+      });
+
       if (i < this.cantidade) {
-        let estrelaMedia = { numero: i + 0.5, marcada: (this.pontuacom != undefined && i <= this.pontuacom) };
-        this.estrelas.push(estrelaMedia);
+        lista.push({
+          numero: i + 0.5,
+          marcada: (i + 0.5) <= puntuacionReferencia
+        });
       }
     }
-    /* for(let i = 1; i < this.cantidade; i++){
-      let estrela = { numero: i + 0.5, marcada: (this.pontuacom != undefined && i <= this.pontuacom) };
-      this.estrelasMedias.push(estrela);
-    } */
-    this.novaPontuacom = this.pontuacom;
-    this.numeroActual = (this.pontuacom != undefined) ? this.pontuacom : 0;
+    return lista;
+  });
+
+  onSimulacom(estrelaDados: Estrela | undefined) {
+    this.estrelaSimulando.set(estrelaDados);
   }
 
-  onSimulacom(estrelaDados: Estrela) {
-    this.estrelaSimulando = estrelaDados;
-    if (estrelaDados != undefined)
-      this.numeroActual = estrelaDados.numero;
-    else {
-      if (this.novaPontuacom)
-        this.numeroActual = this.novaPontuacom;
-    }
-  }
-
-  onEstavelecerPontuacom(numero: any) {
-    this.pontuacom = numero;
-    this.estrelas.forEach(estrela => {
-      estrela.marcada = (estrela.numero <= numero);
-    });
-    this.novaPontuacom = numero;
-
-    this.numero.emit(numero);
+  onEstavelecerPontuacom(numero: number) {
+    this.novaPontuacom.set(numero); // Actualiza o valor local
+    this.numero.emit(numero);       // Avisa ao componhente pai
   }
 }

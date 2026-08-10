@@ -1,19 +1,66 @@
 import { HttpClient } from '@angular/common/http';
-import { EstadisticasTipo } from 'src/app/shared/enums/estadisticasTipos'
-import { environment } from 'src/environments/environment';
+import { environment, environments } from '../../../../environments/environment';
+import { EstadisticasTipo } from '../../../shared/enums/estadisticasTipos';
+import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
+import { BaseListadoDadosApi } from '../../models/base-dados-api.interface';
+import { Estadisticas } from '../../models/estadisticas.interface';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class EstadisticasService {
+
+  private cacheEstadisticasDataIdioma: BaseListadoDadosApi<Estadisticas> | undefined = undefined;
+  private cacheEstadisticasDataAno: BaseListadoDadosApi<Estadisticas> | undefined = undefined;
+  private cacheEstadisticasDataGenero: BaseListadoDadosApi<Estadisticas> | undefined = undefined;
 
   constructor(private http: HttpClient) {
   }
 
   /**
    * Accede à API para obter as Estadísticas dun tipo pasado.
+   * Quando nom estea em local guarda umha caché.
    * @param tipo Tipo de estadísticas que se vai obter.
    * @returns Promesa de obtençom dos dados.
    */
    getEstadisticas(tipo: EstadisticasTipo) {
-    return this.http.get(environment.apiUrl
-      + '/Estadisticas?tipo=' + tipo);
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (isProdOrPre) {
+      switch (tipo) {
+        case EstadisticasTipo.Idioma:
+          if (this.cacheEstadisticasDataIdioma) {
+            return of(this.cacheEstadisticasDataIdioma);
+          }
+          break;
+        case EstadisticasTipo.Ano:
+          if (this.cacheEstadisticasDataAno) {
+            return of(this.cacheEstadisticasDataAno);
+          }
+          break;
+        case EstadisticasTipo.Genero:
+          if (this.cacheEstadisticasDataGenero) {
+            return of(this.cacheEstadisticasDataGenero);
+          }
+          break
+      }
+    }
+    return this.http.get(environment.apiUrl + '/Estadisticas?tipo=' + tipo);
+  }
+  setGraficosPaginasPorIdiomaEAno(tipo: EstadisticasTipo, dados: BaseListadoDadosApi<Estadisticas>) {
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (isProdOrPre) {
+      switch (tipo) {
+        case EstadisticasTipo.Idioma:
+          this.cacheEstadisticasDataIdioma = dados;
+          break;
+        case EstadisticasTipo.Ano:
+          this.cacheEstadisticasDataAno = dados;
+          break;
+        case EstadisticasTipo.Genero:
+          this.cacheEstadisticasDataGenero = dados;
+          break;
+      }
+    }
   }
 }

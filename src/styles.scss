@@ -1,6 +1,5 @@
-
-@import "/src/assets/styles/comuns.scss";
-@import "/src/assets/styles/controis.scss";
+@use "./assets/styles/comuns.scss";
+@use "./assets/styles/controis.scss";
 
 html, body {
   margin: 0px;
@@ -9,3 +8,6 @@ html, body {
 html, body { overflow: hidden; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

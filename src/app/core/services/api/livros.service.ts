@@ -1,17 +1,44 @@
 import { HttpClient } from '@angular/common/http';
-import { Livro } from 'src/app/modules/livros/livro/livro.interface';
-import { environment } from 'src/environments/environment';
+import { environment, environments } from '../../../../environments/environment';
+import { Injectable } from '@angular/core';
+import { Livro } from '../../models/livro.interface';
+import { delay, Observable, of } from 'rxjs';
+import { ListadoLivros } from '../../models/listado-livros.interface';
+import { BaseListadoDadosApi } from '../../models/base-dados-api.interface';
+import { Genero } from '../../models/genero.interface';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class LivrosService {
 
   private rotaIntermedia = '/Livros';
+  private cacheListadoLivrosData: BaseListadoDadosApi<ListadoLivros> | undefined = undefined;
 
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * Quando nom estea em local guarda umha caché
+   * @returns
+   */
   getListadoLivros() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
-      + '/');
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (!isProdOrPre || !this.cacheListadoLivrosData) {
+      return this.http.get(environment.apiUrl + this.rotaIntermedia + '/');
+    } else {
+      return of(this.cacheListadoLivrosData);
+    }
+  }
+  setListadoLivros(dados: BaseListadoDadosApi<ListadoLivros>) {
+    const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
+    if (isProdOrPre) {
+      this.cacheListadoLivrosData = dados;
+    }
+  }
+
+  private pausa(ms: number) {
+    return new Promise( resolve => {setTimeout(resolve, ms); } );
   }
 
   getListadoLivrosUltimaLectura() {
@@ -19,42 +46,47 @@ export class LivrosService {
       + '/UltimaLectura');
   }
 
-  getListadoLivrosPorIdioma(idioma: number) {
+  getListadoLivrosPorIdioma(idioma: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorIdioma?Idioma=' + idioma);
   }
 
-  getListadoLivrosPorAno(ano: number) {
+  getListadoLivrosPorAno(ano: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorAno?Ano=' + ano);
   }
 
-  getLivrosPorAutor(id: number) {
+  getLivrosPorAutor(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorAutor?id=' + id);
   }
 
-  getListadoLivrosPorGenero(id: number) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getListadoLivrosPorGenero(id: string): Observable<BaseListadoDadosApi<Genero>> {
+    return this.http.get<BaseListadoDadosApi<Genero>>(environment.apiUrl + this.rotaIntermedia
       + '/PorGenero?Genero=' + id);
   }
 
-  getLivrosPorEditorial(id: number) {
+  getLivrosPorEditorial(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorEditorial?id=' + id);
   }
 
-  getLivrosPorBiblioteca(id: number) {
+  getLivrosPorBiblioteca(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorBiblioteca?id=' + id);
   }
 
-  getLivrosPorColecom(id: number) {
+  getLivrosPorColecom(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/PorColecom?id=' + id);
   }
 
-  getLivro(id: number) {
+  getListadoLivrosPorEstiloLiterario(id: string) {
+    return this.http.get(environment.apiUrl + this.rotaIntermedia
+      + '/PorEstiloLiterario?id=' + id);
+  }
+
+  getLivro(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Livro?id=' + id);
   }
@@ -77,7 +109,7 @@ export class LivrosService {
       + '/Livro', livro);
   }
 
-  borrarLivro(id: number) {
+  borrarLivro(id: string) {
     console.debug(id);
     return this.http.delete(environment.apiUrl + this.rotaIntermedia
       + '/Livro?id=' + id);

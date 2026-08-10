@@ -1,0 +1,94 @@
+
+<h3>
+  {{titulo()}}{{tipoOrdeacom()}}
+  @if (inverso()) {
+    <span> inverso </span>
+  }
+  <span>(lidos e nom lidos)</span>
+</h3>
+
+@if (!soVisualizar) {
+  <div class="botoneira">
+    <button class="botom-novo-resgistro" (click)="onIrPagina('livros/livro', '0')">
+      Novo Livro
+    </button>
+  </div>
+}
+
+@if ( chartOptions.labels.length > 0) {
+  <div id="chart">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [colors]="chartOptions.colors"
+      [labels]="chartOptions.labels"
+      [responsive]="chartOptions.responsive"
+    ></apx-chart>
+  </div>
+}
+
+@if (listadoDados().length > 0) {
+  <table class="taboas-listado">
+    <tr>
+      <th (click)="setOrdeTituloAlfabetico()">Título<omla-orde-coluna
+        [nome]="ordeTituloAlfabetico"
+        [actual]="tipoOrdeacom()"
+        [inverso]="inverso()"></omla-orde-coluna></th>
+      <th>Título Original</th>
+      <th (click)="setOrdeAutorAlfabetico()">Autor/es<omla-orde-coluna
+        [nome]="ordeAutorAlfabetico"
+        [actual]="tipoOrdeacom()"
+        [inverso]="inverso()"></omla-orde-coluna></th>
+      <th (click)="setOrdePaginas()">
+        <div style="display: flex;">
+          Páginas
+          <omla-orde-coluna
+            [nome]="ordePaginas"
+            [actual]="tipoOrdeacom()"
+            [inverso]="inverso()"></omla-orde-coluna>
+        </div>
+      </th>
+      <th (click)="setOrdeRelecturas()">
+        <div style="display: flex;">
+          Relecturas
+          <omla-orde-coluna
+            [nome]="ordeRelecturas"
+            [actual]="tipoOrdeacom()"
+            [inverso]="inverso()"></omla-orde-coluna>
+        </div>
+      </th>
+      <th (click)="setOrdeUltmaLectura()">
+        <span class="cabeceira-pequena">
+          Fim Leitura
+          <omla-orde-coluna
+            [nome]="tituloUltimaLectura"
+            [actual]="tipoOrdeacom()"
+            [inverso]="inverso()"></omla-orde-coluna>
+        </span>
+      </th>
+      <th></th>
+    </tr>
+    @for (entrada of listadoDados(); track entrada.id) {
+      <tr class="listado-accom">
+        <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)"
+          [ngClass]="{ 'titulo-galego': entrada.idioma < 3 }"
+          >{{entrada.titulo}}</td>
+        <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)">{{entrada.tituloOriginal || '---'}}</td>
+        <td class="lista-com-comas">
+          <ul>
+            <li *ngFor="let autor of entrada.autores" [ngStyle]="{'cursor': (autor.id ? 'inherit' : 'default')}"
+              (click)="onIrPagina('/autores/autor', autor.id)">{{autor.nome || '---'}}</li>
+          </ul>
+        </td>
+        <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)">{{entrada.paginas || '---'}}</td>
+        <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)">{{entrada.quantidadeRelecturas}}</td>
+        <td>{{entrada.dataFimLeitura ? (entrada.dataFimLeitura | date:'dd/MM/yyyy') : '---'}}</td>
+        @if (!soVisualizar) {
+          <td (click)="onBorrarElemento(entrada.id, entrada.titulo, entrada.quantidadeSerie, entrada.quantidadeRelecturas)">
+            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+          </td>
+        }
+      </tr>
+    }
+  </table>
+}

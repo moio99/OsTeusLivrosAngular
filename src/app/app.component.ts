@@ -1,24 +1,23 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
-import { LayoutService } from './core/services/flow/layout.service';
-import { UsuarioAppService } from './core/services/flow/usuario-app.service';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { CommonModule } from '@angular/common';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { AdaptadorDaData } from './shared/classes/adaptador-data';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @Component({
   selector: 'app-root',
-  templateUrl: `app.component.html`,
-  styleUrls: ['app.component.scss']
+  standalone: true,
+  imports: [RouterOutlet, MatSidenavModule, CommonModule, NgApexchartsModule
+  ],
+  providers: [
+    { provide: DateAdapter, useClass: AdaptadorDaData },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }
+  ],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
 
-  @ViewChild('panelMenuLayout') panelRef!: MatSidenav;
-
-  constructor(
-    private layoutService: LayoutService,
-    private appUserService: UsuarioAppService) { }
-
-  ngOnInit(): void {
-    this.appUserService.setInformacom();
-    this.layoutService.getAbrirMenu().subscribe(() => this.panelRef.open());
-    this.layoutService.getCerrarMenu().subscribe(() => this.panelRef.close());
-  }
 }
