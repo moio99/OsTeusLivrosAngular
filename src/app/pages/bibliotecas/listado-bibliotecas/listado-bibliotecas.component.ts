@@ -30,9 +30,12 @@ export class ListadoBibliotecasComponent extends BaseListadoComponent<ListadoBib
     }
 
   ngOnInit(): void {
-    super.obterDadosDoListado('as bibliotecas',
+    super.obterDadosDoListado(
+      'as bibliotecas',
       this.bibliotecasService.getListadoCosLivros(),
-      this.bibliotecasService.setListadoCosLivros.bind(this.bibliotecasService));
+      // this.bibliotecasService.setListadoCosLivros.bind(this.bibliotecasService)
+      (datos) => this.bibliotecasService.setListadoCosLivros(datos) // <-- Alternativa a .bind() para que nom perdta o contexto (this)
+    );
   }
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {

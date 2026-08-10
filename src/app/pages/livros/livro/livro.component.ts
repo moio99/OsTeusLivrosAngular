@@ -674,14 +674,12 @@ export class LivroComponent implements OnInit {
   }
 
   private dadosObtidosDoLivro(data: object) {
-    let resultados: Livro;
-    const dados = <BaseListadoDadosApi<Livro>>data;
-    if (dados.data.length > 0) {
-      resultados = dados.data[0];
+    const dados = data as BaseListadoDadosApi<Livro>;
+    if ((dados.data?.length ?? 0) > 0) {
       this.dadosDoLivro = dados.data[0];
       this.setDadosLivroForm();
 
-      if (this.idRelectura !== '0') {
+      if (this.idRelectura && this.idRelectura !== '0') {
         // No caso de que se chegou à pagina dende a petiçom de umha relectura vaise ir a polos seus dados para amosala
         this.onEditarRelectura(this.idRelectura);
         this.idRelectura = '0';

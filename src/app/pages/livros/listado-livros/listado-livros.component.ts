@@ -34,7 +34,7 @@ export class ListadoLivrosComponent implements OnInit {
   public chartOptions: Partial<TartaChartOptions>;
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
-  titulo = '';
+  titulo = signal<string>('');
   tituloListado = 'Listado';
   ordeTituloAlfabetico = ', título alfabético';
   ordeAutorAlfabetico = ', autor alfabético';
@@ -96,7 +96,7 @@ export class ListadoLivrosComponent implements OnInit {
     if (this.parametros.tipo) {
       switch (+this.parametros.tipo) {    // Póde-se chegar para amosar o listado de livros por Ano, por Idioma etc
         case EstadisticasTipo.Idioma:
-          this.titulo = this.tituloListado + ' polo idioma ';
+          this.titulo.set(`${this.tituloListado} polo idioma`);
           this.livrosService
             .getListadoLivrosPorIdioma(this.parametros.id)
             .pipe(first())
@@ -110,13 +110,13 @@ export class ListadoLivrosComponent implements OnInit {
           this.outrosService.getIdiomaNome(this.parametros.id)
             .pipe(first())
             .subscribe({
-              next: (v: object) => this.titulo += v,
+              next: (v: object) => this.titulo.update((textoOriginal) => `${textoOriginal}${v}`),
               error: (e: any) => { console.error(e) },
             //complete: () => console.info('completado listado de livros por Idioma')
             });
           break;
         case EstadisticasTipo.Ano:
-          this.titulo = this.tituloListado + ' polo ano ' + this.parametros.id;
+          this.titulo.set(`${this.tituloListado} polo ano ${this.parametros.id}`);
           this.livrosService
             .getListadoLivrosPorAno(this.parametros.id)
             .pipe(first())
@@ -129,7 +129,7 @@ export class ListadoLivrosComponent implements OnInit {
           });
           break;
         case EstadisticasTipo.Genero:
-          this.titulo = this.tituloListado + ' polo género ';
+          this.titulo.set(`${this.tituloListado} polo género`);
           this.livrosService
             .getListadoLivrosPorGenero(this.parametros.id)
             .pipe(first())
@@ -141,11 +141,18 @@ export class ListadoLivrosComponent implements OnInit {
             //complete: () => console.info('completado listado de livros por Genero')
           });
           this.generosService.getPorNome(this.parametros.id)
-            .pipe(first())
+            .pipe(
+              first(),
+              map(res => res.data[0])
+            )
             .subscribe({
-              next: (v: any) => this.titulo += v,
-              error: (e: any) => { console.error(e) },
-            //complete: () => console.info('completado listado de livros por Genero')
+              next: (genero) => {
+                if (genero) {
+                  this.titulo.update(textoActual => textoActual + genero.nome);
+                }
+              },
+              error: (e) => console.error(e)
+              //complete: () => console.info('completado listado de livros por Genero')
             });
           break;
         default:
@@ -159,7 +166,7 @@ export class ListadoLivrosComponent implements OnInit {
   }
 
   listadoPorDefectoAlfabetico() {
-    this.titulo = this.tituloListado;
+    this.titulo.set(this.tituloListado);
     this.livrosService
       .getListadoLivros()
       .pipe(
@@ -232,7 +239,7 @@ export class ListadoLivrosComponent implements OnInit {
   }
 
   setOrdeTituloAlfabetico() {
-    this.inverso = (this.tipoOrdeacom == this.ordeTituloAlfabetico) ? !this.inverso : false;
+    this.inverso = (this.tipoOrdeacom === this.ordeTituloAlfabetico) ? !this.inverso : false;
     this.tipoOrdeacom = this.ordeTituloAlfabetico;
 
     this.listadoDados.update(dados =>

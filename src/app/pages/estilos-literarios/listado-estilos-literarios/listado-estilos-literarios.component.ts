@@ -35,10 +35,14 @@ export class ListadoEstilosLiterariosComponent extends BaseListadoComponent<List
     }
 
   ngOnInit(): void {
-    super.obterDadosDoListado('os estilos literarios',
+    super.obterDadosDoListado(
+      'os estilos literarios',
       this.estilosLiterariosService.getListadoCosLivros(),
-      this.estilosLiterariosService.setListadoCosLivros.bind(this.estilosLiterariosService));
+      // this.estilosLiterariosService.setListadoCosLivros.bind(this.estilosLiterariosService));
+      (datos) => this.estilosLiterariosService.setListadoCosLivros(datos) // <-- Alternativa a .bind() para que nom perdta o contexto (this)
+    );
   }
+
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
     this.onBorrarElemento(

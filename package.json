@@ -10,7 +10,9 @@
     "gerar:apiBackend": "openapi-generator-cli generate -i http://localhost:5002/api-docs.json -g typescript-angular -o src/app/core/api-backend",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "web_em_render": "https://osteuslivrosangular.onrender.com",
+    "web_em_render_api": "https://osteuslivrosnodejs.onrender.com/api/paginas/ListadoLivros?idUsuario=2&tipo=0"
   },
   "private": true,
   "packageManager": "npm@10.9.8",

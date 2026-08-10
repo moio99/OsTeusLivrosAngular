@@ -28,10 +28,10 @@ export abstract class BaseApiService<T> {
    */
   getListadoCosLivros(): Observable<BaseListadoDadosApi<T>> {
     const isProdOrPre = this.isProdOrPre();
-    if (!isProdOrPre || !this.cacheData) {
-      return this.http.get<BaseListadoDadosApi<T>>(`${environment.apiUrl}${this.rotaIntermedia}/${this.rotaIntermedia}CosLivros`);
-    } else {
+    if (isProdOrPre && this.cacheData) {
       return of(this.cacheData);
+    } else {
+      return this.http.get<BaseListadoDadosApi<T>>(`${environment.apiUrl}${this.rotaIntermedia}/${this.rotaIntermedia}CosLivros`);
     }
   }
 

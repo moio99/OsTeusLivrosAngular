@@ -39,7 +39,9 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
     super.obterDadosDoListado(
       'as editoriais',
       this.generosService.getListadoCosLivros(),
-      this.generosService.setListadoCosLivros.bind(this.generosService));
+      // this.generosService.setListadoCosLivros.bind(this.generosService)
+      (dados) => this.generosService.setListadoCosLivros(dados) // <-- Alternativa a .bind() para que nom perdta o contexto (this)
+    );
   }
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {

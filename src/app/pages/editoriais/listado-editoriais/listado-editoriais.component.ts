@@ -35,9 +35,12 @@ export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEdit
     }
 
   ngOnInit(): void {
-    super.obterDadosDoListado('as editoriais',
+    super.obterDadosDoListado(
+      'as editoriais',
       this.editoriaisService.getListadoCosLivros(),
-      this.editoriaisService.setListadoCosLivros.bind(this.editoriaisService));
+      // this.editoriaisService.setListadoCosLivros.bind(this.editoriaisService)
+      (datos) => this.editoriaisService.setListadoCosLivros(datos) // <-- Alternativa a .bind() para que nom perdta o contexto (this)
+    );
   }
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {

@@ -28,9 +28,12 @@ export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColeco
     }
 
   ngOnInit(): void {
-    super.obterDadosDoListado('as coleçons',
+    super.obterDadosDoListado(
+      'as coleçons',
       this.coleconsService.getListadoCosLivros(),
-      this.coleconsService.setListadoCosLivros.bind(this.coleconsService));
+      // this.coleconsService.setListadoCosLivros.bind(this.coleconsService)
+      (datos) => this.coleconsService.setListadoCosLivros(datos) // <-- Alternativa a .bind() para que nom perdta o contexto (this)
+    );
   }
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
