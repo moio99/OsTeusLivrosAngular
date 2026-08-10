@@ -35,12 +35,12 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
   ordeQuantidadeAnos = 'ordeQuantidadeAnos';
   ordePaginasAnos = 'ordePaginasAnos';
   tipoOrdeacomAnos = this.ordeAnos;
-  inversoAnos = true;
+  inversoAnos = signal<boolean>(true);
 
   ordeQuantidadeGeneros = 'ordeQuantidadeGeneros';
   ordePaginasGeneros = 'ordePaginasGeneros';
-  tipoOrdeacomGeneros = this.ordeQuantidadeGeneros;
-  inversoGeneros = true;
+  tipoOrdeacomGeneros = signal<string>(this.ordeQuantidadeGeneros);
+  inversoGeneros = signal<boolean>(true);
 
   @ViewChild('subMenu') subMenu!: ElementRef;
   @ViewChild('taboaAnos') taboaAnos!: ElementRef;
@@ -81,51 +81,51 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
   }
 
   setOrdeAnos() {
-    this.inversoAnos = (this.tipoOrdeacomAnos === this.ordeAnos) ? !this.inversoAnos : false;
+    this.inversoAnos.update(v => this.tipoOrdeacomAnos === this.ordeAnos ? !v : false);
     this.tipoOrdeacomAnos = this.ordeAnos;
 
     this.anosSignal.update(listadoAnos => {
-      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inversoAnos, false));
+      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inversoAnos(), false));
       return listadoAnos;
     });
   }
 
   setOrdeQuantidadeAnos() {
-    this.inversoAnos = (this.tipoOrdeacomAnos === this.ordeQuantidadeAnos) ? !this.inversoAnos : false;
+    this.inversoAnos.update(v => this.tipoOrdeacomAnos === this.ordeQuantidadeAnos ? !v : false);
     this.tipoOrdeacomAnos = this.ordeQuantidadeAnos;
 
     this.anosSignal.update(listadoAnos => {
-      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.quantidade, b.quantidade, this.inversoAnos, false));
+      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.quantidade, b.quantidade, this.inversoAnos(), false));
       return listadoAnos;
     });
   }
 
   setOrdePaginasAnos() {
-    this.inversoAnos = (this.tipoOrdeacomAnos === this.ordePaginasAnos) ? !this.inversoAnos : false;
+    this.inversoAnos.update(v => this.tipoOrdeacomAnos === this.ordePaginasAnos ? !v : false);
     this.tipoOrdeacomAnos = this.ordePaginasAnos;
 
     this.anosSignal.update(listadoAnos => {
-      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.quantidadepaginas, b.quantidadepaginas, this.inversoAnos, false));
+      listadoAnos.sort((a,b) => new Ordeacom().ordear(a.quantidadepaginas, b.quantidadepaginas, this.inversoAnos(), false));
       return listadoAnos;
     });
   }
 
   setOrdeQuantidadeGeneros() {
-    this.inversoGeneros = (this.tipoOrdeacomGeneros === this.ordeQuantidadeGeneros) ? !this.inversoGeneros : false;
-    this.tipoOrdeacomGeneros = this.ordeQuantidadeGeneros;
+    this.inversoGeneros.update(v => this.tipoOrdeacomGeneros() === this.ordeQuantidadeGeneros ? !v : false);
+    this.tipoOrdeacomGeneros.set(this.ordeQuantidadeGeneros);
 
     this.generosSignal.update(listadoGeneros => {
-      listadoGeneros.sort((a,b) => new Ordeacom().ordear(a.quantidade, b.quantidade, this.inversoGeneros, false));
+      listadoGeneros.sort((a,b) => new Ordeacom().ordear(a.quantidade, b.quantidade, this.inversoGeneros(), false));
       return listadoGeneros;
     });
   }
 
   setOrdePaginasGeneros() {
-    this.inversoGeneros = (this.tipoOrdeacomGeneros === this.ordePaginasGeneros) ? !this.inversoGeneros : false;
-    this.tipoOrdeacomGeneros = this.ordePaginasGeneros;
+    this.inversoGeneros.update(v => this.tipoOrdeacomGeneros() === this.ordePaginasGeneros ? !v : false);
+    this.tipoOrdeacomGeneros.set(this.ordePaginasGeneros);
 
     this.generosSignal.update(listadoGeneros => {
-      listadoGeneros.sort((a,b) => new Ordeacom().ordear(a.quantidadepaginas, b.quantidadepaginas, this.inversoGeneros, false));
+      listadoGeneros.sort((a,b) => new Ordeacom().ordear(a.quantidadepaginas, b.quantidadepaginas, this.inversoGeneros(), false));
       return listadoGeneros;
     });
   }

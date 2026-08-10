@@ -6,7 +6,7 @@
 </div>
 
 <div class="contido-taboas">
-  @if (this.idiomasSignal().length > 0) {
+  @if (idiomasSignal().length > 0) {
     <div class="taboa-linguas">
       <table>
         <tr>
@@ -15,7 +15,7 @@
           <th>Relecturas</th>
           <th>Páginas</th>
         </tr>
-        @for (entrada of this.idiomasSignal(); track entrada; let first = $first, derradeiro = $last) {
+        @for (entrada of idiomasSignal(); track entrada; let first = $first, derradeiro = $last) {
           <tr class="listado-accom">
             <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">
               {{entrada.nome}}
@@ -35,25 +35,25 @@
     </div>
   }
 
-  @if (this.anosSignal().length > 0) {
+  @if (anosSignal().length > 0) {
     <table>
       <tr>
         <th (click)="setOrdeAnos()">
           <div style="display: flex;">
             Ano
             <omla-orde-coluna
-              [nome]="this.ordeAnos"
-              [actual]="this.tipoOrdeacomAnos"
-              [inverso]="this.inversoAnos"></omla-orde-coluna>
+              [nome]="ordeAnos"
+              [actual]="tipoOrdeacomAnos"
+              [inverso]="inversoAnos()"></omla-orde-coluna>
           </div>
         </th>
         <th (click)="setOrdeQuantidadeAnos()">
           <div style="display: flex;">
             Quantidade
             <omla-orde-coluna
-              [nome]="this.ordeQuantidadeAnos"
-              [actual]="this.tipoOrdeacomAnos"
-              [inverso]="this.inversoAnos"></omla-orde-coluna>
+              [nome]="ordeQuantidadeAnos"
+              [actual]="tipoOrdeacomAnos"
+              [inverso]="inversoAnos()"></omla-orde-coluna>
           </div>
         </th>
         <th>Relecturas</th>
@@ -61,13 +61,13 @@
           <div style="display: flex;">
             Páginas
             <omla-orde-coluna
-              [nome]="this.ordePaginasAnos"
-              [actual]="this.tipoOrdeacomAnos"
-              [inverso]="this.inversoAnos"></omla-orde-coluna>
+              [nome]="ordePaginasAnos"
+              [actual]="tipoOrdeacomAnos"
+              [inverso]="inversoAnos()"></omla-orde-coluna>
           </div>
         </th>
       </tr>
-      @for (entrada of this.anosSignal(); track entrada) {
+      @for (entrada of anosSignal(); track entrada) {
         <tr class="listado-accom">
           <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">
             {{entrada.nome}}
@@ -83,7 +83,7 @@
     </table>
   }
 
-  @if (this.generosSignal().length > 0) {
+  @if (generosSignal().length > 0) {
     <table>
       <tr>
         <th>Género</th>
@@ -91,9 +91,9 @@
           <div style="display: flex;">
             Quantidade
             <omla-orde-coluna
-              [nome]="this.ordeQuantidadeGeneros"
-              [actual]="this.tipoOrdeacomGeneros"
-              [inverso]="this.inversoGeneros"></omla-orde-coluna>
+              [nome]="ordeQuantidadeGeneros"
+              [actual]="tipoOrdeacomGeneros()"
+              [inverso]="inversoGeneros()"></omla-orde-coluna>
           </div>
         </th>
         <th>Relecturas</th>
@@ -101,13 +101,13 @@
           <div style="display: flex;">
             Páginas
             <omla-orde-coluna
-              [nome]="this.ordePaginasGeneros"
-              [actual]="this.tipoOrdeacomGeneros"
-              [inverso]="this.inversoGeneros"></omla-orde-coluna>
+              [nome]="ordePaginasGeneros"
+              [actual]="tipoOrdeacomGeneros()"
+              [inverso]="inversoGeneros()"></omla-orde-coluna>
           </div>
         </th>
       </tr>
-      @for (entrada of this.generosSignal(); track entrada) {
+      @for (entrada of generosSignal(); track entrada) {
         <tr class="listado-accom">
           <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)">{{entrada.nome}}</td>
           <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)">{{entrada.quantidade}}</td>

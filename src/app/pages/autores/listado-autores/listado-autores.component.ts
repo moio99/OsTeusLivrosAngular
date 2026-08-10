@@ -28,9 +28,9 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   nomeAlfabetico = ', alfabético';
   numeroLivros = ', número de livros';
   numeroLivrosLidos = ', número de livros lidos';
-  filtroPaisOuNacionalidade = '';
-  tipoOrdeacom = this.nomeAlfabetico;
-  inverso = false;
+  filtroPaisOuNacionalidade = signal<string>('');
+  tipoOrdeacom = signal<string>(this.nomeAlfabetico);
+  inverso = signal<boolean>(false);
   override listadoDados = signal<ListadoAutores[]>([]);
 
   constructor(
@@ -74,7 +74,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
         .getNacionalidadeNome(parametros.id)
         .pipe(first())
         .subscribe({
-          next: (v: object) => this.filtroPaisOuNacionalidade = ' ' + v,
+          next: (v: object) => this.filtroPaisOuNacionalidade.update((valor) => ' ' + v),
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: `Nom se puiderom obter a nacionalidade ${parametros.id}`}); },
             complete: () => console.info(`completada obtençom da nacionalidade ${parametros.id}`)
@@ -85,7 +85,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
         .getPaisNome(parametros.id)
         .pipe(first())
         .subscribe({
-          next: (v: object) => this.filtroPaisOuNacionalidade = ' ' + v,
+          next: (v: object) => this.filtroPaisOuNacionalidade.update((valor) => ' ' + v),
           error: (e: any) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: `Nom se puiderom obter o pais ${parametros.id}`}); },
             complete: () => console.info(`completada obtençom do pais ${parametros.id}`)
@@ -108,7 +108,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     if (dados != null) {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
       this.autoresService.setListadoAutores(dados);
-      resultados = dados.data.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso));
+      resultados = dados.data.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso()));
     } else {
       resultados = [];
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados'});
@@ -129,29 +129,29 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   }
 
   ordeAlfabetico() {
-    this.inverso = (this.tipoOrdeacom == this.nomeAlfabetico) ? !this.inverso : false;
-    this.tipoOrdeacom = this.nomeAlfabetico;
+    this.inverso.update((v) => (this.tipoOrdeacom() === this.nomeAlfabetico) ? !v : false);
+    this.tipoOrdeacom.set(this.nomeAlfabetico);
 
     this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso))
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso()))
     );
   }
 
   ordeNumeroLivros() {
-    this.inverso = (this.tipoOrdeacom == this.numeroLivros) ? !this.inverso : false;
-    this.tipoOrdeacom = this.numeroLivros;
+    this.inverso.update((v) => (this.tipoOrdeacom() === this.numeroLivros) ? !v : false);
+    this.tipoOrdeacom.set(this.numeroLivros);
 
     this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso, false))
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso(), false))
     );
   }
 
   ordeNumeroLivrosLidos() {
-    this.inverso = (this.tipoOrdeacom == this.numeroLivrosLidos) ? !this.inverso : false;
-    this.tipoOrdeacom = this.numeroLivrosLidos;
+    this.inverso.update((v) => (this.tipoOrdeacom() === this.numeroLivrosLidos) ? !v : false);
+    this.tipoOrdeacom.set(this.numeroLivrosLidos);
 
     this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso, false))
+      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso(), false))
     );
   }
 
