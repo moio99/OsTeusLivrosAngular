@@ -1,0 +1,11 @@
+# Dependencias
+node_modules
+
+# Caché de Angular e IDEs
+.angular
+.vscode
+
+# Carpetas de compilación (dist)
+dist
+tmp
+out-tsc
