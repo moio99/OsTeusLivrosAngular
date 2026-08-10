@@ -1,34 +1,34 @@
-<div class="contido mensagem-box" [class.is-visible]="visivel">
+<div class="contido mensagem-box" [class.is-visible]="visivel()">
 
-  @if (tipo === tipos.Info) {
+  @if (tipo() === tipos.Info) {
     <div class="contido__marco info">
       <div class="contido__informacom">
-        <img src="../../../../assets/images/informacom.png" alt="{{mensagem}}">
-        <span>{{mensagem}}</span>
+        <img src="../../../../assets/images/informacom.png" alt="{{mensagem()}}">
+        <span>{{mensagem()}}</span>
       </div>
     </div>
   }
-  @if (tipo === tipos.Sucesso) {
+  @if (tipo() === tipos.Sucesso) {
     <div class="contido__marco sucesso">
       <div class="contido__informacom">
-        <img src="../../../../assets/images/sucesso.png" alt="{{mensagem}}">
-        <span>{{mensagem}}</span>
+        <img src="../../../../assets/images/sucesso.png" alt="{{mensagem()}}">
+        <span>{{mensagem()}}</span>
       </div>
     </div>
   }
-  @if (tipo === tipos.Aviso) {
+  @if (tipo() === tipos.Aviso) {
     <div class="contido__marco aviso">
       <div class="contido__informacom">
-        <img src="../../../../assets/images/aviso.png" alt="{{mensagem}}">
-        <span>{{mensagem}}</span>
+        <img src="../../../../assets/images/aviso.png" alt="{{mensagem()}}">
+        <span>{{mensagem()}}</span>
       </div>
     </div>
   }
-  @if (tipo === tipos.Erro) {
+  @if (tipo() === tipos.Erro) {
     <div class="contido__marco erro">
       <div class="contido__informacom">
-        <img src="../../../../assets/images/erro.png" alt="{{mensagem}}">
-        <span>{{mensagem}}</span>
+        <img src="../../../../assets/images/erro.png" alt="{{mensagem()}}">
+        <span>{{mensagem()}}</span>
       </div>
     </div>
   }

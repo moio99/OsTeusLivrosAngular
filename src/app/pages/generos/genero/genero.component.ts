@@ -83,6 +83,6 @@ export class GeneroComponent extends BaseElementoComponent<Genero, GenerosServic
   }
 
   protected getNomeElemento(): string {
-    return 'do género';
+    return this.generoForm.controls.nome.value ?? '';
   }
 }

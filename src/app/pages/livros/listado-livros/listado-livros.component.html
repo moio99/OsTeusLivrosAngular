@@ -1,7 +1,7 @@
 
 <h3>
   {{titulo()}}{{tipoOrdeacom()}}
-  @if (this.inverso()) {
+  @if (inverso()) {
     <span> inverso </span>
   }
   <span>(lidos e nom lidos)</span>
@@ -27,48 +27,48 @@
   </div>
 }
 
-@if (this.listadoDados().length > 0) {
+@if (listadoDados().length > 0) {
   <table class="taboas-listado">
     <tr>
       <th (click)="setOrdeTituloAlfabetico()">Título<omla-orde-coluna
-        [nome]="this.ordeTituloAlfabetico"
-        [actual]="this.tipoOrdeacom()"
-        [inverso]="this.inverso()"></omla-orde-coluna></th>
+        [nome]="ordeTituloAlfabetico"
+        [actual]="tipoOrdeacom()"
+        [inverso]="inverso()"></omla-orde-coluna></th>
       <th>Título Original</th>
       <th (click)="setOrdeAutorAlfabetico()">Autor/es<omla-orde-coluna
-        [nome]="this.ordeAutorAlfabetico"
-        [actual]="this.tipoOrdeacom()"
-        [inverso]="this.inverso()"></omla-orde-coluna></th>
+        [nome]="ordeAutorAlfabetico"
+        [actual]="tipoOrdeacom()"
+        [inverso]="inverso()"></omla-orde-coluna></th>
       <th (click)="setOrdePaginas()">
         <div style="display: flex;">
           Páginas
           <omla-orde-coluna
-            [nome]="this.ordePaginas"
-            [actual]="this.tipoOrdeacom()"
-            [inverso]="this.inverso()"></omla-orde-coluna>
+            [nome]="ordePaginas"
+            [actual]="tipoOrdeacom()"
+            [inverso]="inverso()"></omla-orde-coluna>
         </div>
       </th>
       <th (click)="setOrdeRelecturas()">
         <div style="display: flex;">
           Relecturas
           <omla-orde-coluna
-            [nome]="this.ordeRelecturas"
-            [actual]="this.tipoOrdeacom()"
-            [inverso]="this.inverso()"></omla-orde-coluna>
+            [nome]="ordeRelecturas"
+            [actual]="tipoOrdeacom()"
+            [inverso]="inverso()"></omla-orde-coluna>
         </div>
       </th>
       <th (click)="setOrdeUltmaLectura()">
         <span class="cabeceira-pequena">
           Fim Leitura
           <omla-orde-coluna
-            [nome]="this.tituloUltimaLectura"
-            [actual]="this.tipoOrdeacom()"
-            [inverso]="this.inverso()"></omla-orde-coluna>
+            [nome]="tituloUltimaLectura"
+            [actual]="tipoOrdeacom()"
+            [inverso]="inverso()"></omla-orde-coluna>
         </span>
       </th>
       <th></th>
     </tr>
-    @for (entrada of this.listadoDados(); track entrada.id) {
+    @for (entrada of listadoDados(); track entrada.id) {
       <tr class="listado-accom">
         <td (click)="onIrPagina('livros/livro', entrada.id, entrada.idRelectura)"
           [ngClass]="{ 'titulo-galego': entrada.idioma < 3 }"

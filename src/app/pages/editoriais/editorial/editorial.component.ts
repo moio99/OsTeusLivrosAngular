@@ -89,6 +89,6 @@ export class EditorialComponent extends BaseElementoComponent<Editorial, Editori
   }
 
   protected getNomeElemento(): string {
-    return 'da editorial';
+    return this.ef.controls['nome'].value ?? '';
   }
 }

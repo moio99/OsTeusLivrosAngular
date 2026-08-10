@@ -130,6 +130,6 @@ export class BibliotecaComponent extends BaseElementoComponent<Biblioteca, Bibli
   }
 
   protected getNomeElemento(): string {
-    return 'da biblioteca';
+    return this.bibliotecaForm.controls.nome.value ?? '';
   }
 }

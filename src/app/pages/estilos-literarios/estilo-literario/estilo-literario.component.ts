@@ -82,6 +82,6 @@ export class EstiloLiterarioComponent extends BaseElementoComponent<EstiloLitera
   }
 
   protected getNomeElemento(): string {
-    return 'do estilo literario';
+    return this.ef.controls['nome'].value ?? '';
   }
 }

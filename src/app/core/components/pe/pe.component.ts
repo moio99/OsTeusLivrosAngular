@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { InformacomPe } from '../../../shared/models/outros.model';
 import { LayoutService } from '../../services/flow/layout.service';
@@ -14,11 +14,10 @@ export class PeComponent implements OnInit {
   // En Angular moderno preferimos inject() a poñelo no constructor
   private layoutService = inject(LayoutService);
 
-  visivel = false;
+  visivel = signal<boolean>(false);
   tipos = InformacomPeTipo;
-  tipo = InformacomPeTipo.Info;
-  mensagemPadrom = 'Informaçom da web';
-  mensagem = this.mensagemPadrom;
+  tipo = signal(InformacomPeTipo.Info);
+  mensagem = signal<string>('Informaçom da web');
 
   // Guardamos a referencia do timeout activo para poder cancelalo
   private currentTimeoutId: any = null;
@@ -36,20 +35,20 @@ export class PeComponent implements OnInit {
     }
 
     if (info) {
-      this.tipo = info.tipo;
-      this.mensagem = info.mensagem;
-      this.visivel = true;
+      this.tipo.set(info.tipo);
+      this.mensagem.set(info.mensagem);
+      this.visivel.set(true);
 
       // 2. Calculamos a duración (por defecto 5000ms)
       const duracion = info.duracom ? info.duracom * 1000 : 5000;
 
       // 3. Programamos o peche de forma segura
       this.currentTimeoutId = setTimeout(() => {
-        this.visivel = false;
+        this.visivel.set(false);
       }, duracion);
 
     } else {
-      this.visivel = false;
+        this.visivel.set(false);
     }
   }
 }

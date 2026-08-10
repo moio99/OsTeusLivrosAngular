@@ -89,6 +89,6 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
   }
 
   protected getNomeElemento(): string {
-    return 'da colecom';
+    return this.colecomForm.controls.nome.value ?? '';
   }
 }
