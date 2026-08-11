@@ -5,7 +5,7 @@
     "ng": "ng",
     "dev": "ng serve --port 4210",
     "startNoNecesario": "ng serve --port 4210 --proxy-config proxy.conf.json",
-    "start": "npx angular-http-server --path dist/nome-do-teu-proxecto/browser --p $PORT",
+    "start": "npx angular-http-server --path dist/OsMeusLivros/browser --p $PORT",
     "build": "node --max-old-space-size=400 ./node_modules/@angular/cli/bin/ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "gerar:apiBackend": "openapi-generator-cli generate -i http://localhost:5002/api-docs.json -g typescript-angular -o src/app/core/api-backend",
