@@ -8,16 +8,10 @@ import { Observable } from 'rxjs';
   template: '' // Componente abstracto, nom precisa template
 })
 export abstract class BaseListadoComponent<T extends { id: string }> {
-  listadoDadosInput = input<T[]>([]); // nom o neccesito
-  listadoDados = signal<T[]>([]);
+  readonly listadoDadosInput = input<T[]>([]);  // nom o neccesito
+  readonly listadoDados = signal<T[]>([]);
 
-
-  constructor(
-    protected layoutService: LayoutService) {
-    effect(() => {
-      this.listadoDados.set(this.listadoDadosInput()); // nom o neccesito, mas este sería o jeito de atender o dado que chegase do pai
-    });
-  }
+  constructor(protected layoutService: LayoutService) {}
 
   protected obterDadosDoListado<TData extends IData>(
     nomePlural: string,
@@ -27,29 +21,40 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
     serviceCall
       .pipe(first())
       .subscribe({
-        next: (v: any) => this.listadoDados.set(this.dadosObtidos(v, serviceSetCache)),
-        error: (e: any) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: `Nom se puiderom obter ${nomePlural}.`}); },
-          // complete: () => console.info('completado listado de coleçons')
-    });
+        next: (v) => {
+          this.listadoDados.set(this.dadosObtidos(v, serviceSetCache));
+        },
+        error: (e) => {
+          console.error(e);
+          this.layoutService.amosarInfo({
+            tipo: InformacomPeTipo.Erro,
+            mensagem: `Nom se puiderom obter ${nomePlural}.`
+          });
+        }
+      });
   }
 
   private dadosObtidos<TData extends IData>(
-    data: object,
+    data: TData,
     serviceSetCache: (dados: TData) => void
   ): T[] {
-    let resultados: T[];
-    const dados = <TData>data;
-    if (dados != null) {
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
-      serviceSetCache(dados);
-      resultados = dados.data;
-    } else {
-      resultados = [];
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
-      console.debug('Nom se obtiverom dados');
+    const rexistros = data?.data ?? [];
+
+    if (rexistros.length > 0) {
+      this.layoutService.amosarInfo({
+        tipo: InformacomPeTipo.Info,
+        mensagem: `${rexistros.length} registros obtidos`
+      });
+      serviceSetCache(data);
+      return rexistros as T[];
     }
-    return resultados
+
+    this.layoutService.amosarInfo({
+      tipo: InformacomPeTipo.Aviso,
+      mensagem: 'Nom se obtiverom dados.'
+    });
+    console.debug('Nom se obtiverom dados');
+    return [];
   }
 
   protected onBorrarElemento(

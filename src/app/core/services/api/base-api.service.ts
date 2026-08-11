@@ -36,7 +36,7 @@ export abstract class BaseApiService<T> {
   }
 
   setListadoCosLivros(dados: BaseListadoDadosApi<T>): void {
-    if (this.isProdOrPre()) {
+    if (this.isProdOrPre() && !this.cacheData) {
       this.cacheData = dados;
     }
   }
