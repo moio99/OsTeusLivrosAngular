@@ -85,14 +85,14 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
               console.error(e);
               this.layoutService.amosarInfo({
                 tipo: InformacomPeTipo.Erro,
-                mensagem: `Nom se puido borrar ${nomeComArtigo}.`
+                mensagem: `Nom se pode apagar ${nomeComArtigo}.`
               });
             }
           });
       }
     } else {
-      const plural = livros === 1 ? 'livro asociado' : 'livros asociados';
-      const mensagem = `Nom se pode borrar ${nomeComArtigo} mentres tenha ${livros} ${plural}`;
+      const plural = livros === 1 ? 'livro associado' : 'livros associados';
+      const mensagem = `Nom se pode apagar ${nomeComArtigo} mentres tenha ${livros} ${plural}`;
 
       this.layoutService.amosarInfo({
         tipo: InformacomPeTipo.Aviso,
