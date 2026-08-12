@@ -200,7 +200,7 @@ export class ListadoLivrosComponent implements OnInit {
     let resultados: ListadoLivros[];
     const dados = <BaseListadoDadosApi<ListadoLivros>>data;
     if (dados != null) {
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidossss'});
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
       if (listadoCompleto) {
         this.livrosService.setListadoLivros(dados);   // Se é o listado completo vou guardar os dados na cache
       }

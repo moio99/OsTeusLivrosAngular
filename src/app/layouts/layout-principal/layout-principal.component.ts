@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -23,6 +23,12 @@ export class LayoutPrincipalComponent implements OnInit {
   title = 'Os Meus Livros';
 
   @ViewChild('panelMenuLayout') panelRef!: MatSidenav;
+  @ViewChild('meuContido', { read: ElementRef }) set contedorRef(element: ElementRef) {
+    if (element) {
+      // Gardamos o elemento HTML nativo directamente no Signal do servizo
+      this.layoutService.contedorScroll.set(element.nativeElement);
+    }
+  }
 
   readonly layoutService = inject(LayoutService);
   private readonly appUserService = inject(UsuarioAppService);

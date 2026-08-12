@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, OnDestroy, OnInit, signal, ViewChild  } from '@angular/core';
+import { Component, effect, ElementRef, inject, OnInit, signal, ViewChild  } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { EstadisticasService } from '../../../core/services/api/estadisticas.service';
@@ -46,13 +46,14 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
   @ViewChild('taboaAnos') taboaAnos!: ElementRef;
   @ViewChild('taboaGenero') taboaGenero!: ElementRef;
 
+  private readonly layoutService = inject(LayoutService);
+
   constructor(
     private router: Router,
     private usuarioApp: UsuarioAppService,
     private estadisticasService: EstadisticasService,
     private outrosService: OutrosService,
-    private graficosService: GraficosService,
-    private layoutService: LayoutService) {
+    private graficosService: GraficosService) {
 
     effect(() => {
       if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) return;
@@ -124,17 +125,36 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
     });
   }
 
-  scrollAoElemento(target: ElementRef | HTMLElement | null | undefined): void {
-    if (!target) return; // Se aínda nom existe no DOM, paramos de jeito seguro
+  // scrollAoElemento(target: ElementRef | HTMLElement | null | undefined): void {
+  //   if (!target) return; // Se aínda nom existe no DOM, paramos de jeito seguro
 
+  //   const element = target instanceof ElementRef ? target.nativeElement : target;
+  //   requestAnimationFrame(() => {
+  //     element.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "start",
+  //       inline: "nearest"
+  //     });
+  //   });
+  // }
+  scrollAoElemento(target: ElementRef | HTMLElement | null | undefined): void {
+    if (!target) return;
+
+    // Extraemos os elementos nativos se veñen de ElementRef
     const element = target instanceof ElementRef ? target.nativeElement : target;
-    requestAnimationFrame(() => {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest"
+    const contedor = this.layoutService.contedorScroll();
+
+    if (contedor) {
+      requestAnimationFrame(() => {
+        const elementoTop = element.getBoundingClientRect().top;
+        const contedorTop = contedor.getBoundingClientRect().top;
+        const posicionFinal = contedor.scrollTop + (elementoTop - contedorTop);
+
+        contedor.scrollTo({ top: posicionFinal, behavior: 'smooth' });
       });
-    });
+    } else {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   /**

@@ -17,6 +17,9 @@ export class LayoutService {
   private readonly _informacom = signal<InformacomPe | undefined>(undefined);
   readonly informacom = this._informacom.asReadonly();
 
+  // para o desprazamento vertical na versom movil, quando se fai clic na barra superior de estadísticas.
+  readonly contedorScroll = signal<HTMLElement | null>(null);
+
   // constructor() {
   //   // Para poder fechar todas as subscripçons a um tempo
   //   this.subscriptions.add(this.abrirMenu$.subscribe());
