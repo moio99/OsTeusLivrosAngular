@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -24,13 +24,10 @@ export class LayoutPrincipalComponent implements OnInit {
 
   @ViewChild('panelMenuLayout') panelRef!: MatSidenav;
 
-  constructor(
-    private layoutService: LayoutService,
-    private appUserService: UsuarioAppService) { }
+  readonly layoutService = inject(LayoutService);
+  private readonly appUserService = inject(UsuarioAppService);
 
   ngOnInit(): void {
     this.appUserService.setInformacom();
-    this.layoutService.getAbrirMenu().subscribe(() => this.panelRef.open());
-    this.layoutService.getCerrarMenu().subscribe(() => this.panelRef.close());
   }
 }

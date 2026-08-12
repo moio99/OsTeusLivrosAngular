@@ -4,7 +4,6 @@ export enum environments {
 };
 
 export const environment = {
-  production: true,
   whereIAm: environments.pro,
   apiUrl: "https://osteuslivrosnodejs.onrender.com/api"
 };

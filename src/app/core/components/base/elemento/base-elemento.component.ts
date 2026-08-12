@@ -92,13 +92,13 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     this.servicoElemento.getPorId(id)
       .pipe(first())
       .subscribe({
-        next: (v: any) => {
+        next: (v) => {
           this.dadosDoElemento = this.dadosObtidos(v);
           if (this.dadosDoElemento) {
             this.updateFormValues(this.dadosDoElemento);
           }
         },
-        error: (e: any) => {
+        error: (e: unknown) => {
           console.error(e);
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Erro,
@@ -127,8 +127,8 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     this.serviceGetLivros(id)
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.livrosDoElemento = this.dadosLivrosObtidos(v),
-        error: (e: any) => {
+        next: (v: BaseListadoDadosApi<ListadoLivros>) => this.livrosDoElemento = v?.data ?? [],
+        error: (e: unknown) => {
           console.error(e);
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Erro,
@@ -137,11 +137,6 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
         },
         complete: () => console.debug('completada a obtençom dos livros')
       });
-  }
-
-  protected dadosLivrosObtidos(data: object): any[] {
-    const dados = data as BaseListadoDadosApi<ListadoLivros>;
-    return dados?.data ?? [];
   }
 
   protected isFormValid(): boolean {
@@ -154,8 +149,8 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     this.servicoElemento.getPorNome(nameValue)
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.handleDuplicateCheck(event, v as BaseListadoDadosApi<TElemento>),
-        error: (e: any) => this.handleError('obtención', e),
+        next: (v) => this.handleDuplicateCheck(event, v as BaseListadoDadosApi<TElemento>),
+        error: (e: unknown) => this.handleError('obtención', e),
         complete: () => {}
       });
   }

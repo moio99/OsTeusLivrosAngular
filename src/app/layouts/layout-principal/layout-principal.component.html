@@ -1,7 +1,8 @@
 <mat-sidenav-container fxFlex="noshrink" class="layout">
 
   <!-- este é o menú da versom pequena -->
-  <mat-sidenav #panelMenuLayout mode="side">
+  <mat-sidenav #panelMenuLayout mode="side"
+               [opened]="layoutService.isMenuAberto()">
     <omla-menu></omla-menu>
   </mat-sidenav>
 

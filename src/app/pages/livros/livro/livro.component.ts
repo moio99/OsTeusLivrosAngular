@@ -31,7 +31,7 @@ import { EstrelasPontuacomComponent } from '../../../core/components/estrelas-po
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { environment, environments } from '../../../../environments/environment';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
-import { BaseListadoDadosApi, Parametros } from '../../../core/models/base-dados-api.interface';
+import { BaseListadoDadosApi, Parametros, Resultado } from '../../../core/models/base-dados-api.interface';
 
 export enum MultiGestom {
   autores = 1,
@@ -451,8 +451,8 @@ export class LivroComponent implements OnInit {
         .postRelectura(relectura)
         .pipe(first())
         .subscribe({
-          next: (v: object) => {console.debug(v), this.gestionarExitoRelectura(v, relectura)},
-          error: (e: any) => {
+          next: (v) => {console.debug(v), this.gestionarExitoRelectura(v, relectura)},
+          error: (e: unknown) => {
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a relectura.', duracom: 10});
             console.error(e) },
             complete: () => {
@@ -467,8 +467,8 @@ export class LivroComponent implements OnInit {
         .putRelectura(relectura)
         .pipe(first())
         .subscribe({
-          next: (v: object) => {console.debug(v), this.gestionarExitoRelectura(v, relectura)},
-          error: (e: any) => {
+          next: (v) => {console.debug(v), this.gestionarExitoRelectura(v, relectura)},
+          error: (e: unknown) => {
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar a relectura.', duracom: 10});
             console.error(e) },
             complete: () => {
@@ -519,7 +519,7 @@ export class LivroComponent implements OnInit {
     return relectura;
   }
 
-  private gestionarExitoRelectura(data: object, relectura: Relectura) {
+  private gestionarExitoRelectura(data: Resultado, relectura: Relectura) {
     if (data) {
       let info = <{idResult: string}>data;
       relectura.id = info.idResult;
@@ -924,8 +924,8 @@ export class LivroComponent implements OnInit {
           .getLivroPorTitulo(String(this.livroForm.controls.titulo.value).trim())
           .pipe(first())
           .subscribe({
-            next: (v: object) => livroRepetido = <BaseListadoDadosApi<Livro>>v,
-            error: (e: any) => { console.error(e),
+            next: (v) => livroRepetido = v,
+            error: (e: unknown) => { console.error(e),
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro.'}); },
               complete: () => this.guardarLivro(event, livroRepetido)
         });
@@ -948,8 +948,8 @@ export class LivroComponent implements OnInit {
           .postLivro(livro)
           .pipe(first())
           .subscribe({
-            next: (v: object) => {console.debug(v), this.gestionarExito(v, livro)},
-            error: (e: any) => {
+            next: (v) => {console.debug(v), this.gestionarExito(v, livro)},
+            error: (e: unknown) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o livro.', duracom: 10});
               console.error(e) },
               complete: () => {
@@ -964,7 +964,7 @@ export class LivroComponent implements OnInit {
           .putLivro(livro)
           .pipe(first())
           .subscribe({
-            next: (v: object) => {console.debug(v), this.gestionarExito(v, livro)},
+            next: (v) => {console.debug(v), this.gestionarExito(v, livro)},
             error: (e: any) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar o livro.', duracom: 10});
               console.error(e) },
@@ -1046,10 +1046,9 @@ export class LivroComponent implements OnInit {
     return livro;
   }
 
-  private gestionarExito(data: object, livro: Livro) {
+  private gestionarExito(data: Resultado, livro: Livro) {
     if (data) {
-      let info = <{idResult: string}>data;
-      livro.id = info.idResult;
+      livro.id = data.idResult;
       this.dadosDoLivro = livro;
     }
   }

@@ -1,5 +1,4 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { InformacomPe } from '../../../shared/models/outros.model';
 import { LayoutService } from '../../services/flow/layout.service';
@@ -10,7 +9,7 @@ import { LayoutService } from '../../services/flow/layout.service';
   templateUrl: './pe.component.html',
   styleUrls: ['./pe.component.scss']
 })
-export class PeComponent implements OnInit {
+export class PeComponent {
   // En Angular moderno preferimos inject() a poñelo no constructor
   private layoutService = inject(LayoutService);
 
@@ -22,9 +21,17 @@ export class PeComponent implements OnInit {
   // Guardamos a referencia do timeout activo para poder cancelalo
   private currentTimeoutId: any = null;
 
-  ngOnInit(): void {
-    this.layoutService.getInformacom().subscribe((info: InformacomPe | undefined) => {
-      this.procesarMensaxe(info);
+  // ngOnInit(): void {
+  //   this.layoutService.getInformacom().subscribe((info: InformacomPe | undefined) => {
+  //     this.procesarMensaxe(info);
+  //   });
+  // }
+  constructor() {
+    // Creamos un efecto que se executará automaticamente cada vez que
+    // cambie o Signal 'informacom' no LayoutService
+    effect(() => {
+      const info = this.layoutService.informacom(); // Angular detecta que lemos este Signal
+      this.procesarMensaxe(info); // Chamamos á túa función pasándolle o novo valor
     });
   }
 

@@ -196,7 +196,7 @@ export class ListadoLivrosComponent implements OnInit {
     });
   }
 
-  private dadosObtidos(data: object, listadoCompleto: boolean, amosarGrafico?: boolean): ListadoLivros[] {
+  private dadosObtidos(data: BaseListadoDadosApi<ListadoLivros>, listadoCompleto: boolean, amosarGrafico?: boolean): ListadoLivros[] {
     let resultados: ListadoLivros[];
     const dados = <BaseListadoDadosApi<ListadoLivros>>data;
     if (dados != null) {

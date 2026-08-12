@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Relectura } from '../../models/relectura.interface';
+import { Observable } from 'rxjs';
+import { Resultado } from '../../models/base-dados-api.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -25,14 +27,14 @@ export class RelecturasService {
       + '/Relecturas?id=' + idLivro);
   }
 
-  postRelectura(relectura: Relectura) {
-    return this.http.post(environment.apiUrl + this.rotaIntermedia
+  postRelectura(relectura: Relectura): Observable<Resultado> {
+    return this.http.post<Resultado>(environment.apiUrl + this.rotaIntermedia
       + '/Relectura', relectura);
   }
 
-  putRelectura(relectura: Relectura) {
+  putRelectura(relectura: Relectura): Observable<Resultado> {
     console.debug('atualizando');
-    return this.http.put(environment.apiUrl + this.rotaIntermedia
+    return this.http.put<Resultado>(environment.apiUrl + this.rotaIntermedia
       + '/Relectura', relectura);
   }
 

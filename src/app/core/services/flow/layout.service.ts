@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { InformacomPe } from '../../../shared/models/outros.model';
 
@@ -7,57 +7,67 @@ import { InformacomPe } from '../../../shared/models/outros.model';
 })
 export class LayoutService {
 
-	private abrirMenu$ = new Subject<void>();
-	private cerrarMenu$ = new Subject<void>();
-  private informacom$ = new Subject<InformacomPe | undefined>();
-  private subscriptions = new Subscription();     // Para poder fechar todas as subscripçons a um tempo
+	// private abrirMenu$ = new Subject<void>();
+	// private cerrarMenu$ = new Subject<void>();
+  private readonly _isMenuAberto = signal<boolean>(false);
+  readonly isMenuAberto = this._isMenuAberto.asReadonly();
 
-  constructor() {
-    // Para poder fechar todas as subscripçons a um tempo
-    this.subscriptions.add(this.abrirMenu$.subscribe());
-    this.subscriptions.add(this.cerrarMenu$.subscribe());
-    this.subscriptions.add(this.informacom$.subscribe());
-  }
+  // private informacom$ = new Subject<InformacomPe | undefined>();
+  // private subscriptions = new Subscription();     // Para poder fechar todas as subscripçons a um tempo
+  private readonly _informacom = signal<InformacomPe | undefined>(undefined);
+  readonly informacom = this._informacom.asReadonly();
 
-  public getAbrirMenu() {
-    return this.abrirMenu$.asObservable();
-  }
+  // constructor() {
+  //   // Para poder fechar todas as subscripçons a um tempo
+  //   this.subscriptions.add(this.abrirMenu$.subscribe());
+  //   this.subscriptions.add(this.cerrarMenu$.subscribe());
+  //   this.subscriptions.add(this.informacom$.subscribe());
+  // }
+
+  // public getAbrirMenu() {
+  //   // return this.abrirMenu$.asObservable();
+  //   this._isMenuAberto.set(true);
+  // }
 
 	public abrirMenu(): void {
-		this.abrirMenu$.next();
+		// this.abrirMenu$.next();
+    this._isMenuAberto.set(true);
+    console.log('abrirMenu', this._isMenuAberto());
 	}
 
-  public getCerrarMenu() {
-    return this.cerrarMenu$.asObservable();
-  }
+  // public getCerrarMenu() {
+  //   return this.cerrarMenu$.asObservable();
+  // }
 
 	public cerrarMenu(): void {
-		this.cerrarMenu$.next();
+		// this.cerrarMenu$.next();
+    this._isMenuAberto.set(false);
 	}
 
 
-  /**
-   * Get observable for browser close event.
-   */
-  public getInformacom(): Observable<InformacomPe | undefined> {
-    return this.informacom$.asObservable();
-  }
+  // /**
+  //  * Get observable for browser close event.
+  //  */
+  // public getInformacom(): Observable<InformacomPe | undefined> {
+  //   return this.informacom$.asObservable();
+  // }
 
   /**
    * Lanza a Info que está no pe.component, se passamos undefined oculta a barra de Info
    */
   public amosarInfo(info: InformacomPe | undefined) {
-    this.informacom$.next(info);
+    // this.informacom$.next(info);
+    this._informacom.set(info);
   }
 
-  /**
-   * Fecha as subscripçons
-   */
-	public unsubscribe(): void {
-		// this.abrirMenu$.unsubscribe();
-		// this.cerrarMenu$.unsubscribe();
-		// this.informacom$.unsubscribe();
+  // /**
+  //  * Fecha as subscripçons
+  //  */
+	// public unsubscribe(): void {
+	// 	// this.abrirMenu$.unsubscribe();
+	// 	// this.cerrarMenu$.unsubscribe();
+	// 	// this.informacom$.unsubscribe();
 
-    this.subscriptions.unsubscribe();
-	}
+  //   this.subscriptions.unsubscribe();
+	// }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { LayoutService } from '../../core/services/flow/layout.service';
 import { RouterModule } from '@angular/router';
 
@@ -9,12 +9,9 @@ import { RouterModule } from '@angular/router';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
 
-  constructor(private layoutService: LayoutService) { }
-
-  ngOnInit(): void {
-  }
+  private layoutService = inject(LayoutService);
 
   onFecharMenu(): void {
     this.layoutService.cerrarMenu();

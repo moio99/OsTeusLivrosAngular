@@ -23,7 +23,7 @@ import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interfa
   templateUrl: './estadisticas.component.html',
   styleUrls: ['./estadisticas.component.scss']
 })
-export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendenteComponent {
+export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
 
   isDadosCombosPendente = true;
   tipos = EstadisticasTipo;
@@ -72,12 +72,6 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
       return false
     }
     return true;
-  }
-
-  ngOnDestroy(): void {
-    if (this.layoutService) {
-      this.layoutService.unsubscribe(); // Desuscribirse para evitar fugas de memoria
-    }
   }
 
   setOrdeAnos() {
@@ -130,12 +124,9 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
     });
   }
 
-  /* scrollAoElemento(elementId: string): void {
-    const elemento = document.getElementById(elementId);
-    elemento?.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-  } */
+  scrollAoElemento(target: ElementRef | HTMLElement | null | undefined): void {
+    if (!target) return; // Se aínda nom existe no DOM, paramos de jeito seguro
 
-  scrollAoElemento(target: ElementRef | HTMLElement): void {
     const element = target instanceof ElementRef ? target.nativeElement : target;
     requestAnimationFrame(() => {
       element.scrollIntoView({
@@ -175,11 +166,11 @@ export class EstadisticasComponent implements OnInit, OnDestroy, PeticomPendente
   private obterEstadisticas(): void {
 
     const observavel1 = this.estadisticasService
-      .getEstadisticas(EstadisticasTipo.Idioma); // Observavel 1
+      .getEstadisticas(EstadisticasTipo.Idioma);  // Observavel 1
     const observavel2 = this.estadisticasService
-      .getEstadisticas(EstadisticasTipo.Ano); // Observavel 2
+      .getEstadisticas(EstadisticasTipo.Ano);     // Observavel 2
     const observavel3 = this.estadisticasService
-      .getEstadisticas(EstadisticasTipo.Genero); // Observavel 2
+      .getEstadisticas(EstadisticasTipo.Genero);  // Observavel 2
 
     forkJoin([observavel1, observavel2, observavel3])
       .subscribe({

@@ -4,8 +4,9 @@ import { Injectable } from '@angular/core';
 import { Livro } from '../../models/livro.interface';
 import { delay, Observable, of } from 'rxjs';
 import { ListadoLivros } from '../../models/listado-livros.interface';
-import { BaseListadoDadosApi } from '../../models/base-dados-api.interface';
+import { BaseListadoDadosApi, Resultado } from '../../models/base-dados-api.interface';
 import { Genero } from '../../models/genero.interface';
+import { Editorial } from '../../models/editorial.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -22,10 +23,10 @@ export class LivrosService {
    * Quando nom estea em local guarda umha caché
    * @returns
    */
-  getListadoLivros() {
+  getListadoLivros(): Observable<BaseListadoDadosApi<ListadoLivros>> {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (!isProdOrPre || !this.cacheListadoLivrosData) {
-      return this.http.get(environment.apiUrl + this.rotaIntermedia + '/');
+      return this.http.get<BaseListadoDadosApi<ListadoLivros>>(environment.apiUrl + this.rotaIntermedia + '/');
     } else {
       return of(this.cacheListadoLivrosData);
     }
@@ -41,48 +42,48 @@ export class LivrosService {
     return new Promise( resolve => {setTimeout(resolve, ms); } );
   }
 
-  getListadoLivrosUltimaLectura() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getListadoLivrosUltimaLectura(): Observable<BaseListadoDadosApi<ListadoLivros>> {
+    return this.http.get<BaseListadoDadosApi<ListadoLivros>>(environment.apiUrl + this.rotaIntermedia
       + '/UltimaLectura');
   }
 
-  getListadoLivrosPorIdioma(idioma: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getListadoLivrosPorIdioma(idioma: string): Observable<BaseListadoDadosApi<ListadoLivros>> {
+    return this.http.get<BaseListadoDadosApi<ListadoLivros>>(environment.apiUrl + this.rotaIntermedia
       + '/PorIdioma?Idioma=' + idioma);
   }
 
-  getListadoLivrosPorAno(ano: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getListadoLivrosPorAno(ano: string): Observable<BaseListadoDadosApi<ListadoLivros>> {
+    return this.http.get<BaseListadoDadosApi<ListadoLivros>>(environment.apiUrl + this.rotaIntermedia
       + '/PorAno?Ano=' + ano);
   }
 
-  getLivrosPorAutor(id: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getLivrosPorAutor(id: string): Observable<BaseListadoDadosApi<ListadoLivros>> {
+    return this.http.get<BaseListadoDadosApi<ListadoLivros>>(environment.apiUrl + this.rotaIntermedia
       + '/PorAutor?id=' + id);
   }
 
-  getListadoLivrosPorGenero(id: string): Observable<BaseListadoDadosApi<Genero>> {
-    return this.http.get<BaseListadoDadosApi<Genero>>(environment.apiUrl + this.rotaIntermedia
+  getListadoLivrosPorGenero(id: string): Observable<BaseListadoDadosApi<ListadoLivros>> {
+    return this.http.get<BaseListadoDadosApi<ListadoLivros>>(environment.apiUrl + this.rotaIntermedia
       + '/PorGenero?Genero=' + id);
   }
 
-  getLivrosPorEditorial(id: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getLivrosPorEditorial(id: string): Observable<BaseListadoDadosApi<ListadoLivros>> {
+    return this.http.get<BaseListadoDadosApi<ListadoLivros>>(environment.apiUrl + this.rotaIntermedia
       + '/PorEditorial?id=' + id);
   }
 
-  getLivrosPorBiblioteca(id: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getLivrosPorBiblioteca(id: string): Observable<BaseListadoDadosApi<ListadoLivros>> {
+    return this.http.get<BaseListadoDadosApi<ListadoLivros>>(environment.apiUrl + this.rotaIntermedia
       + '/PorBiblioteca?id=' + id);
   }
 
-  getLivrosPorColecom(id: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getLivrosPorColecom(id: string): Observable<BaseListadoDadosApi<ListadoLivros>> {
+    return this.http.get<BaseListadoDadosApi<ListadoLivros>>(environment.apiUrl + this.rotaIntermedia
       + '/PorColecom?id=' + id);
   }
 
-  getListadoLivrosPorEstiloLiterario(id: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getListadoLivrosPorEstiloLiterario(id: string): Observable<BaseListadoDadosApi<ListadoLivros>> {
+    return this.http.get<BaseListadoDadosApi<ListadoLivros>>(environment.apiUrl + this.rotaIntermedia
       + '/PorEstiloLiterario?id=' + id);
   }
 
@@ -91,21 +92,21 @@ export class LivrosService {
       + '/Livro?id=' + id);
   }
 
-  getLivroPorTitulo(titulo: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getLivroPorTitulo(titulo: string): Observable<BaseListadoDadosApi<Livro>> {
+    return this.http.get<BaseListadoDadosApi<Livro>>(environment.apiUrl + this.rotaIntermedia
       + '/LivroPorTitulo?titulo=' + titulo);
   }
 
 
-  postLivro(livro: Livro) {
+  postLivro(livro: Livro): Observable<Resultado> {
     console.debug('engadindo');
-    return this.http.post(environment.apiUrl + this.rotaIntermedia
+    return this.http.post<Resultado>(environment.apiUrl + this.rotaIntermedia
       + '/Livro', livro);
   }
 
-  putLivro(livro: Livro) {
+  putLivro(livro: Livro): Observable<Resultado> {
     console.debug('atualizando');
-    return this.http.put(environment.apiUrl + this.rotaIntermedia
+    return this.http.put<Resultado>(environment.apiUrl + this.rotaIntermedia
       + '/Livro', livro);
   }
 

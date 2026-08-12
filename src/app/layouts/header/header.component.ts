@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { LayoutService } from '../../core/services/flow/layout.service';
 import { MatIconModule } from '@angular/material/icon';
 import { CarregandoService } from '../../core/services/tools/carregando.service';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'omla-header',
@@ -12,19 +11,16 @@ import { Observable } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
-  isAmosarCarregando$!: Observable<boolean>;
+  private readonly layoutService = inject(LayoutService);
+  private readonly carregandoService = inject(CarregandoService);
 
-  constructor(
-    private layoutService: LayoutService,
-    private carregandoService: CarregandoService
-  ) {
-    this.isAmosarCarregando$ = this.carregandoService.carregando$;
-  }
-
-  ngOnInit(): void {
-  }
+  // protected readonly isAmosarCarregando = toSignal(
+  //   this.carregandoService.carregando$,
+  //   { initialValue: false } // Valor inicial por defecto
+  // );
+  protected readonly isAmosarCarregando = this.carregandoService.carregando;
 
   onAmosarMenu(): void {
     this.layoutService.abrirMenu();
