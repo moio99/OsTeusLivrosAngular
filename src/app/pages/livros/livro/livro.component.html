@@ -1,85 +1,93 @@
 <form [formGroup]="livroForm" (ngSubmit)="onSubmit($event)">
-  @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
-    <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{this.modo}}">
-      {{this.modo}}
+  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+    <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{modo()}}">
+      {{modo()}}
     </button>
-    <button type="button" mat-icon-button (click)="onGestomNovaRelectura()" *ngIf="!modoRelectura && modo !== estadosPagina.engadir">
-      Nova relectura
-    </button>
-    <button type="button" mat-icon-button (click)="onCancelarNovaRelectura()" *ngIf="modoRelectura">
-      Cancelar {{this.modo === estadosPagina.engadir ? 'nova' : 'modificar' }} relectura
-    </button>
+    @if (!modoRelectura()) {
+      @if (modo() !== estadosPagina.engadir) {
+        <button type="button" mat-icon-button (click)="onGestomNovaRelectura()">
+          Nova relectura
+        </button>
+      }
+    } @else {
+      <button type="button" mat-icon-button (click)="onCancelarNovaRelectura()">
+        Cancelar {{modo() === estadosPagina.engadir ? 'nova' : 'modificar' }} relectura
+      </button>
+    }
   }
   <div class="dadosLivro">
     <div class="titulo">
       <mat-form-field class="ancho-inputs">
         <mat-label>Título</mat-label>
         <input matInput [formControl]="livroForm.controls.titulo" maxlength="100">
-        <mat-error *ngIf="livroForm.controls.titulo.hasError('maxlength')">
-          Máximo 100 caracteres
-        </mat-error>
+        @if (livroForm.controls.titulo.hasError('maxlength')) {
+          <mat-error>Máximo 100 caracteres</mat-error>
+        }
       </mat-form-field>
     </div>
-    <div class="autor" *ngIf="!modoRelectura">
-      <div class="lista-etiqueta">
-        <div>
-          Autor<span *ngIf="autoresLivro.length > 1">es</span>:
-        </div>
-        @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+    @if (!modoRelectura()) {
+      <div class="autor">
+        <div class="lista-etiqueta">
           <div>
-            <button type="button" mat-icon-button (click)="onGestomMulti(multiGestom.autores)">
-              Gestionar
-            </button>
-            <button type="button" mat-icon-button (click)="onIrPaginaEngadirAutor('/autores/autor', dadosComplentarios.Autor)">
-              Engadir
-            </button>
+            Autor@if(autoresLivro().length > 1) { <span>es</span> }:
           </div>
-        }
-      </div>
-      <div class="lista-com-comas">
-        <ul>
-          <li *ngFor="let item of autoresLivro"
-            class="listado-accom"
-            [ngStyle]="{'cursor': (modo !== estadosPagina.soVisualizar ? null : 'auto')}"
-            (click)="onIrPaginaAutor('/autores/autor', item.id)">{{item.value}}</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="titulo-original" *ngIf="!modoRelectura">
-      <mat-form-field class="ancho-inputs">
-        <mat-label>Título original</mat-label>
-        <input matInput [formControl]="livroForm.controls.tituloOriginal" maxlength="100">
-        <mat-error *ngIf="livroForm.controls.tituloOriginal.hasError('maxlength')">
-          Máximo 100 caracteres
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="genero" *ngIf="!modoRelectura">
-      <div class="lista-etiqueta">
-        <div>
-          Género<span *ngIf="generosLivro.length > 1">s</span>:
+          @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+            <div>
+              <button type="button" mat-icon-button (click)="onGestomMulti(multiGestom.autores)">
+                Gestionar
+              </button>
+              <button type="button" mat-icon-button (click)="onIrPaginaEngadirAutor('/autores/autor', dadosComplentarios.Autor)">
+                Engadir
+              </button>
+            </div>
+          }
         </div>
-        @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+        <div class="lista-com-comas">
+          <ul>
+            @for (item of autoresLivro(); track item.id) {
+              <li class="listado-accom"
+                [ngStyle]="{'cursor': (modo() !== estadosPagina.soVisualizar ? null : 'auto')}"
+                (click)="onIrPaginaAutor('/autores/autor', item.id)">{{item.value}}</li>
+            }
+          </ul>
+        </div>
+      </div>
+      <div class="titulo-original">
+        <mat-form-field class="ancho-inputs">
+          <mat-label>Título original</mat-label>
+          <input matInput [formControl]="livroForm.controls.tituloOriginal" maxlength="100">
+          @if (livroForm.controls.tituloOriginal.hasError('maxlength')) {
+            <mat-error>Máximo 100 caracteres</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div class="genero">
+        <div class="lista-etiqueta">
           <div>
-            <button type="button" mat-icon-button (click)="onGestomMulti(multiGestom.generos)">
-              Gestionar
-            </button>
-            <button type="button" mat-icon-button (click)="onIrPaginaEngadir('/generos/genero', dadosComplentarios.Genero)">
-              Engadir
-            </button>
+            Género@if(generosLivro().length > 1) { <span>s</span> }:
           </div>
-        }
+          @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+            <div>
+              <button type="button" mat-icon-button (click)="onGestomMulti(multiGestom.generos)">
+                Gestionar
+              </button>
+              <button type="button" mat-icon-button (click)="onIrPaginaEngadir('/generos/genero', dadosComplentarios.Genero)">
+                Engadir
+              </button>
+            </div>
+          }
+        </div>
+        <div class="lista-com-comas">
+          <ul>
+            @for (item of generosLivro(); track item.id) {
+              <li class="listado-accom"
+                [ngStyle]="{'cursor': (modo() !== estadosPagina.soVisualizar ? null : 'auto')}"
+                (click)="onIrPagina('/generos/genero', item.id)">{{item.value}}</li>
+            }
+          </ul>
+        </div>
       </div>
-      <div class="lista-com-comas">
-        <ul>
-          <li *ngFor="let item of generosLivro"
-            class="listado-accom"
-            [ngStyle]="{'cursor': (modo !== estadosPagina.soVisualizar ? null : 'auto')}"
-            (click)="onIrPagina('/generos/genero', item.id)">{{item.value}}</li>
-        </ul>
-      </div>
-    </div>
+    }
 
     <div class="biblioteca listado-seleccom">
       <mat-form-field class="ancho-inputs listado-seleccom__input">
@@ -96,17 +104,18 @@
           }
         </mat-autocomplete>
       </mat-form-field>
-      @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+      @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
         <div class="listado-seleccom__botons">
           <button type="button" mat-icon-button
             (click)="onIrPaginaEngadir('/bibliotecas/biblioteca', dadosComplentarios.Biblioteca)">
             Engadir
           </button>
-          <button type="button" mat-icon-button
-            *ngIf="livroForm.controls.idBiblioteca.getRawValue()"
-            (click)="onIrPaginaBiblioteca('/bibliotecas/biblioteca')">
-            Editar
-          </button>
+          @if (livroForm.controls.idBiblioteca.getRawValue()) {
+            <button type="button" mat-icon-button
+              (click)="onIrPaginaBiblioteca('/bibliotecas/biblioteca')">
+              Editar
+            </button>
+          }
         </div>
       }
     </div>
@@ -125,17 +134,18 @@
           }
         </mat-autocomplete>
       </mat-form-field>
-      @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+      @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
         <div class="listado-seleccom__botons">
           <button type="button" mat-icon-button
             (click)="onIrPaginaEngadir('/editoriais/editorial', dadosComplentarios.Editorial)">
             Engadir
           </button>
-          <button type="button" mat-icon-button
-            *ngIf="livroForm.controls.idEditorial.getRawValue()"
-            (click)="onIrPaginaEditorial('/editoriais/editorial')">
-            Editar
-          </button>
+          @if (livroForm.controls.idEditorial.getRawValue()) {
+            <button type="button" mat-icon-button
+              (click)="onIrPaginaEditorial('/editoriais/editorial')">
+              Editar
+            </button>
+          }
         </div>
       }
     </div>
@@ -154,125 +164,147 @@
           }
         </mat-autocomplete>
       </mat-form-field>
-      @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
+      @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
         <div class="listado-seleccom__botons">
           <button type="button" mat-icon-button
             (click)="onIrPaginaEngadir('/colecons/colecom', dadosComplentarios.Colecom)">
             Engadir
           </button>
-          <button type="button" mat-icon-button
-            *ngIf="livroForm.controls.idColecom.getRawValue()"
-            (click)="onIrPaginaColecom('/colecons/colecom')">
-            Editar
-          </button>
+          @if (livroForm.controls.idColecom.getRawValue()) {
+            <button type="button" mat-icon-button
+              (click)="onIrPaginaColecom('/colecons/colecom')">
+              Editar
+            </button>
+          }
         </div>
       }
     </div>
-    <div class="estilo listado-seleccom" *ngIf="!modoRelectura">
-      <mat-form-field class="ancho-inputs listado-seleccom__input">
-        <input type="text"
-              placeholder="Estilo literario:"
-              aria-label="Number"
-              matInput
-              (focus)="focusTrigger.next()"
-              [formControl]="livroForm.controls.idEstilo"
-              [matAutocomplete]="idestiloLi">
-        <mat-autocomplete #idestiloLi="matAutocomplete">
-          @for (option of estilos | async; track option) {
-            <mat-option [value]="option.value">{{option.value}}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
-      @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
-        <div class="listado-seleccom__botons">
+    @if (!modoRelectura()) {
+      <div class="estilo listado-seleccom">
+        <mat-form-field class="ancho-inputs listado-seleccom__input">
+          <input type="text"
+                placeholder="Estilo literario:"
+                aria-label="Number"
+                matInput
+                (focus)="focusTrigger.next()"
+                [formControl]="livroForm.controls.idEstilo"
+                [matAutocomplete]="idestiloLi">
+          <mat-autocomplete #idestiloLi="matAutocomplete">
+            @for (option of estilos | async; track option) {
+              <mat-option [value]="option.value">{{option.value}}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    }
+    @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+      <div class="listado-seleccom__botons">
+        <button type="button" mat-icon-button
+          (click)="onIrPaginaEngadir('/estilos-literarios/estilo-literario', dadosComplentarios.EstiloLiterario)">
+          Engadir
+        </button>
+        @if (livroForm.controls.idEstilo.getRawValue()) {
           <button type="button" mat-icon-button
-            (click)="onIrPaginaEngadir('/estilos-literarios/estilo-literario', dadosComplentarios.EstiloLiterario)">
-            Engadir
-          </button>
-          <button type="button" mat-icon-button
-            *ngIf="livroForm.controls.idEstilo.getRawValue()"
             (click)="onIrPaginaEstilo('/estilos-literarios/estilo-literario')">
             Editar
           </button>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    }
 
     <div class="paginas">
       <mat-form-field class="ancho-inputs">
         <mat-label>Páginas</mat-label>
         <input matInput [formControl]="livroForm.controls.paginas" maxlength="7">
-        <mat-error *ngIf="livroForm.controls.paginas.hasError('pattern')">
-          Valor correto de 0 a 1000000
-        </mat-error>
+        @if (livroForm.controls.paginas.hasError('pattern')) {
+          <mat-error>
+            Valor correto de 0 a 1000000
+          </mat-error>
+        }
       </mat-form-field>
     </div>
     <div class="paginas-lidas">
       <mat-form-field class="ancho-inputs">
         <mat-label>Páginas lidas</mat-label>
         <input matInput [formControl]="livroForm.controls.paginasLidas" maxlength="7">
-        <mat-error *ngIf="livroForm.controls.paginasLidas.hasError('pattern')">
-          Valor correto de 0 a 1000000
-        </mat-error>
+        @if (livroForm.controls.paginasLidas.hasError('pattern')) {
+          <mat-error>
+            Valor correto de 0 a 1000000
+          </mat-error>
+        }
       </mat-form-field>
     </div>
     <div class="isbn">
       <mat-form-field class="ancho-inputs">
         <mat-label>ISBN:</mat-label>
         <input type="text" matInput [formControl]="livroForm.controls.isbn" rows="4">
-        <mat-error *ngIf="livroForm.controls.isbn.hasError('maxlength')">
-          Máximo 20 caracteres
-        </mat-error>
+        @if (livroForm.controls.isbn.hasError('maxlength')) {
+          <mat-error>Máximo 20 caracteres</mat-error>
+        }
       </mat-form-field>
     </div>
     <div class="lido">
       <mat-checkbox [formControl]="livroForm.controls.lido">Lido</mat-checkbox>
     </div>
 
-    <div class="data-criacom" *ngIf="!modoRelectura">
-      <mat-form-field class="ancho-inputs">
-        <mat-label>Data de criaçom</mat-label>
-        <input matInput [matDatepicker]="fDateCri" [formControl]="livroForm.controls.dataCriacom">
-        <mat-datepicker-toggle matSuffix [for]="fDateCri"></mat-datepicker-toggle>
-        <mat-datepicker #fDateCri></mat-datepicker>
-        <mat-error *ngIf="livroForm.controls.dataCriacom.hasError('matDatepickerParse')"
-          [innerHTML]="'O formato válido é dd/mm/aaaa'">
-        </mat-error>
-        <mat-error *ngIf="livroForm.controls.dataCriacom.hasError('datasInvalidas')">
-          A data da criaçom nom pode ser superior á data da ediçom
-        </mat-error>
-      </mat-form-field>
-    </div>
+    @if (!modoRelectura()) {
+      <div class="data-criacom">
+        <mat-form-field class="ancho-inputs">
+          <mat-label>Data de criaçom</mat-label>
+          <input matInput [matDatepicker]="fDateCri" [formControl]="livroForm.controls.dataCriacom">
+          <mat-datepicker-toggle matSuffix [for]="fDateCri"></mat-datepicker-toggle>
+          <mat-datepicker #fDateCri></mat-datepicker>
+          @if (livroForm.controls.dataCriacom.hasError('matDatepickerParse')) {
+            <mat-error
+              [innerHTML]="'O formato válido é dd/mm/aaaa'">
+            </mat-error>
+          }
+          @if (livroForm.controls.dataCriacom.hasError('datasInvalidas')) {
+            <mat-error>
+              A data da criaçom nom pode ser superior á data da ediçom
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+    }
     <div class="data-edicom">
       <mat-form-field class="ancho-inputs">
         <mat-label>Data da ediçom</mat-label>
         <input matInput [matDatepicker]="fDateEdi" [formControl]="livroForm.controls.dataEdicom">
         <mat-datepicker-toggle matSuffix [for]="fDateEdi"></mat-datepicker-toggle>
         <mat-datepicker #fDateEdi></mat-datepicker>
-        <mat-error *ngIf="livroForm.controls.dataEdicom.hasError('matDatepickerParse')"
-          [innerHTML]="'O formato válido é dd/mm/aaaa'">
-        </mat-error>
-        <mat-error *ngIf="livroForm.controls.dataEdicom.hasError('datasInvalidas')">
-          A data da ediçom nom pode ser inferior á data de criaçom
-        </mat-error>
+        @if (livroForm.controls.dataEdicom.hasError('matDatepickerParse')) {
+          <mat-error
+            [innerHTML]="'O formato válido é dd/mm/aaaa'">
+          </mat-error>
+        }
+        @if (livroForm.controls.dataEdicom.hasError('datasInvalidas')) {
+          <mat-error>
+            A data da ediçom nom pode ser inferior á data de criaçom
+          </mat-error>
+        }
       </mat-form-field>
     </div>
     <div class="numero-edicom">
       <mat-form-field class="ancho-inputs">
         <mat-label>Número da ediçom</mat-label>
         <input matInput [formControl]="livroForm.controls.numeroEdicom" maxlength="4">
-        <mat-error *ngIf="livroForm.controls.diasLeitura.hasError('pattern')">
-          Valor correto de 0 1000
-        </mat-error>
+        @if (livroForm.controls.numeroEdicom.hasError('pattern')) {
+          <mat-error>
+            Valor correto de 0 a 1000
+          </mat-error>
+        }
       </mat-form-field>
     </div>
     <div class="dias-leitura">
       <mat-form-field class="ancho-inputs">
-        <mat-label>Dias leitura <span *ngIf="this.idLivro === '0'">(incluido hoje)</span></mat-label>
+        <mat-label>Dias leitura @if (this.idLivro === '0') {<span>(incluido hoje)</span> }</mat-label>
         <input matInput [formControl]="livroForm.controls.diasLeitura" maxlength="4">
-        <mat-error *ngIf="livroForm.controls.diasLeitura.hasError('pattern')">
-          Valor correto de 0 a 1000
-        </mat-error>
+        @if (livroForm.controls.diasLeitura.hasError('pattern')) {
+          <mat-error>
+            Valor correto de 0 a 1000
+          </mat-error>
+        }
       </mat-form-field>
     </div>
 
@@ -283,9 +315,11 @@
         <input matInput [matDatepicker]="fDateFimL" [formControl]="livroForm.controls.dataFimLeiturata">
         <mat-datepicker-toggle matSuffix [for]="fDateFimL"></mat-datepicker-toggle>
         <mat-datepicker #fDateFimL></mat-datepicker>
-        <mat-error *ngIf="livroForm.controls.dataFimLeiturata.hasError('matDatepickerParse')"
-          [innerHTML]="'O formato válido é dd/mm/aaaa'">
-        </mat-error>
+        @if (livroForm.controls.dataFimLeiturata.hasError('matDatepickerParse')) {
+          <mat-error
+            [innerHTML]="'O formato válido é dd/mm/aaaa'">
+          </mat-error>
+        }
       </mat-form-field>
     </div>
     <div class="idioma">
@@ -304,22 +338,24 @@
         </mat-autocomplete>
       </mat-form-field>
     </div>
-    <div class="idioma-original" *ngIf="!modoRelectura">
-      <mat-form-field class="ancho-inputs">
-        <input type="text"
-              placeholder="Idioma Original:"
-              aria-label="Number"
-              matInput
-              (focus)="focusTrigger.next()"
-              [formControl]="livroForm.controls.idiomaOriginal"
-              [matAutocomplete]="idiomaOrig">
-        <mat-autocomplete #idiomaOrig="matAutocomplete">
-          @for (option of idiomasOriginais | async; track option) {
-            <mat-option [value]="option.value">{{option.value}}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
-    </div>
+    @if (!modoRelectura()) {
+      <div class="idioma-original">
+        <mat-form-field class="ancho-inputs">
+          <input type="text"
+                placeholder="Idioma Original:"
+                aria-label="Number"
+                matInput
+                (focus)="focusTrigger.next()"
+                [formControl]="livroForm.controls.idiomaOriginal"
+                [matAutocomplete]="idiomaOrig">
+          <mat-autocomplete #idiomaOrig="matAutocomplete">
+            @for (option of idiomasOriginais | async; track option) {
+              <mat-option [value]="option.value">{{option.value}}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    }
     <div class="electronico">
       <mat-checkbox [formControl]="livroForm.controls.electronico">Electrónico</mat-checkbox>
     </div>
@@ -340,38 +376,43 @@
           @for (option of seriesLivro | async; track option) {
             <mat-option [value]="option.value">{{option.value}}</mat-option>
           }
-          <mat-option *ngFor="let element of seriesLivro | async" [value]="element.value">
-            {{element.value}}
-          </mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </div>
 
-    <div class="premios" *ngIf="!modoRelectura">
-      <mat-form-field class="ancho-inputs">
-        <mat-label>Prémios:</mat-label>
-        <textarea matInput [formControl]="livroForm.controls.premios" rows="4"></textarea>
-        <mat-error *ngIf="livroForm.controls.premios.hasError('maxlength')">
-          Máximo 255 caracteres
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="descricom" *ngIf="!modoRelectura">
-      <mat-form-field class="ancho-inputs">
-        <mat-label>Descriçom:</mat-label>
-        <textarea matInput [formControl]="livroForm.controls.descricom" rows="4"></textarea>
-        <mat-error *ngIf="livroForm.controls.descricom.hasError('maxlength')">
-          Máximo 50000 caracteres
-        </mat-error>
-      </mat-form-field>
-    </div>
+    @if (!modoRelectura()) {
+      <div class="premios">
+        <mat-form-field class="ancho-inputs">
+          <mat-label>Prémios:</mat-label>
+          <textarea matInput [formControl]="livroForm.controls.premios" rows="4"></textarea>
+          @if (livroForm.controls.premios.hasError('maxlength')) {
+            <mat-error>
+              Máximo 255 caracteres
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div class="descricom">
+        <mat-form-field class="ancho-inputs">
+          <mat-label>Descriçom:</mat-label>
+          <textarea matInput [formControl]="livroForm.controls.descricom" rows="4"></textarea>
+          @if (livroForm.controls.descricom.hasError('maxlength')) {
+            <mat-error>
+              Máximo 50000 caracteres
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+    }
     <div class="comentario">
       <mat-form-field class="ancho-inputs">
         <mat-label>Comentario:</mat-label>
         <textarea matInput [formControl]="livroForm.controls.comentario" rows="4"></textarea>
-        <mat-error *ngIf="livroForm.controls.comentario.hasError('maxlength')">
-          Máximo 50000 caracteres
-        </mat-error>
+        @if (livroForm.controls.comentario.hasError('maxlength')) {
+          <mat-error>
+            Máximo 50000 caracteres
+          </mat-error>
+        }
       </mat-form-field>
     </div>
     <div class="pontuacom">
@@ -382,45 +423,54 @@
     </div>
   </div>
 
-  @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
-    <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{this.modo}}">
-      {{this.modo}}
+  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+    <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{modo()}}">
+      {{modo()}}
     </button>
-    <button type="button" mat-icon-button (click)="onGestomNovaRelectura()" *ngIf="!modoRelectura">
-      Nova relectura
-    </button>
-    <button type="button" mat-icon-button (click)="onCancelarNovaRelectura()" *ngIf="modoRelectura">
-      Cancelar {{this.modo === estadosPagina.engadir ? 'nova' : 'modificar' }} relectura
-    </button>
+
+    @if (!modoRelectura()) {
+      <button type="button" mat-icon-button (click)="onGestomNovaRelectura()">
+        Nova relectura
+      </button>
+    } @else {
+      <button type="button" mat-icon-button (click)="onCancelarNovaRelectura()">
+        Cancelar {{modo() === estadosPagina.engadir ? 'nova' : 'modificar' }} relectura
+      </button>
+    }
   }
 </form>
 
-<div *ngIf="!modoRelectura">
-  <div *ngIf="this.dadosRelecturas.length == 0; else elseBlock">Nom há relecturas para este livro.</div>
-  <ng-template #elseBlock>
-    <h3>Listado de relecturas</h3>
-    <table>
-      <tr>
-        <th>Título</th>
-        <th>Páginas</th>
-        <th>Lido</th>
-        <th>Fim Leitura</th>
-        <th>Dias</th>
-        <th>Pontuaçom</th>
-      </tr>
-      <tr *ngFor="let entrada of this.dadosRelecturas" class="listado-accom">
-        <td (click)="onEditarRelectura(entrada.id)">{{entrada.titulo}}</td>
-        <td (click)="onEditarRelectura(entrada.id)">{{entrada.paginas}}</td>
-        <td (click)="onEditarRelectura(entrada.id)">{{entrada.lido ? 'Si' : 'Nom'}}</td>
-        <td (click)="onEditarRelectura(entrada.id)">
-          {{entrada.dataFimLeitura ? (entrada.dataFimLeitura | date:'dd/MM/yyyy') : '---'}}
-        </td>
-        <td (click)="onEditarRelectura(entrada.id)">{{entrada.diasLeitura}}</td>
-        <td (click)="onEditarRelectura(entrada.id)">{{entrada.pontuacom}}</td>
-        <td (click)="onBorrarRelectura(entrada)">
-          <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
-        </td>
-      </tr>
-    </table>
-  </ng-template>
-</div>
+@if (!modoRelectura()) {
+  <div>
+    @if (!temRelecturas()) {
+      <div>Nom há relecturas para este livro.</div>
+    } @else {
+      <h3>Listado de relecturas</h3>
+      <table>
+        <tr>
+          <th>Título</th>
+          <th>Páginas</th>
+          <th>Lido</th>
+          <th>Fim Leitura</th>
+          <th>Dias</th>
+          <th>Pontuaçom</th>
+        </tr>
+        @for (entrada of this.dadosRelecturas(); track entrada.id) {
+          <tr class="listado-accom">
+            <td (click)="onEditarRelectura(entrada.id)">{{entrada.titulo}}</td>
+            <td (click)="onEditarRelectura(entrada.id)">{{entrada.paginas}}</td>
+            <td (click)="onEditarRelectura(entrada.id)">{{entrada.lido ? 'Si' : 'Nom'}}</td>
+            <td (click)="onEditarRelectura(entrada.id)">
+              {{entrada.dataFimLeitura ? (entrada.dataFimLeitura | date:'dd/MM/yyyy') : '---'}}
+            </td>
+            <td (click)="onEditarRelectura(entrada.id)">{{entrada.diasLeitura}}</td>
+            <td (click)="onEditarRelectura(entrada.id)">{{entrada.pontuacom}}</td>
+            <td (click)="onBorrarRelectura(entrada)">
+              <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+            </td>
+          </tr>
+        }
+      </table>
+    }
+  </div>
+}

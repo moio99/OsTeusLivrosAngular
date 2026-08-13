@@ -1,8 +1,8 @@
 
 <form [formGroup]="autorForm" (ngSubmit)="onSubmit($event)">
-  @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
-    <button color="primary" type="submit" value="{{this.modo}}">
-      <i class="icon-disk"></i> {{this.modo}}
+  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+    <button color="primary" type="submit" value="{{modo()}}">
+      <i class="icon-disk"></i> {{modo()}}
     </button>
     <button color="primary" type="button" (click)="onCancelar()">
       <i class="icon-disk"></i> Retroceder
@@ -125,7 +125,7 @@
   </div>
 </form>
 
-@if(dadosLivrosDoAutor.length > 0) {
+@if(dadosLivrosDoAutor().length > 0) {
   <h3>Listado de livros</h3>
   <table>
     <tr>
@@ -134,7 +134,7 @@
       <th>Lido</th>
       <th>Autor</th>
     </tr>
-    @for (entrada of dadosLivrosDoAutor; track entrada.id) {
+    @for (entrada of dadosLivrosDoAutor(); track entrada.id) {
       <tr class="listado-accom">
         <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
         <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>

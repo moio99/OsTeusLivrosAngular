@@ -1,8 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { SimpleObjet } from '../../../shared/models/outros.model';
-import { FiltroListDragPipe } from '../../../shared/pipes/filtro-list-drag.pipe';
 import { CommonModule } from '@angular/common';
 
 // https://stackblitz.com/edit/angular-htpgvx?file=src%2Fapp%2Fapp.component.ts
@@ -15,76 +14,93 @@ export interface MultiDados {
 @Component({
   selector: 'omla-multi-selecom-dialog',
   standalone: true,
-  imports: [ CommonModule, DragDropModule, FiltroListDragPipe ],
+  imports: [ CommonModule, DragDropModule ],
   templateUrl: './multi-selecom-dialog.component.html',
   styleUrls: ['./multi-selecom-dialog.component.scss']
 })
 export class MultiSelecomDialogComponent {
+  // Inxeccións modernas de Angular 22 sen constructor clásico
+  public readonly dialogRef = inject(MatDialogRef<MultiSelecomDialogComponent>);
+  public readonly data = inject<MultiDados>(MAT_DIALOG_DATA);
 
-  dummy = 0;  // Para que estando aplicado o filtro, se dea conta de que houbo um cambio.
-  filtro = '';
-  multiDados: MultiDados = {total: [], escolma: []};
+  // Estados centrais baseados en Signals (Desaparece a variábel dummy!)
+  protected readonly filtro = signal<string>('');
 
-  constructor(
-    public dialogRef: MatDialogRef<MultiSelecomDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: MultiDados) {
-      this.multiDados = data;
-    }
+  // Inicializamos o Signal co obxecto completo que entra por inxección
+  private readonly _multiDados = signal<MultiDados>({
+    total: this.data?.total ? [...this.data.total] : [],
+    escolma: this.data?.escolma ? [...this.data.escolma] : []
+  });
+
+  // Expoñemos as dúas listaxes de xeito independente para o HTML
+  protected readonly escolma = computed(() => this._multiDados().escolma);
+
+  protected readonly totalFiltrado = computed(() => {
+    const listadoTodo = this._multiDados().total;
+    const termo = this.filtro().trim().toLowerCase();
+
+    if (!termo) return listadoTodo;
+
+    return listadoTodo.filter(item =>
+      item.value.toLowerCase().includes(termo)
+    );
+  });
 
   onFechar(): void {
-    this.dialogRef.close(this.multiDados);
+    // Cando pechamos, devolvemos o valor actual do noso Signal central
+    this.dialogRef.close(this._multiDados());
   }
 
-  onCambioFiltro(input: any) {
-    if (input)
-      this.filtro = input.value;
-  }
-
-  onMover(event: CdkDragDrop<SimpleObjet[]>) {
-    /* event.previousContainer.data,
-      event.container.data,
-      event.previousIndex,
-      event.currentIndex, */
-    let itemId = event.previousContainer.data[event.previousIndex].id;
-
-    if (event.previousContainer.id == 'listadoTodo') {    // A accom tem origem no listado de Todo.
-      let item = this.multiDados.total.find((x) => x.id == itemId);
-      if (item) {
-        this.multiDados.total = this.multiDados.total.filter(elemento => elemento.id !== itemId);
-
-        this.multiDados.escolma.splice(event.currentIndex, 0, item);
-      }
+  onCambioFiltro(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement) {
+      this.filtro.set(inputElement.value); // Actualiza o Signal e o computed reacciona só
     }
-    else {
-      let item = this.multiDados.escolma.find((x) => x.id == itemId);
-      if (item) {
-        this.multiDados.escolma = this.multiDados.escolma.filter(elemento => elemento.id !== itemId);
+  }
 
-        if (this.filtro) {
-          if (item.value.includes(this.filtro)) {   // Se nom cumple o filtro.
-            if (event.currentIndex == 0) {          // O está a meter polo começo
-              this.multiDados.total.splice(0, 0, item);
-            }
-            else {
-              let ind = event.container.data[event.currentIndex];
+  onMover(event: CdkDragDrop<SimpleObjet[]>): void {
+    const itemId = event.previousContainer.data[event.previousIndex].id;
+
+    // Extraemos o estado actual de xeito inmutable (unha copia limpa para traballar)
+    const datos = {
+      total: [...this._multiDados().total],
+      escolma: [...this._multiDados().escolma]
+    };
+
+    if (event.previousContainer.id === 'listadoTodo') {
+      const item = datos.total.find(x => x.id === itemId);
+      if (item) {
+        datos.total = datos.total.filter(elemento => elemento.id !== itemId);
+        datos.escolma.splice(event.currentIndex, 0, item);
+      }
+    } else {
+      const item = datos.escolma.find(x => x.id === itemId);
+      if (item) {
+        datos.escolma = datos.escolma.filter(elemento => elemento.id !== itemId);
+
+        if (this.filtro()) {
+          if (item.value.toLowerCase().includes(this.filtro().toLowerCase())) {
+            if (event.currentIndex === 0) {
+              datos.total.splice(0, 0, item);
+            } else {
+              const ind = event.container.data[event.currentIndex];
               if (ind) {
-                let v = this.multiDados.total.findIndex(x => x.id == ind.id);
-                this.multiDados.total.splice(v, 0, item);   // O meto na posiçom que o soltou.
-              }
-              else {                                // O está a meter polo final.
-                this.multiDados.total.push(item);
+                const v = datos.total.findIndex(x => x.id === ind.id);
+                datos.total.splice(v, 0, item);
+              } else {
+                datos.total.push(item);
               }
             }
+          } else {
+            datos.total.push(item);
           }
-          else {
-            this.multiDados.total.push(item);
-          }
-        }
-        else {
-          this.multiDados.total.splice(event.currentIndex, 0, item);
+        } else {
+          datos.total.splice(event.currentIndex, 0, item);
         }
       }
     }
-    this.dummy++;
+
+    // Notificamos a Angular pasándolle o novo obxecto
+    this._multiDados.set(datos);
   }
 }

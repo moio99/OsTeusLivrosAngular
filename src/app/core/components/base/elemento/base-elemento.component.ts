@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, computed, Inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { first } from 'rxjs/operators';
@@ -23,10 +23,11 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
 
   disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
   estadosPagina = EstadosPagina;
-  modo: EstadosPagina = EstadosPagina.engadir;
+  modo = signal<EstadosPagina>(EstadosPagina.engadir);
   protected elementoId: string | null = null;
   protected dadosDoElemento: TElemento | undefined;
-  protected livrosDoElemento: ListadoLivros[] = [];
+  protected livrosDoElemento = signal<ListadoLivros[]>([]);
+  protected readonly temLivros = computed(() => this.livrosDoElemento().length > 0); // só se le umha vez (quando cambia dadosRelecturas) polo que evita a cpu habaliar a expreson cada vez que pinta ou que sucede um evento na página relacionado.
 
   protected abstract get formuario(): FormGroup;
   protected abstract serviceGetLivros(id: string): any;
@@ -53,14 +54,14 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
       this.elementoId = parametros.id;
 
       if (parametros.id === '0') {
-        this.modo = EstadosPagina.engadir;
+        this.modo.set(EstadosPagina.engadir);
       } else {
-        this.modo = EstadosPagina.guardar;
+        this.modo.set(EstadosPagina.guardar);
         this.obterDadosDoElemento(parametros.id);
       }
 
       if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
-        this.modo = EstadosPagina.soVisualizar;
+        this.modo.set(EstadosPagina.soVisualizar);
       }
     });
   }
@@ -127,7 +128,11 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     this.serviceGetLivros(id)
       .pipe(first())
       .subscribe({
-        next: (v: BaseListadoDadosApi<ListadoLivros>) => this.livrosDoElemento = v?.data ?? [],
+        next: (v: BaseListadoDadosApi<ListadoLivros>) => {
+          console.log(`completada a obtençom dos livros da entidade ${id}`, v);
+          this.livrosDoElemento.set(v?.data ?? []);
+          console.log('>>>>>>>>>>>>>>>>>>>>>>>', this.livrosDoElemento());
+        },
         error: (e: unknown) => {
           console.error(e);
           this.layoutService.amosarInfo({
@@ -190,7 +195,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   }
 
   protected handleSaveComplete() {
-    const action = this.modo === EstadosPagina.engadir ? 'engadida' : 'guardada';
+    const action = this.modo() === EstadosPagina.engadir ? 'engadida' : 'guardada';
     this.layoutService.amosarInfo({
       tipo: InformacomPeTipo.Sucesso,
       mensagem: `${this.getNomeElemento()} ${action}.`
@@ -215,7 +220,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
         this.usuarioAppService.setGenero(elemento);
       }
       this.handleNavigation(data, elemento);
-      this.modo = EstadosPagina.guardar;
+      this.modo.set(EstadosPagina.guardar);
     } else {
       this.amosarMensagemErro();
     }
@@ -242,7 +247,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   }
 
   private amosarMensagemErro() {
-    const action = this.modo === EstadosPagina.engadir ? 'engadir' : 'guardar';
+    const action = this.modo() === EstadosPagina.engadir ? 'engadir' : 'guardar';
     this.layoutService.amosarInfo({
       tipo: InformacomPeTipo.Erro,
       mensagem: `Nom se puido ${action} ${this.getNomeElemento()}.`

@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule, Location } from '@angular/common';
 import { Validators, ValidatorFn, AbstractControl, ValidationErrors, FormControl, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { first, map, Observable, startWith } from 'rxjs';
+import { first, startWith } from 'rxjs';
 import { Autor, AutorData, AutorForm } from '../../../core/models/autor.interface';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { ListadoLivros } from '../../../core/models/listado-livros.interface';
@@ -35,7 +35,7 @@ import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interfa
 export class AutorComponent implements OnInit {
 
   estadosPagina = EstadosPagina;
-  modo = EstadosPagina.soVisualizar;
+  modo = signal<EstadosPagina>(EstadosPagina.soVisualizar);
   dadosDoAutor: Autor | undefined= {
     id: 0,
     nome: '',
@@ -52,7 +52,7 @@ export class AutorComponent implements OnInit {
     nomePais: '',
     quantidade: 0
   };
-  dadosLivrosDoAutor: ListadoLivros[] = [];
+  dadosLivrosDoAutor = signal<ListadoLivros[]>([]);
   dadosNacionalidades: Nacionalidade[] = [];
   dadosPaises: Pais[] = [];
   date = new Date();
@@ -94,24 +94,17 @@ export class AutorComponent implements OnInit {
     // startWith('') // Para que emita um valor inicial '' cando o usuario inda nom escreveu nada e for do combo itere o listado completo
     this.autorForm.controls.idNacionalidade.valueChanges.pipe(startWith(''))
   );
-  private dadosNacionalidadesComboSignal = signal<SimpleObjet[]>([]);
-  // Creamos un signal auxiliar para controlar cando se forza ver todo o listado
-  private forzarListaCompletaNacionalidades = signal<boolean>(false);
+  private todasNacionalidadesCombo = signal<SimpleObjet[]>([]);
 
   private idPaisSignal = toSignal(
     // startWith('') // Para que emita um valor inicial '' cando o usuario inda nom escreveu nada e for do combo itere o listado completo
     this.autorForm.controls.idPais.valueChanges.pipe(startWith(''))
   );
-  private dadosPaisesComboSignal = signal<SimpleObjet[]>([]);
-  // Creamos un signal auxiliar para controlar cando se forza ver todo o listado
-  private forzarListaCompletaPaises = signal<boolean>(false);
+  private todosPaisesCombo = signal<SimpleObjet[]>([]);
 
   // O filtro é un Signal derivado ('computed'). Reexecútase só cando cambia o input ou o combo.
   dadosNacionalidadesFiltradas = computed(() => {
-    const listaCompleta = this.dadosNacionalidadesComboSignal();    // se cambia este lanza o computed
-    if (this.forzarListaCompletaNacionalidades()) {
-      return this.filtroDeNacionalidades('');
-    }
+    const listaCompleta = this.todasNacionalidadesCombo();    // se cambia este lanza o computed (para quando o combo está valeiro, ou se cambia o input)
     const valorInput = this.idNacionalidadeSignal();                // se cambia este lanza o computed
 
     // Se o valor é un número (un ID), tamén queremos que por defecto amose todo o listado ao abrir
@@ -123,11 +116,8 @@ export class AutorComponent implements OnInit {
 
   // O filtro é un Signal derivado ('computed'). Reexecútase só cando cambia o input ou o combo.
   dadosPaisesFiltrados = computed(() => {
-    const listaCompleta = this.dadosPaisesComboSignal();    // se cambia este lanza o computed
-    if (this.forzarListaCompletaPaises()) {
-      return this.filtroDePaises('');
-    }
-    const valorInput = this.idPaisSignal();                 // se cambia este lanza o computed
+    const listaCompleta = this.todosPaisesCombo();  // se cambia este lanza o computed (para quando o combo está valeiro, ou se cambia o input)
+    const valorInput = this.idPaisSignal();         // se cambia este lanza o computed
 
     // Se o valor é un número (un ID), tamén queremos que por defecto amose todo o listado ao abrir
     if (typeof valorInput === 'number' || !isNaN(Number(valorInput))) {
@@ -140,15 +130,15 @@ export class AutorComponent implements OnInit {
     const state = history.state;
     if (state?.id) {
       if (state.id === '0')
-        this.modo = EstadosPagina.engadir;
+        this.modo.set(EstadosPagina.engadir);
       else {
-        this.modo = EstadosPagina.guardar;
+        this.modo.set(EstadosPagina.guardar);
         this.obterLivros(state.id);
       }
     }
 
     if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
-      this.modo = EstadosPagina.soVisualizar;
+      this.modo.set(EstadosPagina.soVisualizar);
     }
 
     this.estabelecerDisponibilidade();
@@ -203,7 +193,7 @@ export class AutorComponent implements OnInit {
       .getLivrosPorAutor(id)
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.dadosLivrosDoAutor = this.dadosLivrosObtidos(v),
+        next: (v: object) => this.dadosLivrosDoAutor.set(this.dadosLivrosObtidos(v)),
         error: (e: any) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os livros do autor'}); },
           complete: () => console.debug('completada a obtençom dos livros do autor')
@@ -256,7 +246,7 @@ export class AutorComponent implements OnInit {
       });
 
       // Isto actualizará o Signal automaticamente
-      this.dadosNacionalidadesComboSignal.set(dadosReducidos);
+      this.todasNacionalidadesCombo.set(dadosReducidos);
 
       return dados.data;
     }
@@ -284,7 +274,7 @@ export class AutorComponent implements OnInit {
       });
 
       // Isto actualizará o Signal automaticamente
-      this.dadosPaisesComboSignal.set(dadosReducidos);
+      this.todosPaisesCombo.set(dadosReducidos);
 
       return dados.data;
     }
@@ -298,7 +288,7 @@ export class AutorComponent implements OnInit {
   private filtroDeNacionalidades(value: string): SimpleObjet[] {
     const filterValue = value.toLowerCase();
 
-    return this.dadosNacionalidadesComboSignal().filter(option => option.value.toLowerCase().includes(filterValue));
+    return this.todasNacionalidadesCombo().filter(option => option.value.toLowerCase().includes(filterValue));
   }
 
   /**
@@ -308,7 +298,7 @@ export class AutorComponent implements OnInit {
   private filtroDePaises(value: string): SimpleObjet[] {
     const filterValue = value.toLowerCase();
 
-    return this.dadosPaisesComboSignal().filter(option => option.value.toLowerCase().includes(filterValue));
+    return this.todosPaisesCombo().filter(option => option.value.toLowerCase().includes(filterValue));
   }
 
   private obterDadosDoAutor(id: string): void {
@@ -327,13 +317,13 @@ export class AutorComponent implements OnInit {
 
   amosarNacionalidade = (id: number | null): string => {
     if (!id) return '';
-    const nacionalidade = this.dadosNacionalidadesComboSignal().find(n => n.id === id);
+    const nacionalidade = this.todasNacionalidadesCombo().find(n => n.id === id);
     return nacionalidade ? nacionalidade.value : '';
   };
 
   amosarPais = (id: number | null): string => {
     if (!id) return '';
-    const pais = this.dadosPaisesComboSignal().find(n => n.id === id);
+    const pais = this.todosPaisesCombo().find(n => n.id === id);
     return pais ? pais.value : '';
   };
 
@@ -377,7 +367,7 @@ export class AutorComponent implements OnInit {
   }
 
   private estabelecerDisponibilidade() {
-    if (this.modo === EstadosPagina.soVisualizar) {
+    if (this.modo() === EstadosPagina.soVisualizar) {
       this.autorForm.disable();
     } else {
       this.autorForm.enable();
@@ -417,8 +407,8 @@ export class AutorComponent implements OnInit {
       let dN = dateConvert.getDate(this.autorForm.controls.dataNacemento.value);
       let dD = dateConvert.getDate(this.autorForm.controls.dataDefuncom.value);
 
-      let nacom = this.dadosNacionalidadesComboSignal().find(option => option.id === this.autorForm.controls.idNacionalidade.value);
-      let pais = this.dadosPaisesComboSignal().find(option => option.id === this.autorForm.controls.idPais.value);
+      let nacom = this.todasNacionalidadesCombo().find(option => option.id === this.autorForm.controls.idNacionalidade.value);
+      let pais = this.todosPaisesCombo().find(option => option.id === this.autorForm.controls.idPais.value);
       const autor: Autor = {
         id: Number(this.dadosDoAutor?.id),
         nome: String(this.autorForm.controls.nome.value).trim(),
@@ -446,7 +436,7 @@ export class AutorComponent implements OnInit {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o autor.'});
               console.error(e) },
               complete: () => {
-                this.modo = EstadosPagina.guardar;
+                this.modo.set(EstadosPagina.guardar);
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor engadido.'});
                 // console.debug('post completado');
               }

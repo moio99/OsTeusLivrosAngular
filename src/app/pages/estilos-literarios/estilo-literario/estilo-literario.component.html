@@ -1,8 +1,8 @@
 
 <form [formGroup]="formuario" (ngSubmit)="onSubmit($event)">
-  @if (this.modo === estadosPagina.engadir || this.modo === estadosPagina.guardar) {
-    <button color="primary" type="submit" value="{{this.modo}}">
-      <i class="icon-disk"></i> {{this.modo}}
+  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+    <button color="primary" type="submit" value="{{modo()}}">
+      <i class="icon-disk"></i> {{modo()}}
     </button>
     <button color="primary" type="button" (click)="onCancelar()">
       <i class="icon-disk"></i> Retroceder
@@ -13,41 +13,52 @@
       <mat-form-field [style.width.px]=500>
         <mat-label>Nome:</mat-label>
         <input matInput [formControl]="formuario.get('nome')" width="200">
-        <mat-error *ngIf="formuario.get('nome').hasError('maxlength')">
-          A longitude nom debe superar os 150 caracteres
-        </mat-error>
-        <mat-error *ngIf="formuario.get('nome').hasError('required')">
-          O Nome é obrigatorio
-        </mat-error>
+        @if (formuario.get('nome').hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 150 caracteres
+          </mat-error>
+        }
+        @if (formuario.get('nome').hasError('required')) {
+          <mat-error>
+            O Nome é obrigatorio
+          </mat-error>
+        }
       </mat-form-field>
     </div>
     <div>
       <mat-form-field class="comentario-ancho">
         <mat-label>Comentario:</mat-label>
         <textarea matInput [formControl]="formuario.get('comentario')" rows="7"></textarea>
-        <mat-error *ngIf="formuario.get('comentario').hasError('maxlength')">
-          A longitude nom debe superar os 50000 caracteres
-        </mat-error>
+        @if (formuario.get('comentario').hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 5000 caracteres
+          </mat-error>
+        }
       </mat-form-field>
     </div>
   </div>
 </form>
 
-<h3 *ngIf="livrosDoElemento.length > 0">Listado de livros</h3>
-
-<table *ngIf="this.livrosDoElemento.length > 0">
-  <tr>
-    <th>Titulo</th>
-    <th>TituloOriginal</th>
-    <th>Autor</th>
-  </tr>
-  <tr *ngFor="let entrada of this.livrosDoElemento" class="listado-accom">
-    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
-    <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
-    <td class="lista-com-comas">
-      <ul>
-        <li *ngFor="let autor of entrada.autores" (click)="onIrPagina('/autores/autor', autor.id)">{{autor.nome}}</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+@if (temLivros()) {
+  <h3>Listado de livros</h3>
+  <table>
+    <tr>
+      <th>Titulo</th>
+      <th>TituloOriginal</th>
+      <th>Autor</th>
+    </tr>
+    @for (entrada of livrosDoElemento(); track entrada.id) {
+      <tr class="listado-accom">
+        <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.titulo}}</td>
+        <td (click)="onIrPagina('/livros/livro', entrada.id)">{{entrada.tituloOriginal}}</td>
+        <td class="lista-com-comas">
+          <ul>
+            @for (autor of entrada.autores; track autor.id) {
+              <li (click)="onIrPagina('/autores/autor', autor.id)">{{autor.nome}}</li>
+            }
+          </ul>
+        </td>
+      </tr>
+    }
+  </table>
+}

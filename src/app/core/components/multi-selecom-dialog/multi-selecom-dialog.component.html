@@ -1,39 +1,56 @@
 <div class="fun">
-<div class="contedor-dialogo popup-multiselecom">
-  <div class="boton-fechar">
-    <button (click)="onFechar()">Fechar</button>
-  </div>
+  <div class="contedor-dialogo popup-multiselecom">
 
-  <input class="filtro-caixa" type="text" (input)="onCambioFiltro($event.target)" placeholder="⌕ Filtro">
+    <div class="boton-fechar">
+      <button (click)="onFechar()">Fechar</button>
+    </div>
 
-  <div>
-    <div class="example-container container-todo">
-      <span>Todos</span>
-      <div
-        cdkDropList
-        #TodoList="cdkDropList"
-                [id]="'listadoTodo'"
-        [cdkDropListData]="multiDados.total | filtroListDrag: filtro:dummy"
-        [cdkDropListConnectedTo]="[EscolmaList]"
-        class="example-list"
-        (cdkDropListDropped)="onMover($event)">
-        <div class="example-box" *ngFor="let item of multiDados.total | filtroListDrag: filtro:dummy" cdkDrag>{{item.value}}</div>
+    <input class="filtro-caixa"
+           type="text"
+           (input)="onCambioFiltro($event)"
+           placeholder="⌕ Filtro">
+
+    <div>
+      <!-- PANEL ESQUERDO: Todos os elementos -->
+      <div class="example-container container-todo">
+        <span>Todos</span>
+        <div
+          cdkDropList
+          #TodoList="cdkDropList"
+          [id]="'listadoTodo'"
+          [cdkDropListData]="totalFiltrado()"
+          [cdkDropListConnectedTo]="[EscolmaList]"
+          class="example-list"
+          (cdkDropListDropped)="onMover($event)">
+
+          @for (item of totalFiltrado(); track item.id) {
+            <div class="example-box" cdkDrag>{{ item.value }}</div>
+          } @empty {
+            <div class="example-box baleiro">Nom hai elementos co filtro.</div>
+          }
+
+        </div>
+      </div>
+
+      <!-- PANEL DEREITO: Elementos seleccionados (Escolma) -->
+      <div class="example-container">
+        <span>Escolma</span>
+        <div
+          cdkDropList
+          #EscolmaList="cdkDropList"
+          [id]="'listadoEscolma'"
+          [cdkDropListData]="escolma()"
+          [cdkDropListConnectedTo]="[TodoList]"
+          class="example-list"
+          (cdkDropListDropped)="onMover($event)">
+
+          @for (item of escolma(); track item.id) {
+            <div class="example-box" cdkDrag>{{ item.value }}</div>
+          }
+
+        </div>
       </div>
     </div>
 
-    <div class="example-container">
-      <span>Escolma</span>
-      <div
-        cdkDropList
-        #EscolmaList="cdkDropList"
-                [id]="'listadoEscolma'"
-        [cdkDropListData]="multiDados.escolma"
-        [cdkDropListConnectedTo]="[TodoList]"
-        class="example-list"
-        (cdkDropListDropped)="onMover($event)">
-        <div class="example-box" *ngFor="let item of multiDados.escolma" cdkDrag>{{item.value}}</div>
-      </div>
-    </div>
   </div>
-</div>
 </div>
