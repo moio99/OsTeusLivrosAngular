@@ -47,17 +47,16 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
   @ViewChild('taboaGenero') taboaGenero!: ElementRef;
 
   private readonly layoutService = inject(LayoutService);
+  private readonly router = inject(Router);
+  private readonly usuarioApp = inject(UsuarioAppService);
+  private readonly estadisticasService = inject(EstadisticasService);
+  private readonly outrosService = inject(OutrosService);
+  private readonly graficosService = inject(GraficosService);
 
-  constructor(
-    private router: Router,
-    private usuarioApp: UsuarioAppService,
-    private estadisticasService: EstadisticasService,
-    private outrosService: OutrosService,
-    private graficosService: GraficosService) {
-
+  constructor() {
     effect(() => {
       if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) return;
-      console.log('Cada vez que ha umha mudança lánza-se isto ', this.anosSignal());
+      console.log('Cada vez que há umha mudança lánza-se isto ', this.anosSignal());
     });
   }
 
@@ -151,6 +150,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
         const posicionFinal = contedor.scrollTop + (elementoTop - contedorTop);
 
         contedor.scrollTo({ top: posicionFinal, behavior: 'smooth' });
+        element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest'});
       });
     } else {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
