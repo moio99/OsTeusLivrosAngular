@@ -1,4 +1,4 @@
-import { Component, Input, Output, computed, effect, input, linkedSignal, output, signal } from '@angular/core';
+import { Component, computed, input, linkedSignal, output, signal } from '@angular/core';
 import { Estrela } from './estrelas-pontuacom.interface';
 import { EstrelaComponent } from './estrela/estrela.component';
 

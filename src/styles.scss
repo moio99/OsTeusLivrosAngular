@@ -1,8 +1,10 @@
 @use "./assets/styles/comuns.scss";
+@use "./assets/styles/constantes.scss";
 @use "./assets/styles/controis.scss";
 
 html, body {
   margin: 0px;
+  background-color: constantes.$cor-fundo;
 }
 
 html, body { overflow: hidden; }

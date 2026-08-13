@@ -1,6 +1,8 @@
 
+@use "./constantes.scss";
+
 button {
-  background-color: #0e8210;
+  background-color: constantes.$cor-botom;;
   border: 2px solid #095b0b;
   border-radius: 4px 4px 4px 4px;
   text-shadow: 0 1px rgba(0, 0, 0, 0.1);
@@ -21,7 +23,7 @@ button:hover {
 .botom-novo-resgistro {
   background: url(../images/novo.png) no-repeat;
   background-position: right -25px;
-  background-color: #0e8210;
+  background-color: constantes.$cor-botom;;
   padding-right: 30px;
 }
 
@@ -29,7 +31,7 @@ button:hover {
   background: url(../images/guardar.png) no-repeat;
   background-size: 15px;
   background-position: right;
-  background-color: #0e8210;
+  background-color: constantes.$cor-botom;;
   padding-right: 20px;
 }
 

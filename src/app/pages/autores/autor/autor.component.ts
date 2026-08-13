@@ -57,6 +57,15 @@ export class AutorComponent implements OnInit {
   dadosPaises: Pais[] = [];
   date = new Date();
 
+  private router = inject(Router);
+  private location = inject(Location);
+  private layoutService = inject(LayoutService);
+  private usuarioAppService = inject(UsuarioAppService);
+  private outrosService = inject(OutrosService);
+  private autoresService = inject(AutoresService);
+  private livrosService = inject(LivrosService);
+  private dadosPaginasService = inject(DadosPaginasService);
+
   private fb = inject(FormBuilder);
   autorForm = this.fb.group<AutorForm>({
         nome: new FormControl('', {
@@ -126,17 +135,6 @@ export class AutorComponent implements OnInit {
     }
     return this.filtroDePaises(valorInput?.toString() || '');
   });
-
-  constructor(
-    private router: Router,
-    private layoutService: LayoutService,
-    private location: Location,
-    private usuarioAppService: UsuarioAppService,
-    private outrosService: OutrosService,
-    private autoresService: AutoresService,
-    private livrosService: LivrosService,
-    private dadosPaginasService: DadosPaginasService) {
-    }
 
   ngOnInit(): void {
     const state = history.state;

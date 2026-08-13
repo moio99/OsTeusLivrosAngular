@@ -54,10 +54,10 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
   private readonly graficosService = inject(GraficosService);
 
   constructor() {
-    effect(() => {
-      if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) return;
-      console.log('Cada vez que há umha mudança lánza-se isto ', this.anosSignal());
-    });
+    // effect(() => {
+    //   if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) return;
+    //   console.log('Cada vez que há umha mudança lánza-se isto ', this.anosSignal());
+    // });
   }
 
   ngOnInit(): void {
