@@ -11,7 +11,12 @@ export interface ListadoAutores extends BaseListado, BaseQuantidadesLivros {
 
 export interface ListadoConcretoAutoresData {
   data: ListadoConcretoAutores[];
-  meta: any;
+  meta: { quantidade: number };
+}
+
+export interface AutoresRetenidosData {
+  data: number[];
+  meta: { id: number; quantidade: number };
 }
 
 export interface ListadoConcretoAutores extends BaseElemento {

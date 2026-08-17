@@ -33,6 +33,11 @@ export interface BaseComLivros extends Omit<BaseQuantidadesLivros, 'quantidadeLi
   web: string;
 }
 
+export interface BaseComLidos extends Omit<BaseQuantidadesLivros, 'quantidadeLivros'> {
+  // quantidadeLidos: number;   agora vem de BaseQuantidadesLivros
+  web: string;
+}
+
 export interface Resultado {
   idResult: string
 }

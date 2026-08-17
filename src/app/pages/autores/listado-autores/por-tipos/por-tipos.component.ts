@@ -42,8 +42,8 @@ export class PorTiposComponent implements OnInit {
       .getListadoAutoresPorNacons()
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.listadoDados.set(this.dadosObtidos(v, true)),
-        error: (e: any) => { console.error(e),
+        next: (v) => this.listadoDados.set(this.dadosObtidos(v, true)),
+        error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puido obter o listado de autores por paises.'}); },
           // complete: () => console.info('completado listado de autores por paises')
@@ -56,7 +56,7 @@ export class PorTiposComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: (v: object) => this.listadoDados.set(this.dadosObtidos(v, false)),
-        error: (e: any) => { console.error(e),
+        error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puido obter o listado de autores por naçons.'}); },
           // complete: () => console.info('completado listado de autores por naçons')

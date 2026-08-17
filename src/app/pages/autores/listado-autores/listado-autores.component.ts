@@ -61,7 +61,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       .pipe(first())
       .subscribe({
         next: (v: object) => this.listadoDados.set(this.dadosObtidosAA(v)),
-        error: (e: any) => { console.error(e),
+        error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor'}); },
           // complete: () => console.info('completado listado de autores')
     });
@@ -75,7 +75,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
         .pipe(first())
         .subscribe({
           next: (v: object) => this.filtroPaisOuNacionalidade.update((valor) => ' ' + v),
-          error: (e: any) => { console.error(e),
+          error: (e: unknown) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: `Nom se puiderom obter a nacionalidade ${parametros.id}`}); },
             complete: () => console.info(`completada obtençom da nacionalidade ${parametros.id}`)
       });
@@ -86,7 +86,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
         .pipe(first())
         .subscribe({
           next: (v: object) => this.filtroPaisOuNacionalidade.update((valor) => ' ' + v),
-          error: (e: any) => { console.error(e),
+          error: (e: unknown) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: `Nom se puiderom obter o pais ${parametros.id}`}); },
             complete: () => console.info(`completada obtençom do pais ${parametros.id}`)
       });
@@ -96,7 +96,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       .pipe(first())
       .subscribe({
         next: (v: object) => this.listadoDados.set(this.dadosObtidosAA(v)),
-        error: (e: any) => { console.error(e),
+        error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autores'}); },
           // complete: () => console.info('completado listado de autores')
     });

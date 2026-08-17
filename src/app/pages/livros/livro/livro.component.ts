@@ -4,8 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LivrosService } from '../../../core/services/api/livros.service';
 import { CommonModule } from '@angular/common';
 import { FormControl,
-  ReactiveFormsModule, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors, FormsModule,
-  FormGroup} from '@angular/forms';
+  ReactiveFormsModule, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors, FormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -167,7 +166,7 @@ export class LivroComponent implements OnInit {
             this.dadosOutrosObtidos(this.usuarioAppService.getDadosOutros());
             this.obterDadosRelecturasELivro(idLivro)
           },
-          error: (e: any) => { console.error(e),
+          error: (e: unknown) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados', duracom: 10}); },
       });
     }
@@ -377,7 +376,7 @@ export class LivroComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: (v: object) => this.dadosRelecturasObtidos(v),
-        error: (e: any) => { console.error(e),
+        error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados das relecturas', duracom: 10}); },
           complete: () => this.obterDadosDoLivro(idLivro)       // Dados do livro
     });
@@ -398,7 +397,7 @@ export class LivroComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: (v: object) => this.amosarDadosRelectura(v),
-        error: (e: any) => { console.error(e),
+        error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a relectura.'}); },
           complete: () => console.debug('completada a obtençom da relectura do livro')
     });
@@ -547,7 +546,7 @@ export class LivroComponent implements OnInit {
             .pipe(first())
             .subscribe({
               next: (v: object) => console.debug(v),
-              error: (e: any) => { console.error(e),
+              error: (e: unknown) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a relectura.'}); },
                 complete: () => { // console.debug('Borrado feito');
                 this.obterDadosRelecturasELivro(this.idLivro);
@@ -570,7 +569,7 @@ export class LivroComponent implements OnInit {
         .pipe(first())
         .subscribe({
           next: (v: object) => this.dadosObtidosDoLivro(v),
-          error: (e: any) => { console.error(e),
+          error: (e: unknown) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro', duracom: 10}); },
             complete: () => console.debug('completada a obtençom dos dados do livro')
       });
@@ -966,7 +965,7 @@ export class LivroComponent implements OnInit {
           .pipe(first())
           .subscribe({
             next: (v) => {console.debug(v), this.gestionarExito(v, livro)},
-            error: (e: any) => {
+            error: (e: unknown) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar o livro.', duracom: 10});
               console.error(e) },
               complete: () => {

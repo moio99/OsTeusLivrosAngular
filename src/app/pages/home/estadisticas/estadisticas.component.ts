@@ -177,7 +177,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
       .pipe(first())
       .subscribe({
         next: (v: any) => this.comprobarDadosObtidos(rota, v),
-        error: (e: any) => { console.error(e),
+        error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
           // complete: () => console.info('completado listado de generos')
     });

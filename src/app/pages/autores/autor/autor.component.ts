@@ -23,6 +23,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { environment, environments } from '../../../../environments/environment';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
+import { AutoresRetenidosData } from '../../../core/models/listado-autores.interface';
 
 @Component({
   selector: 'omla-autor',
@@ -194,7 +195,7 @@ export class AutorComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: (v: object) => this.dadosLivrosDoAutor.set(this.dadosLivrosObtidos(v)),
-        error: (e: any) => { console.error(e),
+        error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os livros do autor'}); },
           complete: () => console.debug('completada a obtençom dos livros do autor')
     });
@@ -230,7 +231,7 @@ export class AutorComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: (v: object) => this.dadosNacionalidades = this.dadosNacionalidadesObtidas(v),
-        error: (e: any) => { console.error(e),
+        error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: 'Nom se puiderom obter os dados das nacionalidades'}); },
           complete: () => this.obterPaises(idAutor)
@@ -259,7 +260,7 @@ export class AutorComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: (v: object) => this.dadosPaises = this.dadosPaisesObtidos(v),
-        error: (e: any) => { console.error(e),
+        error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados dos paises'}); },
           complete: () => this.obterDadosDoAutor(idAutor)
     });
@@ -308,7 +309,7 @@ export class AutorComponent implements OnInit {
         .pipe(first())
         .subscribe({
           next: (v: object) => this.dadosDoAutor = this.dadosAutorObtidos(v),
-          error: (e: any) => { console.error(e),
+          error: (e: unknown) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor'}); },
             complete: () => console.debug('completada a obtençom dos dados do autor')
       });
@@ -381,20 +382,20 @@ export class AutorComponent implements OnInit {
       && this.autorForm.controls.dataNacemento.status === 'VALID' && this.autorForm.controls.dataDefuncom.status === 'VALID'
       && this.autorForm.controls.premios.status === 'VALID' && this.autorForm.controls.web.status === 'VALID') {
 
-      let autorRepetido: AutorData<Autor>;
+      let autorRepetido: AutorData<Autor> | undefined;
       this.autoresService
         .getAutorPorNome(String(this.autorForm.controls.nome.value).trim())
         .pipe(first())
         .subscribe({
-          next: (v: object) => autorRepetido = <AutorData<Autor>>v,
-          error: (e: any) => { console.error(e),
+          next: (v) => autorRepetido = v,
+          error: (e: unknown) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor.'}); },
-            complete: () => this.guardarAutor(event, autorRepetido)
+          complete: () => this.guardarAutor(event, autorRepetido)
       });
     }
   }
 
-  guardarAutor(event: any, autorRepetido: AutorData<Autor>) {
+  guardarAutor(event: any, autorRepetido: AutorData<Autor> | undefined) {
     if (autorRepetido != undefined && autorRepetido.meta.quantidade > 0 && (
       (event.submitter.value === EstadosPagina.engadir)
       ||
@@ -432,7 +433,7 @@ export class AutorComponent implements OnInit {
           .pipe(first())
           .subscribe({
             next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, autor)},
-            error: (e: any) => {
+            error: (e: unknown) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o autor.'});
               console.error(e) },
               complete: () => {
@@ -448,7 +449,7 @@ export class AutorComponent implements OnInit {
           .pipe(first())
           .subscribe({
             next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, autor)},
-            error: (e: any) => {
+            error: (e: unknown) => {
               this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar o autor.'});
               console.error(e) },
               complete: () => {

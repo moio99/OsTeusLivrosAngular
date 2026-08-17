@@ -184,7 +184,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
 
     serviceCall.pipe(first()).subscribe({
       next: (v: any) => this.handleSaveSuccess(v, elemento),
-      error: (e: any) => this.handleSaveError(e),
+      error: (e: unknown) => this.handleSaveError(e),
       complete: () => this.handleSaveComplete()
     });
   }
