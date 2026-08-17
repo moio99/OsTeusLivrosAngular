@@ -29,7 +29,7 @@
       <div class="autor">
         <div class="lista-etiqueta">
           <div>
-            Autor@if(autoresLivro().length > 1) { <span>es</span> }:
+            Autor@if(temAutoresLivro()) { <span>es</span> }:
           </div>
           @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
             <div>
@@ -64,7 +64,7 @@
       <div class="genero">
         <div class="lista-etiqueta">
           <div>
-            Género@if(generosLivro().length > 1) { <span>s</span> }:
+            Género@if(temGenerosLivro()) { <span>s</span> }:
           </div>
           @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
             <div>
@@ -255,14 +255,10 @@
           <mat-datepicker-toggle matSuffix [for]="fDateCri"></mat-datepicker-toggle>
           <mat-datepicker #fDateCri></mat-datepicker>
           @if (livroForm.controls.dataCriacom.hasError('matDatepickerParse')) {
-            <mat-error
-              [innerHTML]="'O formato válido é dd/mm/aaaa'">
-            </mat-error>
+            <mat-error>O formato válido é dd/mm/aaaa</mat-error>
           }
           @if (livroForm.controls.dataCriacom.hasError('datasInvalidas')) {
-            <mat-error>
-              A data da criaçom nom pode ser superior á data da ediçom
-            </mat-error>
+            <mat-error>A data da criaçom nom pode ser superior á data da ediçom</mat-error>
           }
         </mat-form-field>
       </div>
@@ -274,14 +270,10 @@
         <mat-datepicker-toggle matSuffix [for]="fDateEdi"></mat-datepicker-toggle>
         <mat-datepicker #fDateEdi></mat-datepicker>
         @if (livroForm.controls.dataEdicom.hasError('matDatepickerParse')) {
-          <mat-error
-            [innerHTML]="'O formato válido é dd/mm/aaaa'">
-          </mat-error>
+          <mat-error>O formato válido é dd/mm/aaaa</mat-error>
         }
         @if (livroForm.controls.dataEdicom.hasError('datasInvalidas')) {
-          <mat-error>
-            A data da ediçom nom pode ser inferior á data de criaçom
-          </mat-error>
+          <mat-error>A data da ediçom nom pode ser inferior á data de criaçom</mat-error>
         }
       </mat-form-field>
     </div>
@@ -316,9 +308,7 @@
         <mat-datepicker-toggle matSuffix [for]="fDateFimL"></mat-datepicker-toggle>
         <mat-datepicker #fDateFimL></mat-datepicker>
         @if (livroForm.controls.dataFimLeiturata.hasError('matDatepickerParse')) {
-          <mat-error
-            [innerHTML]="'O formato válido é dd/mm/aaaa'">
-          </mat-error>
+          <mat-error>O formato válido é dd/mm/aaaa</mat-error>
         }
       </mat-form-field>
     </div>

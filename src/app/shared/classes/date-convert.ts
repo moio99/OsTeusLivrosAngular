@@ -3,102 +3,83 @@ import { EngadirEditarData, EngadirEditarDataHora } from "../models/datas";
 export class DateConvert {
 
   /**
-    * Convierte un string a un objeto Date.
-    * @param date fecha en formato yyyyMMddHHmmss.
-    */
-  public ConvertStringToDate(date: string): Date | null {
-    if (date.length === 14) {
-      var d = new Date();
-      d.setUTCFullYear(+date.substring(0, 4));
-      d.setUTCMonth((+date.substring(4, 6) -1));
-      d.setUTCDate(+date.substring(6, 8));
-      d.setUTCHours(+date.substring(8, 10));
-      d.setUTCMinutes(+date.substring(10, 12));
-      d.setUTCSeconds(+date.substring(12, 14));
-
-      return d;
-    }
-    return null;
-  }
-
-  /**
-   * Convierte un Objeto en AddEditDate. Es necesario porque al convertir un objeto mat-datepicker a data, y al llegar a la api le resta un día, por estar en UTC - 2.
-   * @param value Objeto con la fecha en formato string o mat-datepicker.
+   * Obtén unha estrutura EngadirEditarData compatible a partir de calquera formato de data
+   * @param value Objeto coa data en formato string ou mat-datepicker.
    */
-  public getDate(value: any): EngadirEditarData {
-    let addEditDate: EngadirEditarData = { day: 0, month: 0, year: 0 };
-    if (value != null && value != undefined) {
-      if (!this.isString(value)) {
-        let date = new Date(value);
-        addEditDate = { day: date.getDate(), month: (date.getMonth() + 1), year: date.getFullYear() };
-      }
-      else {
-        addEditDate = this.getDateFromMySQL(value);
-      }
+  public getDate(value: string | Date | number | null | undefined): EngadirEditarData {
+    // Se o valor é nulo, indefinido ou unha cadea baleira, paramos de xeito seguro
+    if (value === null || value === undefined || value === '') {
+      return { day: 0, month: 0, year: 0 };
     }
-    return addEditDate;
+
+    // Se é un string, delegamos directamente no método optimizado de MySQL
+    if (typeof value === 'string') {
+      return this.getDateFromMySQL(value);
+    }
+    const dataNativa = new Date(value);
+
+    if (!isNaN(dataNativa.getTime())) {
+      return {
+        day: dataNativa.getDate(),
+        month: dataNativa.getMonth() + 1, // En JS os meses van de 0 a 11
+        year: dataNativa.getFullYear()
+      };
+    }
+
+    // Por se chega un formato non recoñecido ou corrupto
+    return { day: 0, month: 0, year: 0 };
   }
 
   /**
-   * Dolta a data no formato dd/MM/yyyy
-   * @param value Objeto con la fecha en formato string o mat-datepicker.
+   * Converte calquera formato de data nunha cadea de texto formateada co separador escollido
+   * @param value Obxeto coa data en formato string ou mat-datepicker.
    */
-  public getDateString(value: any, separador: string) {
-    let data = this.getDate(value);
-    return data.day + separador + data.month + separador + data.year;
+  public getDateString(
+    value: string | Date | number | null | undefined,
+    separador: string
+  ): string {
+    // Obtemos a estrutura limpa de EngadirEditarData
+    const data = this.getDate(value);
+
+    if (data.day === 0 && data.month === 0 && data.year === 0) {
+      return '';
+    }
+
+    return `${data.day}${separador}${data.month}${separador}${data.year}`;
   }
 
-  public getDateFromMySQL(value: string): EngadirEditarData {
 
-    let addEditDate: EngadirEditarData = { day: 0, month: 0, year: 0 };
-    if (value != null && value != undefined
-      && value !== '' && value.length > 4) {
-      if (value.indexOf('/') > -1) {
-        let str = value.split('/');
-        addEditDate = { day: +str[0], month: +str[1], year: +str[2] };
-      }
-      else if (value.indexOf('-') > -1) {
-        if (value.indexOf('T') > -1) {
-          let strA = value.split('-');
-          let strB = strA[2].split('T');
-          addEditDate = { day: +strB[0], month: +strA[1], year: +strA[0] };
-        }
-        else {
-          let strA = value.split('-');    // 2022-12-29
-          addEditDate = { day: +strA[2], month: +strA[1], year: +strA[0] };
-        }
-      }
+  public getDateFromMySQL(value: string | null | undefined): EngadirEditarData {
+    // Protección inicial con encadeamento opcional e recorte de espazos
+    if (!value?.trim() || value.length < 4) {
+      return { day: 0, month: 0, year: 0 };
     }
-    return addEditDate;
+
+    // CASO 1: Formato clásico "DD/MM/YYYY" (Se vén con barras)
+    if (value.includes('/')) {
+      const [day, month, year] = value.split('/').map(Number);
+      return { day, month, year };
+    }
+
+    // CASO 2: Formato MySQL/ISO "YYYY-MM-DD" (con ou sen "T" de hora)
+    // O constructor 'new Date()' de JavaScript le nativamente os formatos baseados en guións
+    const dataNativa = new Date(value);
+
+    // Verificamos que a data sexa válida antes de extraer os compoñentes
+    if (!isNaN(dataNativa.getTime())) {
+      return {
+        day: dataNativa.getDate(),
+        month: dataNativa.getMonth() + 1, // Lembra que en JS os meses van de 0 a 11
+        year: dataNativa.getFullYear()
+      };
+    }
+
+    // Se chega un formato totalmente descoñecido, devolvemos a estrutura a cero
+    return { day: 0, month: 0, year: 0 };
   }
 
   /**
-   * Convierte un Objeto en AddEditDateTime. Es necesario porque al convertir un objeto mat-datepicker a data, y al llegar a la api le resta un día, por estar en UTC - 2.
-   * @param value Objeto con la fecha en formato string o mat-datepicker.
-   * @param hour hora introducida por el usuario.
-   * @param minutes minutos introducidos por el usuario
-   */
-  getDateTime(value: any, hour: number, minutes: number): EngadirEditarDataHora {
-    let addEditDateTime: EngadirEditarDataHora = { day: 0, month: 0, year: 0, hours: 0, minutes: 0 };
-    let date: Date;
-    if (value !== '') {
-      if (this.isString(value) && value.indexOf('-') > -1 && value.indexOf('T') > -1) {
-        let strA = value.split('-');
-        let secondChar = value.indexOf('T') > 0 ? 'T' : ' ';
-        let strB = strA[2].split(secondChar);
-        addEditDateTime = { day: +strB[0], month: +strA[1], year: +strA[0], hours: hour, minutes: minutes };
-      }
-      else {
-        if (value != undefined) {
-          date = new Date(value);
-          addEditDateTime = { day: date.getDate(), month: (date.getMonth() + 1), year: date.getFullYear(), hours: hour, minutes: minutes };
-        }
-      }
-    }
-    return addEditDateTime;
-  }
-  /**
-   * Comprueba que sea de tipo string.
+   * Comprueba que sexa de tipo string.
    */
   isString(value: any): boolean {
     return typeof value === 'string' || value instanceof String;

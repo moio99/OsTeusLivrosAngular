@@ -1,4 +1,4 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, OnInit, signal, inject } from '@angular/core';
 import { first, map, merge, Observable, startWith, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LivrosService } from '../../../core/services/api/livros.service';
@@ -62,7 +62,9 @@ export class LivroComponent implements OnInit {
   multiGestom = MultiGestom;
   dadosComplentarios = DadosComplentarios;
   autoresLivro = signal<SimpleObjet[]>([]);
+  readonly temAutoresLivro = computed(() => this.autoresLivro().length > 1); // só se le umha vez (quando cambia autoresLivro) polo que evita a cpu habaliar a expreson cada vez que pinta ou que sucede um evento na página relacionado.
   generosLivro = signal<SimpleObjet[]>([]);
+  readonly temGenerosLivro = computed(() => this.generosLivro().length > 1); // só se le umha vez (quando cambia generosLivro) polo que evita a cpu habaliar a expreson cada vez que pinta ou que sucede um evento na página relacionado.
   focusTrigger = new Subject<void>();   // Para que os combos ao recibir o foco por primeira vez amose o listado inda que esteja valeiro
   todasBibliotecasCombo: SimpleObjet[] = [];
   bibliotecas: Observable<SimpleObjet[]> | undefined;
@@ -78,26 +80,25 @@ export class LivroComponent implements OnInit {
   todasSeriesLivrosCombo: SimpleObjet[] = [];
   seriesLivro: Observable<SimpleObjet[]> | undefined;
   dadosRelecturas = signal<ListadoRelecturas[]>([]);
-  protected readonly temRelecturas = computed(() => this.dadosRelecturas().length > 0); // só se le umha vez (quando cambia dadosRelecturas) polo que evita a cpu habaliar a expreson cada vez que pinta ou que sucede um evento na página relacionado.
+  readonly temRelecturas = computed(() => this.dadosRelecturas().length > 0); // só se le umha vez (quando cambia dadosRelecturas) polo que evita a cpu habaliar a expreson cada vez que pinta ou que sucede um evento na página relacionado.
   diasLeitura = 0;
 
   rex1000000 = '([1-1][0-0]{6,6}|[0-9]{1,6})';
   rex1000 = '([1-1][0-0]{3,3}|[0-9]{1,3})';
-  livroForm!: FormGroup<LivroForm>;
   pontuacomEstrelas: number | undefined;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private layoutService: LayoutService,
-    private usuarioAppService: UsuarioAppService,
-    private title: Title,
-    private outrosService: OutrosService,
-    private livrosService: LivrosService,
-    private relecturasService: RelecturasService,
-    private dialog: MatDialog,
-    private dadosPaginasService: DadosPaginasService ) {
-      this.livroForm = new FormGroup<LivroForm>({
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private layoutService = inject(LayoutService);
+  private usuarioAppService = inject(UsuarioAppService);
+  private title = inject(Title);
+  private outrosService = inject(OutrosService);
+  private livrosService = inject(LivrosService);
+  private relecturasService = inject(RelecturasService);
+  private dialog = inject(MatDialog);
+  private dadosPaginasService = inject(DadosPaginasService);
+  private fb = inject(FormBuilder);
+  livroForm = this.fb.group<LivroForm>({
         titulo: new FormControl({ value: '', disabled: this.disabledFormulario}, {
             validators: [
               Validators.required,
@@ -129,7 +130,6 @@ export class LivroComponent implements OnInit {
         descricom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(50000)] }),
         comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(50000)] }),
       });
-    }
 
   ngOnInit(): void {
     let id = '0';
@@ -294,53 +294,53 @@ export class LivroComponent implements OnInit {
     }; */
   }
 
-  /**
+    /**
    * Calcula os días pasados dende a última leitura
    * @param dados Matriz coas datas do ano actual e do anterior para colher a data mais recente e calcuar a partir dela.
    */
-  private setDiasDendeUltimaLeitura(dados: datasUltimosAnos[]) {
-    let dateConvert = new DateConvert();
+  private setDiasDendeUltimaLeitura(dados: datasUltimosAnos[]): void {
+    if (!dados || dados.length === 0) return;
 
-    let maiorData: EngadirEditarData = { day: 0, month: 0, year: 0 };
-    dados.forEach(function (value) {
-      let iterado = dateConvert.getDateFromMySQL(value.dataDoLivro);
-      if (iterado.year > maiorData.year) {
-        // console.log('id do maior ANO: ' + value.id, maiorData);
-        maiorData = iterado;
-      }
-      else if (iterado.year == maiorData.year) {
-        if (iterado.month > maiorData.month) {
-          // console.log('id do maior MES: ' + value.id, maiorData, iterado);
-          maiorData = iterado;
-        }
-        else if (iterado.month == maiorData.month) {
-          if (iterado.day > maiorData.day) {
-            // console.log('id do maior DIA: ' + value.id, maiorData, iterado);
-            maiorData = iterado;
-          }
-        }
-      }
+    const dateConvert = new DateConvert();
+
+    // Atopamos o obxecto coa data máis recente convertendo a milisegundos nun único paso
+    const maiorDado = dados.reduce((max, actual) => {
+      const timeMax = new Date(max.dataDoLivro).getTime();
+      const timeActual = new Date(actual.dataDoLivro).getTime();
+      return timeActual > timeMax ? actual : max;
     });
 
-    // console.log('ultimas Leituras:', dados);
-    // console.log('maior data', maiorData);
+    // Convertemos o resultado ao formato personalizado EngadirEditarData
+    const maiorData = dateConvert.getDateFromMySQL(maiorDado.dataDoLivro);
+
+    // Calculamos e asignamos os días
     this.diasLeitura = this.getDiasDendeUltimaLeitura(maiorData);
+
+    // Modificación reactiva se o Signal do modo está en 'engadir'
     if (this.modo() === EstadosPagina.engadir) {
       this.livroForm.controls.diasLeitura.setValue(this.diasLeitura.toString());
     }
   }
 
   private getDiasDendeUltimaLeitura(data: EngadirEditarData): number {
-    let resultado = 0;
-    const dataMax = new Date();
-    const dataMin = new Date(data.year, data.month - 1, data.day, 23, 59);
+    if (!data || data.year === 0) return 0;
 
-    dataMin.setDate(dataMin.getDate() + 1);       // 1 para que nom conte o dia inicial.
-    while (dataMin.getTime() < dataMax.getTime()) {
-      resultado++;
-      dataMin.setDate(dataMin.getDate() + 1);     // getDay() funciona mal.
-    }
-    return resultado;
+    // Creamos as dúas datas limpas ás 00:00:00 (Sen horas para evitar desfases)
+    const dataMax = new Date();
+    dataMax.setHours(0, 0, 0, 0);
+
+    // Os meses en JavaScript van de 0 (Xaneiro) a 11 (Decembro)
+    const dataMin = new Date(data.year, data.month - 1, data.day, 0, 0, 0, 0);
+
+    // Restamos os milisegundos e dividimos polos ms que ten un día (1000ms * 60s * 60m * 24h)
+    const diferenzaMilisegundos = dataMax.getTime() - dataMin.getTime();
+    const milisegundosPorDia = 1000 * 60 * 60 * 24;
+
+    // Math.floor redondea cara abaixo para obter os días enteiros transcorridos
+    const diasPasados = Math.floor(diferenzaMilisegundos / milisegundosPorDia);
+
+    // Devolvemos o resultado (se o cálculo dá negativo por erro, devolvemos 0)
+    return diasPasados > 0 ? diasPasados : 0;
   }
 
   /**
@@ -534,10 +534,10 @@ export class LivroComponent implements OnInit {
   }
 
   onBorrarRelectura(relectura: ListadoRelecturas) {
-    let pergunta = "Está certo de querer borrar a relectura " + relectura.titulo;
+    let pergunta = `Está certo de querer borrar a relectura ${relectura.titulo}`;
     if (relectura.dataFimLeitura) {
       let dateConvert = new DateConvert();
-      pergunta += " do día " + dateConvert.getDateString(relectura.dataFimLeitura, '/') + "?";
+      pergunta = `${pergunta} do día ${dateConvert.getDateString(relectura.dataFimLeitura, '/')}?`;
     }
     else
       pergunta += "?";

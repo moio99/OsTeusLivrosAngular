@@ -4,8 +4,6 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { SimpleObjet } from '../../../shared/models/outros.model';
 import { CommonModule } from '@angular/common';
 
-// https://stackblitz.com/edit/angular-htpgvx?file=src%2Fapp%2Fapp.component.ts
-
 export interface MultiDados {
   total: SimpleObjet[];
   escolma: SimpleObjet[];

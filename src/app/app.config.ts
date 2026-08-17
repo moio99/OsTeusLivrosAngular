@@ -7,7 +7,6 @@ import { tokenInterceptor } from './core/interceptors/token.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     appRootingProviders,
-
     // Configuración moderna con interceptores funcionais
     provideHttpClient(
       withInterceptors([
