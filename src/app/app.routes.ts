@@ -25,8 +25,8 @@ export const routes: Routes = [
       { path: 'estadisticas',
         component: EstadisticasComponent,
         title: 'OTL - Estadísticas',
-        canActivate: [authGuard],
-        canDeactivate: [PeticomPendenteRequestGuard]
+        canActivate: [authGuard],     // Pode ir o usuario a esta ruta?
+        canDeactivate: [PeticomPendenteRequestGuard]  // Pode o usuario abandonar esta ruta? (formulario imcompleto, se já se obtiverom todos os dados, etc.)
       },
       /* { path: 'livros', title: 'OTL - livros'
         , loadComponent: () => import('./../app/pages/livros/listado-livros/listado-livros.component')
