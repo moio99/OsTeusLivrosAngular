@@ -1,18 +1,14 @@
 import { Component, effect, ElementRef, inject, OnInit, signal, ViewChild  } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { EstadisticasService } from '../../../core/services/api/estadisticas.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
+import { EstadisticasService, GraficosService, OutrosService} from '@servizosApi';
+import { LayoutService, UsuarioAppService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
-import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
+import { OrdeColunaComponent } from '@componhentesComuns';
 import { Estadisticas } from '../../../core/models/estadisticas.interface';
 import { GraficosData } from '../../../core/models/graficos.interface';
-import { GraficosService } from '../../../core/services/api/graficos.service';
-import { OutrosService } from '../../../core/services/api/outros.service';
 import { PeticomPendenteComponent } from '../../../peticom-pendente.guard';
-import { environment, environments } from '../../../../environments/environment';
-import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 import { forkJoin } from 'rxjs';
 import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
 

@@ -3,10 +3,10 @@ import { Router, Routes } from '@angular/router';
 import { ColecomComponent } from '../colecom/colecom.component';
 import { CommonModule } from '@angular/common';
 import { ListadoColecons } from '../../../core/models/listado-colecons.interface';
-import { ColeconsService } from '../../../core/services/api/colecons.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
+import { ColeconsService } from '@servizosApi';
+import { LayoutService } from '@servizosFlow';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
+import { BaseListadoComponent } from '@componhentesComuns';
 
 @Component({
   selector: 'omla-listado-colecons',

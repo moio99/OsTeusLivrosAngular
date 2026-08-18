@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from '../../core/models/usuario.interface';
-import { AuthService } from '../../core/services/flow/auth.service';
+import { AuthService } from '@servizosFlow';
 import { first } from 'rxjs';
 
 @Component({

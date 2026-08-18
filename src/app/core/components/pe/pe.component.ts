@@ -1,7 +1,7 @@
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { InformacomPe } from '../../../shared/models/outros.model';
-import { LayoutService } from '../../services/flow/layout.service';
+import { LayoutService } from '@servizosFlow';
 
 @Component({
   selector: 'omla-pe',

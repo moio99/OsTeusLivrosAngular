@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
-import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
+import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { ListadoEditoriais } from '../../../core/models/listado-editoriais.interface';
-import { EditoriaisService } from '../../../core/services/api/editoriais.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
+import { EditoriaisService } from '@servizosApi';
+import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EditorialComponent } from '../editorial/editorial.component';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 
 @Component({
   selector: 'omla-listado-editoriais',

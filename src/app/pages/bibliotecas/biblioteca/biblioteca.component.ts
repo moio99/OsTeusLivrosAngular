@@ -1,19 +1,14 @@
-import { Component } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BibliotecasService } from '../../../core/services/api/bibliotecas.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
-import { LivrosService } from '../../../core/services/api/livros.service';
-import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
+import { BibliotecasService, LivrosService } from '@servizosApi';
 import { DateConvert } from '../../../shared/classes/date-convert';
 import { Biblioteca, BibliotecaForm } from '../../../core/models/biblioteca.interface';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { BaseElementoComponent } from '../../../core/components/base/elemento/base-elemento.component';
-import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
+import { BaseElementoComponent } from '@componhentesComuns';
 
 @Component({
   selector: 'omla-biblioteca',
@@ -21,7 +16,8 @@ import { UsuarioAppService } from '../../../core/services/flow/usuario-app.servi
   imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule
     , MatDatepickerModule, MatNativeDateModule],
   templateUrl: './biblioteca.component.html',
-  styleUrls: ['./biblioteca.component.scss']
+  styleUrls: ['./biblioteca.component.scss'],
+  providers: [ {provide: 'OMeuServizoToeken', useClass: BibliotecasService} ]
 })
 export class BibliotecaComponent extends BaseElementoComponent<Biblioteca, BibliotecasService> {
 
@@ -37,17 +33,10 @@ export class BibliotecaComponent extends BaseElementoComponent<Biblioteca, Bibli
     comentario: ''
   };
 
-  constructor(
-    route: ActivatedRoute,
-    router: Router,
-    location: Location,
-    layoutService: LayoutService,
-    bibliotecasService: BibliotecasService,
-    dadosPaginasService: DadosPaginasService,
-    usuarioAppService: UsuarioAppService,
-    private livrosService: LivrosService
-  ) {
-    super(route, router, layoutService, location, dadosPaginasService, usuarioAppService, bibliotecasService);
+  private livrosService = inject(LivrosService);
+
+  constructor() {
+    super();
 
     this.bibliotecaForm = new FormGroup<BibliotecaForm>({
       nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),

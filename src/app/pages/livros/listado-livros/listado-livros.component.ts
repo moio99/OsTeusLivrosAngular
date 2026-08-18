@@ -1,11 +1,8 @@
 import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { first, map, tap } from 'rxjs/operators';
-import { GenerosService } from '../../../core/services/api/generos.service';
-import { LivrosService } from '../../../core/services/api/livros.service';
-import { OutrosService } from '../../../core/services/api/outros.service';
-import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
+import { GenerosService, LivrosService, OutrosService } from '@servizosApi';
+import { LayoutService, DadosPaginasService, CoresIdiomasService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo, ListadosLivrosTipos } from '../../../shared/enums/estadisticasTipos';
 import { CommonModule } from '@angular/common';
@@ -17,7 +14,6 @@ import {
   NgApexchartsModule
 } from "ng-apexcharts";
 import { TartaChartOptions } from '../../../core/types/chart.options';
-import { CoresIdiomasService } from '../../../core/services/flow/cores-idiomas.sevice';
 import { CoresIdioma } from '../../../shared/cores.idiomas.config';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';

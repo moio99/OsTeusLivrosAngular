@@ -1,17 +1,14 @@
 import { Component, OnInit, computed, signal, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule, Location } from '@angular/common';
-import { Validators, ValidatorFn, AbstractControl, ValidationErrors, FormControl, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { Validators, FormControl, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first, startWith } from 'rxjs';
 import { Autor, AutorData, AutorForm } from '../../../core/models/autor.interface';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { ListadoLivros } from '../../../core/models/listado-livros.interface';
-import { AutoresService } from '../../../core/services/api/autores.service';
-import { LivrosService } from '../../../core/services/api/livros.service';
-import { OutrosService } from '../../../core/services/api/outros.service';
-import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
+import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
+import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
 import { DateConvert } from '../../../shared/classes/date-convert';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Nacionalidade, SimpleObjet, Pais, DadosObtidos } from '../../../shared/models/outros.model';
@@ -21,9 +18,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { environment, environments } from '../../../../environments/environment';
-import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
-import { AutoresRetenidosData } from '../../../core/models/listado-autores.interface';
 import { ValidaconsAMedida } from '../../../shared/validators/custom-validators';
 
 @Component({

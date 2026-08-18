@@ -1,16 +1,11 @@
-import { Component } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Genero, GeneroForm } from '../../../core/models/genero.interface';
-import { GenerosService } from '../../../core/services/api/generos.service';
-import { LivrosService } from '../../../core/services/api/livros.service';
-import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
-import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
-import { BaseElementoComponent } from '../../../core/components/base/elemento/base-elemento.component';
+import { GenerosService, LivrosService} from '@servizosApi';
+import { BaseElementoComponent } from '@componhentesComuns';
 
 @Component({
   selector: 'omla-genero',
@@ -18,7 +13,8 @@ import { BaseElementoComponent } from '../../../core/components/base/elemento/ba
   imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule
     /* , MatDatepickerModule, MatNativeDateModule */],
   templateUrl: './genero.component.html',
-  styleUrls: ['./genero.component.scss']
+  styleUrls: ['./genero.component.scss'],
+    providers: [ {provide: 'OMeuServizoToeken', useClass: GenerosService} ]
 })
 export class GeneroComponent extends BaseElementoComponent<Genero, GenerosService> {
 
@@ -29,17 +25,10 @@ export class GeneroComponent extends BaseElementoComponent<Genero, GenerosServic
     comentario: ''
   };
 
-  constructor(
-    route: ActivatedRoute,
-    router: Router,
-    location: Location,
-    layoutService: LayoutService,
-    generosService: GenerosService,
-    dadosPaginasService: DadosPaginasService,
-    usuarioAppService: UsuarioAppService,
-    private livrosService: LivrosService
-  ) {
-    super(route, router, layoutService, location, dadosPaginasService, usuarioAppService, generosService);
+  private livrosService = inject(LivrosService);
+
+  constructor() {
+    super();
 
     this.generoForm = new FormGroup<GeneroForm>({
       nome: new FormControl({value: '', disabled: this.disabledFormulario}, { validators: [Validators.required, Validators.maxLength(150)]} ),

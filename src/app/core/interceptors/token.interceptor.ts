@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { HttpInterceptorFn } from '@angular/common/http';
-import { AuthService } from '../services/flow/auth.service';
+import { AuthService } from '@servizosFlow';
 
 // Uso moderno por medio de umha Funçom
 

@@ -2,11 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment, environments } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Livro } from '../../models/livro.interface';
-import { delay, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ListadoLivros } from '../../models/listado-livros.interface';
 import { BaseListadoDadosApi, Resultado } from '../../models/base-dados-api.interface';
-import { Genero } from '../../models/genero.interface';
-import { Editorial } from '../../models/editorial.interface';
 
 @Injectable({
   providedIn: 'root',

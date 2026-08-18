@@ -1,14 +1,12 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
-import { first } from 'rxjs';
-import { ListadoBibliotecas, ListadoBibliotecasData } from '../../../core/models/listado-bibliotecas.interface';
-import { BibliotecasService } from '../../../core/services/api/bibliotecas.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
-import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { ListadoBibliotecas } from '../../../core/models/listado-bibliotecas.interface';
+import { BibliotecasService } from '@servizosApi';
+import { LayoutService } from '@servizosFlow';
 import { CommonModule } from '@angular/common';
 import { BibliotecaComponent } from '../biblioteca/biblioteca.component';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
+import { BaseListadoComponent } from '@componhentesComuns';
 
 @Component({
   selector: 'omla-listado-bibliotecas',

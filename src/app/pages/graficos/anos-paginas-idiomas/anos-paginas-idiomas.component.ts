@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { ChartComponent, NgApexchartsModule} from "ng-apexcharts";
 import { Graficos } from '../../../core/models/graficos.interface';
 import { AreasChartOptions } from '../../../core/types/chart.options';
-import { CoresIdiomasService } from '../../../core/services/flow/cores-idiomas.sevice';
+import { CoresIdiomasService } from '@servizosFlow';
 import { CoresIdioma } from '../../../shared/cores.idiomas.config';
 
 @Component({

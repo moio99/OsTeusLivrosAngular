@@ -1,25 +1,22 @@
-import { Component, computed, Inject, OnInit, signal } from '@angular/core';
+import { Component, computed, Inject, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { first } from 'rxjs/operators';
 import { environment, environments } from '../../../../../environments/environment';
 import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
-import { LayoutService } from '../../../services/flow/layout.service';
+import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
 import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 import { FormGroup } from '@angular/forms';
 import { BaseListadoDadosApi, BaseElemento, ParametrosId } from '../../../models/base-dados-api.interface';
-import { BaseApiService } from '../../../services/api/base-api.service';
-import { DadosPaginasService } from '../../../services/flow/dados-paginas.service';
+import { BaseApiService } from '@servizosApi';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { Genero } from '../../../models/genero.interface';
-import { UsuarioAppService } from '../../../services/flow/usuario-app.service';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
 
 @Component({
   template: ''
 })
-export abstract class BaseElementoComponent<TElemento extends BaseElemento, TServico extends BaseApiService<TElemento>>
-    implements OnInit {
+export abstract class BaseElementoComponent<TElemento extends BaseElemento, TServico extends BaseApiService<TElemento>> implements OnInit {
 
   disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
   estadosPagina = EstadosPagina;
@@ -38,15 +35,15 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   protected abstract updateFormValues(eleemnto: TElemento): void;
   protected abstract createElementoForm(): TElemento;
 
-  constructor(
-    protected route: ActivatedRoute,
-    protected router: Router,
-    protected layoutService: LayoutService,
-    protected location: Location,
-    protected dadosPaginasService: DadosPaginasService,
-    protected usuarioAppService: UsuarioAppService,
-    @Inject('MyServiceToken') protected servicoElemento: TServico
-  ) {}
+  protected route = inject(ActivatedRoute);
+  protected router = inject(Router);
+  protected layoutService = inject(LayoutService);
+  protected location = inject(Location);
+  protected dadosPaginasService = inject(DadosPaginasService);
+  protected usuarioAppService = inject(UsuarioAppService);
+
+  // Para tokens de tipo string ou InjectionToken
+  protected servicoElemento = inject<TServico>('OMeuServizoToeken' as any);
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {

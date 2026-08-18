@@ -1,7 +1,7 @@
 import { Component, input, signal } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
-import { LayoutService } from '../../../services/flow/layout.service';
+import { LayoutService } from '@servizosFlow';
 import { Observable } from 'rxjs';
 
 @Component({

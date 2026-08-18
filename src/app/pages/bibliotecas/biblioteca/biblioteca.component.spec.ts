@@ -75,7 +75,7 @@ describe('BibliotecaComponent', () => {
       imports: [BibliotecaComponent],
       providers: [
         { provide: BibliotecasService, useValue: bibliotecasServiceMock },
-        { provide: 'MyServiceToken', useValue: bibliotecasServiceMock },
+        { provide: 'OMeuServizoToeken', useValue: bibliotecasServiceMock },
         { provide: LayoutService, useValue: layoutServiceMock },
         { provide: LivrosService, useValue: livrosServiceMock },
         { provide: DadosPaginasService, useValue: dadosPaginasServiceMock },

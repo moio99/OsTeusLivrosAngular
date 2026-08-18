@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { LayoutService } from '../../core/services/flow/layout.service';
+import { LayoutService } from '@servizosFlow';
 import { RouterModule } from '@angular/router';
 
 @Component({

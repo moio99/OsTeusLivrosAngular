@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanDeactivateFn } from '@angular/router';
-import { OutrosService } from './core/services/api/outros.service';
+import { OutrosService } from '@servizosApi';
 import { Observable } from 'rxjs';
 
 // Define o tipo para o componente que implementa a lógica de "canDeactivate"

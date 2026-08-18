@@ -1,16 +1,11 @@
-import { Component } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { LivrosService } from '../../../core/services/api/livros.service';
-import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
-import { BaseElementoComponent } from '../../../core/components/base/elemento/base-elemento.component';
+import { LivrosService, EstilosLiterariosService } from '@servizosApi';
+import { BaseElementoComponent } from '@componhentesComuns';
 import { EstiloLiterario } from '../../../core/models/estilos-literarios.interface';
-import { EstilosLiterariosService } from '../../../core/services/api/estilos-literarios.service';
-import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 
 @Component({
   selector: 'omla-estilo-literario',
@@ -18,7 +13,8 @@ import { UsuarioAppService } from '../../../core/services/flow/usuario-app.servi
   imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule
     /* , MatDatepickerModule, MatNativeDateModule */],
   templateUrl: './estilo-literario.component.html',
-  styleUrls: ['./estilo-literario.component.scss']
+  styleUrls: ['./estilo-literario.component.scss'],
+  providers: [ {provide: 'OMeuServizoToeken', useClass: EstilosLiterariosService} ]
 })
 export class EstiloLiterarioComponent extends BaseElementoComponent<EstiloLiterario, EstilosLiterariosService> {
 
@@ -29,17 +25,10 @@ export class EstiloLiterarioComponent extends BaseElementoComponent<EstiloLitera
     comentario: ''
   };
 
-  constructor(
-    route: ActivatedRoute,
-    router: Router,
-    location: Location,
-    layoutService: LayoutService,
-    estilosLiterariosService: EstilosLiterariosService,
-    dadosPaginasService: DadosPaginasService,
-    usuarioAppService: UsuarioAppService,
-    private livrosService: LivrosService
-  ) {
-    super(route, router, layoutService, location, dadosPaginasService, usuarioAppService, estilosLiterariosService);
+  private livrosService = inject(LivrosService);
+
+  constructor() {
+    super();
 
     this.ef = new FormGroup({
       nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),

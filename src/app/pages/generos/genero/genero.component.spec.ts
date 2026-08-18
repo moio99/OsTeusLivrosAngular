@@ -75,7 +75,7 @@ describe('GeneroComponent', () => {
       imports: [GeneroComponent],
       providers: [
         { provide: GenerosService, useValue: generosServiceMock },
-        { provide: 'MyServiceToken', useValue: generosServiceMock },
+        { provide: 'OMeuServizoToeken', useValue: generosServiceMock },
         { provide: LayoutService, useValue: layoutServiceMock },
         { provide: LivrosService, useValue: livrosServiceMock },
         { provide: DadosPaginasService, useValue: dadosPaginasServiceMock },

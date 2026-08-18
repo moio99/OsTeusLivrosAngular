@@ -75,7 +75,7 @@ describe('ColecomComponent', () => {
       imports: [ColecomComponent],
       providers: [
         { provide: ColeconsService, useValue: coleconsServiceMock },
-        { provide: 'MyServiceToken', useValue: coleconsServiceMock },
+        { provide: 'OMeuServizoToeken', useValue: coleconsServiceMock },
         { provide: LayoutService, useValue: layoutServiceMock },
         { provide: LivrosService, useValue: livrosServiceMock },
         { provide: DadosPaginasService, useValue: dadosPaginasServiceMock },

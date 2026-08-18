@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { LayoutService } from '../../core/services/flow/layout.service';
+import { LayoutService } from '@servizosFlow';
 import { MatIconModule } from '@angular/material/icon';
 import { CarregandoService } from '../../core/services/tools/carregando.service';
 import { CommonModule } from '@angular/common';

@@ -1,14 +1,13 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LayoutService } from '../../../core/services/flow/layout.service';
+import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
-import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
+import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { EstiloLiterarioComponent } from '../estilo-literario/estilo-literario.component';
-import { EstilosLiterariosService } from '../../../core/services/api/estilos-literarios.service';
+import { EstilosLiterariosService } from '@servizosApi';
 import { ListadoEstilosLiterarios } from '../../../core/models/listado-estilos-literarios.interface';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 
 @Component({
   selector: 'omla-listado-estilos-literarios',

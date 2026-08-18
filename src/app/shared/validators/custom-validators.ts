@@ -1,6 +1,6 @@
 import { ValidatorFn, AbstractControl, ValidationErrors } from "@angular/forms";
 
-export class ValidaconsAMedida {
+export  class ValidaconsAMedida {
 
   /**
    * Valida que a data Dese non sexa maior que a data Até.

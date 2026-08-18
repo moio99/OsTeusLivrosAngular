@@ -1,23 +1,19 @@
-import { Component } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Editorial } from '../../../core/models/editorial.interface';
-import { EditoriaisService } from '../../../core/services/api/editoriais.service';
-import { LivrosService } from '../../../core/services/api/livros.service';
-import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
+import { EditoriaisService, LivrosService } from '@servizosApi';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { BaseElementoComponent } from '../../../core/components/base/elemento/base-elemento.component';
-import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
+import { BaseElementoComponent } from '@componhentesComuns';
 
 @Component({
   selector: 'omla-editorial',
   standalone: true,
   imports: [ CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule ],
   templateUrl: './editorial.component.html',
-  styleUrls: ['./editorial.component.scss']
+  styleUrls: ['./editorial.component.scss'],
+  providers: [ {provide: 'OMeuServizoToeken', useClass: EditoriaisService} ]
 })
 export class EditorialComponent extends BaseElementoComponent<Editorial, EditoriaisService> {
 
@@ -30,17 +26,10 @@ export class EditorialComponent extends BaseElementoComponent<Editorial, Editori
     comentario: ''
   };
 
-  constructor(
-    route: ActivatedRoute,
-    router: Router,
-    layoutService: LayoutService,
-    location: Location,
-    editoriaisService: EditoriaisService,
-    dadosPaginasService: DadosPaginasService,
-    usuarioAppService: UsuarioAppService,
-    private livrosService: LivrosService,
-  ) {
-    super(route, router, layoutService, location, dadosPaginasService, usuarioAppService, editoriaisService);
+  private livrosService = inject(LivrosService);
+
+  constructor() {
+    super();
 
     this.ef = new FormGroup({
       nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),

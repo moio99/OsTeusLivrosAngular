@@ -3,8 +3,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
 import { ListadoConcretoAutores, ListadoConcretoAutoresData } from '../../../../core/models/listado-autores.interface';
-import { AutoresService } from '../../../../core/services/api/autores.service';
-import { LayoutService } from '../../../../core/services/flow/layout.service';
+import { AutoresService } from '@servizosApi';
+import { LayoutService } from '@servizosFlow';
 import { ListadosAutoresTipos, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 
 @Component({

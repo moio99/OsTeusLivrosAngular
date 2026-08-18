@@ -3,12 +3,11 @@ import { Router, Routes } from '@angular/router';
 import { GeneroComponent } from '../genero/genero.component';
 import { CommonModule } from '@angular/common';
 import { ListadoGeneros } from '../../../core/models/listado-generos.interface';
-import { GenerosService } from '../../../core/services/api/generos.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
+import { GenerosService } from '@servizosApi';
+import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
-import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
+import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 
 @Component({
   selector: 'omla-listado-generos',

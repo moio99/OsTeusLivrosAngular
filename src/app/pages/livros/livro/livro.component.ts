@@ -1,36 +1,30 @@
 import { Component, computed, OnInit, signal, inject } from '@angular/core';
 import { first, map, merge, Observable, startWith, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LivrosService } from '../../../core/services/api/livros.service';
+import { LivrosService, OutrosService, RelecturasService } from '@servizosApi';
 import { CommonModule } from '@angular/common';
 import { FormControl,
-  ReactiveFormsModule, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors, FormsModule } from '@angular/forms';
+  ReactiveFormsModule, Validators, FormBuilder, AbstractControl, FormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-
-import { OutrosService } from '../../../core/services/api/outros.service';
 import { DateConvert } from '../../../shared/classes/date-convert';
-import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
+import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
 import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
-import { LayoutService } from '../../../core/services/flow/layout.service';
+import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { Title } from '@angular/platform-browser';
 import { EngadirEditarData } from '../../../shared/models/datas';
-import { RelecturasService } from '../../../core/services/api/relecturas.service';
+import { SimpleObjet } from '../../../shared/models/outros.model';
+import { MultiDados, MultiSelecomDialogComponent, EstrelasPontuacomComponent } from '@componhentesComuns';
+import { MatNativeDateModule } from '@angular/material/core';
+import { environment, environments } from '../../../../environments/environment';
+import { BaseListadoDadosApi, Parametros, Resultado } from '../../../core/models/base-dados-api.interface';
 import { ObjetoSimpleIdNome, datasUltimosAnos, Livro, Outros, LivroForm } from '../../../core/models/livro.interface';
 import { Genero } from '../../../core/models/genero.interface';
 import { Relectura, ListadoRelecturas, RelecturasData, RelecturaData } from '../../../core/models/relectura.interface';
-import { SimpleObjet } from '../../../shared/models/outros.model';
-import { MultiDados, MultiSelecomDialogComponent } from '../../../core/components/multi-selecom-dialog/multi-selecom-dialog.component';
-import { MatNativeDateModule } from '@angular/material/core';
-import { EstrelasPontuacomComponent } from '../../../core/components/estrelas-pontuacom/estrelas-pontuacom.component';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
-import { environment, environments } from '../../../../environments/environment';
-import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
-import { BaseListadoDadosApi, Parametros, Resultado } from '../../../core/models/base-dados-api.interface';
 import { ValidaconsAMedida } from '../../../shared/validators/custom-validators';
 
 export enum MultiGestom {

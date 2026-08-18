@@ -2,17 +2,15 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, Routes } from '@angular/router';
 import { first } from 'rxjs';
 import { ListadoAutores } from '../../../core/models/listado-autores.interface';
-import { AutoresService } from '../../../core/services/api/autores.service';
-import { OutrosService } from '../../../core/services/api/outros.service';
-import { LayoutService } from '../../../core/services/flow/layout.service';
+import { AutoresService, OutrosService } from '@servizosApi';
+import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { InformacomPeTipo, ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
 import { AutorComponent } from '../autor/autor.component';
 import { CommonModule } from '@angular/common';
-import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
+import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { Parametros } from '../../../core/models/autor.interface';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoComponent } from '../../../core/components/base/listado/base-listado.component';
 import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
 
 @Component({
