@@ -18,7 +18,7 @@ export class ValidaconsAMedida {
       const dataInicio = new Date(controlInicio.value);
       const dataFin = new Date(controlFin.value);
 
-      if (isNaN(dataInicio.getTime()) || !isNaN(dataFin.getTime()) === false) {
+      if (isNaN(dataInicio.getTime()) || isNaN(dataFin.getTime())) {
         return null;
       }
 
