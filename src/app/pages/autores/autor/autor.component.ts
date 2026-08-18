@@ -24,6 +24,7 @@ import { environment, environments } from '../../../../environments/environment'
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
 import { AutoresRetenidosData } from '../../../core/models/listado-autores.interface';
+import { ValidaconsAMedida } from '../../../shared/validators/custom-validators';
 
 @Component({
   selector: 'omla-autor',
@@ -79,8 +80,8 @@ export class AutorComponent implements OnInit {
         },),
         nomeReal: new FormControl('', { validators: [Validators.maxLength(150)] }),
         lugarNacemento: new FormControl('', { validators: [Validators.maxLength(150)] }),
-        dataNacemento: new FormControl(null, { validators: [ this.checkDuasDatasValidator() ] }),
-        dataDefuncom: new FormControl(null, { validators: [ this.checkDuasDatasValidator() ] }),
+        dataNacemento: new FormControl(null),
+        dataDefuncom: new FormControl(null),
         premios: new FormControl(null),
         web: new FormControl('', { validators: [Validators.maxLength(100)] }),
         comentario: new FormControl(null),
@@ -89,7 +90,10 @@ export class AutorComponent implements OnInit {
         idPais: new FormControl(null),
         nomePais: new FormControl(null),
         quantidade: new FormControl(null),
-      });
+      },
+      // Validaçons que se aplicam a todo o grupo:
+      { validators: [ ValidaconsAMedida.comprobarDuasDatas('dataNacemento', 'dataDefuncom') ] }
+    );
 
   private idNacionalidadeSignal = toSignal(
     // startWith('') // Para que emita um valor inicial '' cando o usuario inda nom escreveu nada e for do combo itere o listado completo
@@ -144,48 +148,6 @@ export class AutorComponent implements OnInit {
 
     this.estabelecerDisponibilidade();
     this.obterOutrosDados(state.id);
-  }
-
-  /**
-   * Valida que la fecha desde no sea mayor que la hasta.
-   * @param control control que lanza la validación.
-   */
-  checkDuasDatasValidator(): ValidatorFn {
-    return (control:AbstractControl) : ValidationErrors | null => {
-        //const value = control.value;
-        if (this.autorForm != null && this.autorForm.controls != null
-          && this.autorForm.controls.dataDefuncom != null
-          && this.autorForm.controls.dataDefuncom.value != null
-          && this.autorForm.controls.dataNacemento != null
-          && this.autorForm.controls.dataNacemento.value != null) {
-
-          let dateConvert = new DateConvert();
-          let dFrom = dateConvert.getDate(this.autorForm.controls.dataNacemento.value);
-          let dTo = dateConvert.getDate(this.autorForm.controls.dataDefuncom.value);
-
-          if (dFrom.year > 0 && dTo.year > 0) {
-            if (dFrom.year > dTo.year) {
-              return { 'datasInvalidas': true };
-            }
-            else {
-              if (dFrom.year == dTo.year && dFrom.month > dTo.month) {
-                return { 'datasInvalidas': true };
-              }
-              else {
-                if (dFrom.year == dTo.year && dFrom.month == dTo.month && dFrom.day > dTo.day) {
-                  return { 'datasInvalidas': true };
-                }
-              }
-            }
-
-            if (this.autorForm.controls.dataNacemento.status !== 'VALID')
-              this.autorForm.controls.dataNacemento.updateValueAndValidity();
-            if (this.autorForm.controls.dataDefuncom.status !== 'VALID')
-              this.autorForm.controls.dataDefuncom.updateValueAndValidity();
-          }
-        }
-        return null;
-    }
   }
 
   //#region Obtençom de dados

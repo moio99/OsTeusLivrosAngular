@@ -31,6 +31,7 @@ import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { environment, environments } from '../../../../environments/environment';
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 import { BaseListadoDadosApi, Parametros, Resultado } from '../../../core/models/base-dados-api.interface';
+import { ValidaconsAMedida } from '../../../shared/validators/custom-validators';
 
 export enum MultiGestom {
   autores = 1,
@@ -119,8 +120,8 @@ export class LivroComponent implements OnInit {
         dataFimLeiturata: new FormControl({ value: '', disabled: this.disabledFormulario}),
         idioma: new FormControl({ value: '', disabled: this.disabledFormulario}),
         idiomaOriginal: new FormControl({ value: '', disabled: this.disabledFormulario}),
-        dataCriacom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [ this.checkDuasDatasValidator() ] }),
-        dataEdicom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [ this.checkDuasDatasValidator() ] }),
+        dataCriacom: new FormControl({ value: '', disabled: this.disabledFormulario}),
+        dataEdicom: new FormControl({ value: '', disabled: this.disabledFormulario}),
         numeroEdicom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.pattern(this.rex1000)] }),
         electronico: new FormControl({ value: false, disabled: this.disabledFormulario}),
         somSerie: new FormControl({ value: false, disabled: this.disabledFormulario}),
@@ -128,7 +129,10 @@ export class LivroComponent implements OnInit {
         premios: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(255)] }),
         descricom: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(50000)] }),
         comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, { validators: [Validators.maxLength(50000)] }),
-      });
+      },
+      // Validaçons que se aplicam a todo o grupo:
+      { validators: [ ValidaconsAMedida.comprobarDuasDatas('dataCriacom', 'dataEdicom') ] }
+    );
 
   ngOnInit(): void {
     let id = '0';
@@ -699,48 +703,6 @@ export class LivroComponent implements OnInit {
       (findResource !== undefined) && dataForm.setValue(findResource.value);
     } else {
       dataForm.setValue(null)
-    }
-  }
-
-  /**
-   * Valida que la fecha desde no sea mayor que la hasta.
-   * @param control control que lanza la validación.
-   */
-  checkDuasDatasValidator(): ValidatorFn {
-    return (control:AbstractControl) : ValidationErrors | null => {
-        //const value = control.value;
-        if (this.livroForm != null && this.livroForm.controls != null
-          && this.livroForm.controls.dataCriacom != null
-          && this.livroForm.controls.dataCriacom.value != null
-          && this.livroForm.controls.dataEdicom != null
-          && this.livroForm.controls.dataEdicom.value != null) {
-
-          let dateConvert = new DateConvert();
-          let dFrom = dateConvert.getDate(this.livroForm.controls.dataCriacom.value);
-          let dTo = dateConvert.getDate(this.livroForm.controls.dataEdicom.value);
-
-          if (dFrom.year > 0 && dTo.year > 0) {
-            if (dFrom.year > dTo.year) {
-              return { 'datasInvalidas': true };
-            }
-            else {
-              if (dFrom.year == dTo.year && dFrom.month > dTo.month) {
-                return { 'datasInvalidas': true };
-              }
-              else {
-                if (dFrom.year == dTo.year && dFrom.month == dTo.month && dFrom.day > dTo.day) {
-                  return { 'datasInvalidas': true };
-                }
-              }
-            }
-
-            if (this.livroForm.controls.dataEdicom.status !== 'VALID')
-              this.livroForm.controls.dataEdicom.updateValueAndValidity();
-            if (this.livroForm.controls.dataCriacom.status !== 'VALID')
-              this.livroForm.controls.dataCriacom.updateValueAndValidity();
-          }
-        }
-        return null;
     }
   }
 
