@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BibliotecasService, LivrosService } from '@servizosApi';
-import { DateConvert } from '../../../shared/classes/date-convert';
+import { ConverterAData } from '../../../shared/classes/date-convert';
 import { Biblioteca, BibliotecaForm } from '@interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -69,13 +69,13 @@ export class BibliotecaComponent extends BaseElementoComponent<Biblioteca, Bibli
   }
 
   protected updateFormValues(biblioteca: Biblioteca) {
-    const dD = new DateConvert().getDateFromMySQL(biblioteca.dataAsociamento);
+    const dD = new ConverterAData().getDataFromMySQL(biblioteca.dataAsociamento);
     if (dD?.year > 0) {
       const dataAsociamento = new Date(dD.year, dD.month - 1, dD.day);
       this.bibliotecaForm.controls.dataAsociamento.setValue(dataAsociamento);
     }
 
-    const dR = new DateConvert().getDateFromMySQL(biblioteca.dataRenovacom);
+    const dR = new ConverterAData().getDataFromMySQL(biblioteca.dataRenovacom);
     if (dR?.year > 0) {
       const dataRenovacom = new Date(dR.year, dR.month - 1, dR.day);
       this.bibliotecaForm.controls.dataRenovacom.setValue(dataRenovacom);
@@ -91,9 +91,9 @@ export class BibliotecaComponent extends BaseElementoComponent<Biblioteca, Bibli
   }
 
   protected createElementoForm(): Biblioteca {
-    let dateConvert = new DateConvert();
-    let dA = dateConvert.getDate(this.bibliotecaForm.controls.dataAsociamento.value);
-    let dR = dateConvert.getDate(this.bibliotecaForm.controls.dataRenovacom.value);
+    let dateConvert = new ConverterAData();
+    let dA = dateConvert.getData(this.bibliotecaForm.controls.dataAsociamento.value);
+    let dR = dateConvert.getData(this.bibliotecaForm.controls.dataRenovacom.value);
 
     const biblioteca: Biblioteca = {
       id: Number(this.dadosDoElemento?.id),

@@ -10,7 +10,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { DateConvert } from '../../../shared/classes/date-convert';
+import { ConverterAData } from '../../../shared/classes/date-convert';
 import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
 import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
@@ -295,7 +295,7 @@ export class LivroComponent implements OnInit {
   private setDiasDendeUltimaLeitura(dados: datasUltimosAnos[]): void {
     if (!dados || dados.length === 0) return;
 
-    const dateConvert = new DateConvert();
+    const dateConvert = new ConverterAData();
 
     // Atopamos o obxecto coa data máis recente convertendo a milisegundos nun único paso
     const maiorDado = dados.reduce((max, actual) => {
@@ -305,7 +305,7 @@ export class LivroComponent implements OnInit {
     });
 
     // Convertemos o resultado ao formato personalizado EngadirEditarData
-    const maiorData = dateConvert.getDateFromMySQL(maiorDado.dataDoLivro);
+    const maiorData = dateConvert.getDataFromMySQL(maiorDado.dataDoLivro);
 
     // Calculamos e asignamos os días
     this.diasLeitura = this.getDiasDendeUltimaLeitura(maiorData);
@@ -474,9 +474,9 @@ export class LivroComponent implements OnInit {
   }
 
   setDadosRelectura(): Relectura {
-    let dateConvert = new DateConvert();
-    let dFL = dateConvert.getDate(this.livroForm.controls.dataFimLeiturata.value);
-    let dE = dateConvert.getDate(this.livroForm.controls.dataEdicom.value);
+    let dateConvert = new ConverterAData();
+    let dFL = dateConvert.getData(this.livroForm.controls.dataFimLeiturata.value);
+    let dE = dateConvert.getData(this.livroForm.controls.dataEdicom.value);
 
     let biblioteca = this.todasBibliotecasCombo.find(option => option.value === this.livroForm.controls.idBiblioteca.value);
     let editorial = this.todasEditoriaisCombo.find(option => option.value === this.livroForm.controls.idEditorial.value);
@@ -530,8 +530,8 @@ export class LivroComponent implements OnInit {
   onBorrarRelectura(relectura: ListadoRelecturas) {
     let pergunta = `Está certo de querer borrar a relectura ${relectura.titulo}`;
     if (relectura.dataFimLeitura) {
-      let dateConvert = new DateConvert();
-      pergunta = `${pergunta} do día ${dateConvert.getDateString(relectura.dataFimLeitura, '/')}?`;
+      let dateConvert = new ConverterAData();
+      pergunta = `${pergunta} do día ${dateConvert.getDataString(relectura.dataFimLeitura, '/')}?`;
     }
     else
       pergunta += "?";
@@ -683,8 +683,8 @@ export class LivroComponent implements OnInit {
   }
 
   private setData(dado: string, dataForm: FormControl){
-    let dateConvert = new DateConvert();
-    let dN = dateConvert.getDateFromMySQL(dado);
+    let dateConvert = new ConverterAData();
+    let dN = dateConvert.getDataFromMySQL(dado);
     (dN.year > 0) && dataForm.setValue(new Date(dN.year, dN.month - 1, dN.day));
   }
 
@@ -930,10 +930,10 @@ export class LivroComponent implements OnInit {
   }
 
   setDadosLivro(): Livro {
-    let dateConvert = new DateConvert();
-    let dFL = dateConvert.getDate(this.livroForm.controls.dataFimLeiturata.value);
-    let dC = dateConvert.getDate(this.livroForm.controls.dataCriacom.value);
-    let dE = dateConvert.getDate(this.livroForm.controls.dataEdicom.value);
+    let dateConvert = new ConverterAData();
+    let dFL = dateConvert.getData(this.livroForm.controls.dataFimLeiturata.value);
+    let dC = dateConvert.getData(this.livroForm.controls.dataCriacom.value);
+    let dE = dateConvert.getData(this.livroForm.controls.dataEdicom.value);
 
     let biblioteca = this.todasBibliotecasCombo.find(option => option.value === this.livroForm.controls.idBiblioteca.value);
     let editorial = this.todasEditoriaisCombo.find(option => option.value === this.livroForm.controls.idEditorial.value);

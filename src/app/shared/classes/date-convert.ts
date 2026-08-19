@@ -1,12 +1,12 @@
-import { EngadirEditarData, EngadirEditarDataHora } from "../models/datas";
+import { EngadirEditarData } from "../models/datas";
 
-export class DateConvert {
+export class ConverterAData {
 
   /**
    * Obtén unha estrutura EngadirEditarData compatible a partir de calquera formato de data
    * @param value Objeto coa data en formato string ou mat-datepicker.
    */
-  public getDate(value: string | Date | number | null | undefined): EngadirEditarData {
+  public getData(value: string | Date | number | null | undefined): EngadirEditarData {
     // Se o valor é nulo, indefinido ou unha cadea baleira, paramos de xeito seguro
     if (value === null || value === undefined || value === '') {
       return { day: 0, month: 0, year: 0 };
@@ -14,7 +14,7 @@ export class DateConvert {
 
     // Se é un string, delegamos directamente no método optimizado de MySQL
     if (typeof value === 'string') {
-      return this.getDateFromMySQL(value);
+      return this.getDataFromMySQL(value);
     }
     const dataNativa = new Date(value);
 
@@ -34,12 +34,12 @@ export class DateConvert {
    * Converte calquera formato de data nunha cadea de texto formateada co separador escollido
    * @param value Obxeto coa data en formato string ou mat-datepicker.
    */
-  public getDateString(
+  public getDataString(
     value: string | Date | number | null | undefined,
     separador: string
   ): string {
     // Obtemos a estrutura limpa de EngadirEditarData
-    const data = this.getDate(value);
+    const data = this.getData(value);
 
     if (data.day === 0 && data.month === 0 && data.year === 0) {
       return '';
@@ -49,7 +49,7 @@ export class DateConvert {
   }
 
 
-  public getDateFromMySQL(value: string | null | undefined): EngadirEditarData {
+  public getDataFromMySQL(value: string | null | undefined): EngadirEditarData {
     // Protección inicial con encadeamento opcional e recorte de espazos
     if (!value?.trim() || value.length < 4) {
       return { day: 0, month: 0, year: 0 };

@@ -1,14 +1,12 @@
-import { Component, OnInit, computed, signal, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { Validators, FormControl, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { first, startWith } from 'rxjs';
-import { Autor, AutorData, AutorForm, ListadoLivros, BaseListadoDadosApi } from '@interfaces';
+import { first } from 'rxjs';
+import { Autor, AutorData, ListadoLivros, BaseListadoDadosApi } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
 import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
-import { DateConvert } from '../../../shared/classes/date-convert';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Nacionalidade, SimpleObjet, Pais, DadosObtidos } from '../../../shared/models/outros.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,18 +15,18 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { environment, environments } from '../../../../environments/environment';
-import { ValidaconsAMedida } from '../../../shared/validators/custom-validators';
 import { AutorFormPresenterComponent } from './autor-form-presenter.component';
 import { AutorLivrosComponent } from './autor-livros.component';
+import { AutorFormStateService } from './autor-form-state.service';
 
 @Component({
   selector: 'omla-autor',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule
-    , MatInputModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule
-    , AutorFormPresenterComponent, AutorLivrosComponent ],
+  imports: [ CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule,
+    MatNativeDateModule, MatAutocompleteModule, AutorFormPresenterComponent, AutorLivrosComponent ],
   templateUrl: './autor.component.html',
-  styleUrls: ['./autor.component.scss']
+  styleUrls: ['./autor.component.scss'],
+  providers: [AutorFormStateService]
 })
 export class AutorComponent implements OnInit {
 
@@ -64,68 +62,12 @@ export class AutorComponent implements OnInit {
   private livrosService = inject(LivrosService);
   private dadosPaginasService = inject(DadosPaginasService);
 
-  private fb = inject(FormBuilder);
-  autorForm = this.fb.group<AutorForm>({
-        nome: new FormControl('', {
-            validators: [
-               Validators.required,
-               Validators.maxLength(150)
-            ],
-            // asyncValidators: [ ... array of asynchronous validators ...]
-            updateOn: 'blur' // 'change' or 'blur' or 'submit'
-        },),
-        nomeReal: new FormControl('', { validators: [Validators.maxLength(150)] }),
-        lugarNacemento: new FormControl('', { validators: [Validators.maxLength(150)] }),
-        dataNacemento: new FormControl(null),
-        dataDefuncom: new FormControl(null),
-        premios: new FormControl(null),
-        web: new FormControl('', { validators: [Validators.maxLength(100)] }),
-        comentario: new FormControl(null),
-        idNacionalidade: new FormControl(null),
-        nomeNacionalidade: new FormControl(null),
-        idPais: new FormControl(null),
-        nomePais: new FormControl(null),
-        quantidade: new FormControl(null),
-      },
-      // Validaçons que se aplicam a todo o grupo:
-      { validators: [ ValidaconsAMedida.comprobarDuasDatas('dataNacemento', 'dataDefuncom') ] }
-    );
-
-  private idNacionalidadeSignal = toSignal(
-    // startWith('') // Para que emita um valor inicial '' cando o usuario inda nom escreveu nada e for do combo itere o listado completo
-    this.autorForm.controls.idNacionalidade.valueChanges.pipe(startWith(''))
-  );
-  private todasNacionalidadesCombo = signal<SimpleObjet[]>([]);
-
-  private idPaisSignal = toSignal(
-    // startWith('') // Para que emita um valor inicial '' cando o usuario inda nom escreveu nada e for do combo itere o listado completo
-    this.autorForm.controls.idPais.valueChanges.pipe(startWith(''))
-  );
-  private todosPaisesCombo = signal<SimpleObjet[]>([]);
-
-  // O filtro é un Signal derivado ('computed'). Reexecútase só cando cambia o input ou o combo.
-  dadosNacionalidadesFiltradas = computed(() => {
-    const listaCompleta = this.todasNacionalidadesCombo();    // se cambia este lanza o computed (para quando o combo está valeiro, ou se cambia o input)
-    const valorInput = this.idNacionalidadeSignal();          // se cambia este lanza o computed
-
-    // Se o valor é un número (un ID), tamén queremos que por defecto amose todo o listado ao abrir
-    if (typeof valorInput === 'number' || !isNaN(Number(valorInput))) {
-      return this.filtroDeNacionalidades('');
-    }
-    return this.filtroDeNacionalidades(valorInput?.toString() || '');
-  });
-
-  // O filtro é un Signal derivado ('computed'). Reexecútase só cando cambia o input ou o combo.
-  dadosPaisesFiltrados = computed(() => {
-    const listaCompleta = this.todosPaisesCombo();  // se cambia este lanza o computed (para quando o combo está valeiro, ou se cambia o input)
-    const valorInput = this.idPaisSignal();         // se cambia este lanza o computed
-
-    // Se o valor é un número (un ID), tamén queremos que por defecto amose todo o listado ao abrir
-    if (typeof valorInput === 'number' || !isNaN(Number(valorInput))) {
-      return this.filtroDePaises('');
-    }
-    return this.filtroDePaises(valorInput?.toString() || '');
-  });
+  private readonly formState = inject(AutorFormStateService);
+  autorForm = this.formState.autorForm;
+  dadosNacionalidadesFiltradas = this.formState.dadosNacionalidadesFiltradas;
+  dadosPaisesFiltrados = this.formState.dadosPaisesFiltrados;
+  amosarNacionalidade = this.formState.amosarNacionalidade;
+  amosarPais = this.formState.amosarPais;
 
   ngOnInit(): void {
     const state = history.state;
@@ -205,7 +147,7 @@ export class AutorComponent implements OnInit {
       });
 
       // Isto actualizará o Signal automaticamente
-      this.todasNacionalidadesCombo.set(dadosReducidos);
+        this.formState.setNacionalidades(dadosReducidos);
 
       return dados.data;
     }
@@ -233,31 +175,11 @@ export class AutorComponent implements OnInit {
       });
 
       // Isto actualizará o Signal automaticamente
-      this.todosPaisesCombo.set(dadosReducidos);
+        this.formState.setPaises(dadosReducidos);
 
       return dados.data;
     }
     else return [];
-  }
-
-  /**
-  * Filtra os valores do despregável.
-  * @param value Filtro inserido polo usuario.
-  */
-  private filtroDeNacionalidades(value: string): SimpleObjet[] {
-    const filterValue = value.toLowerCase();
-
-    return this.todasNacionalidadesCombo().filter(option => option.value.toLowerCase().includes(filterValue));
-  }
-
-  /**
-  * Filtra os valores do despregável.
-  * @param value Filtro inserido polo usuario.
-  */
-  private filtroDePaises(value: string): SimpleObjet[] {
-    const filterValue = value.toLowerCase();
-
-    return this.todosPaisesCombo().filter(option => option.value.toLowerCase().includes(filterValue));
   }
 
   private obterDadosDoAutor(id: string): void {
@@ -274,48 +196,13 @@ export class AutorComponent implements OnInit {
     }
   }
 
-  amosarNacionalidade = (id: number | null): string => {
-    if (!id) return '';
-    const nacionalidade = this.todasNacionalidadesCombo().find(n => n.id === id);
-    return nacionalidade ? nacionalidade.value : '';
-  };
-
-  amosarPais = (id: number | null): string => {
-    if (!id) return '';
-    const pais = this.todosPaisesCombo().find(n => n.id === id);
-    return pais ? pais.value : '';
-  };
-
   private dadosAutorObtidos(data: object): Autor | undefined {
     let resultados: Autor | undefined;
     const dados = <AutorData<Autor>>data;
     if (dados.data != null && dados.data.length > 0) {
       resultados = dados.data[0];
       if (resultados) {
-        this.autorForm.controls.nome.setValue(resultados.nome);
-        this.autorForm.controls.nomeReal.setValue(resultados.nomeReal);
-        this.autorForm.controls.lugarNacemento.setValue(resultados.lugarNacemento);
-
-        const idNac = resultados.idNacionalidade;
-        if (idNac) this.autorForm.controls.idNacionalidade.setValue(idNac);
-
-        const idPais = resultados.idPais;
-        if (idPais) this.autorForm.controls.idPais.setValue(idPais);
-
-        const dN = new DateConvert().getDateFromMySQL(resultados?.dataNacemento);
-        if (dN?.year > 0) {
-          const dataModificada = new Date(dN.year, dN.month - 1, dN.day);
-          this.autorForm.controls.dataNacemento.setValue(dataModificada);
-        }
-
-        const dD = new DateConvert().getDateFromMySQL(resultados?.dataDefuncom);
-        if (dD?.year > 0) {
-          const dataModificada = new Date(dD.year, dD.month - 1, dD.day);
-          this.autorForm.controls.dataDefuncom.setValue(dataModificada);
-        }
-
-        this.autorForm.controls.web.setValue(resultados.web);
-        this.autorForm.controls.comentario.setValue(resultados.comentario);
+        this.formState.atualizarFromAutor(resultados);
       }
     }
     else{
@@ -362,28 +249,7 @@ export class AutorComponent implements OnInit {
     }
     else {
 
-      let dateConvert = new DateConvert();
-      let dN = dateConvert.getDate(this.autorForm.controls.dataNacemento.value);
-      let dD = dateConvert.getDate(this.autorForm.controls.dataDefuncom.value);
-
-      let nacom = this.todasNacionalidadesCombo().find(option => option.id === this.autorForm.controls.idNacionalidade.value);
-      let pais = this.todosPaisesCombo().find(option => option.id === this.autorForm.controls.idPais.value);
-      const autor: Autor = {
-        id: Number(this.dadosDoAutor?.id),
-        nome: String(this.autorForm.controls.nome.value).trim(),
-        nomeReal: (this.autorForm.controls.nomeReal.value == null) ? null : String(this.autorForm.controls.nomeReal.value).trim(),
-        lugarNacemento: (this.autorForm.controls.lugarNacemento.value == null) ? null : String(this.autorForm.controls.lugarNacemento.value).trim(),
-        dataNacemento: (dN.year > 0) ? dN.year + '-' + dN.month + '-' + dN.day : '',
-        dataDefuncom: (dD.year > 0) ? dD.year + '-' + dD.month + '-' + dD.day : '',
-        idNacionalidade: (nacom != undefined) ? nacom.id : null,
-        idPais: (pais != undefined) ? pais.id : null,
-        premios: (this.autorForm.controls.premios.value == null) ? null : String(this.autorForm.controls.premios.value).trim(),
-        web: (this.autorForm.controls.web.value == null) ? null : String(this.autorForm.controls.web.value).trim(),
-        comentario: (this.autorForm.controls.comentario.value == null) ? null : String(this.autorForm.controls.comentario.value).trim(),
-        nomeNacionalidade: '',
-        nomePais: '',
-        quantidade: 0
-      };
+      const autor = this.formState.criarObjetoAutor(this.dadosDoAutor?.id);
 
       if (event.submitter.value === EstadosPagina.engadir) {
         this.autoresService
