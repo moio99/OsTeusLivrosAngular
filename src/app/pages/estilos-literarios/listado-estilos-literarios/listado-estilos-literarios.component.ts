@@ -6,7 +6,7 @@ import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { EstiloLiterarioComponent } from '../estilo-literario/estilo-literario.component';
 import { EstilosLiterariosService } from '@servizosApi';
-import { ListadoEstilosLiterarios } from '../../../core/models/listado-estilos-literarios.interface';
+import { ListadoEstilosLiterarios } from '@interfaces';
 import { environment, environments } from '../../../../environments/environment';
 
 @Component({

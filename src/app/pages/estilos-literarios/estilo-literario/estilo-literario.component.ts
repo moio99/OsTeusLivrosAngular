@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LivrosService, EstilosLiterariosService } from '@servizosApi';
 import { BaseElementoComponent } from '@componhentesComuns';
-import { EstiloLiterario } from '../../../core/models/estilos-literarios.interface';
+import { EstiloLiterario } from '@interfaces';
 
 @Component({
   selector: 'omla-estilo-literario',

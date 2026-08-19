@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
-import { ListadoBibliotecas } from '../../../core/models/listado-bibliotecas.interface';
+import { ListadoBibliotecas } from '@interfaces';
 import { BibliotecasService } from '@servizosApi';
 import { LayoutService } from '@servizosFlow';
 import { CommonModule } from '@angular/common';

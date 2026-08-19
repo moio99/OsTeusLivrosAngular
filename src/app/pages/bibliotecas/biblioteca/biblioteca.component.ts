@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BibliotecasService, LivrosService } from '@servizosApi';
 import { DateConvert } from '../../../shared/classes/date-convert';
-import { Biblioteca, BibliotecaForm } from '../../../core/models/biblioteca.interface';
+import { Biblioteca, BibliotecaForm } from '@interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';

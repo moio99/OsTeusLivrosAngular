@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Genero, GeneroForm } from '../../../core/models/genero.interface';
+import { Genero, GeneroForm } from '@interfaces';
 import { GenerosService, LivrosService} from '@servizosApi';
 import { BaseElementoComponent } from '@componhentesComuns';
 

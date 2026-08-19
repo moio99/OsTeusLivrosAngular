@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Colecom, ColecomForm } from '../../../core/models/colecom.interface';
+import { Colecom, ColecomForm } from '@interfaces';
 import { ColeconsService, LivrosService } from '@servizosApi';
 import { BaseElementoComponent } from '@componhentesComuns';
 

@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { GeneroComponent } from '../genero/genero.component';
 import { CommonModule } from '@angular/common';
-import { ListadoGeneros } from '../../../core/models/listado-generos.interface';
+import { ListadoGeneros } from '@interfaces';
 import { GenerosService } from '@servizosApi';
 import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';

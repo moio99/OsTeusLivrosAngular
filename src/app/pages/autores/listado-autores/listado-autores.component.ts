@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, Routes } from '@angular/router';
 import { first } from 'rxjs';
-import { ListadoAutores } from '../../../core/models/listado-autores.interface';
+import { ListadoAutores, ParametrosAutor, BaseListadoDadosApi } from '@interfaces';
 import { AutoresService, OutrosService } from '@servizosApi';
 import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
@@ -9,9 +9,7 @@ import { InformacomPeTipo, ListadosAutoresTipos } from '../../../shared/enums/es
 import { AutorComponent } from '../autor/autor.component';
 import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
-import { Parametros } from '../../../core/models/autor.interface';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
 
 @Component({
   selector: 'omla-listado-autores',
@@ -43,7 +41,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   ngOnInit(): void {
     this.route.queryParams
       .subscribe(params => {
-        let parametros = <Parametros>params;
+        let parametros = <ParametrosAutor>params;
         if (parametros != undefined && parametros.id != undefined) {
           this.obterDadosDoListadoPorTipo(parametros);
         }
@@ -65,7 +63,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     });
   }
 
-  private obterDadosDoListadoPorTipo(parametros: Parametros): void {
+  private obterDadosDoListadoPorTipo(parametros: ParametrosAutor): void {
     if (parametros.tipo == ListadosAutoresTipos.porNacionalidade)
     {
       this.outrosService

@@ -1,7 +1,7 @@
 import { ListadosAutoresTipos } from "../../shared/enums/estadisticasTipos";
 import { BaseElemento, BaseListado, BaseQuantidadesLivros } from "./base-dados-api.interface";
 
-export interface Parametros {
+export interface ParametrosAutorListado {
   id: string;
   tipo: ListadosAutoresTipos;
 }

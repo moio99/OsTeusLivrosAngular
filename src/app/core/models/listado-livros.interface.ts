@@ -1,6 +1,6 @@
 import { EstadisticasTipo } from "../../shared/enums/estadisticasTipos";
 
-export interface Parametros {
+export interface ParametrosLivroListado {
   id: string;
   tipo: EstadisticasTipo;
 }

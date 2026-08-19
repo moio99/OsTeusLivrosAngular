@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
-import { ListadoEditoriais } from '../../../core/models/listado-editoriais.interface';
+import { ListadoEditoriais } from '@interfaces';
 import { EditoriaisService } from '@servizosApi';
 import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';

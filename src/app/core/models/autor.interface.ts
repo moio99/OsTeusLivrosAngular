@@ -2,7 +2,7 @@ import { FormControl } from "@angular/forms";
 import { ListadosAutoresTipos } from "../../shared/enums/estadisticasTipos";
 import { BaseListadoDadosApi } from "./base-dados-api.interface";
 
-export interface Parametros {
+export interface ParametrosAutor {
   id: number;
   tipo: ListadosAutoresTipos;
 }

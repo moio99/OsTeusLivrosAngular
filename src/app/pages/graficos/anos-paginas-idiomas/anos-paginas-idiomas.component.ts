@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Routes } from '@angular/router';
 import { ChartComponent, NgApexchartsModule} from "ng-apexcharts";
-import { Graficos } from '../../../core/models/graficos.interface';
+import { Graficos } from '@interfaces';
 import { AreasChartOptions } from '../../../core/types/chart.options';
 import { CoresIdiomasService } from '@servizosFlow';
 import { CoresIdioma } from '../../../shared/cores.idiomas.config';

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
-import { ListadoConcretoAutores, ListadoConcretoAutoresData } from '../../../../core/models/listado-autores.interface';
+import { ListadoConcretoAutores, ListadoConcretoAutoresData } from '@interfaces';
 import { AutoresService } from '@servizosApi';
 import { LayoutService } from '@servizosFlow';
 import { ListadosAutoresTipos, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';

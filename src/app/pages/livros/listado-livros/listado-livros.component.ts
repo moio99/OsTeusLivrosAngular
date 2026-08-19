@@ -7,16 +7,12 @@ import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo, ListadosLivrosTipos } from '../../../shared/enums/estadisticasTipos';
 import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
-import { ListadoLivros, Parametros } from '../../../core/models/listado-livros.interface';
+import { ListadoLivros, ParametrosLivroListado, BaseListadoDadosApi } from '@interfaces';
 import { LivroComponent } from '../livro/livro.component';
-import {
-  ChartComponent,
-  NgApexchartsModule
-} from "ng-apexcharts";
+import { ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import { TartaChartOptions } from '../../../core/types/chart.options';
 import { CoresIdioma } from '../../../shared/cores.idiomas.config';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
 
 @Component({
   selector: 'omla-listado-livros',
@@ -42,7 +38,7 @@ export class ListadoLivrosComponent implements OnInit {
   listadoDados = signal<ListadoLivros[]>([]);
   tipo = ListadosLivrosTipos.alfabetico;
   tipos = ListadosLivrosTipos;
-  parametros: Parametros = { tipo: EstadisticasTipo.Ano, id: '0' };
+  parametros: ParametrosLivroListado = { tipo: EstadisticasTipo.Ano, id: '0' };
   coresIdiomas: { [key: string]: CoresIdioma } = {};
 
   constructor(
@@ -82,7 +78,7 @@ export class ListadoLivrosComponent implements OnInit {
     this.coresIdiomas = this.coresIdiomasService.getCoresIdiomas();
     this.route.queryParams
       .subscribe(params => {
-        this.parametros = <Parametros>params;
+        this.parametros = <ParametrosLivroListado>params;
         this.obterDadosDoListado();
       }
     );

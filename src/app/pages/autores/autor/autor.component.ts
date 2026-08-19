@@ -4,9 +4,8 @@ import { CommonModule, Location } from '@angular/common';
 import { Validators, FormControl, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first, startWith } from 'rxjs';
-import { Autor, AutorData, AutorForm } from '../../../core/models/autor.interface';
+import { Autor, AutorData, AutorForm, ListadoLivros, BaseListadoDadosApi } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
-import { ListadoLivros } from '../../../core/models/listado-livros.interface';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
 import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
 import { DateConvert } from '../../../shared/classes/date-convert';
@@ -18,7 +17,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
 import { ValidaconsAMedida } from '../../../shared/validators/custom-validators';
 
 @Component({

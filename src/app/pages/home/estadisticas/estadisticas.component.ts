@@ -6,11 +6,9 @@ import { LayoutService, UsuarioAppService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '@componhentesComuns';
-import { Estadisticas } from '../../../core/models/estadisticas.interface';
-import { GraficosData } from '../../../core/models/graficos.interface';
+import { Estadisticas, GraficosData, BaseListadoDadosApi } from '@interfaces';
 import { PeticomPendenteComponent } from '../../../peticom-pendente.guard';
 import { forkJoin } from 'rxjs';
-import { BaseListadoDadosApi } from '../../../core/models/base-dados-api.interface';
 
 @Component({
   selector: 'omla-estadisticas',

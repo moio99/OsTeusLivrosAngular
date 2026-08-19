@@ -3,8 +3,7 @@ import { first, map, merge, Observable, startWith, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LivrosService, OutrosService, RelecturasService } from '@servizosApi';
 import { CommonModule } from '@angular/common';
-import { FormControl,
-  ReactiveFormsModule, Validators, FormBuilder, AbstractControl, FormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators, FormBuilder, AbstractControl, FormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -21,10 +20,8 @@ import { SimpleObjet } from '../../../shared/models/outros.model';
 import { MultiDados, MultiSelecomDialogComponent, EstrelasPontuacomComponent } from '@componhentesComuns';
 import { MatNativeDateModule } from '@angular/material/core';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoDadosApi, Parametros, Resultado } from '../../../core/models/base-dados-api.interface';
-import { ObjetoSimpleIdNome, datasUltimosAnos, Livro, Outros, LivroForm } from '../../../core/models/livro.interface';
-import { Genero } from '../../../core/models/genero.interface';
-import { Relectura, ListadoRelecturas, RelecturasData, RelecturaData } from '../../../core/models/relectura.interface';
+import { BaseListadoDadosApi, Parametros, Resultado, Genero, ObjetoSimpleIdNome, datasUltimosAnos, Livro, Outros, LivroForm,
+  Relectura, ListadoRelecturas, RelecturasData, RelecturaData } from '@interfaces';
 import { ValidaconsAMedida } from '../../../shared/validators/custom-validators';
 
 export enum MultiGestom {

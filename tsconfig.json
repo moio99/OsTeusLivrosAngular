@@ -16,7 +16,8 @@
     "paths": {
       "@servizosApi": ["./src/app/core/services/api/index.ts"],
       "@servizosFlow": ["./src/app/core/services/flow/index.ts"],
-      "@componhentesComuns": ["./src/app/core/components/index.ts"]
+      "@componhentesComuns": ["./src/app/core/components/index.ts"],
+      "@interfaces": ["./src/app/core/models/index.ts"]
     }
   },
   "angularCompilerOptions": {
