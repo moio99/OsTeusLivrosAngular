@@ -18,12 +18,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { environment, environments } from '../../../../environments/environment';
 import { ValidaconsAMedida } from '../../../shared/validators/custom-validators';
+import { AutorFormPresenterComponent } from './autor-form-presenter.component';
+import { AutorLivrosComponent } from './autor-livros.component';
 
 @Component({
   selector: 'omla-autor',
   standalone: true,
   imports: [ CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule
-    , MatInputModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule ],
+    , MatInputModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule
+    , AutorFormPresenterComponent, AutorLivrosComponent ],
   templateUrl: './autor.component.html',
   styleUrls: ['./autor.component.scss']
 })
@@ -103,7 +106,7 @@ export class AutorComponent implements OnInit {
   // O filtro é un Signal derivado ('computed'). Reexecútase só cando cambia o input ou o combo.
   dadosNacionalidadesFiltradas = computed(() => {
     const listaCompleta = this.todasNacionalidadesCombo();    // se cambia este lanza o computed (para quando o combo está valeiro, ou se cambia o input)
-    const valorInput = this.idNacionalidadeSignal();                // se cambia este lanza o computed
+    const valorInput = this.idNacionalidadeSignal();          // se cambia este lanza o computed
 
     // Se o valor é un número (un ID), tamén queremos que por defecto amose todo o listado ao abrir
     if (typeof valorInput === 'number' || !isNaN(Number(valorInput))) {

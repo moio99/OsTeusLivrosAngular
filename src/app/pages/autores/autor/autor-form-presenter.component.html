@@ -1,0 +1,102 @@
+<form [formGroup]="autorForm" (ngSubmit)="submitForm.emit($event)">
+  @if (modo === estadosPagina.engadir || modo === estadosPagina.guardar) {
+    <button color="primary" type="submit" [value]="modo">
+      <i class="icon-disk"></i> {{modo}}
+    </button>
+    <button color="primary" type="button" (click)="cancelar.emit()">
+      <i class="icon-disk"></i> Retroceder
+    </button>
+  }
+  <div class="formulario-dados">
+    <div>
+      <mat-form-field [style.width.px]="400">
+        <mat-label>Nome:</mat-label>
+        <input matInput [formControl]="autorForm.controls.nome">
+        @if (autorForm.controls.nome.hasError('maxlength')) {
+          <mat-error>A longitude nom debe superar os 150 caracteres</mat-error>
+        }
+        @if (autorForm.controls.nome.hasError('required')) {
+          <mat-error>O Nome é obrigatorio</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field [style.width.px]="400">
+        <mat-label>Nome real:</mat-label>
+        <input matInput [formControl]="autorForm.controls.nomeReal">
+        @if (autorForm.controls.nomeReal.hasError('maxlength')) {
+          <mat-error>A longitude nom debe superar os 150 caracteres</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field [style.width.px]="400">
+        <mat-label>Lugar de nacemento:</mat-label>
+        <input matInput [formControl]="autorForm.controls.lugarNacemento">
+        @if (autorForm.controls.lugarNacemento.hasError('maxlength')) {
+          <mat-error>A longitude nom debe superar os 150 caracteres</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field [style.width.px]="300">
+        <mat-label>Web:</mat-label>
+        <input matInput [formControl]="autorForm.controls.web">
+        @if (autorForm.controls.web.hasError('maxlength')) {
+          <mat-error>A longitude nom debe superar os 150 caracteres</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="ancho-inputs" [style.width.px]="170">
+        <mat-label>Data de nacemento</mat-label>
+        <input matInput [matDatepicker]="fDateN" [formControl]="autorForm.controls.dataNacemento">
+        <mat-datepicker-toggle matSuffix [for]="fDateN"></mat-datepicker-toggle>
+        <mat-datepicker #fDateN></mat-datepicker>
+        @if (autorForm.controls.dataNacemento.hasError('matDatepickerParse')) {
+          <mat-error>O formato válido é dd/mm/aaaa</mat-error>
+        }
+        @if (autorForm.controls.dataNacemento.hasError('datasInvalidas')) {
+          <mat-error>A data de nacemento non pode ser superior á data de defunción</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="ancho-inputs" [style.width.px]="170">
+        <mat-label>Data de defuncom</mat-label>
+        <input matInput [matDatepicker]="fDateD" [formControl]="autorForm.controls.dataDefuncom">
+        <mat-datepicker-toggle matSuffix [for]="fDateD"></mat-datepicker-toggle>
+        <mat-datepicker #fDateD></mat-datepicker>
+        @if (autorForm.controls.dataDefuncom.hasError('matDatepickerParse')) {
+          <mat-error>O formato válido é dd/mm/aaaa</mat-error>
+        }
+        @if (autorForm.controls.dataDefuncom.hasError('datasInvalidas')) {
+          <mat-error>A data de defunçom nom pode ser inferior á data de nacemento</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="text" placeholder="Nacionalidade:" aria-label="Number" matInput
+          [formControl]="autorForm.controls.idNacionalidade" [matAutocomplete]="autoNacionalidades">
+        <mat-autocomplete #autoNacionalidades="matAutocomplete" [displayWith]="amosarNacionalidade">
+          @for (element of dadosNacionalidadesFiltradas; track element.id) {
+            <mat-option [value]="element.id">{{element.value}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="text" placeholder="País:" aria-label="Number" matInput
+          [formControl]="autorForm.controls.idPais" [matAutocomplete]="autoPaises">
+        <mat-autocomplete #autoPaises="matAutocomplete" [displayWith]="amosarPais">
+          @for (element of dadosPaisesFiltrados; track element.id) {
+            <mat-option [value]="element.id">{{element.value}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field [style.width.px]="700">
+        <mat-label>Comentario:</mat-label>
+        <textarea matInput [formControl]="autorForm.controls.comentario" rows="4"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+</form>
