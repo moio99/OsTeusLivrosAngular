@@ -2,13 +2,13 @@ import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { first } from 'rxjs';
-import { Autor, AutorData, ListadoLivros, BaseListadoDadosApi } from '@interfaces';
+import { EMPTY, first, forkJoin, switchMap } from 'rxjs';
+import { Autor, AutorData, ListadoLivros, BaseListadoDadosApi, BaseQuantidadesLivros } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
 import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
-import { Nacionalidade, SimpleObjet, Pais, DadosObtidos } from '../../../shared/models/outros.model';
+import { Nacionalidade, SimpleObjet, Pais } from '../../../shared/models/outros.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -94,7 +94,7 @@ export class AutorComponent implements OnInit {
       .getLivrosPorAutor(id)
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.dadosLivrosDoAutor.set(this.dadosLivrosObtidos(v)),
+        next: (v) => this.dadosLivrosDoAutor.set(this.dadosLivrosObtidos(v)),
         error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os livros do autor'}); },
           complete: () => console.debug('completada a obtençom dos livros do autor')
@@ -116,70 +116,70 @@ export class AutorComponent implements OnInit {
 
   private obterOutrosDados(idAutor: string): void {
     const dados = this.usuarioAppService.getDadosOutros();
-    if (dados) {                                            // Já os tinhamos
-      this.dadosNacionalidades = this.dadosNacionalidadesObtidas(dados.nacionalidades);
-      this.dadosPaises = this.dadosPaisesObtidos(dados.paises);
+    if (dados) {                                            // Já os tínhamos
+      this.dadosNacionalidades = this.procesarDadosGerais<Nacionalidade>(dados.nacionalidades, (datos) =>
+          this.formState.setNacionalidades(datos)
+      );
+        this.dadosPaises = this.procesarDadosGerais<Pais>(dados.paises, (datos) =>
+          this.formState.setPaises(datos)
+      );
       this.obterDadosDoAutor(idAutor);
     } else {
-      this.obterNacionalidades(idAutor);
+      this.iniciarCargaDatos(idAutor);
     }
   }
 
-  private obterNacionalidades(idAutor: string): void {
-    this.outrosService
-      .getNacionalidades()
-      .pipe(first())
-      .subscribe({
-        next: (v: object) => this.dadosNacionalidades = this.dadosNacionalidadesObtidas(v),
-        error: (e: unknown) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-            mensagem: 'Nom se puiderom obter os dados das nacionalidades'}); },
-          complete: () => this.obterPaises(idAutor)
+  private iniciarCargaDatos(idAutor: string): void {
+    // Lánzanse as dúas peticións en paralelo
+    forkJoin({
+      nacionalidades: this.outrosService.getNacionalidades().pipe(first()),
+      paises: this.outrosService.getPaises().pipe(first())
+    }).subscribe({
+      next: ({ nacionalidades, paises }) => {
+        // Procesamos as nacionalidades
+        this.dadosNacionalidades = this.procesarDadosGerais(nacionalidades, (datos) =>
+          this.formState.setNacionalidades(datos)
+        );
+
+        // Procesamos os países
+        this.dadosPaises = this.procesarDadosGerais(paises, (datos) =>
+          this.formState.setPaises(datos)
+        );
+      },
+      error: (e: unknown) => {
+        console.error(e);
+        this.layoutService.amosarInfo({
+          tipo: InformacomPeTipo.Erro,
+          mensagem: 'Nom se puiderom obter os dados de soporte (nacionalidades/países).'
+        });
+      },
+      complete: () => {
+        // Cando ambas rematan con éxito, cargamos o autor
+        this.obterDadosDoAutor(idAutor);
+      }
     });
   }
 
-  private dadosNacionalidadesObtidas(data: object): Nacionalidade[] {
-    const dados = <DadosObtidos>data;
-    if (dados != null && dados.data.length > 0) {
-      let dadosReducidos: SimpleObjet[] = [];
-      dados.data.forEach(function (value) {
-        dadosReducidos.push({id: value.id, value: value.nome});
-      });
+  private procesarDadosGerais<T extends Nacionalidade | Pais>(
+    data: object,
+    actualizarSignal: (dados: SimpleObjet[]) => void
+  ): T[] {
+    const dados = data as { data: T[] };
 
-      // Isto actualizará o Signal automaticamente
-        this.formState.setNacionalidades(dadosReducidos);
-
-      return dados.data;
+    if (!dados || !dados.data || dados.data.length === 0) {
+      return [];
     }
-    return [];
-  }
 
-  private obterPaises(idAutor: string): void {
-    this.outrosService
-      .getPaises()
-      .pipe(first())
-      .subscribe({
-        next: (v: object) => this.dadosPaises = this.dadosPaisesObtidos(v),
-        error: (e: unknown) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados dos paises'}); },
-          complete: () => this.obterDadosDoAutor(idAutor)
-    });
-  }
+    // Mapeado moderno con .map() en lugar de forEach + push
+    const dadosReducidos: SimpleObjet[] = dados.data.map(value => ({
+      id: value.id,
+      value: value.nome
+    }));
 
-  private dadosPaisesObtidos(data: object): Pais[] {
-    const dados = <DadosObtidos>data;
-    if (dados != null && dados.data.length > 0) {
-      let dadosReducidos: SimpleObjet[] = [];
-      dados.data.forEach(function (value) {
-        dadosReducidos.push({id: value.id, value: value.nome});
-      });
+    // Actualiza o Signal correspondente no formState
+    actualizarSignal(dadosReducidos);
 
-      // Isto actualizará o Signal automaticamente
-        this.formState.setPaises(dadosReducidos);
-
-      return dados.data;
-    }
-    else return [];
+    return dados.data;
   }
 
   private obterDadosDoAutor(id: string): void {
@@ -188,7 +188,7 @@ export class AutorComponent implements OnInit {
         .getAutor(id)
         .pipe(first())
         .subscribe({
-          next: (v: object) => this.dadosDoAutor = this.dadosAutorObtidos(v),
+          next: (v) => this.dadosDoAutor = this.dadosAutorObtidos(v),
           error: (e: unknown) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor'}); },
             complete: () => console.debug('completada a obtençom dos dados do autor')
@@ -221,67 +221,62 @@ export class AutorComponent implements OnInit {
   }
   //#region
 
-  onSubmit(event: any) {
-    if (this.autorForm.controls.nome.status === 'VALID' && this.autorForm.controls.nomeReal.status === 'VALID'
-      && this.autorForm.controls.lugarNacemento.status === 'VALID'
-      && this.autorForm.controls.dataNacemento.status === 'VALID' && this.autorForm.controls.dataDefuncom.status === 'VALID'
-      && this.autorForm.controls.premios.status === 'VALID' && this.autorForm.controls.web.status === 'VALID') {
-
-      let autorRepetido: AutorData<Autor> | undefined;
-      this.autoresService
-        .getAutorPorNome(String(this.autorForm.controls.nome.value).trim())
-        .pipe(first())
-        .subscribe({
-          next: (v) => autorRepetido = v,
-          error: (e: unknown) => { console.error(e),
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor.'}); },
-          complete: () => this.guardarAutor(event, autorRepetido)
-      });
+  onSubmit(event: SubmitEvent) {
+    if (this.autorForm.invalid) {
+      return;
     }
-  }
 
-  guardarAutor(event: any, autorRepetido: AutorData<Autor> | undefined) {
-    if (autorRepetido != undefined && autorRepetido.meta.quantidade > 0 && (
-      (event.submitter.value === EstadosPagina.engadir)
-      ||
-      (event.submitter.value !== EstadosPagina.engadir && autorRepetido.meta.id != this.dadosDoAutor?.id))) { // se está actualizando os ids deben ser inguais
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O nome do autor já existe na base de dados'});
-    }
-    else {
+    const botonPremido = (event.submitter as HTMLButtonElement)?.value;
+    const nomeFormulario = String(this.autorForm.controls.nome.value).trim();
 
-      const autor = this.formState.criarObjetoAutor(this.dadosDoAutor?.id);
+    this.autoresService.getAutorPorNome(nomeFormulario).pipe(
+      first(),
+      switchMap((autorRepetido) => {
+        // Validar se o autor xa existe antes de gardar
+        if (autorRepetido && autorRepetido.meta.quantidade > 0) {
 
-      if (event.submitter.value === EstadosPagina.engadir) {
-        this.autoresService
-          .postAutor(autor)
-          .pipe(first())
-          .subscribe({
-            next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, autor)},
-            error: (e: unknown) => {
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o autor.'});
-              console.error(e) },
-              complete: () => {
-                this.modo.set(EstadosPagina.guardar);
-                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor engadido.'});
-                // console.debug('post completado');
-              }
+          if (botonPremido === EstadosPagina.engadir || autorRepetido.meta.id !== this.dadosDoAutor?.id) {
+            this.layoutService.amosarInfo({
+              tipo: InformacomPeTipo.Aviso,
+              mensagem: 'O nome do autor já existe na base de dados'
+            });
+            return EMPTY; // Cancela o fluxo se o autor está repetido
+          }
+        }
+
+        // Se todo está ben, creamos o obxecto e devolvemos o Observable correcto
+        const autor = this.formState.criarObjetoAutor(this.dadosDoAutor?.id);
+
+        if (botonPremido === EstadosPagina.engadir) {
+          return this.autoresService.postAutor(autor).pipe(
+            first(),
+            switchMap((v) => {
+              this.gestionarRetroceso(v, autor);
+              this.modo.set(EstadosPagina.guardar);
+              this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor engadido.' });
+              return EMPTY;
+            })
+          );
+        } else {
+          return this.autoresService.putAutor(autor).pipe(
+            first(),
+            switchMap((v) => {
+              this.gestionarRetroceso(v, autor);
+              this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor guardado.' });
+              return EMPTY;
+            })
+          );
+        }
+      })
+    ).subscribe({
+      error: (e: unknown) => {
+        console.error(e);
+        this.layoutService.amosarInfo({
+          tipo: InformacomPeTipo.Erro,
+          mensagem: botonPremido === EstadosPagina.engadir ? 'Houbo un erro ao engadir o autor.' : 'Houbo un erro ao guardar o autor.'
         });
       }
-      else {
-        this.autoresService
-          .putAutor(autor)
-          .pipe(first())
-          .subscribe({
-            next: (v: object) => {console.debug(v), this.gestionarRetroceso(v, autor)},
-            error: (e: unknown) => {
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar o autor.'});
-              console.error(e) },
-              complete: () => {
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor guardado.'});
-              console.debug('put completado') }
-        });
-      }
-    }
+    });
   }
 
   private gestionarRetroceso(data: object, autor: Autor) {
