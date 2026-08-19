@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Colecom, ColecomForm } from '@interfaces';
@@ -17,7 +17,6 @@ import { BaseElementoComponent } from '@componhentesComuns';
 })
 export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsService> {
 
-  colecomForm!: FormGroup<ColecomForm>;
   override dadosDoElemento: Colecom | undefined = {
     id: 0,
     nome: '',
@@ -26,18 +25,15 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
     comentario: ''
   };
 
-  private livrosService = inject(LivrosService);
-
-  constructor() {
-    super();
-
-    this.colecomForm = new FormGroup<ColecomForm>({
+  private fb = inject(FormBuilder);
+  colecomForm = this.fb.group<ColecomForm>({
       nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
       isbn: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(20)]),
       web: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(150)]),
       comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
     });
-  }
+
+  private livrosService = inject(LivrosService);
 
   protected get formuario(): any {
     return this.colecomForm;

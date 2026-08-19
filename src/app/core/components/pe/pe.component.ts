@@ -31,12 +31,12 @@ export class PeComponent {
     // cambie o Signal 'informacom' no LayoutService
     effect(() => {
       const info = this.layoutService.informacom(); // Angular detecta que lemos este Signal
-      this.procesarMensaxe(info); // Chamamos á túa función pasándolle o novo valor
+      this.procesarMensaxe(info); // Chamamos á función pasándolle o novo valor
     });
   }
 
   private procesarMensaxe(info: InformacomPe | undefined) {
-    // 1. Limpamos calquera temporizador activo para que a nova mensaxe tome o control
+    // Limpamos calquera temporizador activo para que a nova mensaxe tome o control
     if (this.currentTimeoutId) {
       clearTimeout(this.currentTimeoutId);
     }
@@ -46,10 +46,10 @@ export class PeComponent {
       this.mensagem.set(info.mensagem);
       this.visivel.set(true);
 
-      // 2. Calculamos a duración (por defecto 5000ms)
+      // Calculamos a duración (por defecto 5000ms)
       const duracion = info.duracom ? info.duracom * 1000 : 5000;
 
-      // 3. Programamos o peche de forma segura
+      // Programamos o peche de forma segura
       this.currentTimeoutId = setTimeout(() => {
         this.visivel.set(false);
       }, duracion);
