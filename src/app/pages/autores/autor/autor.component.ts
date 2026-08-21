@@ -2,7 +2,7 @@ import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { EMPTY, first, forkJoin, switchMap } from 'rxjs';
+import { concatMap, EMPTY, first, forkJoin, switchMap, tap } from 'rxjs';
 import { Autor, AutorData, ListadoLivros, BaseListadoDadosApi, BaseQuantidadesLivros } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
@@ -230,50 +230,49 @@ export class AutorComponent implements OnInit {
     const nomeFormulario = String(this.autorForm.controls.nome.value).trim();
 
     this.autoresService.getAutorPorNome(nomeFormulario).pipe(
-      first(),
-      switchMap((autorRepetido) => {
-        // Validar se o autor xa existe antes de gardar
+      first(),  // Collo o primeiro valor da consulta do nome e pechamos esa canle
+      concatMap((autorRepetido) => {  // concatMap asegura que a seguinte chamada espere a que esta termine sen cancelarse
         if (autorRepetido && autorRepetido.meta.quantidade > 0) {
-
           if (botonPremido === EstadosPagina.engadir || autorRepetido.meta.id !== this.dadosDoAutor?.id) {
             this.layoutService.amosarInfo({
               tipo: InformacomPeTipo.Aviso,
               mensagem: 'O nome do autor já existe na base de dados'
             });
-            return EMPTY; // Cancela o fluxo se o autor está repetido
+            return EMPTY; // Corta o fluxo de forma segura se está repetido
           }
         }
 
-        // Se todo está ben, creamos o obxecto e devolvemos o Observable correcto
         const autor = this.formState.criarObjetoAutor(this.dadosDoAutor?.id);
-
         if (botonPremido === EstadosPagina.engadir) {
           return this.autoresService.postAutor(autor).pipe(
             first(),
-            switchMap((v) => {
+            tap((v) => {
               this.gestionarRetroceso(v, autor);
-              this.modo.set(EstadosPagina.guardar);
+              this.modo.set(EstadosPagina.guardar); // Actualización do teu Signal en Angular moderno
               this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor engadido.' });
-              return EMPTY;
             })
           );
         } else {
           return this.autoresService.putAutor(autor).pipe(
             first(),
-            switchMap((v) => {
+            tap((v) => {
               this.gestionarRetroceso(v, autor);
               this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor guardado.' });
-              return EMPTY;
             })
           );
         }
       })
     ).subscribe({
+      next: () => {
+        console.debug('Proceso finalizado');
+      },
       error: (e: unknown) => {
         console.error(e);
         this.layoutService.amosarInfo({
           tipo: InformacomPeTipo.Erro,
-          mensagem: botonPremido === EstadosPagina.engadir ? 'Houbo un erro ao engadir o autor.' : 'Houbo un erro ao guardar o autor.'
+          mensagem: botonPremido === EstadosPagina.engadir
+            ? 'Houbo un erro ao engadir o autor.'
+            : 'Houbo un erro ao guardar o autor.'
         });
       }
     });
