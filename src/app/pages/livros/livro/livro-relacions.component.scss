@@ -1,0 +1,18 @@
+:host {
+  display: contents;
+}
+
+@media (min-width: 650px) {
+  .autor {
+    grid-area: 1/4/2/5;
+  }
+
+  .genero {
+    grid-area: 2/4/3/5;
+  }
+}
+
+.lista-etiqueta {
+  display: flex;
+  justify-content: space-between;
+}

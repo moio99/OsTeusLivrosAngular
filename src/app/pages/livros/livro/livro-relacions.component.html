@@ -1,0 +1,37 @@
+@if (modo() !== estadosPagina.soVisualizar) {
+  <div class="autor">
+    <div class="lista-etiqueta">
+      <div>Autor@if (temAutoresLivro()) { <span>es</span> }:</div>
+      <div>
+        <button type="button" (click)="gestionarAutores.emit()">Gestionar</button>
+        <button type="button" (click)="engadirAutor.emit()">Engadir</button>
+      </div>
+    </div>
+    <div class="lista-com-comas">
+      <ul>
+        @for (item of autoresLivro(); track item.id) {
+          <li class="listado-accom" (click)="navegarAutor.emit(item.id)">{{item.value}}</li>
+        }
+      </ul>
+    </div>
+  </div>
+}
+
+<div class="genero">
+  <div class="lista-etiqueta">
+    <div>Género@if (temGenerosLivro()) { <span>s</span> }:</div>
+    @if (modo() !== estadosPagina.soVisualizar) {
+      <div>
+        <button type="button" (click)="gestionarGeneros.emit()">Gestionar</button>
+        <button type="button" (click)="engadirGenero.emit()">Engadir</button>
+      </div>
+    }
+  </div>
+  <div class="lista-com-comas">
+    <ul>
+      @for (item of generosLivro(); track item.id) {
+        <li class="listado-accom" (click)="navegarGenero.emit(item.id)">{{item.value}}</li>
+      }
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+@if (mostrar()) {
+  @if (!temRelecturas()) {
+    <div>Nom há relecturas para este livro.</div>
+  } @else {
+    <h3>Listado de relecturas</h3>
+    <table>
+      <tr>
+        <th>Título</th>
+        <th>Páginas</th>
+        <th>Lido</th>
+        <th>Fim Leitura</th>
+        <th>Dias</th>
+        <th>Pontuaçom</th>
+      </tr>
+      @for (entrada of relecturas(); track entrada.id) {
+        <tr class="listado-accom">
+          <td (click)="editarRelectura.emit(entrada.id)">{{entrada.titulo}}</td>
+          <td (click)="editarRelectura.emit(entrada.id)">{{entrada.paginas}}</td>
+          <td (click)="editarRelectura.emit(entrada.id)">{{entrada.lido ? 'Si' : 'Nom'}}</td>
+          <td (click)="editarRelectura.emit(entrada.id)">
+            {{entrada.dataFimLeitura ? (entrada.dataFimLeitura | date:'dd/MM/yyyy') : '---'}}
+          </td>
+          <td (click)="editarRelectura.emit(entrada.id)">{{entrada.diasLeitura}}</td>
+          <td (click)="editarRelectura.emit(entrada.id)">{{entrada.pontuacom}}</td>
+          <td (click)="borrar.emit(entrada)">
+            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+          </td>
+        </tr>
+      }
+    </table>
+  }
+}

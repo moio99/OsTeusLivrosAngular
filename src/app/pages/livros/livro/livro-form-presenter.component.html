@@ -1,0 +1,368 @@
+<form [formGroup]="livroForm()" (ngSubmit)="submitForm.emit($event)">
+  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+    <button class="botom-guardar-resgistro" color="primary" type="submit" [value]="modo()">
+      {{ modo() }}
+    </button>
+    @if (!modoRelectura() && modo() !== estadosPagina.engadir) {
+      <button type="button" (click)="novaRelectura.emit()">Nova relectura</button>
+    } @else if (modoRelectura()) {
+      <button type="button" (click)="cancelarRelectura.emit()">
+        Cancelar {{ modo() === estadosPagina.engadir ? 'nova' : 'modificar' }} relectura
+      </button>
+    }
+  }
+
+  <div class="dadosLivro">
+    <div class="titulo">
+      <mat-form-field class="ancho-inputs">
+        <mat-label>Título</mat-label>
+        <input matInput [formControl]="livroForm().controls.titulo" maxlength="100" />
+        @if (livroForm().controls.titulo.hasError('maxlength')) {
+          <mat-error>Máximo 100 caracteres</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    @if (!modoRelectura()) {
+      <omla-livro-relacions
+        [autoresLivro]="autoresLivro()"
+        [generosLivro]="generosLivro()"
+        [modo]="modo()"
+        (gestionarAutores)="gestionarAutores.emit()"
+        (engadirAutor)="engadirAutor.emit()"
+        (gestionarGeneros)="gestionarGeneros.emit()"
+        (engadirGenero)="engadirGenero.emit()"
+        (navegarAutor)="navegarAutor.emit($event)"
+        (navegarGenero)="navegarGenero.emit($event)"
+      />
+
+      <div class="titulo-original">
+        <mat-form-field class="ancho-inputs">
+          <mat-label>Título original</mat-label>
+          <input matInput [formControl]="livroForm().controls.tituloOriginal" maxlength="100" />
+          @if (livroForm().controls.tituloOriginal.hasError('maxlength')) {
+            <mat-error>Máximo 100 caracteres</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    }
+
+    <div class="biblioteca listado-seleccom">
+      <mat-form-field class="ancho-inputs listado-seleccom__input">
+        <input type="text" placeholder="Biblioteca:" aria-label="Number" matInput
+          [formControl]="livroForm().controls.idBiblioteca" [matAutocomplete]="idBiblio" />
+        <mat-autocomplete #idBiblio="matAutocomplete">
+          @for (option of formState.bibliotecas(); track option.id) {
+            <mat-option [value]="option.value">{{ option.value }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+        <div class="listado-seleccom__botons">
+          <button type="button"
+            (click)="engadirComplementario.emit(dadosComplentarios.Biblioteca)">
+            Engadir
+          </button>
+          @if (livroForm().controls.idBiblioteca.getRawValue()) {
+            <button type="button" (click)="editarBiblioteca.emit()">Editar</button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="editorial listado-seleccom">
+      <mat-form-field class="ancho-inputs listado-seleccom__input">
+        <input type="text" placeholder="Editorial:" aria-label="Number" matInput
+          [formControl]="livroForm().controls.idEditorial" [matAutocomplete]="idedito" />
+        <mat-autocomplete #idedito="matAutocomplete">
+          @for (option of formState.editoriais(); track option.id) {
+            <mat-option [value]="option.value">{{ option.value }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+        <div class="listado-seleccom__botons">
+          <button type="button"
+            (click)="engadirComplementario.emit(dadosComplentarios.Editorial)">
+            Engadir
+          </button>
+          @if (livroForm().controls.idEditorial.getRawValue()) {
+            <button type="button" (click)="editarEditorial.emit()">Editar</button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="colecom listado-seleccom">
+      <mat-form-field class="ancho-inputs listado-seleccom__input">
+        <input
+          matInput
+          type="text"
+          placeholder="Colecom:"
+          [formControl]="livroForm().controls.idColecom"
+          [matAutocomplete]="idcoleC"
+        />
+        <mat-autocomplete #idcoleC="matAutocomplete">
+          @for (option of formState.colecons(); track option.id) {
+            <mat-option [value]="option.value">{{ option.value }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+        <div class="listado-seleccom__botons">
+          <button type="button"
+            (click)="engadirComplementario.emit(dadosComplentarios.Colecom)">
+            Engadir
+          </button>
+          @if (livroForm().controls.idColecom.getRawValue()) {
+            <button type="button" (click)="editarColecom.emit()">Editar</button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="estido listado-seleccom">
+      @if (!modoRelectura()) {
+        <div class="estilo listado-seleccom">
+          <mat-form-field class="ancho-inputs listado-seleccom__input">
+            <input
+              matInput
+              type="text"
+              placeholder="Estilo literario"
+              [formControl]="livroForm().controls.idEstilo"
+              [matAutocomplete]="idestiloLi"
+            />
+            <mat-autocomplete #idestiloLi="matAutocomplete">
+              @for (option of formState.estilos(); track option.id) {
+                <mat-option [value]="option.value">{{ option.value }}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      }
+      @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+        <div class="listado-seleccom__botons">
+          <button type="button"
+            (click)="engadirComplementario.emit(dadosComplentarios.EstiloLiterario)">
+            Engadir
+          </button>
+          @if (livroForm().controls.idEstilo.getRawValue()) {
+            <button type="button" (click)="editarEstilo.emit()">Editar</button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="paginas">
+      <mat-form-field class="ancho-inputs"
+        ><mat-label>Páginas</mat-label
+        ><input matInput [formControl]="livroForm().controls.paginas" maxlength="7" />
+        @if (livroForm().controls.paginas.hasError('pattern')) {
+          <mat-error>Valor correto de 0 a 1000000</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="paginas-lidas">
+      <mat-form-field class="ancho-inputs"
+        ><mat-label>Páginas lidas</mat-label
+        ><input matInput [formControl]="livroForm().controls.paginasLidas" maxlength="7" />
+        @if (livroForm().controls.paginasLidas.hasError('pattern')) {
+          <mat-error>Valor correto de 0 a 1000000</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="isbn">
+      <mat-form-field class="ancho-inputs"
+        ><mat-label>ISBN:</mat-label><input matInput [formControl]="livroForm().controls.isbn" />
+        @if (livroForm().controls.isbn.hasError('maxlength')) {
+          <mat-error>Máximo 20 caracteres</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="lido">
+      <mat-checkbox [formControl]="livroForm().controls.lido">Lido</mat-checkbox>
+    </div>
+
+    @if (!modoRelectura()) {
+      <div class="data-criacom">
+        <mat-form-field class="ancho-inputs"
+          ><mat-label>Data de criaçom</mat-label
+          ><input
+            matInput
+            [matDatepicker]="fDateCri"
+            [formControl]="livroForm().controls.dataCriacom"
+          /><mat-datepicker-toggle matSuffix [for]="fDateCri"></mat-datepicker-toggle
+          ><mat-datepicker #fDateCri></mat-datepicker>
+          @if (livroForm().controls.dataCriacom.hasError('matDatepickerParse')) {
+            <mat-error>O formato válido é dd/mm/aaaa</mat-error>
+          }
+          @if (livroForm().controls.dataCriacom.hasError('datasInvalidas')) {
+            <mat-error>A data da criaçom nom pode ser superior á data da ediçom</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    }
+    <div class="data-edicom">
+      <mat-form-field class="ancho-inputs"
+        ><mat-label>Data da ediçom</mat-label
+        ><input
+          matInput
+          [matDatepicker]="fDateEdi"
+          [formControl]="livroForm().controls.dataEdicom"
+        /><mat-datepicker-toggle matSuffix [for]="fDateEdi"></mat-datepicker-toggle
+        ><mat-datepicker #fDateEdi></mat-datepicker>
+        @if (livroForm().controls.dataEdicom.hasError('matDatepickerParse')) {
+          <mat-error>O formato válido é dd/mm/aaaa</mat-error>
+        }
+        @if (livroForm().controls.dataEdicom.hasError('datasInvalidas')) {
+          <mat-error>A data da ediçom nom pode ser inferior á data de criaçom</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="numero-edicom">
+      <mat-form-field class="ancho-inputs"
+        ><mat-label>Número da ediçom</mat-label
+        ><input matInput [formControl]="livroForm().controls.numeroEdicom" maxlength="4" />
+        @if (livroForm().controls.numeroEdicom.hasError('pattern')) {
+          <mat-error>Valor correto de 0 a 1000</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="dias-leitura">
+      <mat-form-field class="ancho-inputs"
+        ><mat-label
+          >Dias leitura
+          @if (idLivro() === '0') {
+            <span>(incluido hoje)</span>
+          }</mat-label
+        ><input matInput [formControl]="livroForm().controls.diasLeitura" maxlength="4" />
+        @if (livroForm().controls.diasLeitura.hasError('pattern')) {
+          <mat-error>Valor correto de 0 a 1000</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="data-fim-leiturata">
+      <mat-form-field class="ancho-inputs"
+        ><mat-label>Data da fim da leitura</mat-label
+        ><input
+          matInput
+          [matDatepicker]="fDateFimL"
+          [formControl]="livroForm().controls.dataFimLeiturata" /><mat-datepicker-toggle
+          matSuffix
+          [for]="fDateFimL"
+        ></mat-datepicker-toggle
+        ><mat-datepicker #fDateFimL></mat-datepicker
+      ></mat-form-field>
+    </div>
+    <div class="idioma">
+      <mat-form-field class="ancho-inputs"
+        ><input
+          matInput
+          type="text"
+          placeholder="Idioma:"
+          [formControl]="livroForm().controls.idioma"
+          [matAutocomplete]="idiomaC"
+        />
+        <mat-autocomplete #idiomaC="matAutocomplete">
+          @for (option of formState.idiomas(); track option.id) {
+            <mat-option [value]="option.value">{{ option.value }}</mat-option>
+          }
+        </mat-autocomplete></mat-form-field
+      >
+    </div>
+    @if (!modoRelectura()) {
+      <div class="idioma-original">
+        <mat-form-field class="ancho-inputs"
+          ><input
+            matInput
+            type="text"
+            placeholder="Idioma Original:"
+            [formControl]="livroForm().controls.idiomaOriginal"
+            [matAutocomplete]="idiomaOrig"
+          />
+          <mat-autocomplete #idiomaOrig="matAutocomplete">
+            @for (option of formState.idiomasOriginais(); track option.id) {
+              <mat-option [value]="option.value">{{ option.value }}</mat-option>
+            }
+          </mat-autocomplete></mat-form-field
+        >
+      </div>
+    }
+    <div class="electronico">
+      <mat-checkbox [formControl]="livroForm().controls.electronico">Electrónico</mat-checkbox>
+    </div>
+    <div class="som-serie">
+      <mat-checkbox
+        (change)="somSerieAlterado.emit($event)"
+        [formControl]="livroForm().controls.somSerie"
+        >Som Serie</mat-checkbox
+      >
+    </div>
+    <div class="serie-combo">
+      <mat-form-field class="ancho-inputs"
+        ><input
+          matInput
+          type="text"
+          placeholder="Serie:"
+          [formControl]="livroForm().controls.serie"
+          [matAutocomplete]="serieLivro"
+        />
+        <mat-autocomplete #serieLivro="matAutocomplete">
+          @for (option of formState.seriesLivro(); track option.id) {
+            <mat-option [value]="option.value">{{ option.value }}</mat-option>
+          }
+        </mat-autocomplete></mat-form-field
+      >
+    </div>
+
+    @if (!modoRelectura()) {
+      <div class="premios">
+        <mat-form-field class="ancho-inputs"
+          ><mat-label>Prémios:</mat-label
+          ><textarea matInput [formControl]="livroForm().controls.premios" rows="4"></textarea>
+          @if (livroForm().controls.premios.hasError('maxlength')) {
+            <mat-error>Máximo 255 caracteres</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div class="descricom">
+        <mat-form-field class="ancho-inputs"
+          ><mat-label>Descriçom:</mat-label
+          ><textarea matInput [formControl]="livroForm().controls.descricom" rows="4"></textarea>
+          @if (livroForm().controls.descricom.hasError('maxlength')) {
+            <mat-error>Máximo 50000 caracteres</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    }
+    <div class="comentario">
+      <mat-form-field class="ancho-inputs"
+        ><mat-label>Comentario:</mat-label
+        ><textarea matInput [formControl]="livroForm().controls.comentario" rows="4"></textarea>
+        @if (livroForm().controls.comentario.hasError('maxlength')) {
+          <mat-error>Máximo 50000 caracteres</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="pontuacom">
+      <span>Pontuaçom:</span
+      ><omla-estrelas-pontuacom
+        [pontuacom]="pontuacomEstrelas()"
+        (numero)="pontuacaoAlterada.emit($event)"
+      ></omla-estrelas-pontuacom>
+    </div>
+  </div>
+
+  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+    <button class="botom-guardar-resgistro" color="primary" type="submit" [value]="modo()">
+      {{ modo() }}
+    </button>
+    @if (!modoRelectura()) {
+      <button type="button" (click)="novaRelectura.emit()">Nova relectura</button>
+    } @else {
+      <button type="button" (click)="cancelarRelectura.emit()">
+        Cancelar {{ modo() === estadosPagina.engadir ? 'nova' : 'modificar' }} relectura
+      </button>
+    }
+  }
+</form>
