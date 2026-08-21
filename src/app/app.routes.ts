@@ -6,7 +6,6 @@ import { LayoutBaleiroComponent } from './layouts/layout-baleiro/layout-baleiro.
 import { LayoutPrincipalComponent } from './layouts/layout-principal/layout-principal.component';
 import { environments } from '../environments/environment';
 import { PeticomPendenteRequestGuard } from './peticom-pendente.guard';
-import { PorTiposComponent } from './pages/autores/listado-autores/por-tipos/por-tipos.component';
 
 const rotaPorDefecto = environments.dev || environments.test ? 'estadisticas' : 'login';
 

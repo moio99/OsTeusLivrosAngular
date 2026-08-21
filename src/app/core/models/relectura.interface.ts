@@ -5,7 +5,7 @@ export interface Relectura extends LivroBase {
 }
 
 export interface RelecturasData {
-  data: ListadoRelecturas[];
+  data: RelecturaListado[];
   meta: {idLivro:number, quantidade:number};
 }
 export interface RelecturaData {
@@ -13,7 +13,7 @@ export interface RelecturaData {
   meta: {id:number};
 }
 
-export interface ListadoRelecturas {
+export interface RelecturaListado {
   id: string;
   titulo: string;
   paginas: number;
