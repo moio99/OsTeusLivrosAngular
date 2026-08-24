@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment, environments } from '../../../../environments/environment';
 import { ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
 import { Injectable } from '@angular/core';
@@ -27,7 +27,7 @@ export class AutoresService {
   getListadoAutores() {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (!isProdOrPre || !this.cacheListadoAutoresData) {
-      return this.http.get(environment.apiUrl + this.rotaIntermedia);
+      return this.http.get(`${environment.apiUrl}${this.rotaIntermedia}`);
     } else {
       return of(this.cacheListadoAutoresData);
     }
@@ -46,11 +46,12 @@ export class AutoresService {
   getListadoAutoresPorNacons(): Observable<ListadoConcretoAutoresData> {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (!isProdOrPre || !this.cacheListadoAutoresPorNacons) {
-      return this.http.get<ListadoConcretoAutoresData>(environment.apiUrl + this.rotaIntermedia + '/AutoresPorNacons');
+      return this.http.get<ListadoConcretoAutoresData>(`${environment.apiUrl}${this.rotaIntermedia}/AutoresPorNacons`);
     } else {
       return of(this.cacheListadoAutoresPorNacons);
     }
   }
+
   setListadoAutoresPorNacons(dados: ListadoConcretoAutoresData) {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (isProdOrPre) {
@@ -65,7 +66,7 @@ export class AutoresService {
   getListadoAutoresPorPaises(): Observable<ListadoConcretoAutoresData> {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (!isProdOrPre || !this.cacheListadoAutoresPorPaises) {
-      return this.http.get<ListadoConcretoAutoresData>(environment.apiUrl + this.rotaIntermedia + '/AutoresPorPaises');
+      return this.http.get<ListadoConcretoAutoresData>(`${environment.apiUrl}${this.rotaIntermedia}/AutoresFiltrados`);
     } else {
       return of(this.cacheListadoAutoresPorPaises);
     }
@@ -78,35 +79,35 @@ export class AutoresService {
   }
 
   getListadoAutoresFiltrados(id: number, tipo: ListadosAutoresTipos): Observable<BaseComLidos> {
-    return this.http.get<BaseComLidos>(environment.apiUrl + this.rotaIntermedia
-      + '/AutoresFiltrados?id=' + id + '&tipo=' + tipo);
+    const params = new HttpParams()
+      .set('id', id)
+      .set('tipo', tipo);
+    return this.http.get<BaseComLidos>(`${environment.apiUrl}${this.rotaIntermedia}/AutoresFiltrados`, { params });
   }
 
   getAutor(id: string): Observable<BaseQuantidadesLivros> {
-    return this.http.get<BaseQuantidadesLivros>(environment.apiUrl + this.rotaIntermedia
-      + '/Autor?id=' + id);
+    const params = new HttpParams().set('id', id);
+    return this.http.get<BaseQuantidadesLivros>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, { params });
   }
 
   getAutorPorNome(nome: string): Observable<AutorData<Autor>> {
-    return this.http.get<AutorData<Autor>>(environment.apiUrl + this.rotaIntermedia
-      + '/AutorPorNome?nome=' + nome);
+    const params = new HttpParams().set('nome', nome);
+    return this.http.get<AutorData<Autor>>(`${environment.apiUrl}${this.rotaIntermedia}/AutorPorNome`, { params });
   }
 
-  postAutor(autor: Autor) {
-    console.debug('engadindo');
-    return this.http.post(environment.apiUrl + this.rotaIntermedia
-      + '/Autor', autor);
+  postAutor(autor: Autor): Observable<Autor> {
+    console.debug('engadindo autor...');
+    return this.http.post<Autor>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, autor);
   }
 
-  putAutor(autor: Autor) {
+  putAutor(autor: Autor): Observable<Autor> {
     console.debug(autor);
-    return this.http.put(environment.apiUrl + this.rotaIntermedia
-      + '/Autor', autor);
+    return this.http.put<Autor>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, autor);
   }
 
   borrarAutor(id: number) {
     console.debug(id);
-    return this.http.delete(environment.apiUrl + this.rotaIntermedia
-      + '/Autor?id=' + id);
+    const params = new HttpParams().set('id', id);
+    return this.http.delete<BaseQuantidadesLivros>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, { params });
   }
 }

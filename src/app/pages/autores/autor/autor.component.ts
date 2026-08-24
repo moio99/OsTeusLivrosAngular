@@ -2,8 +2,8 @@ import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { concatMap, EMPTY, first, forkJoin, switchMap, tap } from 'rxjs';
-import { Autor, AutorData, ListadoLivros, BaseListadoDadosApi, BaseQuantidadesLivros } from '@interfaces';
+import { concatMap, EMPTY, first, forkJoin, tap } from 'rxjs';
+import { Autor, AutorData, ListadoLivros, BaseListadoDadosApi } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
 import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
@@ -49,8 +49,6 @@ export class AutorComponent implements OnInit {
     quantidade: 0
   };
   dadosLivrosDoAutor = signal<ListadoLivros[]>([]);
-  dadosNacionalidades: Nacionalidade[] = [];
-  dadosPaises: Pais[] = [];
   date = new Date();
 
   private router = inject(Router);
@@ -63,11 +61,6 @@ export class AutorComponent implements OnInit {
   private dadosPaginasService = inject(DadosPaginasService);
 
   private readonly formState = inject(AutorFormStateService);
-  autorForm = this.formState.autorForm;
-  dadosNacionalidadesFiltradas = this.formState.dadosNacionalidadesFiltradas;
-  dadosPaisesFiltrados = this.formState.dadosPaisesFiltrados;
-  amosarNacionalidade = this.formState.amosarNacionalidade;
-  amosarPais = this.formState.amosarPais;
 
   ngOnInit(): void {
     const state = history.state;
@@ -88,7 +81,6 @@ export class AutorComponent implements OnInit {
     this.obterOutrosDados(state.id);
   }
 
-  //#region Obtençom de dados
   private obterLivros(id: string): void {
     this.livrosService
       .getLivrosPorAutor(id)
@@ -117,11 +109,13 @@ export class AutorComponent implements OnInit {
   private obterOutrosDados(idAutor: string): void {
     const dados = this.usuarioAppService.getDadosOutros();
     if (dados) {                                            // Já os tínhamos
-      this.dadosNacionalidades = this.procesarDadosGerais<Nacionalidade>(dados.nacionalidades, (datos) =>
+      // Podería fazer o de abaixo se for necesario
+      // this.dadosNacionalidades = this.procesarDadosGerais<Nacionalidade>(nacionalidades, (datos) =>
+      this.procesarDadosGerais(dados.nacionalidades, (datos) =>
           this.formState.setNacionalidades(datos)
       );
-        this.dadosPaises = this.procesarDadosGerais<Pais>(dados.paises, (datos) =>
-          this.formState.setPaises(datos)
+      this.procesarDadosGerais(dados.paises, (datos) =>
+        this.formState.setPaises(datos)
       );
       this.obterDadosDoAutor(idAutor);
     } else {
@@ -136,13 +130,11 @@ export class AutorComponent implements OnInit {
       paises: this.outrosService.getPaises().pipe(first())
     }).subscribe({
       next: ({ nacionalidades, paises }) => {
-        // Procesamos as nacionalidades
-        this.dadosNacionalidades = this.procesarDadosGerais(nacionalidades, (datos) =>
+        this.procesarDadosGerais(nacionalidades, (datos) =>
           this.formState.setNacionalidades(datos)
         );
 
-        // Procesamos os países
-        this.dadosPaises = this.procesarDadosGerais(paises, (datos) =>
+        this.procesarDadosGerais(paises, (datos) =>
           this.formState.setPaises(datos)
         );
       },
@@ -162,8 +154,8 @@ export class AutorComponent implements OnInit {
 
   private procesarDadosGerais<T extends Nacionalidade | Pais>(
     data: object,
-    actualizarSignal: (dados: SimpleObjet[]) => void
-  ): T[] {
+    actualizarSignal: (dados: SimpleObjet[]) => void  // Quando retorne vai ejecutar umha función retornando dados
+  ): T[] {    // ao igual que return dados.data, isto já nom é necesario
     const dados = data as { data: T[] };
 
     if (!dados || !dados.data || dados.data.length === 0) {
@@ -198,7 +190,7 @@ export class AutorComponent implements OnInit {
 
   private dadosAutorObtidos(data: object): Autor | undefined {
     let resultados: Autor | undefined;
-    const dados = <AutorData<Autor>>data;
+    const dados = data as AutorData<Autor>;
     if (dados.data != null && dados.data.length > 0) {
       resultados = dados.data[0];
       if (resultados) {
@@ -214,20 +206,19 @@ export class AutorComponent implements OnInit {
 
   private estabelecerDisponibilidade() {
     if (this.modo() === EstadosPagina.soVisualizar) {
-      this.autorForm.disable();
+      this.formState.autorForm.disable();
     } else {
-      this.autorForm.enable();
+      this.formState.autorForm.enable();
     }
   }
-  //#region
 
   onSubmit(event: SubmitEvent) {
-    if (this.autorForm.invalid) {
+    if (this.formState.autorForm.invalid) {
       return;
     }
 
     const botonPremido = (event.submitter as HTMLButtonElement)?.value;
-    const nomeFormulario = String(this.autorForm.controls.nome.value).trim();
+    const nomeFormulario = String(this.formState.autorForm.controls.nome.value).trim();
 
     this.autoresService.getAutorPorNome(nomeFormulario).pipe(
       first(),  // Collo o primeiro valor da consulta do nome e pechamos esa canle

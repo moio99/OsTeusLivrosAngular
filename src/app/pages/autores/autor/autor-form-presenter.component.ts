@@ -1,14 +1,13 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { AutorForm } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
-import { SimpleObjet } from '../../../shared/models/outros.model';
+import { AutorFormStateService } from './autor-form-state.service';
 
 @Component({
   selector: 'omla-autor-form-presenter',
@@ -19,15 +18,12 @@ import { SimpleObjet } from '../../../shared/models/outros.model';
 })
 export class AutorFormPresenterComponent {
 
-  estadosPagina = EstadosPagina;
+  readonly estadosPagina = EstadosPagina;
 
-  @Input({ required: true }) autorForm!: FormGroup<AutorForm>;
-  @Input({ required: true }) modo!: EstadosPagina;
-  @Input() dadosNacionalidadesFiltradas: SimpleObjet[] = [];
-  @Input() dadosPaisesFiltrados: SimpleObjet[] = [];
-  @Input() amosarNacionalidade!: (id: number | null) => string;
-  @Input() amosarPais!: (id: number | null) => string;
+  readonly formState = inject(AutorFormStateService);
 
-  @Output() submitForm = new EventEmitter<SubmitEvent>();
-  @Output() cancelar = new EventEmitter<void>();
+  modo = input(EstadosPagina.soVisualizar);
+
+  submitForm = output<SubmitEvent>();
+  cancelar = output<void>();
 }

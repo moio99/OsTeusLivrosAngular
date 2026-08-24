@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { ListadoLivros } from '@interfaces';
 
 @Component({
@@ -7,6 +7,6 @@ import { ListadoLivros } from '@interfaces';
   templateUrl: './autor-livros.component.html'
 })
 export class AutorLivrosComponent {
-  @Input() livros: ListadoLivros[] = [];
-  @Output() navegar = new EventEmitter<string>();
+  livros = input<ListadoLivros[]>([])
+  navegar = output<string>();
 }

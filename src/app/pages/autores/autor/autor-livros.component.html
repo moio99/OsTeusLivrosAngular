@@ -1,4 +1,4 @@
-@if (livros.length > 0) {
+@if (livros().length > 0) {
   <h3>Listado de livros</h3>
   <table>
     <tr>
@@ -7,7 +7,7 @@
       <th>Lido</th>
       <th>Autor</th>
     </tr>
-    @for (entrada of livros; track entrada.id) {
+    @for (entrada of livros(); track entrada.id) {
       <tr class="listado-accom">
         <td (click)="navegar.emit(entrada.id)">{{entrada.titulo}}</td>
         <td (click)="navegar.emit(entrada.id)">{{entrada.tituloOriginal}}</td>

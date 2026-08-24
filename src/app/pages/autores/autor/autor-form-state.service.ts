@@ -1,6 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Autor, AutorForm } from '@interfaces';
 import { ConverterAData } from '../../../shared/classes/date-convert';
 import { ValidaconsAMedida } from '../../../shared/validators/custom-validators';
