@@ -1,6 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, Routes } from '@angular/router';
-import { first } from 'rxjs';
+import { first, map, of } from 'rxjs';
 import { ListadoAutores, ParametrosAutor, BaseListadoDadosApi } from '@interfaces';
 import { AutoresService, OutrosService } from '@servizosApi';
 import { LayoutService } from '@servizosFlow';
@@ -10,6 +10,7 @@ import { AutorComponent } from '../autor/autor.component';
 import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { environment, environments } from '../../../../environments/environment';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'omla-listado-autores',
@@ -29,72 +30,66 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   inverso = signal<boolean>(false);
   override listadoDados = signal<ListadoAutores[]>([]);
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private autoresService: AutoresService,
-    private outrosService: OutrosService,
-    layoutService: LayoutService) {
-      super(layoutService);
+  private outrosService = inject(OutrosService);
+  private autoresService = inject(AutoresService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
+  parametrosBusqueda = signal<ParametrosAutor | null>(null);
+
+  // EFECTO: Encárgase ÚNICAMENTE de actualizar o título cando cambian os parámetros
+  // Angular xestiona este ciclo de vida sen romper a pureza do recurso
+  trackTituloEffect = effect(() => {
+    const parametros = this.parametrosBusqueda();
+
+    // Se non hai parámetros ou non teñen ID, limpamos o filtro ou non facemos nada
+    if (!parametros || parametros.id === undefined) return;
+
+    const { id, tipo } = parametros;
+    const porNacionalidade = Number(tipo) === ListadosAutoresTipos.porNacionalidade;
+
+    const obterNome$ = porNacionalidade
+      ? this.outrosService.getNacionalidadeNome(id)
+      : this.outrosService.getPaisNome(id);
+
+    const mensaxeErroNome = porNacionalidade
+      ? `Nom se puiderom obter a nacionalidade ${id}`
+      : `Nom se puiderom obter o pais ${id}`;
+
+    obterNome$.pipe(first()).subscribe({
+      next: (nome) => this.filtroPaisOuNacionalidade.set(` ${nome}`),
+      error: (e) => {
+        console.error(e);
+        this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Erro, mensagem: mensaxeErroNome });
+      }
+    });
+  });
+
+  // RECURSO: Limpo e centrado só en traer a listaxe de autores
+  autoresResource = rxResource({
+    params: () => this.parametrosBusqueda(),
+    stream: ({ params }) => {
+      // Se hai parámetros válidos, filtramos
+      if (params && params.id !== undefined) {
+        return this.autoresService.getListadoAutoresFiltrados(params.id, params.tipo).pipe(
+          map(v => this.dadosObtidosAA(v))
+        );
+      }
+
+      // Se non, listado completo
+      return this.autoresService.getListadoAutores().pipe(
+        map(v => this.dadosObtidosAA(v))
+      );
     }
+  });
 
   ngOnInit(): void {
-    this.route.queryParams
-      .subscribe(params => {
-        let parametros = <ParametrosAutor>params;
-        if (parametros != undefined && parametros.id != undefined) {
-          this.obterDadosDoListadoPorTipo(parametros);
-        }
-        else
-          this.obterDadosDoListadoAA();
+    this.route.queryParams.pipe(first()).subscribe(params => {
+      if (params && Object.keys(params).length > 0) {
+        this.parametrosBusqueda.set(params as ParametrosAutor);
+      } else {
+        this.parametrosBusqueda.set(null);
       }
-    );
-  }
-
-  private obterDadosDoListadoAA(): void {
-    this.autoresService
-      .getListadoAutores()
-      .pipe(first())
-      .subscribe({
-        next: (v: object) => this.listadoDados.set(this.dadosObtidosAA(v)),
-        error: (e: unknown) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor'}); },
-          // complete: () => console.info('completado listado de autores')
-    });
-  }
-
-  private obterDadosDoListadoPorTipo(parametros: ParametrosAutor): void {
-    if (parametros.tipo == ListadosAutoresTipos.porNacionalidade)
-    {
-      this.outrosService
-        .getNacionalidadeNome(parametros.id)
-        .pipe(first())
-        .subscribe({
-          next: (v: object) => this.filtroPaisOuNacionalidade.update((valor) => ' ' + v),
-          error: (e: unknown) => { console.error(e),
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: `Nom se puiderom obter a nacionalidade ${parametros.id}`}); },
-            complete: () => console.info(`completada obtençom da nacionalidade ${parametros.id}`)
-      });
-    }
-    else {  // 2 Pais
-      this.outrosService
-        .getPaisNome(parametros.id)
-        .pipe(first())
-        .subscribe({
-          next: (v: object) => this.filtroPaisOuNacionalidade.update((valor) => ' ' + v),
-          error: (e: unknown) => { console.error(e),
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: `Nom se puiderom obter o pais ${parametros.id}`}); },
-            complete: () => console.info(`completada obtençom do pais ${parametros.id}`)
-      });
-    }
-    this.autoresService
-      .getListadoAutoresFiltrados(parametros.id, parametros.tipo)
-      .pipe(first())
-      .subscribe({
-        next: (v: object) => this.listadoDados.set(this.dadosObtidosAA(v)),
-        error: (e: unknown) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autores'}); },
-          // complete: () => console.info('completado listado de autores')
     });
   }
 

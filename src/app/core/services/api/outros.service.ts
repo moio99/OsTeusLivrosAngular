@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,16 +17,16 @@ export class OutrosService {
     return this.http.get(environment.apiUrl + this.rotaIntermedia + '/Nacionalidades');
   }
 
-  getNacionalidadeNome(id: number) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia + '/NacionalidadeNome?id=' + id);
+  getNacionalidadeNome(id: number): Observable<string> {
+    return this.http.get<string>(environment.apiUrl + this.rotaIntermedia + '/NacionalidadeNome?id=' + id);
   }
 
   getPaises() {
     return this.http.get(environment.apiUrl + this.rotaIntermedia + '/Paises');
   }
 
-  getPaisNome(id: number) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia + '/PaisNome?id=' + id);
+  getPaisNome(id: number): Observable<string> {
+    return this.http.get<string>(environment.apiUrl + this.rotaIntermedia + '/PaisNome?id=' + id);
   }
 
   getIdiomaNome(id: string) {

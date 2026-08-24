@@ -1,12 +1,13 @@
-<h3>Listado por {{tipo === tipos.porNacionalidade ? 'Nacionalidade' : 'Pais'}}</h3>
+<h3>Listado por {{tipo() === tipos.porNacionalidade ? 'Nacionalidade' : 'Pais'}}</h3>
 
-@if (this.listadoDados().length > 0) {
+{{ listadoDados.isLoading() ? 'Carregando' : listadoDados.value()?.length + ' elementos' }}
+@if (listadoDados.hasValue()) {
   <table class="taboas-listado">
     <tr>
       <th>Nome</th>
       <th>Quantidade</th>
     </tr>
-    @for (entrada of this.listadoDados(); track entrada.id) {
+    @for (entrada of listadoDados.value(); track entrada.id) {
       <tr class="listado-accom">
         <td (click)="onIrPagina('autores', entrada.id)">{{entrada.nome || '---'}}</td>
         <td (click)="onIrPagina('autores', entrada.id)">{{entrada.quantidadeAutores}}</td>

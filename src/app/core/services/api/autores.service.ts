@@ -24,10 +24,10 @@ export class AutoresService {
    * Quando nom estea em local guarda umha caché
    * @returns
    */
-  getListadoAutores() {
+  getListadoAutores(): Observable<BaseListadoDadosApi<ListadoAutores>> {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (!isProdOrPre || !this.cacheListadoAutoresData) {
-      return this.http.get(`${environment.apiUrl}${this.rotaIntermedia}`);
+      return this.http.get<BaseListadoDadosApi<ListadoAutores>>(`${environment.apiUrl}${this.rotaIntermedia}`);
     } else {
       return of(this.cacheListadoAutoresData);
     }
@@ -66,11 +66,12 @@ export class AutoresService {
   getListadoAutoresPorPaises(): Observable<ListadoConcretoAutoresData> {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (!isProdOrPre || !this.cacheListadoAutoresPorPaises) {
-      return this.http.get<ListadoConcretoAutoresData>(`${environment.apiUrl}${this.rotaIntermedia}/AutoresFiltrados`);
+      return this.http.get<ListadoConcretoAutoresData>(`${environment.apiUrl}${this.rotaIntermedia}/AutoresPorPaises`);
     } else {
       return of(this.cacheListadoAutoresPorPaises);
     }
   }
+
   setListadoAutoresPorPaises(dados: ListadoConcretoAutoresData) {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (isProdOrPre) {

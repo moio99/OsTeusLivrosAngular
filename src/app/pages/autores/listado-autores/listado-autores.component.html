@@ -21,7 +21,8 @@
   </ul>
 </div>
 
-@if (listadoDados().length > 0) {
+{{ autoresResource.isLoading() ? 'Carregando' : autoresResource.value()?.length + ' autores' }}
+@if (autoresResource.hasValue()) {
   <table class="taboas-listado">
     <tr>
       <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna
@@ -37,7 +38,7 @@
         [actual]="tipoOrdeacom()"
         [inverso]="inverso()"></omla-orde-coluna></th>
     </tr>
-      @for (entrada of listadoDados(); track entrada.id) {
+      @for (entrada of autoresResource.value(); track entrada.id) {
       <tr class="listado-accom">
         <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.nome}}</td>
         <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLivros}}</td>
