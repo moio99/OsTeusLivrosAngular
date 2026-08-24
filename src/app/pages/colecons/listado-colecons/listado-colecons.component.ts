@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { ColecomComponent } from '../colecom/colecom.component';
 import { CommonModule } from '@angular/common';
@@ -20,12 +20,8 @@ export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColeco
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   override listadoDados = signal<ListadoColecons[]>([]);
 
-  constructor(
-    private router: Router,
-    private coleconsService: ColeconsService,
-    layoutService: LayoutService) {
-      super(layoutService);
-    }
+  private coleconsService = inject(ColeconsService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     super.obterDadosDoListado(

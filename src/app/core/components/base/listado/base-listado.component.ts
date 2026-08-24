@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService } from '@servizosFlow';
@@ -11,7 +11,7 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
   readonly listadoDadosInput = input<T[]>([]);  // nom o neccesito
   readonly listadoDados = signal<T[]>([]);
 
-  constructor(protected layoutService: LayoutService) {}
+  readonly layoutService = inject(LayoutService);
 
   protected obterDadosDoListado<TData extends IData>(
     nomePlural: string,

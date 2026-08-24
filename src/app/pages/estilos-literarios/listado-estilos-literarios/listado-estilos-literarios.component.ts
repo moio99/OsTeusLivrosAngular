@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LayoutService } from '@servizosFlow';
@@ -26,12 +26,8 @@ export class ListadoEstilosLiterariosComponent extends BaseListadoComponent<List
   tipoListado = '';
   override listadoDados = signal<ListadoEstilosLiterarios[]>([]);
 
-  constructor(
-    private router: Router,
-    private estilosLiterariosService: EstilosLiterariosService,
-    layoutService: LayoutService) {
-      super(layoutService);
-    }
+  private estilosLiterariosService = inject(EstilosLiterariosService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     super.obterDadosDoListado(

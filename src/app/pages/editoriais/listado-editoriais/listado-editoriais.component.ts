@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { ListadoEditoriais } from '@interfaces';
@@ -26,12 +26,8 @@ export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEdit
   tipoListado = '';
   override listadoDados = signal<ListadoEditoriais[]>([]);
 
-  constructor(
-    private router: Router,
-    private editoriaisService: EditoriaisService,
-    layoutService: LayoutService) {
-      super(layoutService);
-    }
+  private editoriaisService = inject(EditoriaisService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     super.obterDadosDoListado(

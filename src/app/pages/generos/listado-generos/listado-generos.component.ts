@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { GeneroComponent } from '../genero/genero.component';
 import { CommonModule } from '@angular/common';
@@ -27,12 +27,8 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
   tipoListado = '';
   override listadoDados = signal<ListadoGeneros[]>([]);
 
-  constructor(
-    private router: Router,
-    private generosService: GenerosService,
-    layoutService: LayoutService) {
-      super(layoutService);
-    }
+  private generosService = inject(GenerosService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     super.obterDadosDoListado(

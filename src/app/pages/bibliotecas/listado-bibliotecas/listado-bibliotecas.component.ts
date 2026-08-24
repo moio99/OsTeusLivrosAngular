@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { ListadoBibliotecas } from '@interfaces';
 import { BibliotecasService } from '@servizosApi';
@@ -20,12 +20,8 @@ export class ListadoBibliotecasComponent extends BaseListadoComponent<ListadoBib
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   override listadoDados = signal<ListadoBibliotecas[]>([]);
 
-  constructor(
-    private router: Router,
-    private bibliotecasService: BibliotecasService,
-    layoutService: LayoutService) {
-      super(layoutService);
-    }
+  private bibliotecasService = inject(BibliotecasService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     super.obterDadosDoListado(
