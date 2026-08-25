@@ -33,11 +33,7 @@ export class PorTiposComponent implements OnInit {
         return this.autoresService.getListadoAutoresPorNacons().pipe(
           map(v => this.dadosObtidos(v, true)),
           catchError((erro) => {
-            console.error(erro);
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-              mensagem: 'Nom se puido obter o listado de autores por naçons.'});
-            // Retorno un array baleiro para que a app non rompa
-            return of([]);
+            return this.gestomErro(erro, 'naçons');
           })
         );
       }
@@ -45,11 +41,7 @@ export class PorTiposComponent implements OnInit {
       return this.autoresService.getListadoAutoresPorPaises().pipe(
         map(v => this.dadosObtidos(v, true)),
         catchError((erro) => {
-          console.error(erro);
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-            mensagem: 'Nom se puido obter o listado de autores por paises.'});
-          // Retorno un array baleiro para que a app non rompa
-          return of([]);
+          return this.gestomErro(erro, 'paises');
         })
       );
     }
@@ -80,6 +72,14 @@ export class PorTiposComponent implements OnInit {
       console.debug('Nom se obtiverom dados');
     }
     return resultados
+  }
+
+  private gestomErro(erro: unknown, palabraMensagem: string): ListadoConcretoAutores[] {
+    console.error(erro);
+    this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+      mensagem: `Nom se puido obter o listado de autores por ${palabraMensagem}.`});
+    // Retorno un array baleiro para que a app non rompa
+    return [];
   }
 
   onIrPagina(rota: string, id: number): void{
