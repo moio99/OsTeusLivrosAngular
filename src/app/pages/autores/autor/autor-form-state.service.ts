@@ -33,10 +33,10 @@ export class AutorFormStateService {
     validators: [ValidaconsAMedida.comprobarDuasDatas('dataNacemento', 'dataDefuncom')]
   });
 
+  readonly todasNacionalidades = signal<SimpleObjet[]>([]);
+  readonly todosPaises = signal<SimpleObjet[]>([]);
   private readonly idNacionalidade = toSignal(this.autorForm.controls.idNacionalidade.valueChanges.pipe(startWith('')));
   private readonly idPais = toSignal(this.autorForm.controls.idPais.valueChanges.pipe(startWith('')));
-  private readonly todasNacionalidades = signal<SimpleObjet[]>([]);
-  private readonly todosPaises = signal<SimpleObjet[]>([]);
 
   readonly dadosNacionalidadesFiltradas = computed(() =>
     this.filtrar(this.todasNacionalidades(), this.idNacionalidade())

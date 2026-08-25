@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
 import { ListadoConcretoAutores, ListadoConcretoAutoresData } from '@interfaces';
@@ -15,17 +15,20 @@ import { rxResource } from '@angular/core/rxjs-interop';
   templateUrl: './por-tipos.component.html',
   styleUrls: ['./por-tipos.component.scss']
 })
-export class PorTiposComponent implements OnInit {
+export class PorTiposComponent {
 
   tipos = ListadosAutoresTipos;
-  tipo = signal<ListadosAutoresTipos | undefined>(undefined);
 
   private layoutService = inject(LayoutService);
   private autoresService = inject(AutoresService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  listadoDados = rxResource({
+  tipo = signal<ListadosAutoresTipos | undefined>(
+    this.route.snapshot.url[1].path === 'porPais' ? ListadosAutoresTipos.porPais : ListadosAutoresTipos.porNacionalidade
+  );
+
+  listadoResource = rxResource({
     params: () => this.tipo(),
     stream: ({ params }) => {
 
@@ -47,21 +50,29 @@ export class PorTiposComponent implements OnInit {
     }
   });
 
+  constructor() {
+    effect(() => {
+      if (this.listadoResource.hasValue()) {
+        this.layoutService.amosarInfo({
+          tipo: InformacomPeTipo.Info, mensagem: this.listadoResource.value().length + ' registros obtidos'}
+        );
+      }
+    });
+  }
 
-  ngOnInit(): void {
-    if (this.route.snapshot.url[1].path == 'porPais') {
-      this.tipo.set(ListadosAutoresTipos.porPais);
-    }
-    else {
-      this.tipo.set(ListadosAutoresTipos.porNacionalidade);
-    }
+  onIrPagina(rota: string, id: number): void{
+    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
+    this.layoutService.amosarInfo(undefined);
+    // this.router.navigate(['../../' + rota], {relativeTo: this.route,
+    //   queryParams: {id: id, tipo: this.tipo()}});
+    this.router.navigate([`../../${rota}`], {relativeTo: this.route,
+      queryParams: {id: id, tipo: this.tipo()}});
   }
 
   private dadosObtidos(data: object, porNacons: boolean): ListadoConcretoAutores[] {
     let resultados: ListadoConcretoAutores[];
     const dados = <ListadoConcretoAutoresData>data;
     if (dados != null) {
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
       if (porNacons)
         this.autoresService.setListadoAutoresPorNacons(dados);
       else
@@ -74,20 +85,11 @@ export class PorTiposComponent implements OnInit {
     return resultados
   }
 
-  private gestomErro(erro: unknown, palabraMensagem: string): ListadoConcretoAutores[] {
+  private gestomErro(erro: unknown, palabraMensagem: string) {
     console.error(erro);
     this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
       mensagem: `Nom se puido obter o listado de autores por ${palabraMensagem}.`});
     // Retorno un array baleiro para que a app non rompa
-    return [];
-  }
-
-  onIrPagina(rota: string, id: number): void{
-    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
-    this.layoutService.amosarInfo(undefined);
-    // this.router.navigate(['../../' + rota], {relativeTo: this.route,
-    //   queryParams: {id: id, tipo: this.tipo()}});
-    this.router.navigate([`../../${rota}`], {relativeTo: this.route,
-      queryParams: {id: id, tipo: this.tipo()}});
+    return of([]);
   }
 }

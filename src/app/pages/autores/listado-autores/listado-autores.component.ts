@@ -1,16 +1,15 @@
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, Routes } from '@angular/router';
-import { first, map, of } from 'rxjs';
+import { first, map } from 'rxjs';
 import { ListadoAutores, ParametrosAutor, BaseListadoDadosApi } from '@interfaces';
 import { AutoresService, OutrosService } from '@servizosApi';
-import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { InformacomPeTipo, ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
 import { AutorComponent } from '../autor/autor.component';
 import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { environment, environments } from '../../../../environments/environment';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'omla-listado-autores',
@@ -19,7 +18,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
   templateUrl: './listado-autores.component.html',
   styleUrls: ['./listado-autores.component.scss']
 })
-export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores> implements OnInit {
+export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores> {
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   nomeAlfabetico = ', alfabético';
@@ -35,7 +34,12 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  parametrosBusqueda = signal<ParametrosAutor | null>(null);
+  parametrosBusqueda = toSignal(
+    this.route.queryParams.pipe(
+      map(params => (params && Object.keys(params).length > 0 ? (params as ParametrosAutor) : null))
+    ),
+    { initialValue: null } // Valor inicial mentres a URL non emita nada
+  );
 
   // EFECTO: Encárgase ÚNICAMENTE de actualizar o título cando cambian os parámetros
   // Angular xestiona este ciclo de vida sen romper a pureza do recurso
@@ -72,37 +76,42 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       // Se hai parámetros válidos, filtramos
       if (params && params.id !== undefined) {
         return this.autoresService.getListadoAutoresFiltrados(params.id, params.tipo).pipe(
-          map(v => this.dadosObtidosAA(v))
+          map(v => this.dadosObtidosListado(v))
         );
       }
 
       // Se non, listado completo
       return this.autoresService.getListadoAutores().pipe(
-        map(v => this.dadosObtidosAA(v))
+        map(v => this.dadosObtidosListado(v))
       );
     }
   });
 
-  ngOnInit(): void {
-    this.route.queryParams.pipe(first()).subscribe(params => {
-      if (params && Object.keys(params).length > 0) {
-        this.parametrosBusqueda.set(params as ParametrosAutor);
-      } else {
-        this.parametrosBusqueda.set(null);
+  constructor() {
+    super();
+
+    effect(() => {
+      if (this.autoresResource.hasValue()) {
+        if (this.autoresResource.value().length === 0) {
+          this.layoutService.amosarInfo({
+            tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'
+          });
+        }
+        this.layoutService.amosarInfo({
+          tipo: InformacomPeTipo.Info, mensagem: this.autoresResource.value().length + ' registros obtidos'
+        });
       }
     });
   }
 
-  private dadosObtidosAA(data: object): ListadoAutores[] {
+  private dadosObtidosListado(data: object): ListadoAutores[] {
     let resultados: ListadoAutores[];
     const dados = <BaseListadoDadosApi<ListadoAutores>>data;
     if (dados != null) {
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
       this.autoresService.setListadoAutores(dados);
       resultados = dados.data.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso()));
     } else {
       resultados = [];
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados'});
       console.debug('Nom se obtiverom dados');
     }
     return resultados
@@ -115,7 +124,8 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       nome,
       'o autor',
       'Autor borrado correctamente',
-      (id) => this.autoresService.borrarAutor(+id)
+      (id) => this.autoresService.borrarAutor(+id),
+      () => this.autoresResource.reload()     // para que relance o stream e actualice o listado
     );
   }
 

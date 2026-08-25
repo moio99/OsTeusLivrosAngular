@@ -1,8 +1,8 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, signal, inject, input, effect, computed } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { concatMap, EMPTY, first, forkJoin, tap } from 'rxjs';
+import { catchError, concatMap, delay, EMPTY, first, forkJoin, map, of, tap } from 'rxjs';
 import { Autor, AutorData, ListadoLivros, BaseListadoDadosApi } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
@@ -18,6 +18,7 @@ import { environment, environments } from '../../../../environments/environment'
 import { AutorFormPresenterComponent } from './autor-form-presenter.component';
 import { AutorLivrosComponent } from './autor-livros.component';
 import { AutorFormStateService } from './autor-form-state.service';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'omla-autor',
@@ -28,28 +29,17 @@ import { AutorFormStateService } from './autor-form-state.service';
   styleUrls: ['./autor.component.scss'],
   providers: [AutorFormStateService]
 })
-export class AutorComponent implements OnInit {
+export class AutorComponent {
 
   estadosPagina = EstadosPagina;
-  modo = signal<EstadosPagina>(EstadosPagina.soVisualizar);
-  dadosDoAutor: Autor | undefined= {
-    id: 0,
-    nome: '',
-    nomeReal: '',
-    lugarNacemento: '',
-    dataNacemento: '',
-    dataDefuncom: '',
-    premios: '',
-    web: '',
-    comentario: '',
-    idNacionalidade: 0,
-    nomeNacionalidade: '',
-    idPais: 0,
-    nomePais: '',
-    quantidade: 0
-  };
+  dadosDoAutor: Autor | undefined = undefined;
   dadosLivrosDoAutor = signal<ListadoLivros[]>([]);
   date = new Date();
+
+  idAutor = signal<string>(history.state?.id ?? '0');
+  modo = computed(() => {
+    return this.idAutor() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar;
+  });
 
   private router = inject(Router);
   private location = inject(Location);
@@ -62,35 +52,143 @@ export class AutorComponent implements OnInit {
 
   private readonly formState = inject(AutorFormStateService);
 
-  ngOnInit(): void {
-    const state = history.state;
-    if (state?.id) {
-      if (state.id === '0')
-        this.modo.set(EstadosPagina.engadir);
-      else {
-        this.modo.set(EstadosPagina.guardar);
-        this.obterLivros(state.id);
+
+  nacionalidadesResource = rxResource({
+    stream: () => {
+      const cache = this.usuarioAppService.getDadosOutros();
+      // Se xa están en caché, devolvemos un observable inmediato para non ir ao servidor
+      if (cache?.nacionalidades) return of(cache.nacionalidades);
+
+      return this.outrosService.getNacionalidades().pipe(
+        first(),
+        catchError((e) => this.manexarErroSoporte(e, 'das nacionalidades'))
+      );
+    }
+  });
+
+  paisesResource = rxResource({
+    stream: () => {
+      // Se xa están en caché, devolvemos un observable inmediato para non ir ao servidor
+      const cache = this.usuarioAppService.getDadosOutros();
+      if (cache?.paises) return of(cache.paises);
+
+      return this.outrosService.getPaises().pipe(
+        first(),
+        catchError((e) => this.manexarErroSoporte(e, 'dos países'))
+      );
+    }
+  });
+
+  livrosAutorResource = rxResource({
+    params: () => this.idAutor(),
+    stream: ({ params: id }) => {
+      const currentId = id;
+      return this.livrosService.getLivrosPorAutor(currentId).pipe(
+        first(),
+        map(v => this.dadosLivrosObtidos(v)),
+        catchError((e) => this.manexarErroSoporte(e, 'dos livros do autor'))
+      );
+    }
+  });
+
+  autorResource = rxResource({
+    params: () => this.idAutor(),
+    stream: ({ params: id }) => {
+      const currentId = id;
+
+      // Se o ID é '0' (modo engadir), non facemos petición HTTP e devolvemos null
+      if (!currentId || currentId === '0') return of(null);
+
+      return this.autoresService.getAutor(currentId).pipe(
+        first(),
+        map(v => this.dadosAutorObtidos(v)),
+        catchError((e) => {
+          this.manexarErroSoporte(e, 'do autor');
+          return of(null); })
+      );
+    }
+  });
+
+  constructor() {
+
+    // Sincroniza as nacionalidades co FormState cando carguen
+    effect(() => {
+      const data = this.nacionalidadesResource.value();
+      if (data) {
+        this.formState.setNacionalidades(this.reducirDadosGerais(data));
       }
-    }
+    });
 
-    if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
-      this.modo.set(EstadosPagina.soVisualizar);
-    }
+    // Sincroniza os países co FormState cando carguen
+    effect(() => {
+      const data = this.paisesResource.value();
+      if (data) {
+        this.formState.setPaises(this.reducirDadosGerais(data));
+      }
+    });
 
-    this.estabelecerDisponibilidade();
-    this.obterOutrosDados(state.id);
+    // Sincroniza os datos do autor (Se os necesitas nunha propiedade local)
+    effect(() => {
+      const autor = this.autorResource.value();
+
+      if (autor && !this.dadosDoAutor) {
+        this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados do autor'});
+      }
+
+      // Lemos os estados de carga dos outros dous recursos
+      const nacionalidadesListas = this.nacionalidadesResource.hasValue();
+      const paisesListos = this.paisesResource.hasValue();
+
+      // Se o autor chegou, pero os combos aínda non teñen datos, AGARDAMOS.
+      // O effect volverá a executarse automaticamente en canto as outras sinais cambien.
+      if (autor && nacionalidadesListas && paisesListos && this.dadosDoAutor) {
+        this.formState.atualizarFromAutor(this.dadosDoAutor); // Establece os datos para o formulario
+      }
+    });
+
+    effect(() => {
+      const autor = this.autorResource.value();
+      const libros = this.livrosAutorResource.value();
+      if (autor && autor.id > 0 && this.livrosAutorResource.hasValue() && libros?.length === 0) {
+        this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados dos livros do autor' });
+      }
+    });
   }
 
-  private obterLivros(id: string): void {
-    this.livrosService
-      .getLivrosPorAutor(id)
-      .pipe(first())
-      .subscribe({
-        next: (v) => this.dadosLivrosDoAutor.set(this.dadosLivrosObtidos(v)),
-        error: (e: unknown) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os livros do autor'}); },
-          complete: () => console.debug('completada a obtençom dos livros do autor')
+  private reducirDadosGerais(data: any): SimpleObjet[] {
+    const dados = data as { data: Array<Nacionalidade | Pais> };
+    if (!dados?.data) {
+      return [];
+    }
+
+    return dados.data.map(value => ({
+      id: value.id,
+      value: value.nome
+    }));
+  }
+
+  private manexarErroSoporte(e: any, complemntoMensagem: string) {
+    console.error(e);
+    this.layoutService.amosarInfo({
+      tipo: InformacomPeTipo.Erro,
+      mensagem: `Nom se puiderom obter os dados ${complemntoMensagem}.`
     });
+    return of([]);
+  }
+
+  private dadosAutorObtidos(data: object): Autor | undefined {
+    let resultados: Autor | undefined;
+    const dados = data as AutorData<Autor>;
+    if (dados.data != null && dados.data.length > 0) {
+      resultados = dados.data[0];
+      if (resultados) {
+        this.dadosDoAutor = resultados;
+      }
+    }
+    else{
+      resultados = undefined;
+    }
+    return resultados
   }
 
   private dadosLivrosObtidos(data: object): ListadoLivros[] {
@@ -100,116 +198,8 @@ export class AutorComponent implements OnInit {
       resultados = dados.data;
     } else {
       resultados = [];
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados dos livros do autor'});
-      console.debug('Nom se obtiverom dados dos livros do autor');
     }
     return resultados
-  }
-
-  private obterOutrosDados(idAutor: string): void {
-    const dados = this.usuarioAppService.getDadosOutros();
-    if (dados) {                                            // Já os tínhamos
-      // Podería fazer o de abaixo se for necesario
-      // this.dadosNacionalidades = this.procesarDadosGerais<Nacionalidade>(nacionalidades, (datos) =>
-      this.procesarDadosGerais(dados.nacionalidades, (datos) =>
-          this.formState.setNacionalidades(datos)
-      );
-      this.procesarDadosGerais(dados.paises, (datos) =>
-        this.formState.setPaises(datos)
-      );
-      this.obterDadosDoAutor(idAutor);
-    } else {
-      this.iniciarCargaDatos(idAutor);
-    }
-  }
-
-  private iniciarCargaDatos(idAutor: string): void {
-    // Lánzanse as dúas peticións en paralelo
-    forkJoin({
-      nacionalidades: this.outrosService.getNacionalidades().pipe(first()),
-      paises: this.outrosService.getPaises().pipe(first())
-    }).subscribe({
-      next: ({ nacionalidades, paises }) => {
-        this.procesarDadosGerais(nacionalidades, (datos) =>
-          this.formState.setNacionalidades(datos)
-        );
-
-        this.procesarDadosGerais(paises, (datos) =>
-          this.formState.setPaises(datos)
-        );
-      },
-      error: (e: unknown) => {
-        console.error(e);
-        this.layoutService.amosarInfo({
-          tipo: InformacomPeTipo.Erro,
-          mensagem: 'Nom se puiderom obter os dados de soporte (nacionalidades/países).'
-        });
-      },
-      complete: () => {
-        // Cando ambas rematan con éxito, cargamos o autor
-        this.obterDadosDoAutor(idAutor);
-      }
-    });
-  }
-
-  private procesarDadosGerais<T extends Nacionalidade | Pais>(
-    data: object,
-    actualizarSignal: (dados: SimpleObjet[]) => void  // Quando retorne vai ejecutar umha función retornando dados
-  ): T[] {    // ao igual que return dados.data, isto já nom é necesario
-    const dados = data as { data: T[] };
-
-    if (!dados || !dados.data || dados.data.length === 0) {
-      return [];
-    }
-
-    // Mapeado moderno con .map() en lugar de forEach + push
-    const dadosReducidos: SimpleObjet[] = dados.data.map(value => ({
-      id: value.id,
-      value: value.nome
-    }));
-
-    // Actualiza o Signal correspondente no formState
-    actualizarSignal(dadosReducidos);
-
-    return dados.data;
-  }
-
-  private obterDadosDoAutor(id: string): void {
-    if (id !== '0') {
-      this.autoresService
-        .getAutor(id)
-        .pipe(first())
-        .subscribe({
-          next: (v) => this.dadosDoAutor = this.dadosAutorObtidos(v),
-          error: (e: unknown) => { console.error(e),
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do autor'}); },
-            complete: () => console.debug('completada a obtençom dos dados do autor')
-      });
-    }
-  }
-
-  private dadosAutorObtidos(data: object): Autor | undefined {
-    let resultados: Autor | undefined;
-    const dados = data as AutorData<Autor>;
-    if (dados.data != null && dados.data.length > 0) {
-      resultados = dados.data[0];
-      if (resultados) {
-        this.formState.atualizarFromAutor(resultados);
-      }
-    }
-    else{
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados do autor'});
-      resultados = undefined;
-    }
-    return resultados
-  }
-
-  private estabelecerDisponibilidade() {
-    if (this.modo() === EstadosPagina.soVisualizar) {
-      this.formState.autorForm.disable();
-    } else {
-      this.formState.autorForm.enable();
-    }
   }
 
   onSubmit(event: SubmitEvent) {
@@ -239,7 +229,6 @@ export class AutorComponent implements OnInit {
             first(),
             tap((v) => {
               this.gestionarRetroceso(v, autor);
-              this.modo.set(EstadosPagina.guardar); // Actualización do teu Signal en Angular moderno
               this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor engadido.' });
             })
           );

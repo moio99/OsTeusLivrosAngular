@@ -63,7 +63,8 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
     nomeDoElemento: string,
     nomeComArtigo: string,
     successMessage: string = 'Elemento borrado correctamente',
-    serviceDelete: (id: string) => Observable<unknown>
+    serviceDelete: (id: string) => Observable<unknown>,
+    actualizarListado?: () => void
   ): void {
 
     if (livros === 0) {
@@ -80,6 +81,10 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
                 tipo: InformacomPeTipo.Sucesso,
                 mensagem: successMessage
               });
+
+              if (actualizarListado) {
+                actualizarListado();
+              }
             },
             error: (e: unknown) => {
               console.error(e);
