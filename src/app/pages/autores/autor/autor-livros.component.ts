@@ -7,6 +7,7 @@ import { ListadoLivros } from '@interfaces';
   templateUrl: './autor-livros.component.html'
 })
 export class AutorLivrosComponent {
-  livros = input<ListadoLivros[]>([])
+  livros = input<ListadoLivros[] | undefined>([])
+  estaCarregando = input<boolean>(false);
   navegar = output<string>();
 }

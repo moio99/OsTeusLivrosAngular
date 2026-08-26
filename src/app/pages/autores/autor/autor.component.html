@@ -4,8 +4,8 @@
   (submitForm)="onSubmit($event)"
   (cancelar)="onCancelar()" />
 
-@if (livrosAutorResource.hasValue()) {
-  <omla-autor-livros
-    [livros]="livrosAutorResource.value()"
-    (navegar)="onIrPagina('/livros/livro', $event)" />
-}
+<omla-autor-livros
+  [estaCarregando]="livrosAutorResource.isLoading()"
+  [livros]="livrosAutorResource.value()"
+  (navegar)="onIrPagina('/livros/livro', $event)" />
+

@@ -1,4 +1,5 @@
-@if (livros().length > 0) {
+{{ estaCarregando() ? 'Carregando...' : (livros()?.length ?? 0) + ' livros' }}
+@if (livros() && (livros()?.length ?? 0) > 0) {
   <h3>Listado de livros</h3>
   <table>
     <tr>
