@@ -1,7 +1,7 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { first, map, Observable } from 'rxjs';
-import { ListadoAutores, ParametrosAutor, BaseListadoDadosApi, Autor } from '@interfaces';
+import { ListadoAutores, ParametrosAutor, BaseListadoDadosApi } from '@interfaces';
 import { AutoresService, OutrosService } from '@servizosApi';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { InformacomPeTipo, ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
@@ -9,7 +9,7 @@ import { AutorComponent } from '../autor/autor.component';
 import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { environment, environments } from '../../../../environments/environment';
-import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'omla-listado-autores',
@@ -28,7 +28,6 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   filtroPaisOuNacionalidade = signal<string>('');
   tipoOrdeacom = signal<string>(this.nomeAlfabetico);
   inverso = signal<boolean>(false);
-  override listadoDados = signal<ListadoAutores[]>([]);
 
   private outrosService = inject(OutrosService);
   private autoresService = inject(AutoresService);
@@ -41,8 +40,23 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     { initialValue: null } // Valor inicial mentres a URL non emita nada
   );
 
+  tipoListado = computed(() => {
+    if (!this.parametrosBusqueda()) return '';
+
+    return Number(this.parametrosBusqueda()?.tipo) === ListadosAutoresTipos.porNacionalidade
+      ? 'por nacionalidade' : ' por país';
+  });
+
   // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
   protected definirChamadaApi(): Observable<BaseListadoDadosApi<ListadoAutores>> {
+
+    const parametros = this.parametrosBusqueda();
+
+    // Se há parámetros válidos, filtro
+    if (parametros && parametros.id !== undefined) {
+      return this.autoresService.getListadoAutoresFiltrados(parametros.id, parametros.tipo);
+    }
+
     return this.autoresService.getListadoAutores();
   }
 
@@ -79,52 +93,23 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     });
   });
 
-  // RECURSO: Limpo e centrado só en traer a listaxe de autores
-  autoresResource = rxResource({
-    params: () => this.parametrosBusqueda(),
-    stream: ({ params }) => {
-      // Se hai parámetros válidos, filtramos
-      if (params && params.id !== undefined) {
-        return this.autoresService.getListadoAutoresFiltrados(params.id, params.tipo).pipe(
-          map(v => this.dadosObtidosListado(v))
-        );
-      }
-
-      // Se non, listado completo
-      return this.autoresService.getListadoAutores().pipe(
-        map(v => this.dadosObtidosListado(v))
-      );
-    }
-  });
-
   constructor() {
     super();
 
     effect(() => {
-      if (this.autoresResource.hasValue()) {
-        if (this.autoresResource.value().length === 0) {
+      if (this.listadoResource.hasValue()) {
+        // if (this.listadoResource.value()?.data.length === 0) {
+        if (this.listadoDados().length === 0) {
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'
           });
         }
         this.layoutService.amosarInfo({
-          tipo: InformacomPeTipo.Info, mensagem: this.autoresResource.value().length + ' registros obtidos'
+          // tipo: InformacomPeTipo.Info, mensagem: this.listadoResource.value()?.data.length + ' registros obtidos'
+          tipo: InformacomPeTipo.Info, mensagem: this.listadoDados()?.length + ' registros obtidos'
         });
       }
     });
-  }
-
-  private dadosObtidosListado(data: object): ListadoAutores[] {
-    let resultados: ListadoAutores[];
-    const dados = <BaseListadoDadosApi<ListadoAutores>>data;
-    if (dados != null) {
-      this.autoresService.setListadoAutores(dados);
-      resultados = dados.data.sort((a,b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso()));
-    } else {
-      resultados = [];
-      console.debug('Nom se obtiverom dados');
-    }
-    return resultados
   }
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
@@ -135,7 +120,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       'o autor',
       'Autor borrado correctamente',
       (id) => this.autoresService.borrarAutor(+id),
-      () => this.autoresResource.reload()     // para que relance o stream e actualice o listado
+      () => this.listadoResource.reload()     // para que relance o stream e actualice o listado
     );
   }
 
@@ -143,27 +128,51 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     this.inverso.update((v) => (this.tipoOrdeacom() === this.nomeAlfabetico) ? !v : false);
     this.tipoOrdeacom.set(this.nomeAlfabetico);
 
-    this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso()))
-    );
+    // Actualizamos o valor interno do recurso modificando o array 'data'
+    this.listadoResource.value.update(respostaApi => {
+      if (!respostaApi) return respostaApi;
+
+      return {
+        ...respostaApi,
+        data: [...respostaApi.data].sort((a, b) =>
+          new Ordeacom().ordear(a.nome, b.nome, this.inverso())
+        )
+      };
+    });
   }
 
   ordeNumeroLivros() {
     this.inverso.update((v) => (this.tipoOrdeacom() === this.numeroLivros) ? !v : false);
     this.tipoOrdeacom.set(this.numeroLivros);
 
-    this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso(), false))
-    );
+    // Actualizamos o valor interno do recurso modificando o array 'data'
+    this.listadoResource.value.update(respostaApi => {
+      if (!respostaApi) return respostaApi;
+
+      return {
+        ...respostaApi,
+        data: [...respostaApi.data].sort((a, b) =>
+          new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso(), false)
+        )
+      };
+    });
   }
 
   ordeNumeroLivrosLidos() {
     this.inverso.update((v) => (this.tipoOrdeacom() === this.numeroLivrosLidos) ? !v : false);
     this.tipoOrdeacom.set(this.numeroLivrosLidos);
 
-    this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso(), false))
-    );
+    // Actualizamos o valor interno do recurso modificando o array 'data'
+    this.listadoResource.value.update(respostaApi => {
+      if (!respostaApi) return respostaApi;
+
+      return {
+        ...respostaApi,
+        data: [...respostaApi.data].sort((a, b) =>
+          new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso(), false)
+        )
+      };
+    });
   }
 }
 

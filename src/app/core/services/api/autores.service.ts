@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { Autor, AutorData } from '../../models/autor.interface';
 import { Observable, of } from 'rxjs';
 import { ListadoAutores, ListadoConcretoAutoresData } from '../../models/listado-autores.interface';
-import { BaseComLidos, BaseListadoDadosApi, BaseQuantidadesLivros } from '../../models/base-dados-api.interface';
+import { BaseListadoDadosApi, BaseQuantidadesLivros } from '../../models/base-dados-api.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -79,11 +79,11 @@ export class AutoresService {
     }
   }
 
-  getListadoAutoresFiltrados(id: number, tipo: ListadosAutoresTipos): Observable<BaseComLidos> {
+  getListadoAutoresFiltrados(id: number, tipo: ListadosAutoresTipos): Observable<BaseListadoDadosApi<ListadoAutores>> {
     const params = new HttpParams()
       .set('id', id)
       .set('tipo', tipo);
-    return this.http.get<BaseComLidos>(`${environment.apiUrl}${this.rotaIntermedia}/AutoresFiltrados`, { params });
+    return this.http.get<BaseListadoDadosApi<ListadoAutores>>(`${environment.apiUrl}${this.rotaIntermedia}/AutoresFiltrados`, { params });
   }
 
   getAutor(id: string): Observable<BaseQuantidadesLivros> {

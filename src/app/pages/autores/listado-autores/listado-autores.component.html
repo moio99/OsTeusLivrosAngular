@@ -1,7 +1,4 @@
-<h3>Listado de Autores
-  @if (filtroPaisOuNacionalidade()) {
-    <span>{{filtroPaisOuNacionalidade()}}</span>{{tipoOrdeacom()}}
-  }
+<h3>Listado de Autores{{tipoListado()}}{{tipoOrdeacom()}}
   @if (inverso()) {
     <span>inverso</span>
   }
@@ -24,7 +21,7 @@
 <div>
   {{ listadoResource.isLoading() ? 'Carregando...' : listadoDados()?.length + ' autores' }}
 </div>
-@if (autoresResource.hasValue()) {
+@if (listadoResource.hasValue()) {
   <table class="taboas-listado">
     <tr>
       <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna
@@ -40,7 +37,7 @@
         [actual]="tipoOrdeacom()"
         [inverso]="inverso()"></omla-orde-coluna></th>
     </tr>
-      @for (entrada of autoresResource.value(); track entrada.id) {
+      @for (entrada of listadoDados(); track entrada.id) {
       <tr class="listado-accom">
         <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.nome}}</td>
         <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLivros}}</td>

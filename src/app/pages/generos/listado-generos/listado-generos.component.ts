@@ -24,7 +24,7 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
   nomeAlfabetico = ', alfabético';
   numeroLivros = ', número de livros';
   numeroLivrosLidos = ', número de livros lidos';
-  tipoOrdeacom = this.nomeAlfabetico;
+  tipoOrdeacom = signal<string>(this.nomeAlfabetico);
   inverso = false;
   tipoListado = '';
 
@@ -53,8 +53,8 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
   }
 
   ordeAlfabetico() {
-    this.inverso = (this.tipoOrdeacom == this.nomeAlfabetico) ? !this.inverso : false;
-    this.tipoOrdeacom = this.nomeAlfabetico;
+    this.inverso = (this.tipoOrdeacom() === this.nomeAlfabetico) ? !this.inverso : false;
+    this.tipoOrdeacom.set(this.nomeAlfabetico);
 
     // Actualizamos o valor interno do recurso modificando o array 'data'
     this.listadoResource.value.update(respostaApi => {
@@ -70,8 +70,8 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
   }
 
   ordeNumeroLivros() {
-    this.inverso = (this.tipoOrdeacom == this.numeroLivros) ? !this.inverso : false;
-    this.tipoOrdeacom = this.numeroLivros;
+    this.inverso = (this.tipoOrdeacom() === this.numeroLivros) ? !this.inverso : false;
+    this.tipoOrdeacom.set(this.numeroLivros);
 
     // Actualizamos o valor interno do recurso modificando o array 'data'
     this.listadoResource.value.update(respostaApi => {
@@ -87,8 +87,8 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
   }
 
   ordeNumeroLivrosLidos() {
-    this.inverso = (this.tipoOrdeacom == this.numeroLivrosLidos) ? !this.inverso : false;
-    this.tipoOrdeacom = this.numeroLivrosLidos;
+    this.inverso = (this.tipoOrdeacom() === this.numeroLivrosLidos) ? !this.inverso : false;
+    this.tipoOrdeacom.set(this.numeroLivrosLidos);
 
     // Actualizamos o valor interno do recurso modificando o array 'data'
     this.listadoResource.value.update(respostaApi => {
