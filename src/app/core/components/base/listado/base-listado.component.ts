@@ -1,65 +1,67 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService } from '@servizosFlow';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { BaseListadoDadosApi } from '@interfaces';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   template: '' // Componente abstracto, nom precisa template
 })
 export abstract class BaseListadoComponent<T extends { id: string }> {
-  readonly listadoDados = signal<T[]>([]);
+
+  protected abstract nomePlural: string;
 
   readonly layoutService = inject(LayoutService);
   readonly router = inject(Router);
 
-  protected obterDadosDoListado<TData>(
-    nomePlural: string,
-    serviceCall: Observable<BaseListadoDadosApi<TData>>,
-    serviceSetCache: (dados: BaseListadoDadosApi<TData>) => void
-  ): void {
-    serviceCall
-      .pipe(first())
-      .subscribe({
-        next: (v) => {
-          // ATENCIÓN: Como TData e T son diferentes, aquí facemos un cast seguro (as unknown as T[])
-          const rexistros = this.dadosObtidos(v, serviceSetCache) as unknown as T[];
-          this.listadoDados.set(rexistros);
+  // Cada componhente filho implementará este método para dicir de onde saca os dados
+  protected abstract definirChamadaApi(): Observable<BaseListadoDadosApi<any>>;
+  // funçom para guardar na caché
+  protected abstract guardarNaCache(dados: BaseListadoDadosApi<any>): void;
+
+  // O recurso encarregase de subscribirse, fazer o unsubscribe automático e jestionar o estado (loading, error, etc.)
+  protected readonly listadoResource = rxResource({
+    stream: () => {
+      const chamada$ = this.definirChamadaApi();
+
+      // Ejecutamos efectos secundarios (mensagens e caché) de jeito declarativo
+      chamada$.subscribe({
+        next: (resposta) => {
+          const rexistros = resposta?.data ?? [];
+          if (rexistros.length > 0) {
+            this.layoutService.amosarInfo({
+              tipo: InformacomPeTipo.Info,
+              mensagem: `${rexistros.length} registros obtidos`
+            });
+            this.guardarNaCache(resposta);
+          } else {
+            this.layoutService.amosarInfo({
+              tipo: InformacomPeTipo.Aviso,
+              mensagem: 'Nom se obtiverom dados.'
+            });
+          }
         },
         error: (e) => {
           console.error(e);
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Erro,
-            mensagem: `Nom se puiderom obter ${nomePlural}.`
+            mensagem: `Nom se puiderom obter ${this.nomePlural}.`
           });
         }
       });
-  }
 
-  private dadosObtidos<TData>(
-    data: BaseListadoDadosApi<TData>,
-    serviceSetCache: (dados: BaseListadoDadosApi<TData>) => void
-  ): TData[] {
-    const rexistros = data?.data ?? [];
-
-    if (rexistros.length > 0) {
-      this.layoutService.amosarInfo({
-        tipo: InformacomPeTipo.Info,
-        mensagem: `${rexistros.length} registros obtidos`
-      });
-      serviceSetCache(data);
-      return rexistros;
+      return chamada$;
     }
+  });
 
-    this.layoutService.amosarInfo({
-      tipo: InformacomPeTipo.Aviso,
-      mensagem: 'Nom se obtiverom dados.'
-    });
-    console.debug('Nom se obtiverom dados');
-    return [];
-  }
+  // Fai um cast seguro "as unknown as T[]" para solucionar o conflito Colecom/ListadoColecons
+  readonly listadoDados = computed<T[]>(() => {
+    const respostaApi = this.listadoResource.value();
+    return (respostaApi?.data ?? []) as unknown as T[];
+  });
 
   protected onBorrarElemento(
     id: string,
@@ -77,9 +79,7 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
           .pipe(first())
           .subscribe({
             next: () => {
-              this.listadoDados.update(dados =>
-                dados.filter(item => item.id.toString() !== id.toString())
-              );
+              this.listadoResource.reload();
 
               this.layoutService.amosarInfo({
                 tipo: InformacomPeTipo.Sucesso,

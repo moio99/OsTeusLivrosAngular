@@ -1,7 +1,7 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
-import { first, map } from 'rxjs';
-import { ListadoAutores, ParametrosAutor, BaseListadoDadosApi } from '@interfaces';
+import { first, map, Observable } from 'rxjs';
+import { ListadoAutores, ParametrosAutor, BaseListadoDadosApi, Autor } from '@interfaces';
 import { AutoresService, OutrosService } from '@servizosApi';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { InformacomPeTipo, ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
@@ -20,6 +20,7 @@ import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 })
 export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores> {
 
+  protected nomePlural = 'os autores';
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   nomeAlfabetico = ', alfabético';
   numeroLivros = ', número de livros';
@@ -39,6 +40,16 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     ),
     { initialValue: null } // Valor inicial mentres a URL non emita nada
   );
+
+  // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
+  protected definirChamadaApi(): Observable<BaseListadoDadosApi<ListadoAutores>> {
+    return this.autoresService.getListadoAutores();
+  }
+
+  // Pasamos a funçom para guardar na caché sen erros de tipos
+  protected guardarNaCache(dados: BaseListadoDadosApi<ListadoAutores>): void {
+    this.autoresService.setListadoAutores(dados);
+  }
 
   // EFECTO: Encárgase ÚNICAMENTE de actualizar o título cando cambian os parámetros
   // Angular xestiona este ciclo de vida sen romper a pureza do recurso

@@ -21,7 +21,9 @@
   </ul>
 </div>
 
-{{ autoresResource.isLoading() ? 'Carregando' : autoresResource.value()?.length + ' autores' }}
+<div>
+  {{ listadoResource.isLoading() ? 'Carregando...' : listadoDados()?.length + ' autores' }}
+</div>
 @if (autoresResource.hasValue()) {
   <table class="taboas-listado">
     <tr>

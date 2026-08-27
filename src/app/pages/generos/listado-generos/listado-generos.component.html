@@ -10,7 +10,10 @@
   </button>
 }
 
-@if (this.listadoDados().length > 0) {
+<div>
+  {{ listadoResource.isLoading() ? 'Carregando...' : listadoDados()?.length + ' generos' }}
+</div>
+@if (listadoResource.hasValue()) {
   <table class="taboas-listado">
     <tr>
       <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna

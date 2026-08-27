@@ -1,11 +1,12 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Routes } from '@angular/router';
 import { ColecomComponent } from '../colecom/colecom.component';
 import { CommonModule } from '@angular/common';
-import { ListadoColecons } from '@interfaces';
+import { BaseListadoDadosApi, Colecom, ListadoColecons } from '@interfaces';
 import { ColeconsService } from '@servizosApi';
-import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoComponent } from '@componhentesComuns';
+import { Observable } from 'rxjs';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-listado-colecons',
@@ -14,22 +15,22 @@ import { BaseListadoComponent } from '@componhentesComuns';
   templateUrl: './listado-colecons.component.html',
   styleUrls: ['./listado-colecons.component.scss']
 })
-export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColecons> implements OnInit {
+export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColecons> {
+
+  protected nomePlural = 'as coleçons';
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
-  override listadoDados = signal<ListadoColecons[]>([]);
 
   private coleconsService = inject(ColeconsService);
 
-  ngOnInit(): void {
-    super.obterDadosDoListado(
-    // super.obterDadosDoListado<Colecom>(  // nom ponhoo o tipado <Colecom> porque typescript o infire do que
-    // retorna this.coleconsService.getListadoCosLivros(),
-      'as coleçons',
-      this.coleconsService.getListadoCosLivros(),
-      // this.coleconsService.setListadoCosLivros.bind(this.coleconsService)
-      (datos) => this.coleconsService.setListadoCosLivros(datos) // <-- Alternativa a .bind() para que nom perdta o contexto (this)
-    );
+  // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
+  protected definirChamadaApi(): Observable<BaseListadoDadosApi<Colecom>> {
+    return this.coleconsService.getListadoCosLivros();
+  }
+
+  // Pasamos a funçom para guardar na caché sen erros de tipos
+  protected guardarNaCache(dados: BaseListadoDadosApi<Colecom>): void {
+    this.coleconsService.setListadoCosLivros(dados);
   }
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {

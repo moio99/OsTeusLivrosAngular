@@ -5,7 +5,10 @@
   </button>
 }
 
-@if (this.listadoDados().length > 0) {
+<div>
+  {{ listadoResource.isLoading() ? 'Carregando...' : listadoDados()?.length + ' bibliotecas' }}
+</div>
+@if (listadoResource.hasValue()) {
   <table class="taboas-listado">
     <tr>
       <th>Nome</th>

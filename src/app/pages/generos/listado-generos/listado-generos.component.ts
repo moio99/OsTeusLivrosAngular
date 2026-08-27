@@ -1,11 +1,12 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Routes } from '@angular/router';
 import { GeneroComponent } from '../genero/genero.component';
 import { CommonModule } from '@angular/common';
-import { ListadoGeneros } from '@interfaces';
+import { BaseListadoDadosApi, Genero, ListadoGeneros } from '@interfaces';
 import { GenerosService } from '@servizosApi';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
+import { Observable } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
 
 @Component({
@@ -15,7 +16,9 @@ import { environment, environments } from '../../../../environments/environment'
   templateUrl: './listado-generos.component.html',
   styleUrls: ['./listado-generos.component.scss']
 })
-export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros> implements OnInit {
+export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros> {
+
+  protected nomePlural = 'as editoriais';
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   nomeAlfabetico = ', alfabético';
@@ -24,19 +27,17 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
   tipoOrdeacom = this.nomeAlfabetico;
   inverso = false;
   tipoListado = '';
-  override listadoDados = signal<ListadoGeneros[]>([]);
 
   private generosService = inject(GenerosService);
 
-  ngOnInit(): void {
-    super.obterDadosDoListado(
-    // super.obterDadosDoListado<Genero>(  // nom ponhoo o tipado <Genero> porque typescript o infire do que
-    // retorna this.coleconsService.getListadoCosLivros(),
-      'as editoriais',
-      this.generosService.getListadoCosLivros(),
-      // this.generosService.setListadoCosLivros.bind(this.generosService)
-      (dados) => this.generosService.setListadoCosLivros(dados) // <-- Alternativa a .bind() para que nom perdta o contexto (this)
-    );
+  // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
+  protected definirChamadaApi(): Observable<BaseListadoDadosApi<Genero>> {
+    return this.generosService.getListadoCosLivros();
+  }
+
+  // Pasamos a funçom para guardar na caché sen erros de tipos
+  protected guardarNaCache(dados: BaseListadoDadosApi<Genero>): void {
+    this.generosService.setListadoCosLivros(dados);
   }
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
@@ -55,27 +56,51 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
     this.inverso = (this.tipoOrdeacom == this.nomeAlfabetico) ? !this.inverso : false;
     this.tipoOrdeacom = this.nomeAlfabetico;
 
-    this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso))
-    );
+    // Actualizamos o valor interno do recurso modificando o array 'data'
+    this.listadoResource.value.update(respostaApi => {
+      if (!respostaApi) return respostaApi;
+
+      return {
+        ...respostaApi,
+        data: [...respostaApi.data].sort((a, b) =>
+          new Ordeacom().ordear(a.nome, b.nome, this.inverso)
+        )
+      };
+    });
   }
 
   ordeNumeroLivros() {
     this.inverso = (this.tipoOrdeacom == this.numeroLivros) ? !this.inverso : false;
     this.tipoOrdeacom = this.numeroLivros;
 
-    this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso, false))
-    );
+    // Actualizamos o valor interno do recurso modificando o array 'data'
+    this.listadoResource.value.update(respostaApi => {
+      if (!respostaApi) return respostaApi;
+
+      return {
+        ...respostaApi,
+        data: [...respostaApi.data].sort((a, b) =>
+          new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso, false)
+        )
+      };
+    });
   }
 
   ordeNumeroLivrosLidos() {
     this.inverso = (this.tipoOrdeacom == this.numeroLivrosLidos) ? !this.inverso : false;
     this.tipoOrdeacom = this.numeroLivrosLidos;
 
-    this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso, false))
-    );
+    // Actualizamos o valor interno do recurso modificando o array 'data'
+    this.listadoResource.value.update(respostaApi => {
+      if (!respostaApi) return respostaApi;
+
+      return {
+        ...respostaApi,
+        data: [...respostaApi.data].sort((a, b) =>
+          new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso, false)
+        )
+      };
+    });
   }
 }
 

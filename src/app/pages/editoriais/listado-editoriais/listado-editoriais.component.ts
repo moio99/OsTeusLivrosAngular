@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Routes } from '@angular/router';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
-import { ListadoEditoriais } from '@interfaces';
+import { BaseListadoDadosApi, Editorial, ListadoEditoriais } from '@interfaces';
 import { EditoriaisService } from '@servizosApi';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EditorialComponent } from '../editorial/editorial.component';
+import { Observable } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
 
 @Component({
@@ -15,7 +16,9 @@ import { environment, environments } from '../../../../environments/environment'
   templateUrl: './listado-editoriais.component.html',
   styleUrls: ['./listado-editoriais.component.scss']
 })
-export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEditoriais> implements OnInit {
+export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEditoriais> {
+
+  protected nomePlural = 'as editoriais';
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   nomeAlfabetico = ', alfabético';
@@ -23,19 +26,17 @@ export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEdit
   tipoOrdeacom = this.nomeAlfabetico;
   inverso = false;
   tipoListado = '';
-  override listadoDados = signal<ListadoEditoriais[]>([]);
 
   private editoriaisService = inject(EditoriaisService);
 
-  ngOnInit(): void {
-    super.obterDadosDoListado(
-    // super.obterDadosDoListado<Editorial>(  // nom ponhoo o tipado <Editorial> porque typescript o infire do que
-    // retorna this.coleconsService.getListadoCosLivros(),
-      'as editoriais',
-      this.editoriaisService.getListadoCosLivros(),
-      // this.editoriaisService.setListadoCosLivros.bind(this.editoriaisService)
-      (datos) => this.editoriaisService.setListadoCosLivros(datos) // <-- Alternativa a .bind() para que nom perdta o contexto (this)
-    );
+  // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
+  protected definirChamadaApi(): Observable<BaseListadoDadosApi<Editorial>> {
+    return this.editoriaisService.getListadoCosLivros();
+  }
+
+  // Pasamos a funçom para guardar na caché sen erros de tipos
+  protected guardarNaCache(dados: BaseListadoDadosApi<Editorial>): void {
+    this.editoriaisService.setListadoCosLivros(dados);
   }
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
@@ -53,18 +54,34 @@ export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEdit
     this.inverso = (this.tipoOrdeacom == this.nomeAlfabetico) ? !this.inverso : false;
     this.tipoOrdeacom = this.nomeAlfabetico;
 
-    this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.nome, b.nome, this.inverso))
-    );
+    // Actualizamos o valor interno do recurso modificando o array 'data'
+    this.listadoResource.value.update(respostaApi => {
+      if (!respostaApi) return respostaApi;
+
+      return {
+        ...respostaApi,
+        data: [...respostaApi.data].sort((a, b) =>
+          new Ordeacom().ordear(a.nome, b.nome, this.inverso)
+        )
+      };
+    });
   }
 
   ordeNumeroLivros() {
     this.inverso = (this.tipoOrdeacom == this.numeroLivros) ? !this.inverso : false;
     this.tipoOrdeacom = this.numeroLivros;
 
-    this.listadoDados.update(dados =>
-      [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso, false))
-    );
+    // Actualizamos o valor interno do recurso modificando o array 'data'
+    this.listadoResource.value.update(respostaApi => {
+      if (!respostaApi) return respostaApi;
+
+      return {
+        ...respostaApi,
+        data: [...respostaApi.data].sort((a, b) =>
+          new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso, false)
+        )
+      };
+    });
   }
 }
 

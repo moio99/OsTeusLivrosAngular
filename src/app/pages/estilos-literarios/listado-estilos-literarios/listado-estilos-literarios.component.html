@@ -12,7 +12,10 @@
   <h1>Listado {{this.tipoListado}}</h1>
 }
 
-@if(this.listadoDados().length > 0) {
+<div>
+  {{ listadoResource.isLoading() ? 'Carregando...' : listadoDados()?.length + ' estilos literarios' }}
+</div>
+@if (listadoResource.hasValue()) {
   <table class="taboas-listado">
     <tr>
       <th>Nome</th>
