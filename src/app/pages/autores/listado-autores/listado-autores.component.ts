@@ -40,11 +40,12 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     { initialValue: null } // Valor inicial mentres a URL non emita nada
   );
 
-  tipoListado = computed(() => {
-    if (!this.parametrosBusqueda()) return '';
+  tipoListadoTitulo = computed(() => {
+    const params = this.parametrosBusqueda();
+    if (!params) return '';
 
-    return Number(this.parametrosBusqueda()?.tipo) === ListadosAutoresTipos.porNacionalidade
-      ? 'por nacionalidade' : ' por país';
+    return Number(params.tipo) === ListadosAutoresTipos.porNacionalidade
+      ? 'por nacionalidade' : 'por país';
   });
 
   // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
@@ -119,8 +120,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       nome,
       'o autor',
       'Autor borrado correctamente',
-      (id) => this.autoresService.borrarAutor(+id),
-      () => this.listadoResource.reload()     // para que relance o stream e actualice o listado
+      (id) => this.autoresService.borrarAutor(+id)
     );
   }
 
