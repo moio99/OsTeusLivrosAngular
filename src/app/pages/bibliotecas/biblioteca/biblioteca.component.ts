@@ -1,124 +1,126 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BibliotecasService, LivrosService } from '@servizosApi';
-import { ConverterAData } from '../../../shared/classes/date-convert';
-import { Biblioteca, BibliotecaForm } from '@interfaces';
+import { Biblioteca } from '@interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { BaseElementoComponent } from '@componhentesComuns';
+import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { first, map, catchError, of, switchMap, EMPTY } from 'rxjs';
+import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { BibliotecaFormPresenterComponent } from './biblioteca-form-presenter.component';
+import { BibliotecaFormStateService } from './biblioteca-form-state.service';
+import { ActivatedRoute } from '@angular/router';
+import { EstadosPagina } from '../../../shared/enums/estadosPagina';
+import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
 
 @Component({
   selector: 'omla-biblioteca',
   standalone: true,
   imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule
-    , MatDatepickerModule, MatNativeDateModule],
+    , MatDatepickerModule, MatNativeDateModule, BibliotecaFormPresenterComponent, ListadoLivrosElementoComponent],
   templateUrl: './biblioteca.component.html',
   styleUrls: ['./biblioteca.component.scss'],
-  providers: [ {provide: 'OMeuServizoToeken', useClass: BibliotecasService} ]
+  providers: [ {provide: 'OMeuServizoToeken', useClass: BibliotecasService}, BibliotecaFormStateService ]
 })
-export class BibliotecaComponent extends BaseElementoComponent<Biblioteca, BibliotecasService> {
+export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca> {
 
-  bibliotecaForm!: FormGroup<BibliotecaForm>;
-  override dadosDoElemento: Biblioteca | undefined = {
-    id: 0,
-    nome: '',
-    endereco: '',
-    localidade: '',
-    telefone: '',
-    dataAsociamento: '',
-    dataRenovacom: '',
-    comentario: ''
-  };
-
+  private route = inject(ActivatedRoute);
   private livrosService = inject(LivrosService);
+  private bibliotecasService = inject(BibliotecasService);
+  private formState = inject(BibliotecaFormStateService);
 
-  constructor() {
-    super();
+  idBiblioteca = toSignal(
+    this.route.queryParams.pipe(
+      map(params => params['id'] ?? '0')
+    ),
+    { initialValue: '0' }
+  );
+  modo = computed(() => {
+    return this.idBiblioteca() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar;
+  });
 
-    this.bibliotecaForm = new FormGroup<BibliotecaForm>({
-      nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
-      endereco: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(150)]),
-      localidade: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(100)]),
-      telefone: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.maxLength(50)]),
-      dataAsociamento: new FormControl({ value: null, disabled: this.disabledFormulario}),
-      dataRenovacom: new FormControl({ value: null, disabled: this.disabledFormulario}),
-      comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
+  bibliotecaResource = rxResource({
+    params: () => this.idBiblioteca(),
+    stream: ({ params: id }) => {
+      const currentId = id;
+      if (this.modo() === EstadosPagina.engadir) return of(null);
+
+      return this.bibliotecasService.getPorId(currentId).pipe(
+        first(),
+        map(v => this.dadosBibliotecaObtidos(v)),
+        catchError((e) => {
+          this.manexarErroSoporte(e, 'do autor');
+          return of(null); })
+      );
+    }
+  });
+
+  livrosBibliotecaResource = rxResource({
+    params: () => this.idBiblioteca(),
+    stream: ({ params: id }) => {
+      const currentId = id;
+      return this.livrosService.getLivrosPorBiblioteca(currentId).pipe(
+        first(),
+        map(v => this.dadosLivrosObtidos(v)),
+        catchError((e) => this.manexarErroSoporte(e, 'dos livros da biblioteca'))
+      );
+    }
+  });
+
+  onSubmit(): void {
+    if (this.formState.bibliotecaForm.invalid) return;
+
+    const nomeValue = String(this.formState.bibliotecaForm.controls.nome.value).trim();
+    const elemento = this.formState.criarObjetoBiblioteca(this.idBiblioteca());
+
+    // Encadeamos de xeito reactivo as dúas peticións do servidor
+    this.bibliotecasService.getPorNome(nomeValue).pipe(
+      first(),
+      // O operador switchMap intercepta o resultado de duplicados e decide o seguinte fluxo
+      switchMap((elementoExistente: any) => {
+        const isDuplicate = elementoExistente?.meta?.quantidade > 0 &&
+          (this.modo() === EstadosPagina.engadir ||
+          (this.modo() === EstadosPagina.guardar && elementoExistente.meta.id.toString() !== this.idBiblioteca()));
+
+        if (isDuplicate) {
+          this.layoutService.amosarInfo({
+            tipo: InformacomPeTipo.Aviso,
+            mensagem: `O nome ${nomeValue} já existe na base de dados`
+          });
+          // Cortamos o fluxo devolvendo un observable baleiro sen facer o gardado
+          return EMPTY;
+        }
+
+        return this.modo() === EstadosPagina.engadir
+          ? this.bibliotecasService.create(elemento)
+          : this.bibliotecasService.update(elemento);
+      })
+    ).subscribe({
+      next: (v: any) => this.gestionarRetroceso(v, elemento),
+      error: (e: unknown) => {
+        console.error(e);
+        this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+          mensagem: this.modo() === EstadosPagina.engadir
+            ? 'Houbo un erro ao engadir a biblioteca.'
+            : 'Houbo un erro ao guardar a biblioteca.'
+        });
+      },
+      complete: () => {
+        this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso,
+          mensagem: this.modo() === EstadosPagina.engadir
+            ? 'Biblioteca engadida.'
+            : 'Biblioteca guardada.'
+        });
+        console.debug('Proceso de formulario completado de forma segura.');
+      }
     });
   }
 
-  /**
-   * Para que ao dar-lhe ao intro nom faga o envio do formulario
-   * @param event Evento
-   */
-  onKeyDownImpedirEnvio(event: Event) {
-    const keyboardEvent = event as KeyboardEvent; // Convertir a KeyboardEvent
-    if (keyboardEvent.key === 'Enter') {
-      keyboardEvent.preventDefault(); // Prevenir que el formulario se envíe
-    }
-  }
-
-  protected get formuario(): any {
-    return this.bibliotecaForm;
-  }
-
-  protected serviceGetLivros(id: string) {
-    return this.livrosService.getLivrosPorBiblioteca(id);
-  }
-
-  protected updateFormValues(biblioteca: Biblioteca) {
-    const dD = new ConverterAData().getDataFromMySQL(biblioteca.dataAsociamento);
-    if (dD?.year > 0) {
-      const dataAsociamento = new Date(dD.year, dD.month - 1, dD.day);
-      this.bibliotecaForm.controls.dataAsociamento.setValue(dataAsociamento);
-    }
-
-    const dR = new ConverterAData().getDataFromMySQL(biblioteca.dataRenovacom);
-    if (dR?.year > 0) {
-      const dataRenovacom = new Date(dR.year, dR.month - 1, dR.day);
-      this.bibliotecaForm.controls.dataRenovacom.setValue(dataRenovacom);
-    }
-
-    this.bibliotecaForm.patchValue({
-      nome: biblioteca.nome,
-      endereco: biblioteca.endereco,
-      localidade: biblioteca.localidade,
-      telefone: biblioteca.telefone,
-      comentario: biblioteca.comentario
-    });
-  }
-
-  protected createElementoForm(): Biblioteca {
-    let dateConvert = new ConverterAData();
-    let dA = dateConvert.getData(this.bibliotecaForm.controls.dataAsociamento.value);
-    let dR = dateConvert.getData(this.bibliotecaForm.controls.dataRenovacom.value);
-
-    const biblioteca: Biblioteca = {
-      id: Number(this.dadosDoElemento?.id),
-      nome: String(this.bibliotecaForm.controls.nome.value),
-      endereco: (this.bibliotecaForm.controls.endereco.value === null) ? null : String(this.bibliotecaForm.controls.endereco.value).trim(),
-      localidade: (this.bibliotecaForm.controls.localidade.value === null) ? null : String(this.bibliotecaForm.controls.localidade.value).trim(),
-      telefone: (this.bibliotecaForm.controls.telefone.value === null) ? null : String(this.bibliotecaForm.controls.telefone.value).trim(),
-      dataAsociamento: (dA.year > 0) ? dA.year + '-' + dA.month + '-' + dA.day : '',
-      dataRenovacom: (dR.year > 0) ? dR.year + '-' + dR.month + '-' + dR.day : '',
-      comentario: (this.bibliotecaForm.controls.comentario.value === null) ? null : String(this.bibliotecaForm.controls.comentario.value).trim()
-    };
-    return biblioteca;
-  }
-
-  protected getErrorMessage(context: string): string {
-    return context === 'obtención'
-      ? 'Nom se puiderom obter os dados da biblioteca.'
-      : 'Nom chegarom dados da biblioteca';
-  }
-
-  protected getLivrosErrorMessage(): string {
-    return 'Nom se puiderom obter os Livros da biblioteca.';
-  }
-
-  protected getNomeElemento(): string {
-    return this.bibliotecaForm.controls.nome.value ?? '';
+  protected aplicarDatosAoFormulario(datos: Biblioteca): void {
+    this.formState.atualizarFromBiblioteca(datos);
   }
 }

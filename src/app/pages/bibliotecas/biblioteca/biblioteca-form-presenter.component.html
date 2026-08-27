@@ -1,0 +1,109 @@
+<form [formGroup]="formState.bibliotecaForm" (ngSubmit)="submitForm.emit($event)">
+  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+    <button color="primary" type="submit" [value]="modo()">
+      <i class="icon-disk"></i> {{modo()}}
+    </button>
+    <button color="primary" type="button" (click)="cancelar.emit()">
+      <i class="icon-disk"></i> Retroceder
+    </button>
+  }
+  <div class="formulario-dados">
+    <div>
+      <mat-form-field [style.width.px]=500>
+        <mat-label>Nome:</mat-label>
+        <input matInput [formControl]="formState.bibliotecaForm.controls.nome" width="200">
+        @if (formState.bibliotecaForm.controls.nome.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 150 caracteres
+          </mat-error>
+        }
+        @if (formState.bibliotecaForm.controls.nome.hasError('required')) {
+          <mat-error>
+            O Nome é obrigatorio
+          </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field [style.width.px]=500>
+        <mat-label>Endereço:</mat-label>
+        <input matInput [formControl]="formState.bibliotecaForm.controls.endereco">
+        @if (formState.bibliotecaForm.controls.endereco.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 150 caracteres
+          </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field [style.width.px]=300>
+        <mat-label>Localidade:</mat-label>
+        <input matInput [formControl]="formState.bibliotecaForm.controls.localidade">
+        @if (formState.bibliotecaForm.controls.localidade.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 150 caracteres
+          </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field [style.width.px]=150>
+        <mat-label>Telefone:</mat-label>
+        <input matInput [formControl]="formState.bibliotecaForm.controls.telefone">
+        @if (formState.bibliotecaForm.controls.telefone.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 50 caracteres
+          </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="data-criacom">
+      <mat-form-field class="ancho-inputs" [style.width.px]=170>
+        <mat-label>Data de asociamento</mat-label>
+        <input matInput [matDatepicker]="fDateAso"
+          [formControl]="formState.bibliotecaForm.controls.dataAsociamento"
+          (keydown.enter)="onKeyDownImpedirEnvio($event)">
+        <mat-datepicker-toggle matSuffix [for]="fDateAso"></mat-datepicker-toggle>
+        <mat-datepicker #fDateAso></mat-datepicker>
+        @if (formState.bibliotecaForm.controls.dataAsociamento.hasError('matDatepickerParse')) {
+          <mat-error
+            [innerHTML]="'O formato válido é dd/mm/aaaa'">
+          </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="data-criacom">
+      <mat-form-field class="ancho-inputs" [style.width.px]=170>
+        <mat-label>Data de renovaçom</mat-label>
+        <input matInput [matDatepicker]="fDateRe"
+          [formControl]="formState.bibliotecaForm.controls.dataRenovacom"
+          (keydown.enter)="onKeyDownImpedirEnvio($event)">
+        <mat-datepicker-toggle matSuffix [for]="fDateRe"></mat-datepicker-toggle>
+        <mat-datepicker #fDateRe></mat-datepicker>
+        @if (formState.bibliotecaForm.controls.dataRenovacom.hasError('matDatepickerParse')) {
+          <mat-error
+            [innerHTML]="'O formato válido é dd/mm/aaaa'">
+          </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field [style.width.px]=500>
+        <mat-label>Comentario:</mat-label>
+        <textarea matInput [formControl]="formState.bibliotecaForm.controls.comentario" rows="4"></textarea>
+        @if (formState.bibliotecaForm.controls.comentario.hasError('maxlength')) {
+          <mat-error>
+            A longitude nom debe superar os 5000 caracteres
+          </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+  </div>
+</form>
