@@ -1,5 +1,5 @@
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule, Routes } from '@angular/router';
+import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { first, map } from 'rxjs';
 import { ListadoAutores, ParametrosAutor, BaseListadoDadosApi } from '@interfaces';
 import { AutoresService, OutrosService } from '@servizosApi';
@@ -32,7 +32,6 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   private outrosService = inject(OutrosService);
   private autoresService = inject(AutoresService);
   private route = inject(ActivatedRoute);
-  private router = inject(Router);
 
   parametrosBusqueda = toSignal(
     this.route.queryParams.pipe(
@@ -154,14 +153,6 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     this.listadoDados.update(dados =>
       [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso(), false))
     );
-  }
-
-  onIrPagina(rota: string, id: string): void{
-    this.layoutService.amosarInfo(undefined);
-    //this.router.navigateByUrl(rota + '?id=' + id);  // Ponho o de abaixo para probar outro jeito de enviar os parámetros
-    this.router.navigate([rota], {
-      state: { id: id, idRelectura: 'algo mais de probas' },
-    });
   }
 }
 

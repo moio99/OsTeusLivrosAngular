@@ -1,7 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { EstiloLiterarioComponent } from '../estilo-literario/estilo-literario.component';
@@ -27,10 +26,11 @@ export class ListadoEstilosLiterariosComponent extends BaseListadoComponent<List
   override listadoDados = signal<ListadoEstilosLiterarios[]>([]);
 
   private estilosLiterariosService = inject(EstilosLiterariosService);
-  private router = inject(Router);
 
   ngOnInit(): void {
     super.obterDadosDoListado(
+    // super.obterDadosDoListado<EstiloLiterario>(  // nom ponhoo o tipado <EstiloLiterario> porque typescript o infire do que
+    // retorna this.coleconsService.getListadoCosLivros(),
       'os estilos literarios',
       this.estilosLiterariosService.getListadoCosLivros(),
       // this.estilosLiterariosService.setListadoCosLivros.bind(this.estilosLiterariosService));
@@ -70,14 +70,6 @@ export class ListadoEstilosLiterariosComponent extends BaseListadoComponent<List
     this.listadoDados.update(dados =>
       [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso, false))
     );
-  }
-
-  onIrPagina(rota: string, id: string): void{
-    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
-    this.layoutService.amosarInfo(undefined);
-    this.router.navigateByUrl(rota + '?id=' + id);
-    // this.router.navigate([rota], {relativeTo: id});
-    // this.router.navigate([rota], {dadoQueVai: id});
   }
 }
 

@@ -21,10 +21,12 @@ export class ListadoBibliotecasComponent extends BaseListadoComponent<ListadoBib
   override listadoDados = signal<ListadoBibliotecas[]>([]);
 
   private bibliotecasService = inject(BibliotecasService);
-  private router = inject(Router);
+
 
   ngOnInit(): void {
     super.obterDadosDoListado(
+    // super.obterDadosDoListado<Bilioteca>(  // nom ponhoo o tipado <Bilioteca> porque typescript o infire do que
+    // retorna this.coleconsService.getListadoCosLivros(),
       'as bibliotecas',
       this.bibliotecasService.getListadoCosLivros(),
       // this.bibliotecasService.setListadoCosLivros.bind(this.bibliotecasService)
@@ -41,14 +43,6 @@ export class ListadoBibliotecasComponent extends BaseListadoComponent<ListadoBib
       'Biblioteca borrada correctamente',
       (id) => this.bibliotecasService.borrar(id)
     );
-  }
-
-  onIrPagina(rota: string, id: string): void{
-    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
-    this.layoutService.amosarInfo(undefined);
-    this.router.navigateByUrl(rota + '?id=' + id);
-    // this.router.navigate([rota], {relativeTo: id});
-    // this.router.navigate([rota], {dadoQueVai: id});
   }
 }
 

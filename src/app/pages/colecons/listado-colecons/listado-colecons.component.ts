@@ -1,10 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { ColecomComponent } from '../colecom/colecom.component';
 import { CommonModule } from '@angular/common';
 import { ListadoColecons } from '@interfaces';
 import { ColeconsService } from '@servizosApi';
-import { LayoutService } from '@servizosFlow';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoComponent } from '@componhentesComuns';
 
@@ -21,10 +20,11 @@ export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColeco
   override listadoDados = signal<ListadoColecons[]>([]);
 
   private coleconsService = inject(ColeconsService);
-  private router = inject(Router);
 
   ngOnInit(): void {
     super.obterDadosDoListado(
+    // super.obterDadosDoListado<Colecom>(  // nom ponhoo o tipado <Colecom> porque typescript o infire do que
+    // retorna this.coleconsService.getListadoCosLivros(),
       'as coleçons',
       this.coleconsService.getListadoCosLivros(),
       // this.coleconsService.setListadoCosLivros.bind(this.coleconsService)
@@ -41,15 +41,6 @@ export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColeco
       'Coleçom borrada correctamente',
       (id) => this.coleconsService.borrar(id)
     );
-  }
-
-
-  onIrPagina(rota: string, id: string): void{
-    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
-    this.layoutService.amosarInfo(undefined);
-    this.router.navigateByUrl(rota + '?id=' + id);
-    // this.router.navigate([rota], {relativeTo: id});
-    // this.router.navigate([rota], {dadoQueVai: id});
   }
 }
 

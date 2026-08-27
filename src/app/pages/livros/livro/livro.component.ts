@@ -495,7 +495,7 @@ export class LivroComponent implements OnInit {
    * Gestiona os dados que se acavam de engadir, por ejemplo nova editorial, novo autor etc.
    */
   private setDadoEngadido() {
-    let novoDado = this.dadosPaginasService.getNovoDado();
+    let novoDado = this.dadosPaginasService.getNovoDadoLivro();
     if (novoDado && novoDado.elemento && this.dadosDoLivro) {
       switch (novoDado.tipo) {
         case DadosComplentarios.Autor: {
@@ -531,7 +531,7 @@ export class LivroComponent implements OnInit {
         }
       }
     }
-    this.dadosPaginasService.setNovoDado(undefined);
+    this.dadosPaginasService.setNovoDadoLivro(undefined);
   }
 
   private actualizarCombo(elementosCombo: SimpleObjet[], novoElemento: SimpleObjet): void {
@@ -673,7 +673,7 @@ export class LivroComponent implements OnInit {
     if (elemento) {
       let livro = this.setDadosLivro();
       this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
-      this.dadosPaginasService.setNovoDado({tipo: tipoDado, elemento: elemento});
+      this.dadosPaginasService.setNovoDadoLivro({tipo: tipoDado, elemento: elemento});
       this.layoutService.amosarInfo(undefined);
       this.router.navigateByUrl(rota + '?id=' + elemento.id);
     }
@@ -707,7 +707,7 @@ export class LivroComponent implements OnInit {
   private guardarDadosDoLivro(tipo: DadosComplentarios) {
     let livro = this.setDadosLivro();
     this.dadosPaginasService.setDadosPagina({id: livro.id, nomePagina: this.nomePagina, elemento: livro});
-    this.dadosPaginasService.setNovoDado({tipo: tipo, elemento: undefined});
+    this.dadosPaginasService.setNovoDadoLivro({tipo: tipo, elemento: undefined});
     this.layoutService.amosarInfo(undefined);
   }
 

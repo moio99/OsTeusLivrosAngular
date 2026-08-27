@@ -3,26 +3,30 @@ import { first } from 'rxjs/operators';
 import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService } from '@servizosFlow';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { BaseListadoDadosApi } from '@interfaces';
 
 @Component({
   template: '' // Componente abstracto, nom precisa template
 })
 export abstract class BaseListadoComponent<T extends { id: string }> {
-  readonly listadoDadosInput = input<T[]>([]);  // nom o neccesito
   readonly listadoDados = signal<T[]>([]);
 
   readonly layoutService = inject(LayoutService);
+  readonly router = inject(Router);
 
-  protected obterDadosDoListado<TData extends IData>(
+  protected obterDadosDoListado<TData>(
     nomePlural: string,
-    serviceCall: Observable<TData>,
-    serviceSetCache: (dados: TData) => void
+    serviceCall: Observable<BaseListadoDadosApi<TData>>,
+    serviceSetCache: (dados: BaseListadoDadosApi<TData>) => void
   ): void {
     serviceCall
       .pipe(first())
       .subscribe({
         next: (v) => {
-          this.listadoDados.set(this.dadosObtidos(v, serviceSetCache));
+          // ATENCIÓN: Como TData e T son diferentes, aquí facemos un cast seguro (as unknown as T[])
+          const rexistros = this.dadosObtidos(v, serviceSetCache) as unknown as T[];
+          this.listadoDados.set(rexistros);
         },
         error: (e) => {
           console.error(e);
@@ -34,10 +38,10 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
       });
   }
 
-  private dadosObtidos<TData extends IData>(
-    data: TData,
-    serviceSetCache: (dados: TData) => void
-  ): T[] {
+  private dadosObtidos<TData>(
+    data: BaseListadoDadosApi<TData>,
+    serviceSetCache: (dados: BaseListadoDadosApi<TData>) => void
+  ): TData[] {
     const rexistros = data?.data ?? [];
 
     if (rexistros.length > 0) {
@@ -46,7 +50,7 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
         mensagem: `${rexistros.length} registros obtidos`
       });
       serviceSetCache(data);
-      return rexistros as T[];
+      return rexistros;
     }
 
     this.layoutService.amosarInfo({
@@ -107,8 +111,11 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
     }
   }
 
-}
-
-interface IData {
-  data: any[];
+  onIrPagina(rota: string, id: string): void{
+    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
+    this.layoutService.amosarInfo(undefined);
+    this.router.navigateByUrl(rota + '?id=' + id);
+    // this.router.navigate([rota], {relativeTo: id});
+    // this.router.navigate([rota], {dadoQueVai: id});
+  }
 }

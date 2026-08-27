@@ -1,8 +1,8 @@
-import { Component, OnInit, signal, inject, input, effect, computed } from '@angular/core';
+import { Component, signal, inject, effect, computed } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { catchError, concatMap, delay, EMPTY, first, forkJoin, map, of, tap } from 'rxjs';
+import { catchError, concatMap, EMPTY, first, map, of, tap } from 'rxjs';
 import { Autor, AutorData, ListadoLivros, BaseListadoDadosApi } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
@@ -14,17 +14,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { environment, environments } from '../../../../environments/environment';
 import { AutorFormPresenterComponent } from './autor-form-presenter.component';
-import { AutorLivrosComponent } from './autor-livros.component';
 import { AutorFormStateService } from './autor-form-state.service';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
 
 @Component({
   selector: 'omla-autor',
   standalone: true,
   imports: [ CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule,
-    MatNativeDateModule, MatAutocompleteModule, AutorFormPresenterComponent, AutorLivrosComponent ],
+    MatNativeDateModule, MatAutocompleteModule, AutorFormPresenterComponent, ListadoLivrosElementoComponent ],
   templateUrl: './autor.component.html',
   styleUrls: ['./autor.component.scss'],
   providers: [AutorFormStateService]
@@ -212,7 +211,7 @@ export class AutorComponent {
 
     this.autoresService.getAutorPorNome(nomeFormulario).pipe(
       first(),  // Collo o primeiro valor da consulta do nome e pechamos esa canle
-      concatMap((autorRepetido) => {  // concatMap asegura que a seguinte chamada espere a que esta termine sen cancelarse
+      concatMap((autorRepetido) => {  // concatMap asegura que a seguinte chamada agarde a que esta remate sem cancelarse
         if (autorRepetido && autorRepetido.meta.quantidade > 0) {
           if (botonPremido === EstadosPagina.engadir || autorRepetido.meta.id !== this.dadosDoAutor?.id) {
             this.layoutService.amosarInfo({
@@ -263,7 +262,7 @@ export class AutorComponent {
     if (dados) {
       autor.id = dados.meta.id;
       this.dadosDoAutor = autor;
-      let novoDado = this.dadosPaginasService.getNovoDado();
+      let novoDado = this.dadosPaginasService.getNovoDadoLivro();
       if (novoDado) {
         novoDado.elemento = autor;
         this.layoutService.amosarInfo(undefined);
@@ -273,7 +272,7 @@ export class AutorComponent {
   }
 
   onCancelar() {
-    this.dadosPaginasService.setNovoDado(undefined);
+    this.dadosPaginasService.setNovoDadoLivro(undefined);
     this.layoutService.amosarInfo(undefined);
     this.location.back();
   }

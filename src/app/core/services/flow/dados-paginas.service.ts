@@ -42,11 +42,19 @@ export class DadosPaginasService {
     }
   }
 
-  setNovoDado(dado: NovoDado | undefined) {
+  /**
+   * Estavelece o dado que se engadiu ou que se modificou, dos dados complementares do livro.
+   * @param dado: NovoDado { tipo: tipo de dado, elemento: id e nome para amosar na caixa }
+   */
+  setNovoDadoLivro(dado: NovoDado | undefined) {
     this.novoDado = dado;
   }
 
-  getNovoDado(): NovoDado | undefined{
+  /**
+   * Recupera o dado que se engadiu ou que se modificou, dos dados complementares do livro.
+   * @returns NovoDado { tipo: tipo de dado, elemento: id e nome para amosar na caixa }
+   */
+  getNovoDadoLivro(): NovoDado | undefined{
     return this.novoDado;
   }
 }

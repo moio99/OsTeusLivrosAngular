@@ -1,11 +1,9 @@
-
 <omla-autor-form-presenter
   [modo]="modo()"
   (submitForm)="onSubmit($event)"
   (cancelar)="onCancelar()" />
 
-<omla-autor-livros
+<omla-listado-livros-elemento
   [estaCarregando]="livrosAutorResource.isLoading()"
   [livros]="livrosAutorResource.value()"
   (navegar)="onIrPagina('/livros/livro', $event)" />
-

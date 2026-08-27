@@ -2,11 +2,11 @@ import { Component, input, output } from '@angular/core';
 import { ListadoLivros } from '@interfaces';
 
 @Component({
-  selector: 'omla-autor-livros',
+  selector: 'omla-listado-livros-elemento',
   standalone: true,
-  templateUrl: './autor-livros.component.html'
+  templateUrl: './listado-livros-elemento.component.html'
 })
-export class AutorLivrosComponent {
+export class ListadoLivrosElementoComponent {
   livros = input<ListadoLivros[] | undefined>([])
   estaCarregando = input<boolean>(false);
   navegar = output<string>();

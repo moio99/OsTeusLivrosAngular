@@ -1,10 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { GeneroComponent } from '../genero/genero.component';
 import { CommonModule } from '@angular/common';
 import { ListadoGeneros } from '@interfaces';
 import { GenerosService } from '@servizosApi';
-import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { environment, environments } from '../../../../environments/environment';
@@ -28,10 +27,11 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
   override listadoDados = signal<ListadoGeneros[]>([]);
 
   private generosService = inject(GenerosService);
-  private router = inject(Router);
 
   ngOnInit(): void {
     super.obterDadosDoListado(
+    // super.obterDadosDoListado<Genero>(  // nom ponhoo o tipado <Genero> porque typescript o infire do que
+    // retorna this.coleconsService.getListadoCosLivros(),
       'as editoriais',
       this.generosService.getListadoCosLivros(),
       // this.generosService.setListadoCosLivros.bind(this.generosService)
@@ -76,14 +76,6 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
     this.listadoDados.update(dados =>
       [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso, false))
     );
-  }
-
-  onIrPagina(rota: string, id: string): void{
-    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
-    this.layoutService.amosarInfo(undefined);
-    this.router.navigateByUrl(rota + '?id=' + id);
-    // this.router.navigate([rota], {relativeTo: id});
-    // this.router.navigate([rota], {dadoQueVai: id});
   }
 }
 

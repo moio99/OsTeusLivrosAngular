@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { ListadoEditoriais } from '@interfaces';
 import { EditoriaisService } from '@servizosApi';
-import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EditorialComponent } from '../editorial/editorial.component';
 import { environment, environments } from '../../../../environments/environment';
@@ -27,10 +26,11 @@ export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEdit
   override listadoDados = signal<ListadoEditoriais[]>([]);
 
   private editoriaisService = inject(EditoriaisService);
-  private router = inject(Router);
 
   ngOnInit(): void {
     super.obterDadosDoListado(
+    // super.obterDadosDoListado<Editorial>(  // nom ponhoo o tipado <Editorial> porque typescript o infire do que
+    // retorna this.coleconsService.getListadoCosLivros(),
       'as editoriais',
       this.editoriaisService.getListadoCosLivros(),
       // this.editoriaisService.setListadoCosLivros.bind(this.editoriaisService)
@@ -65,15 +65,6 @@ export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEdit
     this.listadoDados.update(dados =>
       [...dados].sort((a, b) => new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso, false))
     );
-  }
-
-  onIrPagina(rota: string, id: string): void{
-    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
-    this.layoutService.amosarInfo(undefined);
-    this.layoutService.amosarInfo(undefined);
-    this.router.navigateByUrl(rota + '?id=' + id);
-    // this.router.navigate([rota], {relativeTo: id});
-    // this.router.navigate([rota], {dadoQueVai: id});
   }
 }
 

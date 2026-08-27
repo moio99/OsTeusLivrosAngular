@@ -228,11 +228,11 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     if (dados) {
       elemento.id = dados.meta.id;
       this.dadosDoElemento = elemento;
-      const dadoRequerido = this.dadosPaginasService.getNovoDado();
+      const dadoRequerido = this.dadosPaginasService.getNovoDadoLivro();
       if (dadoRequerido) {
         const novoDado: SimpleObjet = { id: elemento.id, value: elemento.nome };
         dadoRequerido.elemento = novoDado;
-        this.dadosPaginasService.setNovoDado(dadoRequerido);
+        this.dadosPaginasService.setNovoDadoLivro(dadoRequerido);
         this.layoutService.amosarInfo(undefined);
         this.location.back();
       }
