@@ -1,6 +1,27 @@
 import { ValidatorFn, AbstractControl, ValidationErrors } from "@angular/forms";
+import { SchemaPathTree, validate } from "@angular/forms/signals";
 
 export  class ValidaconsAMedida {
+
+  /**
+   * Valida que para um campasado que pode ser nulo o seu valor non exceda un certo número de caracteres.
+   * @param campo nodo da árbore do formulario (un apuntador ou caminho) o chamado SchemaPath ou SchemaPathTree
+   * @param max número de caracteres máximos
+   * @param nomeCampo nome do campo para amosar a mensagem de erro
+   */
+  static maxLenNullable(campo: SchemaPathTree<string | null>, max: number, nomeCampo: string): void {
+    validate(campo, (contexto) => {
+      const texto = contexto.value();
+
+      if (texto !== null && typeof texto === 'string' && texto.length > max) {
+        return {
+          kind: 'maxLength',
+          message: `O campo ${nomeCampo} non pode superar os ${max} caracteres`
+        };
+      }
+      return undefined;
+    });
+  }
 
   /**
    * Valida que a data Dese non sexa maior que a data Até.

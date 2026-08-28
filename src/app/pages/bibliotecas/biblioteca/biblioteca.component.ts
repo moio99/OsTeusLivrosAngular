@@ -16,6 +16,7 @@ import { BibliotecaFormStateService } from './biblioteca-form-state.service';
 import { ActivatedRoute } from '@angular/router';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-biblioteca',
@@ -40,6 +41,9 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
     { initialValue: '0' }
   );
   modo = computed(() => {
+    if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+      return EstadosPagina.soVisualizar;
+    };
     return this.idBiblioteca() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar;
   });
 
@@ -72,9 +76,9 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
   });
 
   onSubmit(): void {
-    if (this.formState.bibliotecaForm.invalid) return;
+    if (this.formState.bibliotecaForm().invalid()) return;
 
-    const nomeValue = String(this.formState.bibliotecaForm.controls.nome.value).trim();
+    const nomeValue = String(this.formState.bibliotecaForm.nome()).trim();
     const elemento = this.formState.criarObjetoBiblioteca(this.idBiblioteca());
 
     // Encadeamos de xeito reactivo as dúas peticións do servidor

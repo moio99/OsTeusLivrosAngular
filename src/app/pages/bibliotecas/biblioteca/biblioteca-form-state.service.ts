@@ -1,49 +1,70 @@
-import { Injectable, inject } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Biblioteca, BibliotecaForm } from '@interfaces';
+import { Injectable, signal } from '@angular/core';
+import { Biblioteca } from '@interfaces';
 import { ConverterAData } from '../../../shared/classes/date-convert';
+import { environment, environments } from '../../../../environments/environment';
+import { disabled, form, required } from '@angular/forms/signals';
+import { ValidaconsAMedida } from '../../../shared/validators/custom-validators';
 
 @Injectable()
 export class BibliotecaFormStateService {
-  private readonly fb = inject(FormBuilder);
   private readonly converterAData = new ConverterAData();
 
-  readonly bibliotecaForm = this.fb.group<BibliotecaForm>({
-    nome: new FormControl('', [Validators.required, Validators.maxLength(150)]),
-    endereco: new FormControl('', [Validators.maxLength(150)]),
-    localidade: new FormControl('', [Validators.maxLength(100)]),
-    telefone: new FormControl('', [Validators.maxLength(50)]),
-    dataAsociamento: new FormControl(null),
-    dataRenovacom: new FormControl(null),
-    comentario: new FormControl('', Validators.maxLength(50000))
+  disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
+
+  readonly bibliotecaModel = signal({
+    nome: '',
+    endereco: '',
+    localidade: '',
+    telefone: '',
+    dataAsociamento: null as Date | null,
+    dataRenovacom: null as Date | null,
+    comentario: ''
+  });
+
+  readonly bibliotecaForm = form(this.bibliotecaModel, (f) => {
+    disabled(f.nome, { when: () => this.disabledFormulario });
+    disabled(f.endereco, { when: () => this.disabledFormulario });
+    disabled(f.localidade, { when: () => this.disabledFormulario });
+    disabled(f.telefone, { when: () => this.disabledFormulario });
+    disabled(f.dataAsociamento, { when: () => this.disabledFormulario });
+    disabled(f.dataRenovacom, { when: () => this.disabledFormulario });
+    disabled(f.comentario, { when: () => this.disabledFormulario });
+    required(f.nome, { message: 'O nome é obrigatorio' });
+    ValidaconsAMedida.maxLenNullable(f.nome, 150, 'nome');
+    ValidaconsAMedida.maxLenNullable(f.endereco, 150, 'endereço');
+    ValidaconsAMedida.maxLenNullable(f.localidade, 100, 'localidade');
+    ValidaconsAMedida.maxLenNullable(f.telefone, 50, 'telefone');
+    ValidaconsAMedida.maxLenNullable(f.comentario, 50000, 'comentario');
   });
 
   atualizarFromBiblioteca(biblioteca: Biblioteca): void {
-    this.bibliotecaForm.patchValue({
+    this.bibliotecaModel.set({
       nome: biblioteca.nome,
-      endereco: biblioteca.endereco,
-      localidade: biblioteca.localidade,
-      telefone: biblioteca.telefone,
+      endereco: biblioteca.endereco ?? '',
+      localidade: biblioteca.localidade  ?? '',
+      telefone: biblioteca.telefone  ?? '',
       dataAsociamento: this.dataFromMySql(biblioteca.dataAsociamento),
       dataRenovacom: this.dataFromMySql(biblioteca.dataRenovacom),
-      comentario: biblioteca.comentario
+      comentario: biblioteca.comentario ?? ''
     });
   }
 
   criarObjetoBiblioteca(id: number | undefined): Biblioteca {
+    const datosForm = this.bibliotecaModel();
+
     let dateConvert = new ConverterAData();
-    let dA = dateConvert.getData(this.bibliotecaForm.controls.dataAsociamento.value);
-    let dR = dateConvert.getData(this.bibliotecaForm.controls.dataRenovacom.value);
+    let dA = dateConvert.getData(datosForm.dataAsociamento);
+    let dR = dateConvert.getData(datosForm.dataRenovacom);
 
     const biblioteca: Biblioteca = {
       id: Number(id),
-      nome: String(this.bibliotecaForm.controls.nome.value),
-      endereco: (this.bibliotecaForm.controls.endereco.value === null) ? null : String(this.bibliotecaForm.controls.endereco.value).trim(),
-      localidade: (this.bibliotecaForm.controls.localidade.value === null) ? null : String(this.bibliotecaForm.controls.localidade.value).trim(),
-      telefone: (this.bibliotecaForm.controls.telefone.value === null) ? null : String(this.bibliotecaForm.controls.telefone.value).trim(),
+      nome: String(datosForm.nome.trim()),
+      endereco: datosForm.endereco?.trim() ?? null,
+      localidade: datosForm.localidade?.trim() ?? null,
+      telefone: datosForm.telefone?.trim() ?? null,
       dataAsociamento: (dA.year > 0) ? dA.year + '-' + dA.month + '-' + dA.day : '',
       dataRenovacom: (dR.year > 0) ? dR.year + '-' + dR.month + '-' + dR.day : '',
-      comentario: (this.bibliotecaForm.controls.comentario.value === null) ? null : String(this.bibliotecaForm.controls.comentario.value).trim()
+      comentario: datosForm.comentario?.trim() ?? null,
     };
     return biblioteca;
   }
