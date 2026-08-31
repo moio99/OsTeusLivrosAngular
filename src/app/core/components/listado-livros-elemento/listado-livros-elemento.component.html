@@ -6,7 +6,7 @@
       <th>Titulo</th>
       <th>TituloOriginal</th>
       <th>Lido</th>
-      @if (mostrarAutor()) {
+      @if (amosarAutor()) {
         <th>Autor</th>
       }
     </tr>
@@ -15,7 +15,7 @@
         <td (click)="navegarLivro.emit(entrada.id)" class="listado-accom">{{entrada.titulo}}</td>
         <td (click)="navegarLivro.emit(entrada.id)" class="listado-accom">{{entrada.tituloOriginal}}</td>
         <td>{{entrada.lido ? 'Si' : 'Nom'}}</td>
-        @if (mostrarAutor()) {
+        @if (amosarAutor()) {
           <td (click)="navegarAutor.emit(entrada.idAutor)" class="listado-accom">{{entrada.nomeAutor}}</td>
         }
       </tr>

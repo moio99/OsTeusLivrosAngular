@@ -9,7 +9,7 @@ import { ListadoLivros } from '@interfaces';
 export class ListadoLivrosElementoComponent {
   livros = input<ListadoLivros[] | undefined>([])
   estaCarregando = input<boolean>(false);
-  mostrarAutor = input<boolean>(true);
+  amosarAutor = input<boolean>(true);
   navegarLivro = output<string>();
   navegarAutor = output<number>();
 }
