@@ -614,17 +614,6 @@ export class LivroComponent implements OnInit {
     });
   }
 
-  onIrPaginaAutor(rota: string, id: number): void {
-    if (this.modo() !== this.estadosPagina.soVisualizar) {
-      let livro = this.setDadosLivro();
-      this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
-      this.layoutService.amosarInfo(undefined);
-      this.router.navigate([rota], {
-        state: { id: id},
-      });
-    }
-  }
-
   onIrPagina(rota: string, id: number): void {
     if (this.modo() !== this.estadosPagina.soVisualizar) {
       let livro = this.setDadosLivro();
