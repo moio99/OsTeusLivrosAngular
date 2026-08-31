@@ -16,16 +16,16 @@
           <th>Páginas</th>
         </tr>
         @for (entrada of idiomasSignal(); track entrada; let first = $first, derradeiro = $last) {
-          <tr class="listado-accom">
-            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">
+          <tr>
+            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="listado-accom">
               {{entrada.nome}}
               @if (derradeiro) {
                 <span #taboaAnos></span>
               }
             </td>
-            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)">{{entrada.quantidade}}</td>
+            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="listado-accom">{{entrada.quantidade}}</td>
             <td>{{entrada.quantidadeRelecturas}}</td>
-            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas">{{entrada.quantidadepaginas}}</td>
+            <td (click)="onGoListadoLivros('/livros', tipos.Idioma, entrada.id)" class="paginas listado-accom">{{entrada.quantidadepaginas}}</td>
           </tr>
         }
       </table>
@@ -68,16 +68,16 @@
         </th>
       </tr>
       @for (entrada of anosSignal(); track entrada) {
-        <tr class="listado-accom">
-          <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">
+        <tr>
+          <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)" class="listado-accom">
             {{entrada.nome}}
             @if ($last) {
               <span #taboaGenero></span>
             }
           </td>
-          <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)">{{entrada.quantidade}}</td>
+          <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)" class="listado-accom">{{entrada.quantidade}}</td>
           <td>{{entrada.quantidadeRelecturas}}</td>
-          <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)" class="paginas">{{entrada.quantidadepaginas}}</td>
+          <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)" class="paginas listado-accom">{{entrada.quantidadepaginas}}</td>
         </tr>
       }
     </table>
@@ -108,11 +108,11 @@
         </th>
       </tr>
       @for (entrada of generosSignal(); track entrada) {
-        <tr class="listado-accom">
-          <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)">{{entrada.nome}}</td>
-          <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)">{{entrada.quantidade}}</td>
+        <tr>
+          <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="listado-accom">{{entrada.nome}}</td>
+          <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="listado-accom">{{entrada.quantidade}}</td>
           <td>{{entrada.quantidadeRelecturas}}</td>
-          <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="paginas">{{entrada.quantidadepaginas}}</td>
+          <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="paginas listado-accom">{{entrada.quantidadepaginas}}</td>
         </tr>
       }
     </table>

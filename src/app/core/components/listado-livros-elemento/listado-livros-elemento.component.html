@@ -9,9 +9,9 @@
       <th>Autor</th>
     </tr>
     @for (entrada of livros(); track entrada.id) {
-      <tr class="listado-accom">
-        <td (click)="navegar.emit(entrada.id)">{{entrada.titulo}}</td>
-        <td (click)="navegar.emit(entrada.id)">{{entrada.tituloOriginal}}</td>
+      <tr>
+        <td (click)="navegar.emit(entrada.id)" class="listado-accom">{{entrada.titulo}}</td>
+        <td (click)="navegar.emit(entrada.id)" class="listado-accom">{{entrada.tituloOriginal}}</td>
         <td>{{entrada.lido ? 'Si' : 'Nom'}}</td>
         <td>{{entrada.nomeAutor}}</td>
       </tr>
