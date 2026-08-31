@@ -615,12 +615,10 @@ export class LivroComponent implements OnInit {
   }
 
   onIrPagina(rota: string, id: number): void {
-    if (this.modo() !== this.estadosPagina.soVisualizar) {
-      let livro = this.setDadosLivro();
-      this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
-      this.layoutService.amosarInfo(undefined);
-      this.router.navigateByUrl(rota + '?id=' + id);
-    }
+    let livro = this.setDadosLivro();
+    this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+    this.layoutService.amosarInfo(undefined);
+    this.router.navigateByUrl(rota + '?id=' + id);
   }
 
   onIrPaginaBiblioteca(): void{
