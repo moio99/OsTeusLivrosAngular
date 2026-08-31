@@ -23,6 +23,41 @@ export  class ValidaconsAMedida {
     });
   }
 
+
+  static comprobarDuasDatasSingal(
+      campoInicio: SchemaPathTree<string | Date | null>,
+      campoFim: SchemaPathTree<string | Date | null>,
+      mensagemErro: string = 'A data de fim debe ser posterior à data de inicio'
+    ): void {
+    // 🌟 O truco en Signal Forms para validacións cruzadas é aplicar o "validate" no nodo raíz do esquema
+    // ou aplicalo ao campo final para que reaccione aos dous.
+    validate(campoFim, (contexto) => {
+      const valorInicio = contexto.valueOf(campoInicio);
+      const valorFin = contexto.value(); // O contexto do validate já é o campoFim
+
+      if (!valorInicio || !valorFin) return undefined;
+
+      const dataInicio = new Date(valorInicio);
+      const dataFin = new Date(valorFin);
+
+      if (isNaN(dataInicio.getTime()) || isNaN(dataFin.getTime())) {
+        return undefined;
+      }
+
+      // Comprobaçom de tempo em milisegundos
+      if (dataInicio.getTime() > dataFin.getTime()) {
+        // Em Signal Forms devolvemos um objecto co tipo (kind) e a mensagem
+        return {
+          kind: 'datasInvalidas',
+          message: mensagemErro
+        };
+      }
+
+      return undefined;     // Se som correctas, devolvemos undefined (Angular limpa o erro el só)
+    });
+  }
+
+
   /**
    * Valida que a data Dese non sexa maior que a data Até.
    */

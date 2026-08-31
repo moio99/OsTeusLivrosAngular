@@ -7,9 +7,10 @@ import { ValidaconsAMedida } from '../../../shared/validators/custom-validators'
 
 @Injectable()
 export class BibliotecaFormStateService {
-  private readonly converterAData = new ConverterAData();
 
-  disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
+  private readonly converterAData = new ConverterAData();
+  private readonly disabledFormulario =
+    environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
 
   readonly bibliotecaModel = signal({
     nome: '',
@@ -58,7 +59,7 @@ export class BibliotecaFormStateService {
 
     const biblioteca: Biblioteca = {
       id: Number(id),
-      nome: String(datosForm.nome.trim()),
+      nome: datosForm.nome.trim(),
       endereco: datosForm.endereco?.trim() ?? null,
       localidade: datosForm.localidade?.trim() ?? null,
       telefone: datosForm.telefone?.trim() ?? null,

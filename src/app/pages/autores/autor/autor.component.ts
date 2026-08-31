@@ -1,7 +1,7 @@
 import { Component, signal, inject, effect, computed } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, concatMap, EMPTY, first, map, of, tap } from 'rxjs';
 import { Autor, AutorData, ListadoLivros, BaseListadoDadosApi } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
@@ -16,7 +16,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AutorFormPresenterComponent } from './autor-form-presenter.component';
 import { AutorFormStateService } from './autor-form-state.service';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
 
 @Component({
@@ -30,16 +30,7 @@ import { ListadoLivrosElementoComponent } from '../../../core/components/listado
 })
 export class AutorComponent {
 
-  estadosPagina = EstadosPagina;
-  dadosDoAutor: Autor | undefined = undefined;
-  dadosLivrosDoAutor = signal<ListadoLivros[]>([]);
-  date = new Date();
-
-  idAutor = signal<string>(history.state?.id ?? '0');
-  modo = computed(() => {
-    return this.idAutor() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar;
-  });
-
+  private route = inject(ActivatedRoute);
   private router = inject(Router);
   private location = inject(Location);
   private layoutService = inject(LayoutService);
@@ -51,6 +42,20 @@ export class AutorComponent {
 
   private readonly formState = inject(AutorFormStateService);
 
+  estadosPagina = EstadosPagina;
+  dadosDoAutor: Autor | undefined = undefined;
+  dadosLivrosDoAutor = signal<ListadoLivros[]>([]);
+  date = new Date();
+
+  idAutor = toSignal(
+    this.route.queryParams.pipe(
+      map(params => params['id'] ?? '0')
+    ),
+    { initialValue: '0' }
+  );
+  modo = computed(() => {
+    return this.idAutor() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar;
+  });
 
   nacionalidadesResource = rxResource({
     stream: () => {
@@ -202,12 +207,10 @@ export class AutorComponent {
   }
 
   onSubmit(event: SubmitEvent) {
-    if (this.formState.autorForm.invalid) {
-      return;
-    }
+    if (this.formState.autorForm().invalid()) return;
 
     const botonPremido = (event.submitter as HTMLButtonElement)?.value;
-    const nomeFormulario = String(this.formState.autorForm.controls.nome.value).trim();
+    const nomeFormulario = String(this.formState.autorForm.nome().value).trim();
 
     this.autoresService.getAutorPorNome(nomeFormulario).pipe(
       first(),  // Collo o primeiro valor da consulta do nome e pechamos esa canle
