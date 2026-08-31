@@ -72,7 +72,7 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
       }
     }
 
-  onIrPagina(rota: string, id: string): void{
+  onIrPagina(rota: string, id: string | number): void{
     //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
     this.layoutService.amosarInfo(undefined);
     this.router.navigateByUrl(rota + '?id=' + id);

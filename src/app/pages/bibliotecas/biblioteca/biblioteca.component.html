@@ -6,4 +6,5 @@
 <omla-listado-livros-elemento
   [estaCarregando]="livrosBibliotecaResource.isLoading()"
   [livros]="livrosBibliotecaResource.value()"
-  (navegar)="onIrPagina('/livros/livro', $event)" />
+  (navegarLivro)="onIrPagina('/livros/livro', $event)"
+  (navegarAutor)="onIrPagina('/autores/autor', $event)" />

@@ -6,14 +6,18 @@
       <th>Titulo</th>
       <th>TituloOriginal</th>
       <th>Lido</th>
-      <th>Autor</th>
+      @if (mostrarAutor()) {
+        <th>Autor</th>
+      }
     </tr>
     @for (entrada of livros(); track entrada.id) {
       <tr>
-        <td (click)="navegar.emit(entrada.id)" class="listado-accom">{{entrada.titulo}}</td>
-        <td (click)="navegar.emit(entrada.id)" class="listado-accom">{{entrada.tituloOriginal}}</td>
+        <td (click)="navegarLivro.emit(entrada.id)" class="listado-accom">{{entrada.titulo}}</td>
+        <td (click)="navegarLivro.emit(entrada.id)" class="listado-accom">{{entrada.tituloOriginal}}</td>
         <td>{{entrada.lido ? 'Si' : 'Nom'}}</td>
-        <td>{{entrada.nomeAutor}}</td>
+        @if (mostrarAutor()) {
+          <td (click)="navegarAutor.emit(entrada.idAutor)" class="listado-accom">{{entrada.nomeAutor}}</td>
+        }
       </tr>
     }
   </table>
