@@ -9,7 +9,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { first, map, catchError, of, switchMap, EMPTY } from 'rxjs';
+import { first, map, catchError, of, switchMap, EMPTY, tap } from 'rxjs';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { BibliotecaFormPresenterComponent } from './biblioteca-form-presenter.component';
 import { BibliotecaFormStateService } from './biblioteca-form-state.service';
@@ -55,7 +55,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
 
       return this.bibliotecasService.getPorId(currentId).pipe(
         first(),
-        map(v => this.dadosBibliotecaObtidos(v)),
+        map(v => this.dadosObtidos(v)),
         catchError((e) => {
           this.manexarErroSoporte(e, 'do autor');
           return of(null); })
@@ -78,7 +78,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
   onSubmit(): void {
     if (this.formState.bibliotecaForm().invalid()) return;
 
-    const nomeValue = String(this.formState.bibliotecaForm.nome()).trim();
+    const nomeValue = String(this.formState.bibliotecaForm.nome().value()).trim();
     const elemento = this.formState.criarObjetoBiblioteca(this.idBiblioteca());
 
     // Encadeamos de xeito reactivo as dúas peticións do servidor
@@ -99,9 +99,23 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
           return EMPTY;
         }
 
-        return this.modo() === EstadosPagina.engadir
-          ? this.bibliotecasService.create(elemento)
-          : this.bibliotecasService.update(elemento);
+        if ( this.modo() === EstadosPagina.engadir) {
+          return this.bibliotecasService.create(elemento).pipe(
+            first(),
+            tap((v) => {
+              this.gestionarRetroceso(v, elemento);
+              this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca engadida.' });
+            })
+          );
+        } else {
+          return this.bibliotecasService.update(elemento).pipe(
+            first(),
+            tap((v) => {
+              this.gestionarRetroceso(v, elemento);
+              this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca guardada.' });
+            })
+          );
+        }
       })
     ).subscribe({
       next: (v: any) => this.gestionarRetroceso(v, elemento),
@@ -112,14 +126,6 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
             ? 'Houbo un erro ao engadir a biblioteca.'
             : 'Houbo un erro ao guardar a biblioteca.'
         });
-      },
-      complete: () => {
-        this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso,
-          mensagem: this.modo() === EstadosPagina.engadir
-            ? 'Biblioteca engadida.'
-            : 'Biblioteca guardada.'
-        });
-        console.debug('Proceso de formulario completado de forma segura.');
       }
     });
   }

@@ -48,7 +48,7 @@ export class AutorFormStateService {
     ValidaconsAMedida.maxLenNullable(f.nomeReal, 150, 'nome real');
     ValidaconsAMedida.maxLenNullable(f.lugarNacemento, 150, 'lugar de nacemento');
     ValidaconsAMedida.maxLenNullable(f.web, 100, 'web');
-    ValidaconsAMedida.comprobarDuasDatasSingal(f.dataNacemento, f.dataDefuncom,
+    ValidaconsAMedida.comprobarDuasDatasSignal(f.dataNacemento, f.dataDefuncom,
       'A data de defunçom nom pode ser anterior à data de nacemento'
     );
   });
@@ -65,7 +65,6 @@ export class AutorFormStateService {
   }
 
   seleccionarNacionalidade(idNacionalidade: number): void {
-    console.log(idNacionalidade);
     const nacionalidadeSelecionada = this.todasNacionalidades().find(opcom => opcom.id === idNacionalidade) ?? null;
 
     this.autorModel.update(model => ({
@@ -76,7 +75,6 @@ export class AutorFormStateService {
   }
 
   seleccionarPais(idPais: number): void {
-    console.log(idPais);
     const paisSelecionado = this.todosPaises().find(opcom => opcom.id === idPais) ?? null;
 
     this.autorModel.update(model => ({

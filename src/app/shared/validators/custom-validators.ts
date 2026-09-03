@@ -24,7 +24,7 @@ export  class ValidaconsAMedida {
   }
 
 
-  static comprobarDuasDatasSingal(
+  static comprobarDuasDatasSignal(
       campoInicio: SchemaPathTree<string | Date | null>,
       campoFim: SchemaPathTree<string | Date | null>,
       mensagemErro: string = 'A data de fim debe ser posterior à data de inicio'

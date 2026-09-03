@@ -210,7 +210,7 @@ export class AutorComponent {
     if (this.formState.autorForm().invalid()) return;
 
     const botonPremido = (event.submitter as HTMLButtonElement)?.value;
-    const nomeFormulario = String(this.formState.autorForm.nome().value).trim();
+    const nomeFormulario = String(this.formState.autorForm.nome().value()).trim();
 
     this.autoresService.getAutorPorNome(nomeFormulario).pipe(
       first(),  // Collo o primeiro valor da consulta do nome e pechamos esa canle

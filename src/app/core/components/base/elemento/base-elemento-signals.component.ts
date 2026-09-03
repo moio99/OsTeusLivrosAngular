@@ -42,7 +42,7 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
     return of([]);
   }
 
-  protected dadosBibliotecaObtidos(data: object): TElemento | undefined {
+  protected dadosObtidos(data: object): TElemento | undefined {
     let resultados: TElemento | undefined;
     const dados = data as BaseListadoDadosApi<TElemento>;
     if (dados.data != null && dados.data.length > 0) {
