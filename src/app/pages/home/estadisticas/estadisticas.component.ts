@@ -6,8 +6,9 @@ import { LayoutService, UsuarioAppService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '@componhentesComuns';
-import { Estadisticas, GraficosData, BaseListadoDadosApi } from '@interfaces';
+import { Estadisticas, GraficosData } from '@interfaces';
 import { PeticomPendenteComponent } from '../../../peticom-pendente.guard';
+import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { forkJoin } from 'rxjs';
 
 @Component({

@@ -1,12 +1,13 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { ColecomComponent } from '../colecom/colecom.component';
 import { CommonModule } from '@angular/common';
-import { BaseListadoDadosApi, Colecom, ListadoColecons } from '@interfaces';
+import { Colecom, ListadoColecons } from '@interfaces';
 import { ColeconsService } from '@servizosApi';
 import { BaseListadoComponent } from '@componhentesComuns';
 import { Observable } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
+import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 
 @Component({
   selector: 'omla-listado-colecons',

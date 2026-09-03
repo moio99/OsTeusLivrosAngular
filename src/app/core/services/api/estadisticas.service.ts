@@ -3,8 +3,8 @@ import { environment, environments } from '../../../../environments/environment'
 import { EstadisticasTipo } from '../../../shared/enums/estadisticasTipos';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { BaseListadoDadosApi } from '../../models/base-dados-api.interface';
 import { Estadisticas } from '../../models/estadisticas.interface';
+import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 
 @Injectable({
   providedIn: 'root',

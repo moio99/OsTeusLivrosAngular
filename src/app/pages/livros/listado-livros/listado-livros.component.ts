@@ -7,12 +7,13 @@ import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo, ListadosLivrosTipos } from '../../../shared/enums/estadisticasTipos';
 import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
-import { ListadoLivros, ParametrosLivroListado, BaseListadoDadosApi } from '@interfaces';
+import { ListadoLivros, ParametrosLivroListado } from '@interfaces';
 import { LivroComponent } from '../livro/livro.component';
 import { ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import { TartaChartOptions } from '../../../core/types/chart.options';
 import { CoresIdioma } from '../../../shared/cores.idiomas.config';
 import { environment, environments } from '../../../../environments/environment';
+import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 
 @Component({
   selector: 'omla-listado-livros',

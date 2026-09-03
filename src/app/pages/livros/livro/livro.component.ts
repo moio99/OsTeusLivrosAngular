@@ -20,11 +20,11 @@ import { SimpleObjet } from '../../../shared/models/outros.model';
 import { MultiDados, MultiSelecomDialogComponent } from '@componhentesComuns';
 import { MatNativeDateModule } from '@angular/material/core';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoDadosApi, Parametros, Resultado, datasUltimosAnos, Livro, Outros,
-  Relectura, RelecturaListado, RelecturasData, RelecturaData } from '@interfaces';
+import { datasUltimosAnos, Livro, Outros, Relectura, RelecturaListado, RelecturasData, RelecturaData } from '@interfaces';
 import { LivroRelecturasComponent } from './livro-relecturas.component';
 import { LivroFormPresenterComponent } from './livro-form-presenter.component';
 import { LivroFormStateService } from './livro-form-state.service';
+import { BaseListadoDadosApi, Parametros, Resultado } from '../../../shared/models/base-dados';
 
 export enum MultiGestom {
   autores = 1,

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoDadosApi } from '../../models/base-dados-api.interface';
+import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 
 export abstract class BaseApiService<T> {
 

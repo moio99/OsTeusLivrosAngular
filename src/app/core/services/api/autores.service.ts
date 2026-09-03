@@ -5,7 +5,8 @@ import { Injectable } from '@angular/core';
 import { Autor, AutorData } from '../../models/autor.interface';
 import { Observable, of } from 'rxjs';
 import { ListadoAutores, ListadoConcretoAutoresData } from '../../models/listado-autores.interface';
-import { BaseListadoDadosApi, BaseQuantidadesLivros } from '../../models/base-dados-api.interface';
+import { BaseQuantidadesLivros } from '../../models/quantidades.interface';
+import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 
 @Injectable({
   providedIn: 'root',

@@ -69,7 +69,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
       const currentId = id;
       return this.livrosService.getLivrosPorBiblioteca(currentId).pipe(
         first(),
-        map(v => this.dadosLivrosObtidos(v)),
+        map(v => this.dadosLivrosElementoObtidos(v)),
         catchError((e) => this.manexarErroSoporte(e, 'dos livros da biblioteca'))
       );
     }

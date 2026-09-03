@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Relectura } from '../../models/relectura.interface';
 import { Observable } from 'rxjs';
-import { Resultado } from '../../models/base-dados-api.interface';
+import { Resultado } from '../../../shared/models/base-dados';
 
 @Injectable({
   providedIn: 'root',

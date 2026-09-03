@@ -1,6 +1,5 @@
-import { FormControl } from "@angular/forms";
 import { ListadosAutoresTipos } from "../../shared/enums/estadisticasTipos";
-import { BaseListadoDadosApi } from "./base-dados-api.interface";
+import { BaseListadoDadosApi } from "../../shared/models/base-dados";
 
 export interface ParametrosAutor {
   id: number;

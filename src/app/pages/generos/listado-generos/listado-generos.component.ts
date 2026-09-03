@@ -2,12 +2,13 @@ import { Component, inject, signal } from '@angular/core';
 import { Routes } from '@angular/router';
 import { GeneroComponent } from '../genero/genero.component';
 import { CommonModule } from '@angular/common';
-import { BaseListadoDadosApi, Genero, ListadoGeneros } from '@interfaces';
+import { Genero, ListadoGeneros } from '@interfaces';
 import { GenerosService } from '@servizosApi';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { Observable } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
+import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 
 @Component({
   selector: 'omla-listado-generos',

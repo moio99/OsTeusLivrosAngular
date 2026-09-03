@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService, DadosPaginasService } from '@servizosFlow';
-import { BaseListadoDadosApi, BaseElemento } from '../../../models/base-dados-api.interface';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { of } from 'rxjs';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
+import { BaseElemento, BaseListadoDadosApi } from '../../../../shared/models/base-dados';
 
 @Component({
   template: ''
@@ -22,7 +22,7 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
   // é para poder acceder a this.formState.atualizarFromBiblioteca
   protected abstract aplicarDatosAoFormulario(datos: TElemento): void;
 
-  protected dadosLivrosObtidos(data: object): ListadoLivros[] {
+  protected dadosLivrosElementoObtidos(data: object): ListadoLivros[] {
     let resultados: ListadoLivros[];
     const dados = <BaseListadoDadosApi<ListadoLivros>>data;
     if (dados != null) {
@@ -31,15 +31,6 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
       resultados = [];
     }
     return resultados
-  }
-
-  protected manexarErroSoporte(e: any, complemntoMensagem: string) {
-    console.error(e);
-    this.layoutService.amosarInfo({
-      tipo: InformacomPeTipo.Erro,
-      mensagem: `Nom se puiderom obter os dados ${complemntoMensagem}.`
-    });
-    return of([]);
   }
 
   protected dadosObtidos(data: object): TElemento | undefined {
@@ -55,6 +46,15 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
       resultados = undefined;
     }
     return resultados
+  }
+
+  protected manexarErroSoporte(e: any, complemntoMensagem: string) {
+    console.error(e);
+    this.layoutService.amosarInfo({
+      tipo: InformacomPeTipo.Erro,
+      mensagem: `Nom se puiderom obter os dados ${complemntoMensagem}.`
+    });
+    return of([]);
   }
 
   protected gestionarRetroceso(data: object, elemento: TElemento) {

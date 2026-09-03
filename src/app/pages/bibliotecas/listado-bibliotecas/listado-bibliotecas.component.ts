@@ -1,12 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { Routes } from '@angular/router';
-import { BaseListadoDadosApi, Biblioteca, ListadoBibliotecas } from '@interfaces';
+import { Biblioteca, ListadoBibliotecas } from '@interfaces';
 import { BibliotecasService } from '@servizosApi';
 import { CommonModule } from '@angular/common';
 import { BibliotecaComponent } from '../biblioteca/biblioteca.component';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoComponent } from '@componhentesComuns';
 import { Observable } from 'rxjs';
+import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 
 @Component({
   selector: 'omla-listado-bibliotecas',

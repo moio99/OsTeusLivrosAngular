@@ -1,11 +1,11 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService } from '@servizosFlow';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { BaseListadoDadosApi } from '@interfaces';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { BaseListadoDadosApi } from '../../../../shared/models/base-dados';
 
 @Component({
   template: '' // Componente abstracto, nom precisa template

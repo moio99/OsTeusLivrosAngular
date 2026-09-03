@@ -1,4 +1,5 @@
-import { BaseComLivros, BaseListadoDadosApi, BaseListado } from "./base-dados-api.interface";
+import { BaseListadoDadosApi, BaseListado } from "../../shared/models/base-dados";
+import { BaseComLivros } from "./quantidades.interface";
 
 export interface ListadoColeconsData extends BaseListadoDadosApi<ListadoColecons> {
 }

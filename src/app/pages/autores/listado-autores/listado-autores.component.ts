@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { first, map, Observable } from 'rxjs';
-import { ListadoAutores, ParametrosAutor, BaseListadoDadosApi } from '@interfaces';
+import { ListadoAutores, ParametrosAutor } from '@interfaces';
 import { AutoresService, OutrosService } from '@servizosApi';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { InformacomPeTipo, ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { environment, environments } from '../../../../environments/environment';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 
 @Component({
   selector: 'omla-listado-autores',

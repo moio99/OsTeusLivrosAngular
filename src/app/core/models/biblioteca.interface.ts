@@ -1,5 +1,4 @@
-import { FormControl } from "@angular/forms";
-import { BaseElemento } from "./base-dados-api.interface";
+import { BaseElemento } from "../../shared/models/base-dados";
 
 export interface Biblioteca extends BaseElemento {
   endereco: string,

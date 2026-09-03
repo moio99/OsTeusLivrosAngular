@@ -1,5 +1,5 @@
 import { FormControl } from "@angular/forms";
-import { BaseElemento } from "./base-dados-api.interface";
+import { BaseElemento } from "../../shared/models/base-dados";
 
 export interface Colecom extends BaseElemento {
   isbn: string | null,

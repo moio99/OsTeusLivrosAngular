@@ -3,7 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, concatMap, EMPTY, first, map, of, tap } from 'rxjs';
-import { Autor, AutorData, ListadoLivros, BaseListadoDadosApi } from '@interfaces';
+import { Autor, AutorData, ListadoLivros } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
 import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
@@ -18,6 +18,7 @@ import { AutorFormPresenterComponent } from './autor-form-presenter.component';
 import { AutorFormStateService } from './autor-form-state.service';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
+import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 
 @Component({
   selector: 'omla-autor',

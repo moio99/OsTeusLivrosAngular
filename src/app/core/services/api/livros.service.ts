@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Livro } from '../../models/livro.interface';
 import { Observable, of } from 'rxjs';
 import { ListadoLivros } from '../../models/listado-livros.interface';
-import { BaseListadoDadosApi, Resultado } from '../../models/base-dados-api.interface';
+import { BaseListadoDadosApi, Resultado } from '../../../shared/models/base-dados';
 
 @Injectable({
   providedIn: 'root',

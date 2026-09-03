@@ -7,11 +7,11 @@ import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
 import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 import { FormGroup } from '@angular/forms';
-import { BaseListadoDadosApi, BaseElemento, ParametrosId } from '../../../models/base-dados-api.interface';
 import { BaseApiService } from '@servizosApi';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { Genero } from '../../../models/genero.interface';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
+import { BaseElemento, ParametrosId, BaseListadoDadosApi } from '../../../../shared/models/base-dados';
 
 @Component({
   template: ''
@@ -180,7 +180,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
       : this.servicoElemento.update(elemento);
 
     serviceCall.pipe(first()).subscribe({
-      next: (v: any) => this.handleSaveSuccess(v, elemento),
+      next: (v) => this.handleSaveSuccess(v, elemento),
       error: (e: unknown) => this.handleSaveError(e),
       complete: () => this.handleSaveComplete()
     });

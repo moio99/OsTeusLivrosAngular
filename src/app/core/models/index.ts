@@ -1,6 +1,6 @@
 
 export * from './autor.interface';
-export * from './base-dados-api.interface';
+export * from './quantidades.interface';
 export * from './biblioteca.interface';
 export * from './colecom.interface';
 export * from './editorial.interface';
