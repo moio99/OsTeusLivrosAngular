@@ -29,7 +29,6 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   filtroPaisOuNacionalidade = signal<string>('');
   tipoOrdeacom = signal<string>(this.nomeAlfabetico);
   inverso = signal<boolean>(false);
-  listadoDadosOrdenados = signal<ListadoAutores[]>([]);
 
   private outrosService = inject(OutrosService);
   private autoresService = inject(AutoresService);
@@ -50,26 +49,29 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       ? 'por nacionalidade' : 'por país';
   });
 
-  // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
-  protected definirChamadaApi(): Observable<BaseListadoDadosApi<ListadoAutores>> {
+  listadoDadosOrdenados = computed(() => {
+    // Cada vez que o recurso mude (cheguen datos da API ou cambio o criterio de ordenaçom), o computed execútase
+    const respostaApi = this.listadoResource.value();
+    if (!respostaApi?.data) return [];
 
-    const parametros = this.parametrosBusqueda();
-
-    // Se há parámetros válidos, filtro
-    if (parametros && parametros.id !== undefined) {
-      return this.autoresService.getListadoAutoresFiltrados(parametros.id, parametros.tipo);
+    if (this.tipoOrdeacom() === this.nomeAlfabetico) {
+      return [...respostaApi.data].sort((a, b) =>
+        new Ordeacom().ordear(a.nome, b.nome, this.inverso())
+      );
+    } else if (this.tipoOrdeacom() === this.numeroLivros) {
+      return [...respostaApi.data].sort((a, b) =>
+        new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso(), false)
+      );
+    } else // if (this.tipoOrdeacom() === this.numeroLivrosLidos) {
+      return [...respostaApi.data].sort((a, b) =>
+        new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso(), false)
+      );
     }
-
-    return this.autoresService.getListadoAutores();
-  }
-
-  // Pasamos a funçom para guardar na caché sen erros de tipos
-  protected guardarNaCache(dados: BaseListadoDadosApi<ListadoAutores>): void {
-    this.autoresService.setListadoAutores(dados);
-  }
+  );
 
   // EFECTO: Encárgase ÚNICAMENTE de actualizar o título cando cambian os parámetros
   // Angular xestiona este ciclo de vida sen romper a pureza do recurso
+  // Poderia mete-lo no constructor e funcionaria igual
   trackTituloEffect = effect(() => {
     const parametros = this.parametrosBusqueda();
 
@@ -101,7 +103,6 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
 
     effect(() => {
       if (this.listadoResource.hasValue()) {
-        this.listadoDadosOrdenados.set(this.listadoResource.value().data);
         if (this.listadoDados().length === 0) {
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'
@@ -113,6 +114,24 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
         }
       }
     });
+  }
+
+  // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
+  protected definirChamadaApi(): Observable<BaseListadoDadosApi<ListadoAutores>> {
+
+    const parametros = this.parametrosBusqueda();
+
+    // Se há parámetros válidos, filtro
+    if (parametros && parametros.id !== undefined) {
+      return this.autoresService.getListadoAutoresFiltrados(parametros.id, parametros.tipo);
+    }
+
+    return this.autoresService.getListadoAutores();
+  }
+
+  // Pasamos a funçom para guardar na caché sen erros de tipos
+  protected guardarNaCache(dados: BaseListadoDadosApi<ListadoAutores>): void {
+    this.autoresService.setListadoAutores(dados);
   }
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
@@ -129,34 +148,16 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   ordeAlfabetico() {
     this.inverso.update((v) => (this.tipoOrdeacom() === this.nomeAlfabetico) ? !v : false);
     this.tipoOrdeacom.set(this.nomeAlfabetico);
-
-    this.listadoDadosOrdenados.update(elementos => {
-      return [...elementos].sort((a, b) =>
-        new Ordeacom().ordear(a.nome, b.nome, this.inverso())
-      );
-    });
   }
 
   ordeNumeroLivros() {
     this.inverso.update((v) => (this.tipoOrdeacom() === this.numeroLivros) ? !v : false);
     this.tipoOrdeacom.set(this.numeroLivros);
-
-    this.listadoDadosOrdenados.update(elementos => {
-      return [...elementos].sort((a, b) =>
-          new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso(), false)
-      );
-    });
   }
 
   ordeNumeroLivrosLidos() {
     this.inverso.update((v) => (this.tipoOrdeacom() === this.numeroLivrosLidos) ? !v : false);
     this.tipoOrdeacom.set(this.numeroLivrosLidos);
-
-    this.listadoDadosOrdenados.update(elementos => {
-      return [...elementos].sort((a, b) =>
-          new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso(), false)
-      );
-    });
   }
 }
 
