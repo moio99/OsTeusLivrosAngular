@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
+import { BaseListadoDadosApi, ResultadoMeta } from '../../../shared/models/base-dados';
 
 export abstract class BaseApiService<T> {
 
@@ -49,14 +49,14 @@ export abstract class BaseApiService<T> {
     return this.http.get<BaseListadoDadosApi<T>>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}PorNome?nome=${nome}`);
   }
 
-  create(item: T): Observable<T> {
+  create(item: T): Observable<ResultadoMeta> {
     console.debug('engadindo');
-    return this.http.post<T>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}`, item);
+    return this.http.post<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}`, item);
   }
 
-  update(item: T): Observable<T> {
+  update(item: T): Observable<ResultadoMeta> {
     console.debug(item);
-    return this.http.put<T>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}`, item);
+    return this.http.put<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}`, item);
   }
 
   borrar(id: string): Observable<void> {

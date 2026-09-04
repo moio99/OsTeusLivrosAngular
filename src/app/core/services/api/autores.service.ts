@@ -6,7 +6,7 @@ import { Autor, AutorData } from '../../models/autor.interface';
 import { Observable, of } from 'rxjs';
 import { ListadoAutores, ListadoConcretoAutoresData } from '../../models/listado-autores.interface';
 import { BaseQuantidadesLivros } from '../../models/quantidades.interface';
-import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
+import { BaseListadoDadosApi, ResultadoMeta } from '../../../shared/models/base-dados';
 
 @Injectable({
   providedIn: 'root',
@@ -87,9 +87,9 @@ export class AutoresService {
     return this.http.get<BaseListadoDadosApi<ListadoAutores>>(`${environment.apiUrl}${this.rotaIntermedia}/AutoresFiltrados`, { params });
   }
 
-  getAutor(id: string): Observable<BaseQuantidadesLivros> {
+  getAutor(id: string): Observable<BaseListadoDadosApi<Autor>> {
     const params = new HttpParams().set('id', id);
-    return this.http.get<BaseQuantidadesLivros>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, { params });
+    return this.http.get<BaseListadoDadosApi<Autor>>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, { params });
   }
 
   getAutorPorNome(nome: string): Observable<AutorData<Autor>> {
@@ -97,14 +97,14 @@ export class AutoresService {
     return this.http.get<AutorData<Autor>>(`${environment.apiUrl}${this.rotaIntermedia}/AutorPorNome`, { params });
   }
 
-  postAutor(autor: Autor): Observable<Autor> {
+  postAutor(autor: Autor): Observable<ResultadoMeta> {
     console.debug('engadindo autor...');
-    return this.http.post<Autor>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, autor);
+    return this.http.post<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, autor);
   }
 
-  putAutor(autor: Autor): Observable<Autor> {
+  putAutor(autor: Autor): Observable<ResultadoMeta> {
     console.debug(autor);
-    return this.http.put<Autor>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, autor);
+    return this.http.put<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, autor);
   }
 
   borrarAutor(id: number) {

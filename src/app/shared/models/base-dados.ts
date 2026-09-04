@@ -11,7 +11,7 @@ export interface BaseListadoDadosApi<T> {
   data: T[];
   meta: any;
 }
-// Chamalo:   const listado: BaseListadoDadosApi<ListadoLivros>;
+// Para chama-lo:   const listado: BaseListadoDadosApi<ListadoLivros>;
 
 export interface BaseElemento {
   id: number;
@@ -25,4 +25,12 @@ export interface BaseListado {
 
 export interface Resultado {
   idResult: string
+}
+
+export interface ResultadoNumber {
+  idResult: number
+}
+
+export interface ResultadoMeta extends ResultadoNumber {
+  meta: ParametrosId
 }

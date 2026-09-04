@@ -1,12 +1,12 @@
 import { Component, signal, inject, effect, computed } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { catchError, concatMap, EMPTY, first, map, of, tap } from 'rxjs';
-import { Autor, AutorData, ListadoLivros } from '@interfaces';
+import { Autor, ListadoLivros } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
-import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
+import { UsuarioAppService } from '@servizosFlow';
 import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Nacionalidade, SimpleObjet, Pais } from '../../../shared/models/outros.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,7 +18,7 @@ import { AutorFormPresenterComponent } from './autor-form-presenter.component';
 import { AutorFormStateService } from './autor-form-state.service';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
-import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
+import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
 
 @Component({
   selector: 'omla-autor',
@@ -29,17 +29,13 @@ import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
   styleUrls: ['./autor.component.scss'],
   providers: [AutorFormStateService]
 })
-export class AutorComponent {
+export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
 
   private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private location = inject(Location);
-  private layoutService = inject(LayoutService);
   private usuarioAppService = inject(UsuarioAppService);
   private outrosService = inject(OutrosService);
   private autoresService = inject(AutoresService);
   private livrosService = inject(LivrosService);
-  private dadosPaginasService = inject(DadosPaginasService);
 
   private readonly formState = inject(AutorFormStateService);
 
@@ -90,7 +86,7 @@ export class AutorComponent {
       const currentId = id;
       return this.livrosService.getLivrosPorAutor(currentId).pipe(
         first(),
-        map(v => this.dadosLivrosObtidos(v)),
+        map(v => this.dadosLivrosElementoObtidos(v)),
         catchError((e) => this.manexarErroSoporte(e, 'dos livros do autor'))
       );
     }
@@ -106,7 +102,7 @@ export class AutorComponent {
 
       return this.autoresService.getAutor(currentId).pipe(
         first(),
-        map(v => this.dadosAutorObtidos(v)),
+        map(v => this.dadosObtidos(v)),
         catchError((e) => {
           this.manexarErroSoporte(e, 'do autor');
           return of(null); })
@@ -115,6 +111,7 @@ export class AutorComponent {
   });
 
   constructor() {
+    super();
 
     // Sincroniza as nacionalidades co FormState cando carguen
     effect(() => {
@@ -172,41 +169,6 @@ export class AutorComponent {
     }));
   }
 
-  private manexarErroSoporte(e: any, complemntoMensagem: string) {
-    console.error(e);
-    this.layoutService.amosarInfo({
-      tipo: InformacomPeTipo.Erro,
-      mensagem: `Nom se puiderom obter os dados ${complemntoMensagem}.`
-    });
-    return of([]);
-  }
-
-  private dadosAutorObtidos(data: object): Autor | undefined {
-    let resultados: Autor | undefined;
-    const dados = data as AutorData<Autor>;
-    if (dados.data != null && dados.data.length > 0) {
-      resultados = dados.data[0];
-      if (resultados) {
-        this.dadosDoAutor = resultados;
-      }
-    }
-    else{
-      resultados = undefined;
-    }
-    return resultados
-  }
-
-  private dadosLivrosObtidos(data: object): ListadoLivros[] {
-    let resultados: ListadoLivros[];
-    const dados = <BaseListadoDadosApi<ListadoLivros>>data;
-    if (dados != null) {
-      resultados = dados.data;
-    } else {
-      resultados = [];
-    }
-    return resultados
-  }
-
   onSubmit(event: SubmitEvent) {
     if (this.formState.autorForm().invalid()) return;
 
@@ -261,36 +223,8 @@ export class AutorComponent {
     });
   }
 
-  private gestionarRetroceso(data: object, autor: Autor) {
-    const dados = <BaseListadoDadosApi<ListadoLivros>>data;
-    if (dados) {
-      autor.id = dados.meta.id;
-      this.dadosDoAutor = autor;
-      let novoDado = this.dadosPaginasService.getNovoDadoLivro();
-      if (novoDado) {
-        novoDado.elemento = autor;
-        this.layoutService.amosarInfo(undefined);
-        this.location.back();
-      }
-    }
-  }
-
-  onCancelar() {
-    this.dadosPaginasService.setNovoDadoLivro(undefined);
-    this.layoutService.amosarInfo(undefined);
-    this.location.back();
-  }
-
-  isString(value: any): boolean {
-    return typeof value === 'string' || value instanceof String;
-  }
-
-  onIrPagina(rota: string, id: string): void{
-    //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
-    this.layoutService.amosarInfo(undefined);
-    this.router.navigateByUrl(rota + '?id=' + id);
-    // this.router.navigate([rota], {relativeTo: id});
-    // this.router.navigate([rota], {dadoQueVai: id});
+  protected override aplicarDatosAoFormulario(datos: Autor): void {
+    this.dadosDoAutor = datos;
+    // Nom fago isto para aguardar a que chegem os dados dos combos. this.formState.atualizarFromAutor(datos);
   }
 }
-

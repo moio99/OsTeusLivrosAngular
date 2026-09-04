@@ -11,7 +11,7 @@ import { BaseApiService } from '@servizosApi';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { Genero } from '../../../models/genero.interface';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
-import { BaseElemento, ParametrosId, BaseListadoDadosApi } from '../../../../shared/models/base-dados';
+import { BaseElemento, ParametrosId, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
 
 @Component({
   template: ''
@@ -211,8 +211,8 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     return (event.submitter as HTMLButtonElement)?.value === EstadosPagina.engadir;
   }
 
-  private handleSaveSuccess(data: any, elemento: TElemento) {
-    if (data.idResult > 0) {
+  private handleSaveSuccess(data: ResultadoMeta, elemento: TElemento) {
+    if (data?.idResult > 0) {
       if (this.eGenero(elemento)) {
         this.usuarioAppService.setGenero(elemento);
       }

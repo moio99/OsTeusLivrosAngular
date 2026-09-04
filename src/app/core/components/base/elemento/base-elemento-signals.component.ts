@@ -6,7 +6,7 @@ import { LayoutService, DadosPaginasService } from '@servizosFlow';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { of } from 'rxjs';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
-import { BaseElemento, BaseListadoDadosApi } from '../../../../shared/models/base-dados';
+import { BaseElemento, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
 
 @Component({
   template: ''
@@ -33,9 +33,8 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
     return resultados
   }
 
-  protected dadosObtidos(data: object): TElemento | undefined {
+  protected dadosObtidos(dados: BaseListadoDadosApi<TElemento>): TElemento | undefined {
     let resultados: TElemento | undefined;
-    const dados = data as BaseListadoDadosApi<TElemento>;
     if (dados.data != null && dados.data.length > 0) {
       resultados = dados.data[0];
       if (resultados) {
@@ -57,20 +56,24 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
     return of([]);
   }
 
-  protected gestionarRetroceso(data: object, elemento: TElemento) {
-      const dados = data as { meta: { id: number } };
-      if (dados) {
-        elemento.id = dados.meta.id;
-        const dadoModificado = this.dadosPaginasService.getNovoDadoLivro();
-        if (dadoModificado) {
-          const novoDado: SimpleObjet = { id: elemento.id, value: elemento.nome };
-          dadoModificado.elemento = novoDado;
-          this.dadosPaginasService.setNovoDadoLivro(dadoModificado);
-          this.layoutService.amosarInfo(undefined);
-          this.location.back();
-        }
+  /**
+   * Gestiona o resultado da acçom de guardado ou modifcaçom, e estabelece o novo dado para a pagina à que se retrocede
+   * @param data resultado da accom
+   * @param elemento elemento que se guardou ou modificou
+   */
+  protected gestionarRetroceso(data: ResultadoMeta, elemento: TElemento) {
+    if (data?.idResult > 0) {
+      elemento.id = data.idResult;
+      const dadoModificado = this.dadosPaginasService.getNovoDadoLivro();
+      if (dadoModificado) {
+        const novoDado: SimpleObjet = { id: elemento.id, value: elemento.nome };
+        dadoModificado.elemento = novoDado;
+        this.dadosPaginasService.setNovoDadoLivro(dadoModificado);
+        this.layoutService.amosarInfo(undefined);
+        this.location.back();
       }
     }
+  }
 
   onIrPagina(rota: string, id: string | number): void{
     //this.userService.setModuleData(moduleData);   // Os dados vam no serviço
