@@ -29,6 +29,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   filtroPaisOuNacionalidade = signal<string>('');
   tipoOrdeacom = signal<string>(this.nomeAlfabetico);
   inverso = signal<boolean>(false);
+  listadoDadosOrdenados = signal<ListadoAutores[]>([]);
 
   private outrosService = inject(OutrosService);
   private autoresService = inject(AutoresService);
@@ -100,16 +101,16 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
 
     effect(() => {
       if (this.listadoResource.hasValue()) {
-        // if (this.listadoResource.value()?.data.length === 0) {
+        this.listadoDadosOrdenados.set(this.listadoResource.value().data);
         if (this.listadoDados().length === 0) {
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'
           });
+        } else {
+          this.layoutService.amosarInfo({
+            tipo: InformacomPeTipo.Info, mensagem: this.listadoDados()?.length + ' registros obtidos'
+          });
         }
-        this.layoutService.amosarInfo({
-          // tipo: InformacomPeTipo.Info, mensagem: this.listadoResource.value()?.data.length + ' registros obtidos'
-          tipo: InformacomPeTipo.Info, mensagem: this.listadoDados()?.length + ' registros obtidos'
-        });
       }
     });
   }
@@ -129,16 +130,10 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     this.inverso.update((v) => (this.tipoOrdeacom() === this.nomeAlfabetico) ? !v : false);
     this.tipoOrdeacom.set(this.nomeAlfabetico);
 
-    // Actualizamos o valor interno do recurso modificando o array 'data'
-    this.listadoResource.value.update(respostaApi => {
-      if (!respostaApi) return respostaApi;
-
-      return {
-        ...respostaApi,
-        data: [...respostaApi.data].sort((a, b) =>
-          new Ordeacom().ordear(a.nome, b.nome, this.inverso())
-        )
-      };
+    this.listadoDadosOrdenados.update(elementos => {
+      return [...elementos].sort((a, b) =>
+        new Ordeacom().ordear(a.nome, b.nome, this.inverso())
+      );
     });
   }
 
@@ -146,16 +141,10 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     this.inverso.update((v) => (this.tipoOrdeacom() === this.numeroLivros) ? !v : false);
     this.tipoOrdeacom.set(this.numeroLivros);
 
-    // Actualizamos o valor interno do recurso modificando o array 'data'
-    this.listadoResource.value.update(respostaApi => {
-      if (!respostaApi) return respostaApi;
-
-      return {
-        ...respostaApi,
-        data: [...respostaApi.data].sort((a, b) =>
+    this.listadoDadosOrdenados.update(elementos => {
+      return [...elementos].sort((a, b) =>
           new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso(), false)
-        )
-      };
+      );
     });
   }
 
@@ -163,16 +152,10 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     this.inverso.update((v) => (this.tipoOrdeacom() === this.numeroLivrosLidos) ? !v : false);
     this.tipoOrdeacom.set(this.numeroLivrosLidos);
 
-    // Actualizamos o valor interno do recurso modificando o array 'data'
-    this.listadoResource.value.update(respostaApi => {
-      if (!respostaApi) return respostaApi;
-
-      return {
-        ...respostaApi,
-        data: [...respostaApi.data].sort((a, b) =>
+    this.listadoDadosOrdenados.update(elementos => {
+      return [...elementos].sort((a, b) =>
           new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso(), false)
-        )
-      };
+      );
     });
   }
 }
