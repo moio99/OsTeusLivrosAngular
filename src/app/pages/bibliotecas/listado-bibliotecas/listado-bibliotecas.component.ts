@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { Biblioteca, ListadoBibliotecas } from '@interfaces';
 import { BibliotecasService } from '@servizosApi';

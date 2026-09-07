@@ -1,6 +1,6 @@
 import { Service } from '@angular/core';
-import { Editorial } from '../../models/editorial.interface';
-import { BaseApiService } from './base-api.service';
+import { EstiloLiterario } from '../../core/models/estilos-literarios.interface';
+import { BaseApiService } from '../../core/services/api/base-api.service';
 
 // @Injectable({
 //   providedIn: 'root',
@@ -9,10 +9,10 @@ import { BaseApiService } from './base-api.service';
 // configúrase cunha propiedade simple: @Service({ autoProvided: false }) neste caso também há que meter:
 // providers: [EstadisticasService],
 @Service()
-export class EditoriaisService extends BaseApiService<Editorial> {
-  protected rotaIntermedia = '/Editoriais';
+export class EstilosLiterariosService extends BaseApiService<EstiloLiterario> {
+  protected rotaIntermedia = '/EstilosLiterarios';
 
   protected getEntityName(): string {
-    return 'Editorial';
+    return 'EstiloLiterario';
   }
 }

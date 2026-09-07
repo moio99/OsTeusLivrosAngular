@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoDadosApi, ResultadoMeta } from '../../../shared/models/base-dados';
+import { inject } from '@angular/core';
 
 export abstract class BaseApiService<T> {
 
@@ -15,7 +16,7 @@ export abstract class BaseApiService<T> {
   protected abstract rotaIntermedia: string;              	// De obrigada implementaçom na clase que a extende
   protected cacheData: BaseListadoDadosApi<T> | undefined = undefined;
 
-  constructor(protected http: HttpClient) {}
+  private http = inject(HttpClient);
 
   // Métodos comuns
   getListado(): Observable<T[]> {

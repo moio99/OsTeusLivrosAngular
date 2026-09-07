@@ -38,7 +38,7 @@ export enum MultiGestom {
     , MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule, LivroRelecturasComponent, LivroFormPresenterComponent ],
   templateUrl: './livro.component.html',
   styleUrls: ['./livro.component.scss'],
-  providers: [LivroFormStateService]    // para poder usar o servizo
+  providers: [RelecturasService, LivroFormStateService]    // LivroFormStateService para poder usar o servizo
 })
 export class LivroComponent implements OnInit {
 

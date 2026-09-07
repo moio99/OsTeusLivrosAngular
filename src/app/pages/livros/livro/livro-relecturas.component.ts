@@ -10,7 +10,7 @@ import { RelecturaListado } from '@interfaces';
 })
 export class LivroRelecturasComponent {
   relecturas = input<RelecturaListado[]>([]);
-  readonly temRelecturas = computed(() => this.relecturas.length > 0); // só se le umha vez (quando cambia dadosRelecturas) polo que evita a cpu habaliar a expreson cada vez que pinta ou que sucede um evento na página relacionado.
+  readonly temRelecturas = computed(() => this.relecturas().length > 0); // só se le umha vez (quando cambia dadosRelecturas) polo que evita a cpu habaliar a expreson cada vez que pinta ou que sucede um evento na página relacionado.
   amosar = input(true);
 
   editarRelectura = output<string>();

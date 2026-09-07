@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { EstadisticasComponent } from './estadisticas.component';
-import { EstadisticasService } from '../../../core/services/api/estadisticas.service';
+import { EstadisticasService } from './estadisticas.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
-import { GraficosService } from '../../../core/services/api/graficos.service';
+import { GraficosService } from './graficos.service';
 import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 
 describe('EstadisticasComponent', () => {

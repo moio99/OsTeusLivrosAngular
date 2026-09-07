@@ -1,19 +1,22 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { Relectura } from '../../models/relectura.interface';
+import { inject, Service } from '@angular/core';
+import { Relectura } from '@interfaces';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import { Resultado } from '../../../shared/models/base-dados';
 
-@Injectable({
-  providedIn: 'root',
-})
+// @Injectable({
+//   providedIn: 'root',
+// })
+// sustituido polo de abaixo, para limitalo ao ciclo de vida dun só compoñente),
+// configúrase cunha propiedade simple: @Service({ autoProvided: false }) neste caso também há que meter:
+// providers: [EstadisticasService],
+@Service({ autoProvided: false })
 export class RelecturasService {
 
   private rotaIntermedia = '/Relecturas';
 
-  constructor(private http: HttpClient) {
-  }
+  private http = inject(HttpClient);
 
   getRelectura(id: string) {
     console.log('relecturas id', id);

@@ -24,6 +24,7 @@ export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColeco
 
   private coleconsService = inject(ColeconsService);
 
+  // Para que BaseListadoComponent saiba de onde obter os dados
   // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
   protected definirChamadaApi(): Observable<BaseListadoDadosApi<Colecom>> {
     return this.coleconsService.getListadoCosLivros();

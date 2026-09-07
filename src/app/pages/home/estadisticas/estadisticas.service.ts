@@ -1,22 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { environment, environments } from '../../../../environments/environment';
 import { EstadisticasTipo } from '../../../shared/enums/estadisticasTipos';
-import { Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { of } from 'rxjs';
-import { Estadisticas } from '../../models/estadisticas.interface';
+import { Estadisticas } from '../../../core/models/estadisticas.interface';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 
-@Injectable({
-  providedIn: 'root',
-})
+// @Injectable({
+//   providedIn: 'root',
+// })
+// sustituido polo de abaixo, para limitalo ao ciclo de vida dun só compoñente),
+// configúrase cunha propiedade simple: @Service({ autoProvided: false }) neste caso também há que meter:
+// providers: [EstadisticasService],
+@Service({ autoProvided: false })
 export class EstadisticasService {
 
   private cacheEstadisticasDataIdioma: BaseListadoDadosApi<Estadisticas> | undefined = undefined;
   private cacheEstadisticasDataAno: BaseListadoDadosApi<Estadisticas> | undefined = undefined;
   private cacheEstadisticasDataGenero: BaseListadoDadosApi<Estadisticas> | undefined = undefined;
 
-  constructor(private http: HttpClient) {
-  }
+  private http = inject(HttpClient);
 
   /**
    * Accede à API para obter as Estadísticas dun tipo pasado.

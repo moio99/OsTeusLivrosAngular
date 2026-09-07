@@ -116,6 +116,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     });
   }
 
+  // Para que BaseListadoComponent saiba de onde obter os dados
   // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
   protected definirChamadaApi(): Observable<BaseListadoDadosApi<ListadoAutores>> {
 

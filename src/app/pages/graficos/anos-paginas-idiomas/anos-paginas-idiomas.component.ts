@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { Routes } from '@angular/router';
 import { ChartComponent, NgApexchartsModule} from "ng-apexcharts";
 import { Graficos } from '@interfaces';
@@ -54,9 +54,8 @@ export class AnosPaginasIdiomasComponent implements OnInit {
     }
   };
 
-  constructor(
-    private coresIdiomasService: CoresIdiomasService
-  ) { }
+
+  private coresIdiomasService = inject(CoresIdiomasService);
 
   ngOnInit(): void {
     this.coresIdiomas = this.coresIdiomasService.getCoresIdiomas();

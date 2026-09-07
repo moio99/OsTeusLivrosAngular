@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { first, map, tap } from 'rxjs/operators';
 import { GenerosService, LivrosService, OutrosService } from '@servizosApi';
@@ -42,12 +42,13 @@ export class ListadoLivrosComponent implements OnInit {
   parametros: ParametrosLivroListado = { tipo: EstadisticasTipo.Ano, id: '0' };
   coresIdiomas: { [key: string]: CoresIdioma } = {};
 
+  private coresIdiomasService = inject(CoresIdiomasService);
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private layoutService: LayoutService,
     private livrosService: LivrosService,
-    private coresIdiomasService: CoresIdiomasService,
     private generosService: GenerosService,
     private outrosService: OutrosService,
     private dadosPaginasService: DadosPaginasService) {

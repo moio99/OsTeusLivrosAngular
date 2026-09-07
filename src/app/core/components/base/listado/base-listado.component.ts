@@ -57,7 +57,7 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
     }
   });
 
-  // Fai um cast seguro "as unknown as T[]" para solucionar o conflito Colecom/ListadoColecons
+  // Fai um cast seguro "as unknown as T[]" para solucionar o conflito de tipos Colecom/ListadoColecons
   readonly listadoDados = computed<T[]>(() => {
     const respostaApi = this.listadoResource.value();
     return (respostaApi?.data ?? []) as unknown as T[];

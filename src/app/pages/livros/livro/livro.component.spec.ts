@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { OutrosService } from '../../../core/services/api/outros.service';
 import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
-import { RelecturasService } from '../../../core/services/api/relecturas.service';
+import { RelecturasService } from './relecturas.service';
 
 describe('LivroComponent', () => {
   let component: LivroComponent;

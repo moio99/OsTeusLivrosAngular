@@ -15,6 +15,7 @@ import { forkJoin } from 'rxjs';
   selector: 'omla-estadisticas',
   standalone: true,
   imports: [OrdeColunaComponent],
+  providers: [EstadisticasService, GraficosService],
   templateUrl: './estadisticas.component.html',
   styleUrls: ['./estadisticas.component.scss']
 })
@@ -48,12 +49,12 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
   private readonly outrosService = inject(OutrosService);
   private readonly graficosService = inject(GraficosService);
 
-  constructor() {
-    // effect(() => {
-    //   if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) return;
-    //   console.log('Cada vez que há umha mudança lánza-se isto ', this.anosSignal());
-    // });
-  }
+  // constructor() {
+  //   effect(() => {
+  //     if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) return;
+  //     console.log('Cada vez que há umha mudança lánza-se isto ', this.anosSignal());
+  //   });
+  // }
 
   ngOnInit(): void {
     this.layoutService.amosarInfo(undefined);

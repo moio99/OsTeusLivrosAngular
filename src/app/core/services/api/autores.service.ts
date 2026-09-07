@@ -1,16 +1,20 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment, environments } from '../../../../environments/environment';
 import { ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
-import { Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { Autor, AutorData } from '../../models/autor.interface';
 import { Observable, of } from 'rxjs';
 import { ListadoAutores, ListadoConcretoAutoresData } from '../../models/listado-autores.interface';
 import { BaseQuantidadesLivros } from '../../models/quantidades.interface';
 import { BaseListadoDadosApi, ResultadoMeta } from '../../../shared/models/base-dados';
 
-@Injectable({
-  providedIn: 'root',
-})
+// @Injectable({
+//   providedIn: 'root',
+// })
+// sustituido polo de abaixo, para limitalo ao ciclo de vida dun só compoñente),
+// configúrase cunha propiedade simple: @Service({ autoProvided: false }) neste caso também há que meter:
+// providers: [EstadisticasService],
+@Service()
 export class AutoresService {
 
   private rotaIntermedia = '/Autores';
@@ -18,8 +22,7 @@ export class AutoresService {
   private cacheListadoAutoresPorNacons: ListadoConcretoAutoresData | undefined = undefined;
   private cacheListadoAutoresPorPaises: ListadoConcretoAutoresData | undefined = undefined;
 
-  constructor(private http: HttpClient) {
-  }
+  private http = inject(HttpClient);
 
   /**
    * Quando nom estea em local guarda umha caché

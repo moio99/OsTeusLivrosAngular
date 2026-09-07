@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { environment, environments } from '../../../../environments/environment';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Livro } from '../../models/livro.interface';
 import { Observable, of } from 'rxjs';
 import { ListadoLivros } from '../../models/listado-livros.interface';
@@ -14,8 +14,7 @@ export class LivrosService {
   private rotaIntermedia = '/Livros';
   private cacheListadoLivrosData: BaseListadoDadosApi<ListadoLivros> | undefined = undefined;
 
-  constructor(private http: HttpClient) {
-  }
+  private http = inject(HttpClient);
 
   /**
    * Quando nom estea em local guarda umha caché

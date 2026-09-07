@@ -1,19 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { environment, environments } from '../../../../environments/environment';
-import { Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { of } from 'rxjs';
-import { GraficosData } from '../../models/graficos.interface';
+import { GraficosData } from '../../../core/models/graficos.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+// @Injectable({
+//   providedIn: 'root',
+// })
+// sustituido polo de abaixo, para limitalo ao ciclo de vida dun só compoñente),
+// configúrase cunha propiedade simple: @Service({ autoProvided: false }) neste caso também há que meter:
+// providers: [EstadisticasService],
+@Service({ autoProvided: false })
 export class GraficosService {
 
   private rotaIntermedia = '/Graficos';
   private cacheGraficosPaginasPorIdiomaEAno: GraficosData | undefined = undefined;
 
-  constructor(private http: HttpClient) {
-  }
+  private http = inject(HttpClient);
 
   /**
    * Accede à API para obter os dados dos gráficos, neste caso por Idioma e por Ano.

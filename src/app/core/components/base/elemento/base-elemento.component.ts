@@ -128,7 +128,6 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
         next: (v: BaseListadoDadosApi<ListadoLivros>) => {
           console.log(`completada a obtençom dos livros da entidade ${id}`, v);
           this.livrosDoElemento.set(v?.data ?? []);
-          console.log('>>>>>>>>>>>>>>>>>>>>>>>', this.livrosDoElemento());
         },
         error: (e: unknown) => {
           console.error(e);
