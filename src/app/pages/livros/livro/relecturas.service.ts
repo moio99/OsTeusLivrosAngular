@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { Relectura } from '@interfaces';
+import { Relectura, RelecturaData } from '@interfaces';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Resultado } from '../../../shared/models/base-dados';
@@ -18,9 +18,9 @@ export class RelecturasService {
 
   private http = inject(HttpClient);
 
-  getRelectura(id: string) {
+  getRelectura(id: string): Observable<RelecturaData> {
     console.log('relecturas id', id);
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+    return this.http.get<RelecturaData>(environment.apiUrl + this.rotaIntermedia
       + '/Relectura?id=' + id);
   }
 

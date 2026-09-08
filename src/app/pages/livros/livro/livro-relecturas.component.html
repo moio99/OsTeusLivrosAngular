@@ -22,9 +22,11 @@
           </td>
           <td (click)="editarRelectura.emit(entrada.id)">{{entrada.diasLeitura}}</td>
           <td (click)="editarRelectura.emit(entrada.id)">{{entrada.pontuacom}}</td>
-          <td (click)="borrar.emit(entrada)">
-            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
-          </td>
+          @if (!soVisualizar) {
+            <td (click)="borrar.emit(entrada)">
+              <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+            </td>
+          }
         </tr>
       }
     </table>

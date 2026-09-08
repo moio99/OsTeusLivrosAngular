@@ -84,11 +84,12 @@ export class LivroComponent implements OnInit {
           if (parametros.id === '0')
             this.modo.set(EstadosPagina.engadir);
           else {
-            id = parametros.id;
-            this.idRelectura = parametros.idRelectura === undefined ? '0' : parametros.idRelectura;
             this.modo.set(EstadosPagina.guardar);
           }
-        }
+        } else
+          this.modo.set(EstadosPagina.soVisualizar);
+        id = parametros.id;
+        this.idRelectura = parametros.idRelectura === undefined ? '0' : parametros.idRelectura;
         this.obterOutrosDados(parametros.id);
       }
     );
@@ -300,27 +301,27 @@ export class LivroComponent implements OnInit {
       .getRelectura(idRelectura)
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.amosarDadosRelectura(v),
+        next: (v) => this.amosarDadosRelectura(v),
         error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a relectura.'}); },
           complete: () => console.debug('completada a obtençom da relectura do livro')
     });
   }
 
-  private amosarDadosRelectura(dadosChegando: object) {
-    const dados = <RelecturaData>dadosChegando;
-    if (dados && dados.data.length > 0) {
-      this.dadosDaRelectura = <Relectura>dados.data[0];
-
-      if (this.dadosDaRelectura) {
-        this.onGestomNovaRelectura();
-        this.modo.set(EstadosPagina.guardar);
-        this.setDadosRelecturaForm();
-      }
-      else
-        this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados da relectura', duracom: 10});
-    }
+  private amosarDadosRelectura(dados: RelecturaData) {
+  if (!dados || !dados.data || dados.data.length === 0) {
+    this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados da relectura', duracom: 10 });
+    return;
   }
+
+  this.dadosDaRelectura = dados.data[0];
+  this.onGestomNovaRelectura();
+  if (this.disabledFormulario)
+    this.modo.set(EstadosPagina.soVisualizar);
+  else
+    this.modo.set(EstadosPagina.guardar);
+  this.setDadosRelecturaForm();
+}
 
   /**
    * Estavelece os dados no formulario
