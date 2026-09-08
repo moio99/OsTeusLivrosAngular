@@ -5,10 +5,10 @@ import { BaseApiService } from '../../core/services/api/base-api.service';
 // @Injectable({
 //   providedIn: 'root',
 // })
-// sustituido polo de abaixo, para limitalo ao ciclo de vida dun só compoñente),
+// sustituido polo de abaixo, para limitalo ao ciclo de vida de certos compontes),
 // configúrase cunha propiedade simple: @Service({ autoProvided: false }) neste caso também há que meter:
 // providers: [EstadisticasService],
-@Service()
+@Service({ autoProvided: false })
 export class EstilosLiterariosService extends BaseApiService<EstiloLiterario> {
   protected rotaIntermedia = '/EstilosLiterarios';
 

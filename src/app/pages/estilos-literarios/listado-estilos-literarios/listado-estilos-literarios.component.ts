@@ -14,6 +14,7 @@ import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
   selector: 'omla-listado-estilos-literarios',
   standalone: true,
   imports: [CommonModule, OrdeColunaComponent],
+  providers: [EstilosLiterariosService],
   templateUrl: './listado-estilos-literarios.component.html',
   styleUrls: ['./listado-estilos-literarios.component.scss']
 })

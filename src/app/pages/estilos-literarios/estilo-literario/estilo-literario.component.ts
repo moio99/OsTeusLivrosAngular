@@ -14,7 +14,7 @@ import { EstiloLiterario } from '@interfaces';
     /* , MatDatepickerModule, MatNativeDateModule */],
   templateUrl: './estilo-literario.component.html',
   styleUrls: ['./estilo-literario.component.scss'],
-  providers: [ {provide: 'OMeuServizoToeken', useClass: EstilosLiterariosService} ]
+  providers: [ {provide: 'OMeuServizoToeken', useClass: EstilosLiterariosService}, EstilosLiterariosService ]
 })
 export class EstiloLiterarioComponent extends BaseElementoComponent<EstiloLiterario, EstilosLiterariosService> {
 

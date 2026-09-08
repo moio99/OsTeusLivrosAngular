@@ -5,7 +5,7 @@ import { Service } from '@angular/core';
 // @Injectable({
 //   providedIn: 'root',
 // })
-// sustituido polo de abaixo, para limitalo ao ciclo de vida dun só compoñente),
+// sustituido polo de abaixo, para limitalo ao ciclo de vida de certos compontes
 // configúrase cunha propiedade simple: @Service({ autoProvided: false }) neste caso também há que meter:
 // providers: [EstadisticasService],
 @Service()
