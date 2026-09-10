@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
+import { Outros } from '@interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,7 @@ export class OutrosService {
     return this.http.get(environment.apiUrl + this.rotaIntermedia + '/IdiomaNome?id=' + id);
   }
 
-  getTodo() {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia + '/Todo');
+  getTodo(): Observable<Outros> {
+    return this.http.get<Outros>(environment.apiUrl + this.rotaIntermedia + '/Todo');
   }
 }
