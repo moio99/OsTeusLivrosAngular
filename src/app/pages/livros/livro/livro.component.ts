@@ -1,5 +1,5 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
-import { first } from 'rxjs';
+import { Component, OnInit, signal, inject, effect } from '@angular/core';
+import { catchError, EMPTY, first, of, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LivrosService, OutrosService, RelecturasService } from '@servizosApi';
 import { CommonModule } from '@angular/common';
@@ -25,6 +25,7 @@ import { LivroRelecturasComponent } from './livro-relecturas.component';
 import { LivroFormPresenterComponent } from './livro-form-presenter.component';
 import { LivroFormStateService } from './livro-form-state.service';
 import { BaseListadoDadosApi, Parametros, Resultado } from '../../../shared/models/base-dados';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 export enum MultiGestom {
   autores = 1,
@@ -74,6 +75,51 @@ export class LivroComponent implements OnInit {
   private dadosPaginasService = inject(DadosPaginasService);
   livroForm = this.formState.livroForm;
 
+  dadosApiResource = rxResource({
+    stream: () => {
+      const dados = this.usuarioAppService.getDadosOutros();
+      if (dados) {
+        return of(dados);
+      }
+
+      return this.outrosService.getTodo().pipe(
+        first(),
+        tap(v => this.usuarioAppService.setDadosOutros(v)),
+        catchError((e) => {
+          this.layoutService.amosarInfo({
+            tipo: InformacomPeTipo.Erro, mensagem: 'Non se puideron obter os datos', duracom: 10
+          });
+          return EMPTY;
+        })
+      );
+    }
+  });
+
+
+
+  constructor() {
+    // Effect para procesar os datos cando chegan
+    effect(() => {
+      const dados = this.dadosApiResource.value();
+
+      if (!dados?.bibliotecas?.data) {
+        // Limpar as signals
+        this.formState.todasBibliotecasCombo.set([]);
+        this.formState.bibliotecasFiltradas.set([]);
+        return;
+      }
+
+      // Procesar os datos (actualiza as signals internamente)
+      this.formState.processarDadosCombo2(
+        dados.bibliotecas.data,
+        this.livroForm.controls.idBiblioteca
+      );
+
+      // Non necesitas asignar nada porque o servizo xa actualizou as signals
+    });
+    // ✅ Sen allowSignalWrites
+  }
+
   ngOnInit(): void {
     let id = '0';
     this.title.setTitle(this.title.getTitle() + ' Engadir');
@@ -119,14 +165,14 @@ export class LivroComponent implements OnInit {
 
   private dadosOutrosObtidos(dados: Outros | null) {
     if (dados) {
-      if (dados.bibliotecas?.data) {
-        const result = this.formState.processarDadosCombo(
-          dados.bibliotecas.data,
-          this.livroForm.controls.idBiblioteca
-        );
-        this.formState.todasBibliotecasCombo = result.combo;
-        this.formState.bibliotecas = result.signalFiltrado;
-      }
+      // if (dados.bibliotecas?.data) {
+      //   const result = this.formState.processarDadosCombo(
+      //     dados.bibliotecas.data,
+      //     this.livroForm.controls.idBiblioteca
+      //   );
+      //   this.formState.todasBibliotecasCombo = result.combo;
+      //   this.formState.bibliotecas = result.signalFiltrado;
+      // }
 
       if (dados.editoriais?.data) {
         const result = this.formState.processarDadosCombo(
@@ -247,17 +293,6 @@ export class LivroComponent implements OnInit {
     return diasPasados > 0 ? diasPasados : 0;
   }
 
-  /**
-  * Filtra os valores do despregável.
-  * @param value Filtro inserido polo usuario.
-  * @param listadoSimple Listado cos elementos que se vai filtrar.
-  */
-  private filtroCombo(value: string, listadoSimple: SimpleObjet[]): SimpleObjet[] {
-    const filterValue = value?.toLowerCase();
-
-    return listadoSimple.filter(option => option.value.toLowerCase().includes(filterValue));
-  }
-
   //#region Relecturas
   onGestomNovaRelectura() {
     // Obtem os dados do livro para guardalos mentres se crea a relectura, e assim poder voltar a eles
@@ -309,43 +344,19 @@ export class LivroComponent implements OnInit {
   }
 
   private amosarDadosRelectura(dados: RelecturaData) {
-  if (!dados || !dados.data || dados.data.length === 0) {
-    this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados da relectura', duracom: 10 });
-    return;
-  }
-
-  this.dadosDaRelectura = dados.data[0];
-  this.onGestomNovaRelectura();
-  if (this.disabledFormulario)
-    this.modo.set(EstadosPagina.soVisualizar);
-  else
-    this.modo.set(EstadosPagina.guardar);
-  this.setDadosRelecturaForm();
-}
-
-  /**
-   * Estavelece os dados no formulario
-   */
-  private setDadosRelecturaForm() {
-    if (this.dadosDaRelectura) {
-      this.livroForm.controls.titulo.setValue(this.dadosDaRelectura.titulo);
-      this.formState.setCombo(this.dadosDaRelectura.idBiblioteca, this.formState.todasBibliotecasCombo, this.livroForm.controls.idBiblioteca);
-      this.formState.setCombo(this.dadosDaRelectura.idEditorial, this.formState.todasEditoriaisCombo, this.livroForm.controls.idEditorial);
-      this.livroForm.controls.isbn.setValue(this.dadosDaRelectura.isbn);
-      this.livroForm.controls.paginas.setValue(this.dadosDaRelectura.paginas);
-      this.livroForm.controls.paginasLidas.setValue(this.dadosDaRelectura.paginasLidas);
-      this.livroForm.controls.lido.setValue(this.dadosDaRelectura.lido);
-      this.livroForm.controls.diasLeitura.setValue(this.dadosDaRelectura.diasLeitura);
-      this.formState.setData(this.dadosDaRelectura.dataFimLeitura, this.livroForm.controls.dataFimLeiturata);
-      this.formState.setCombo(this.dadosDaRelectura.idIdioma, this.formState.todosIdiomasCombo, this.livroForm.controls.idioma);
-      this.livroForm.controls.numeroEdicom.setValue(this.dadosDaRelectura.numeroEdicom);
-      this.livroForm.controls.electronico.setValue(this.dadosDaRelectura.electronico);
-      this.formState.setData(this.dadosDaRelectura.dataEdicom, this.livroForm.controls.dataEdicom);
-      this.livroForm.controls.somSerie.setValue(this.dadosDaRelectura.somSerie);
-      this.formState.setCombo(this.dadosDaRelectura.idSerie, this.formState.todasSeriesLivrosCombo, this.livroForm.controls.serie);
-      this.livroForm.controls.comentario.setValue(this.dadosDaRelectura.comentario);
-      this.pontuacomEstrelas = this.dadosDaRelectura.pontuacom;
+    if (!dados || !dados.data || dados.data.length === 0) {
+      this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados da relectura', duracom: 10 });
+      return;
     }
+
+    this.dadosDaRelectura = dados.data[0];
+    this.onGestomNovaRelectura();
+    if (this.disabledFormulario)
+      this.modo.set(EstadosPagina.soVisualizar);
+    else
+      this.modo.set(EstadosPagina.guardar);
+    this.formState.bibliotecasFiltradas.set(this.formState.todasBibliotecasCombo());
+    this.formState.setDadosRelecturaForm(this.dadosDaRelectura);
   }
 
   guardarRelectura(event: any) {
@@ -388,7 +399,8 @@ export class LivroComponent implements OnInit {
     let dFL = dateConvert.getData(this.livroForm.controls.dataFimLeiturata.value);
     let dE = dateConvert.getData(this.livroForm.controls.dataEdicom.value);
 
-    let biblioteca = this.formState.todasBibliotecasCombo.find(option => option.value === this.livroForm.controls.idBiblioteca.value);
+    // let biblioteca = this.formState.todasBibliotecasCombo.find(option => option.value === this.livroForm.controls.idBiblioteca.value);
+    let biblioteca = this.formState.bibliotecasFiltradas().find(option => option.value === this.livroForm.controls.idBiblioteca.value);
     let editorial = this.formState.todasEditoriaisCombo.find(option => option.value === this.livroForm.controls.idEditorial.value);
     let colecom = this.formState.todasColeconsCombo.find(option => option.value === this.livroForm.controls.idColecom.value);
     let idioma = this.formState.todosIdiomasCombo.find(option => option.value === this.livroForm.controls.idioma.value);
@@ -511,7 +523,7 @@ export class LivroComponent implements OnInit {
           break
         }
         case DadosComplentarios.Biblioteca: {
-          this.actualizarCombo(this.formState.todasBibliotecasCombo, novoDado.elemento);
+          this.actualizarCombo(this.formState.bibliotecasFiltradas(), novoDado.elemento);
           this.dadosDoLivro.idBiblioteca = novoDado.elemento.id;
           break
         }
@@ -642,7 +654,7 @@ export class LivroComponent implements OnInit {
     let elemento: SimpleObjet | undefined;
     switch (tipoDado) {
       case DadosComplentarios.Biblioteca: {
-          elemento = this.formState.todasBibliotecasCombo.find(option => option.value === this.livroForm.controls.idBiblioteca.value);
+          elemento = this.formState.bibliotecasFiltradas().find(option => option.value === this.livroForm.controls.idBiblioteca.value);
           break;
       }
       case DadosComplentarios.Editorial: {

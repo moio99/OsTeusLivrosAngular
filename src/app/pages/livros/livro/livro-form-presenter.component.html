@@ -52,7 +52,7 @@
         <input type="text" placeholder="Biblioteca:" aria-label="Number" matInput
           [formControl]="livroForm().controls.idBiblioteca" [matAutocomplete]="idBiblio" />
         <mat-autocomplete #idBiblio="matAutocomplete">
-          @for (option of formState.bibliotecas(); track option.id) {
+          @for (option of formState.bibliotecasFiltradas(); track option.id) {
             <mat-option [value]="option.value">{{ option.value }}</mat-option>
           }
         </mat-autocomplete>
