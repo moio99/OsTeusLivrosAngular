@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject, effect, computed } from '@angular/core';
+import { Component, OnInit, signal, inject, effect } from '@angular/core';
 import { catchError, EMPTY, first, of, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LivrosService, OutrosService, RelecturasService } from '@servizosApi';
@@ -476,6 +476,9 @@ export class LivroComponent implements OnInit {
     }
   }
 
+  /**
+   * Meto os dados nos controis do html
+   */
   private setDadosLivroForm() {
     if (this.dadosDoLivro) {
       this.generosLivro.set(this.dadosDoLivro.generos.map(value => ({ id: value.id, value: value.nome })));
@@ -493,16 +496,19 @@ export class LivroComponent implements OnInit {
   private setDadoEngadido() {
     let novoDado = this.dadosPaginasService.getNovoDadoLivro();
     if (novoDado && novoDado.elemento && this.dadosDoLivro) {
+      const dadoLivro = { id: novoDado.elemento.id, nome: novoDado.elemento.value };
       switch (novoDado.tipo) {
         case DadosComplentarios.Autor: {
           const indexAtopado = this.dadosDoLivro.autores.findIndex(a => a.nome === 'Anónimo');
           if (indexAtopado >= 0)
             this.dadosDoLivro.autores.splice(indexAtopado, 1);
-          this.dadosDoLivro.autores.push(novoDado.elemento);
+          this.dadosDoLivro.autores.push(dadoLivro);
+          this.autoresLivro.set(this.dadosDoLivro.autores.map(value => ({ id: value.id, value: value.nome })));
           break
         }
         case DadosComplentarios.Genero: {
-          this.dadosDoLivro.generos.push(novoDado.elemento);
+          this.dadosDoLivro.generos.push(dadoLivro);
+          this.generosLivro.set(this.dadosDoLivro.generos.map(value => ({ id: value.id, value: value.nome })));
           break
         }
         case DadosComplentarios.Biblioteca: {
@@ -527,9 +533,14 @@ export class LivroComponent implements OnInit {
         }
       }
     }
-    this.dadosPaginasService.setNovoDadoLivro(undefined);
+    this.dadosPaginasService.setNovoDadoLivro(undefined);   // Como já está procesado, limpo
   }
 
+  /**
+   * Se nom está no listado do combo o engade e ordena.
+   * @param elementosCombo total de elementos
+   * @param novoElemento elemento a engadir
+   */
   private actualizarCombo(elementosCombo: SimpleObjet[], novoElemento: SimpleObjet): void {
     const index = elementosCombo.findIndex(item => item.id === novoElemento.id);
 
