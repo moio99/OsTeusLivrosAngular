@@ -9,6 +9,8 @@ import { Editorial, EstiloLiterario, ListadoEstilosLiterarios } from '@interface
 import { Observable } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
+import { UsuarioAppService } from '@servizosFlow';
+import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
 
 @Component({
   selector: 'omla-listado-estilos-literarios',
@@ -30,6 +32,7 @@ export class ListadoEstilosLiterariosComponent extends BaseListadoComponent<List
   tipoListado = '';
 
   private estilosLiterariosService = inject(EstilosLiterariosService);
+  private usuarioAppService = inject(UsuarioAppService);
 
   // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
   protected definirChamadaApi(): Observable<BaseListadoDadosApi<EstiloLiterario>> {
@@ -48,7 +51,8 @@ export class ListadoEstilosLiterariosComponent extends BaseListadoComponent<List
       nome,
       'o Estilo Literario',
       'Estilo Literario borrado correctamente',
-      (id) => this.estilosLiterariosService.borrar(id)
+      (id) => this.estilosLiterariosService.borrar(id),
+      (id) => this.usuarioAppService.removerElementoDadosOutros(id, DadosComplentarios.Genero)
     );
   }
 

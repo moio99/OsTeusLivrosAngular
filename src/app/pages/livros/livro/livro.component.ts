@@ -483,8 +483,8 @@ export class LivroComponent implements OnInit {
     if (this.dadosDoLivro) {
       this.generosLivro.set(this.dadosDoLivro.generos.map(value => ({ id: value.id, value: value.nome })));
       this.autoresLivro.set(this.dadosDoLivro.autores.map(value => ({ id: value.id, value: value.nome })));
-      this.formState.setDadosLivroForm(this.dadosDoLivro);
-      this.pontuacomEstrelas = this.dadosDoLivro.pontuacom;
+      this.formState.setDadosLivroForm(this.dadosDoLivro);        // Formulario
+      this.pontuacomEstrelas = this.dadosDoLivro.pontuacom;       // Estrelas
     }
     else
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados do livro', duracom: 10});

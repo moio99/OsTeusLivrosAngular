@@ -8,6 +8,8 @@ import { environment, environments } from '../../../../environments/environment'
 import { BaseListadoComponent } from '@componhentesComuns';
 import { Observable } from 'rxjs';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
+import { UsuarioAppService } from '@servizosFlow';
+import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
 
 @Component({
   selector: 'omla-listado-bibliotecas',
@@ -23,6 +25,7 @@ export class ListadoBibliotecasComponent extends BaseListadoComponent<ListadoBib
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
 
   private bibliotecasService = inject(BibliotecasService);
+  private usuarioAppService = inject(UsuarioAppService);
 
   // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
   protected definirChamadaApi(): Observable<BaseListadoDadosApi<Biblioteca>> {
@@ -41,7 +44,8 @@ export class ListadoBibliotecasComponent extends BaseListadoComponent<ListadoBib
       nome,
       'a biblioteca',
       'Biblioteca borrada correctamente',
-      (id) => this.bibliotecasService.borrar(id)
+      (id) => this.bibliotecasService.borrar(id),
+      (id) => this.usuarioAppService.removerElementoDadosOutros(id, DadosComplentarios.Genero)
     );
   }
 }

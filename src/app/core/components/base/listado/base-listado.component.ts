@@ -69,7 +69,8 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
     nomeDoElemento: string,
     nomeComArtigo: string,
     successMessage: string = 'Elemento borrado correctamente',
-    serviceDelete: (id: string) => Observable<unknown>
+    serviceDelete: (id: string) => Observable<unknown>,
+    borrarElementoDadosOutros?: (id: string) => void     // Se se passa este parámetro, borrar o elemento da caché (outros)
   ): void {
 
     if (livros === 0) {
@@ -79,7 +80,9 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
           .subscribe({
             next: () => {
               this.listadoResource.reload();
-
+              if (borrarElementoDadosOutros) {
+                borrarElementoDadosOutros(id);
+              }
               this.layoutService.amosarInfo({
                 tipo: InformacomPeTipo.Sucesso,
                 mensagem: successMessage

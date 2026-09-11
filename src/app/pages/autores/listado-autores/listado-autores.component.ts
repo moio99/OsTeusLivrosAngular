@@ -4,13 +4,14 @@ import { first, map, Observable } from 'rxjs';
 import { ListadoAutores, ParametrosAutor } from '@interfaces';
 import { AutoresService, OutrosService } from '@servizosApi';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
-import { InformacomPeTipo, ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
+import { DadosComplentarios, InformacomPeTipo, ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
 import { AutorComponent } from '../autor/autor.component';
 import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { environment, environments } from '../../../../environments/environment';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
+import { UsuarioAppService } from '@servizosFlow';
 
 @Component({
   selector: 'omla-listado-autores',
@@ -33,6 +34,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   private outrosService = inject(OutrosService);
   private autoresService = inject(AutoresService);
   private route = inject(ActivatedRoute);
+  private usuarioAppService = inject(UsuarioAppService);
 
   parametrosBusqueda = toSignal(
     this.route.queryParams.pipe(
@@ -142,7 +144,8 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       nome,
       'o autor',
       'Autor borrado correctamente',
-      (id) => this.autoresService.borrarAutor(+id)
+      (id) => this.autoresService.borrarAutor(+id),
+      (id) => this.usuarioAppService.removerElementoDadosOutros(id, DadosComplentarios.Genero)
     );
   }
 

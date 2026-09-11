@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Outros } from "../../models/livro.interface";
 import { Genero } from "../../models/genero.interface";
+import { DadosComplentarios } from "../../../shared/enums/estadisticasTipos";
 
 @Injectable({
   providedIn: 'root',
@@ -65,15 +66,54 @@ export class UsuarioAppService {
   }
 
   /**
-   * Elimina un rexistro dun xénero do usuario.
-   * Non modifica o estado do usuario se o xénero non se atopa entre os rexistros do usuario.
-   * @param id Identificador do xénero a eliminar
+   * Elimina um registro dum autor, genero, biblioteca etc. do usuario.
+   * @param id Identificador do autor, genero, biblioteca etc. a eliminar
+   * @param tipo Tipo de datos a eliminar
    */
-  removerGenero(id: string) {
-    if (!this.dadosOutros?.generos?.data || isNaN(+id)) return;
+  removerElementoDadosOutros(id: string, tipo: DadosComplentarios) {
+    switch (tipo) {
+      case DadosComplentarios.Autor:
+        if (!this.dadosOutros?.autores?.data) return;
 
-    this.dadosOutros.generos.data = this.dadosOutros.generos.data.filter(
-      ele => ele.id !== +id
-    );
+        this.dadosOutros.autores.data = this.dadosOutros.autores.data.filter(
+          ele => ele.id !== +id
+        );
+        break;
+      case DadosComplentarios.Genero:
+        if (!this.dadosOutros?.generos?.data) return;
+
+        this.dadosOutros.generos.data = this.dadosOutros.generos.data.filter(
+          ele => ele.id !== +id
+        );
+        break;
+      case DadosComplentarios.Biblioteca:
+        if (!this.dadosOutros?.bibliotecas?.data) return;
+
+        this.dadosOutros.bibliotecas.data = this.dadosOutros.bibliotecas.data.filter(
+          ele => ele.id !== +id
+        );
+        break;
+      case DadosComplentarios.Editorial:
+        if (!this.dadosOutros?.editoriais?.data) return;
+
+        this.dadosOutros.editoriais.data = this.dadosOutros.editoriais.data.filter(
+          ele => ele.id !== +id
+        );
+        break;
+      case DadosComplentarios.Colecom:
+        if (!this.dadosOutros?.colecons?.data) return;
+
+        this.dadosOutros.colecons.data = this.dadosOutros.colecons.data.filter(
+          ele => ele.id !== +id
+        );
+        break;
+      case DadosComplentarios.EstiloLiterario:
+        if (!this.dadosOutros?.estilos?.data) return;
+
+        this.dadosOutros.estilos.data = this.dadosOutros.estilos.data.filter(
+          ele => ele.id !== +id
+        );
+        break;
+    }
   }
 }
