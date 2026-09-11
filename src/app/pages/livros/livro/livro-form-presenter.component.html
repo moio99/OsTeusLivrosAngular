@@ -75,7 +75,7 @@
         <input type="text" placeholder="Editorial:" aria-label="Number" matInput
           [formControl]="livroForm().controls.idEditorial" [matAutocomplete]="idedito" />
         <mat-autocomplete #idedito="matAutocomplete">
-          @for (option of formState.editoriais(); track option.id) {
+          @for (option of formState.editoriaisFiltradas(); track option.id) {
             <mat-option [value]="option.value">{{ option.value }}</mat-option>
           }
         </mat-autocomplete>

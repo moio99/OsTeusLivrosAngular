@@ -1,4 +1,4 @@
-import { DestroyRef, Injectable, Injector, Signal, inject, signal } from '@angular/core';
+import { DestroyRef, Injectable, Injector, Signal, computed, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { map, merge, startWith } from 'rxjs';
 import { Livro, LivroForm, ObjetoSimpleIdNome, Relectura } from '@interfaces';
@@ -12,6 +12,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 export class LivroFormStateService {
   private readonly fb = inject(FormBuilder);
   private readonly injector = inject(Injector);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly converterAData = new ConverterAData();
 
   readonly rex1000000 = '([1-1][0-0]{6,6}|[0-9]{1,6})';
@@ -47,14 +48,34 @@ export class LivroFormStateService {
     comentario: new FormControl({ value: '', disabled: this.disabledFormulario }, { validators: [Validators.maxLength(50000)] })
   }, { validators: [ValidaconsAMedida.comprobarDuasDatas('dataCriacom', 'dataEdicom')] });
 
-  // todasBibliotecasCombo: SimpleObjet[] = [];
-  bibliotecas: Signal<SimpleObjet[]> = signal([]);
-
   todasBibliotecasCombo = signal<SimpleObjet[]>([]);
-  bibliotecasFiltradas = signal<SimpleObjet[]>([]);
+  textoBibliotecaFiltro = toSignal(
+    this.livroForm.controls.idBiblioteca.valueChanges.pipe(
+      startWith(this.livroForm.controls.idBiblioteca.value ?? '')
+    ),
+    { initialValue: '' }
+  );
+  bibliotecasFiltradas = computed(() => {
+    const texto = this.textoBibliotecaFiltro()?.toLowerCase();
+    const todas = this.todasBibliotecasCombo();
+    if (!texto) return todas;
+    return todas.filter(item => item.value.toLowerCase().includes(texto));
+  });
 
-  todasEditoriaisCombo: SimpleObjet[] = [];
-  editoriais: Signal<SimpleObjet[]> = signal([]);
+  todasEditoriaisCombo = signal<SimpleObjet[]>([]);
+  textoEditorialFiltro = toSignal(
+    this.livroForm.controls.idEditorial.valueChanges.pipe(
+      startWith(this.livroForm.controls.idEditorial.value ?? '')
+    ),
+    { initialValue: '' }
+  );
+  editoriaisFiltradas = computed(() => {
+    const texto = this.textoEditorialFiltro()?.toLowerCase();
+    const todas = this.todasEditoriaisCombo();
+    if (!texto) return todas;
+    return todas.filter(item => item.value.toLowerCase().includes(texto));
+  });
+
   todasColeconsCombo: SimpleObjet[] = [];
   colecons: Signal<SimpleObjet[]> = signal([]);
   todosEstilosCombo: SimpleObjet[] = [];
@@ -64,6 +85,7 @@ export class LivroFormStateService {
   idiomasOriginais: Signal<SimpleObjet[]> = signal([]);
   todasSeriesLivrosCombo: SimpleObjet[] = [];
   seriesLivro: Signal<SimpleObjet[]> = signal([]);
+  todasBibliotecasCombo2: any;
 
   processarDadosCombo(
     data: ObjetoSimpleIdNome[] | undefined | null,
@@ -78,7 +100,8 @@ export class LivroFormStateService {
     const fluxoFiltrado$ = merge(
       control.valueChanges.pipe(startWith(control.value || ''))
     ).pipe(
-      map(() => this.filtroCombo(control.value || '', elementosOrdenados))
+      map(() => this.filtroCombo(control.value || '', elementosOrdenados)),
+      takeUntilDestroyed(this.destroyRef)
     );
 
     // Retorno a lista estática e o Signal reactivo cos dados já filtrados
@@ -92,55 +115,11 @@ export class LivroFormStateService {
     };
   }
 
-    private destroyRef = inject(DestroyRef);
-
-  processarDadosCombo2(
-    dados: ObjetoSimpleIdNome[] | undefined | null,
-    controlCombo: AbstractControl,
-    ordenar = true
-  ) {
-    const elementosOrdenados = (dados ?? [])
-      .map(item => ({ id: item.id, value: item.nome }))
-      .sort((a, b) => ordenar ? a.value.localeCompare(b.value) : 0);
-
-    // Actualiza as signals directamente
-    this.todasBibliotecasCombo.set(elementosOrdenados);
-
-    // Crea o fluxo filtrado
-    const fluxoFiltrado$ = controlCombo.valueChanges.pipe(
-      startWith(controlCombo.value || ''),           // Cando inda nom se meteu nada, emite un primerio valor para que nom apareza a lista valeira
-      map(() => this.filtroCombo(controlCombo.value || '', elementosOrdenados)),
-      takeUntilDestroyed(this.destroyRef)
-    );
-
-    // Subscríbete e actualiza a signal filtrada
-    // quando se sae de processarDadosCombo a subscripçom de controlCombo.valueChanges seguirá viva, fluxoFiltrado$ desaparece
-    fluxoFiltrado$.subscribe(resultado => {
-      this.bibliotecasFiltradas.set(resultado);   // Estos som os elementos que vam a aparecer no combo
-    });
-
-    // As linhas de de accima co fluxoFiltrado$ seriam equivalentes ao de abaixo:
-    // controlCombo.valueChanges.pipe(
-    //   startWith(controlCombo.value || ''),           // Cando inda nom se meteu nada, emite un primerio valor para que nom apareza a lista valeira
-    //   map(() => this.filtroCombo(controlCombo.value || '', elementosOrdenados))
-    // ).subscribe(resultado => {
-    //   this.bibliotecasFiltradas.set(resultado);   // Estos som os elementos que vam a aparecer no combo
-    // });
-
-    // Se fose necesario podería retornar isto:
-    // return {
-    //   combo: elementosOrdenados,
-    //   signalFiltrado: this.bibliotecasFiltradas
-    // };
-  }
-
   setDadosLivroForm(livro: Livro): void {
     this.livroForm.controls.titulo.setValue(livro.titulo);
     this.livroForm.controls.tituloOriginal.setValue(livro.tituloOriginal);
-    // this.setCombo(livro.idBiblioteca, this.todasBibliotecasCombo, this.livroForm.controls.idBiblioteca);
-    console.log('livro.idBiblioteca', livro.idBiblioteca, 'bibliotecasFiltradas', this.bibliotecasFiltradas());
-    this.setCombo(livro.idBiblioteca, this.bibliotecasFiltradas(), this.livroForm.controls.idBiblioteca);
-    this.setCombo(livro.idEditorial, this.todasEditoriaisCombo, this.livroForm.controls.idEditorial);
+    this.setCombo(livro.idBiblioteca, this.todasBibliotecasCombo(), this.livroForm.controls.idBiblioteca);
+    this.setCombo(livro.idEditorial, this.todasEditoriaisCombo(), this.livroForm.controls.idEditorial);
     this.setCombo(livro.idColecom, this.todasColeconsCombo, this.livroForm.controls.idColecom);
     this.setCombo(livro.idEstilo, this.todosEstilosCombo, this.livroForm.controls.idEstilo);
     this.livroForm.controls.isbn.setValue(livro.isbn);
@@ -168,9 +147,8 @@ export class LivroFormStateService {
   setDadosRelecturaForm(relectura: Relectura): void {
     if (relectura) {
       this.livroForm.controls.titulo.setValue(relectura.titulo);
-      // this.setCombo(relectura.idBiblioteca, this.todasBibliotecasCombo, this.livroForm.controls.idBiblioteca);
-      this.setCombo(relectura.idBiblioteca, this.bibliotecasFiltradas(), this.livroForm.controls.idBiblioteca);
-      this.setCombo(relectura.idEditorial, this.todasEditoriaisCombo, this.livroForm.controls.idEditorial);
+      this.setCombo(relectura.idBiblioteca, this.todasBibliotecasCombo(), this.livroForm.controls.idBiblioteca);
+      this.setCombo(relectura.idEditorial, this.todasEditoriaisCombo(), this.livroForm.controls.idEditorial);
       this.livroForm.controls.isbn.setValue(relectura.isbn);
       this.livroForm.controls.paginas.setValue(relectura.paginas);
       this.livroForm.controls.paginasLidas.setValue(relectura.paginasLidas);
@@ -194,8 +172,8 @@ export class LivroFormStateService {
     const dFL = this.converterAData.getData(this.livroForm.controls.dataFimLeiturata.value);
     const dC = this.converterAData.getData(this.livroForm.controls.dataCriacom.value);
     const dE = this.converterAData.getData(this.livroForm.controls.dataEdicom.value);
-    // const biblioteca = this.findByValue(this.todasBibliotecasCombo, this.livroForm.controls.idBiblioteca.value);
-    const editorial = this.findByValue(this.todasEditoriaisCombo, this.livroForm.controls.idEditorial.value);
+    const biblioteca = this.findByValue(this.todasBibliotecasCombo(), this.livroForm.controls.idBiblioteca.value);
+    const editorial = this.findByValue(this.todasEditoriaisCombo(), this.livroForm.controls.idEditorial.value);
     const colecom = this.findByValue(this.todasColeconsCombo, this.livroForm.controls.idColecom.value);
     const estilo = this.findByValue(this.todosEstilosCombo, this.livroForm.controls.idEstilo.value);
     const idioma = this.findByValue(this.todosIdiomasCombo, this.livroForm.controls.idioma.value);
@@ -203,11 +181,10 @@ export class LivroFormStateService {
     const serie = this.findByValue(this.todasSeriesLivrosCombo, this.livroForm.controls.serie.value);
     const dateText = (date: { year: number; month: number; day: number }) => date.year > 0 ? `${date.year}-${date.month}-${date.day}` : '';
 
-    return {
+    const livro: Livro = {
       id, titulo: String(this.livroForm.controls.titulo.value), autores: autoresModelo,
       tituloOriginal: this.optionalText('tituloOriginal'), generos: generosModelo,
-      // idBiblioteca: biblioteca?.id ?? null, idEditorial: editorial?.id ?? null, idColecom: colecom?.id ?? null, idEstilo: estilo?.id ?? null,
-      idBiblioteca: null, idEditorial: editorial?.id ?? null, idColecom: colecom?.id ?? null, idEstilo: estilo?.id ?? null,
+      idBiblioteca: biblioteca?.id ?? null, idEditorial: editorial?.id ?? null, idColecom: colecom?.id ?? null, idEstilo: estilo?.id ?? null,
       isbn: this.optionalText('isbn'), paginas: this.optionalText('paginas'), paginasLidas: this.optionalText('paginasLidas'),
       lido: this.livroForm.controls.lido.value ?? false, diasLeitura: this.optionalText('diasLeitura'), dataFimLeitura: dateText(dFL),
       idIdioma: idioma?.id ?? null, idIdiomaOriginal: idiomaOriginal?.id ?? null, dataCriacom: dateText(dC), dataEdicom: dateText(dE),
@@ -216,6 +193,7 @@ export class LivroFormStateService {
       premios: this.optionalText('premios'), descricom: this.optionalText('descricom'), comentario: this.optionalText('comentario'), pontuacom,
       biblioteca: '', editorial: '', colecom: '', estilo: ''
     };
+    return livro;
   }
 
   setCombo(id: number | null, combo: SimpleObjet[], control: FormControl): void {
@@ -233,7 +211,6 @@ export class LivroFormStateService {
   * @param elementosOrdenados Listado cos elementos que se vai filtrar.
   */
   private filtroCombo(texto: string, elementosOrdenados: SimpleObjet[]): SimpleObjet[] {
-    console.log('texto', texto, 'elementosOrdenados', elementosOrdenados.length);
     if (!texto || texto === '') {
       return elementosOrdenados;
     }

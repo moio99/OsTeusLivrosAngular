@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject, effect } from '@angular/core';
+import { Component, OnInit, signal, inject, effect, computed } from '@angular/core';
 import { catchError, EMPTY, first, of, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LivrosService, OutrosService, RelecturasService } from '@servizosApi';
@@ -75,6 +75,7 @@ export class LivroComponent implements OnInit {
   private dadosPaginasService = inject(DadosPaginasService);
   livroForm = this.formState.livroForm;
 
+
   dadosApiResource = rxResource({
     stream: () => {
       const dados = this.usuarioAppService.getDadosOutros();
@@ -95,29 +96,30 @@ export class LivroComponent implements OnInit {
     }
   });
 
-
-
   constructor() {
-    // Effect para procesar os datos cando chegan
     effect(() => {
       const dados = this.dadosApiResource.value();
+      if (!dados?.bibliotecas?.data) return;
 
-      if (!dados?.bibliotecas?.data) {
-        // Limpar as signals
-        this.formState.todasBibliotecasCombo.set([]);
-        this.formState.bibliotecasFiltradas.set([]);
-        return;
-      }
-
-      // Procesar os datos (actualiza as signals internamente)
-      this.formState.processarDadosCombo2(
-        dados.bibliotecas.data,
-        this.livroForm.controls.idBiblioteca
+      // Só actualiza a lista completa
+      this.formState.todasBibliotecasCombo.set(
+        dados.bibliotecas.data
+          .map(item => ({ id: item.id, value: item.nome }))
+          .sort((a, b) => a.value.localeCompare(b.value))
       );
-
-      // Non necesitas asignar nada porque o servizo xa actualizou as signals
     });
-    // ✅ Sen allowSignalWrites
+
+    effect(() => {
+      const dados = this.dadosApiResource.value();
+      if (!dados?.editoriais?.data) return;
+
+      // Só actualiza a lista completa
+      this.formState.todasEditoriaisCombo.set(
+        dados.editoriais.data
+          .map(item => ({ id: item.id, value: item.nome }))
+          .sort((a, b) => a.value.localeCompare(b.value))
+      );
+    });
   }
 
   ngOnInit(): void {
@@ -165,23 +167,6 @@ export class LivroComponent implements OnInit {
 
   private dadosOutrosObtidos(dados: Outros | null) {
     if (dados) {
-      // if (dados.bibliotecas?.data) {
-      //   const result = this.formState.processarDadosCombo(
-      //     dados.bibliotecas.data,
-      //     this.livroForm.controls.idBiblioteca
-      //   );
-      //   this.formState.todasBibliotecasCombo = result.combo;
-      //   this.formState.bibliotecas = result.signalFiltrado;
-      // }
-
-      if (dados.editoriais?.data) {
-        const result = this.formState.processarDadosCombo(
-          dados.editoriais.data,
-          this.livroForm.controls.idEditorial
-        );
-        this.formState.todasEditoriaisCombo = result.combo;
-        this.formState.editoriais = result.signalFiltrado;
-      }
 
       if (dados.colecons?.data) {
         const result = this.formState.processarDadosCombo(
@@ -355,7 +340,6 @@ export class LivroComponent implements OnInit {
       this.modo.set(EstadosPagina.soVisualizar);
     else
       this.modo.set(EstadosPagina.guardar);
-    this.formState.bibliotecasFiltradas.set(this.formState.todasBibliotecasCombo());
     this.formState.setDadosRelecturaForm(this.dadosDaRelectura);
   }
 
@@ -399,9 +383,8 @@ export class LivroComponent implements OnInit {
     let dFL = dateConvert.getData(this.livroForm.controls.dataFimLeiturata.value);
     let dE = dateConvert.getData(this.livroForm.controls.dataEdicom.value);
 
-    // let biblioteca = this.formState.todasBibliotecasCombo.find(option => option.value === this.livroForm.controls.idBiblioteca.value);
-    let biblioteca = this.formState.bibliotecasFiltradas().find(option => option.value === this.livroForm.controls.idBiblioteca.value);
-    let editorial = this.formState.todasEditoriaisCombo.find(option => option.value === this.livroForm.controls.idEditorial.value);
+    let biblioteca = this.formState.todasBibliotecasCombo().find(option => option.value === this.livroForm.controls.idBiblioteca.value);
+    let editorial = this.formState.todasEditoriaisCombo().find(option => option.value === this.livroForm.controls.idEditorial.value);
     let colecom = this.formState.todasColeconsCombo.find(option => option.value === this.livroForm.controls.idColecom.value);
     let idioma = this.formState.todosIdiomasCombo.find(option => option.value === this.livroForm.controls.idioma.value);
     let serie = this.formState.todasSeriesLivrosCombo.find(option => option.value === this.livroForm.controls.serie.value);
@@ -523,12 +506,12 @@ export class LivroComponent implements OnInit {
           break
         }
         case DadosComplentarios.Biblioteca: {
-          this.actualizarCombo(this.formState.bibliotecasFiltradas(), novoDado.elemento);
+          this.actualizarCombo(this.formState.todasBibliotecasCombo(), novoDado.elemento);
           this.dadosDoLivro.idBiblioteca = novoDado.elemento.id;
           break
         }
         case DadosComplentarios.Editorial: {
-          this.actualizarCombo(this.formState.todasEditoriaisCombo, novoDado.elemento);
+          this.actualizarCombo(this.formState.todasEditoriaisCombo(), novoDado.elemento);
           this.dadosDoLivro.idEditorial = novoDado.elemento.id;
           break
         }
@@ -654,11 +637,11 @@ export class LivroComponent implements OnInit {
     let elemento: SimpleObjet | undefined;
     switch (tipoDado) {
       case DadosComplentarios.Biblioteca: {
-          elemento = this.formState.bibliotecasFiltradas().find(option => option.value === this.livroForm.controls.idBiblioteca.value);
+          elemento = this.formState.todasBibliotecasCombo().find(option => option.value === this.livroForm.controls.idBiblioteca.value);
           break;
       }
       case DadosComplentarios.Editorial: {
-          elemento = this.formState.todasEditoriaisCombo.find(option => option.value === this.livroForm.controls.idEditorial.value);
+          elemento = this.formState.todasEditoriaisCombo().find(option => option.value === this.livroForm.controls.idEditorial.value);
           break;
       }
       case DadosComplentarios.Colecom: {
