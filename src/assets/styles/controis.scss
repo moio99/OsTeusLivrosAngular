@@ -19,6 +19,12 @@ button:hover {
   color: #FFFFFF;
   box-shadow:0 0 6px #93eb95;
 }
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  border-color: #aaaaaa;
+}
 
 .botom-novo-resgistro {
   background: url(../images/novo.png) no-repeat;
