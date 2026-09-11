@@ -8,6 +8,7 @@ import { ValidaconsAMedida } from '../../../shared/validators/custom-validators'
 @Injectable()
 export class BibliotecaFormStateService {
 
+  public chamandoAPI = signal<boolean>(false);
   private readonly converterAData = new ConverterAData();
   private readonly disabledFormulario =
     environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
@@ -18,7 +18,7 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
   private location = inject(Location);
   private dadosPaginasService = inject(DadosPaginasService);
 
-  // No componhente que herda de BaseElementoSignalsComponent, tem que se implementar esta funçom
+  // No componhente que herda de BaseElementoSignalsComponent, tem que se que implementar esta funçom
   // é para poder acceder a this.formState.atualizarFromBiblioteca
   protected abstract aplicarDatosAoFormulario(datos: TElemento): void;
 

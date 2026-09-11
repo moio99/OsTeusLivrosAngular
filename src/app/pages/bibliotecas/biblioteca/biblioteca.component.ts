@@ -78,7 +78,8 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
   onSubmit(): void {
     if (this.formState.bibliotecaForm().invalid()) return;
 
-    const nomeValue = String(this.formState.bibliotecaForm.nome().value()).trim();
+    this.formState.chamandoAPI.set(true);
+    const nomeValue = String(this.formState.bibliotecaForm.nome()).trim();
     const elemento = this.formState.criarObjetoBiblioteca(this.idBiblioteca());
 
     // Encadeamos de xeito reactivo as dúas peticións do servidor
@@ -95,6 +96,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
             tipo: InformacomPeTipo.Aviso,
             mensagem: `O nome ${nomeValue} já existe na base de dados`
           });
+          this.formState.chamandoAPI.set(false);
           // Cortamos o fluxo devolvendo un observable baleiro sen facer o gardado
           return EMPTY;
         }
@@ -102,25 +104,27 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
         if ( this.modo() === EstadosPagina.engadir) {
           return this.bibliotecasService.create(elemento).pipe(
             first(),
-            tap((v) => {
-              this.gestionarRetroceso(v, elemento);
+            tap(() => {
               this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca engadida.' });
             })
           );
         } else {
           return this.bibliotecasService.update(elemento).pipe(
             first(),
-            tap((v) => {
-              this.gestionarRetroceso(v, elemento);
+            tap(() => {
               this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca guardada.' });
             })
           );
         }
       })
     ).subscribe({
-      next: (v: any) => this.gestionarRetroceso(v, elemento),
+      next: (v: any) => {
+        this.formState.chamandoAPI.set(false);
+        this.gestionarRetroceso(v, elemento);
+      },
       error: (e: unknown) => {
         console.error(e);
+        this.formState.chamandoAPI.set(false);
         this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
           mensagem: this.modo() === EstadosPagina.engadir
             ? 'Houbo un erro ao engadir a biblioteca.'

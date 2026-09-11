@@ -1,9 +1,9 @@
 <form [formRoot]="formState.bibliotecaForm" (ngSubmit)="submitForm.emit($event)">
   @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
-    <button color="primary" type="submit" [value]="modo()">
+    <button color="primary" type="submit" [value]="modo()" [disabled]="formState.chamandoAPI()">
       <i class="icon-disk"></i> {{modo()}}
     </button>
-    <button color="primary" type="button" (click)="cancelar.emit()">
+    <button color="primary" type="button" (click)="cancelar.emit()" [disabled]="formState.chamandoAPI()">
       <i class="icon-disk"></i> Retroceder
     </button>
   }
