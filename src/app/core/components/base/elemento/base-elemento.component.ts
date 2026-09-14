@@ -1,15 +1,14 @@
-import { Component, computed, Inject, OnInit, signal, inject } from '@angular/core';
+import { Component, computed, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { first } from 'rxjs/operators';
 import { environment, environments } from '../../../../../environments/environment';
-import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
+import { DadosComplentarios, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
 import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 import { FormGroup } from '@angular/forms';
 import { BaseApiService } from '@servizosApi';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
-import { Genero } from '../../../models/genero.interface';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
 import { BaseElemento, ParametrosId, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
 
@@ -21,6 +20,8 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;
   estadosPagina = EstadosPagina;
   modo = signal<EstadosPagina>(EstadosPagina.engadir);
+
+  protected dadosComplentarios = DadosComplentarios;
   protected elementoId: string | null = null;
   protected dadosDoElemento: TElemento | undefined;
   protected livrosDoElemento = signal<ListadoLivros[]>([]);
@@ -63,9 +64,9 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     });
   }
 
-  onSubmit(event: SubmitEvent) {
+  onSubmit(event: SubmitEvent, tipo: DadosComplentarios) {
     if (this.isFormValid()) {
-      this.checkForDuplicates(event);
+      this.checkForDuplicates(event, tipo);
     }
   }
 
@@ -144,19 +145,21 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     return Object.values(this.formuario.controls).every(control => control.status === 'VALID');
   }
 
-  protected checkForDuplicates(event: SubmitEvent) {
+  protected checkForDuplicates(event: SubmitEvent, tipo: DadosComplentarios) {
     const nameValue = String(this.formuario.get('nome')?.value).trim();
 
     this.servicoElemento.getPorNome(nameValue)
       .pipe(first())
       .subscribe({
-        next: (v) => this.handleDuplicateCheck(event, v as BaseListadoDadosApi<TElemento>),
+        next: (v) => this.manejaDuplicadosEGarda(event, v as BaseListadoDadosApi<TElemento>, tipo),
         error: (e: unknown) => this.handleError('obtención', e),
         complete: () => {}
       });
   }
 
-  protected handleDuplicateCheck(event: SubmitEvent, elementoExistente: BaseListadoDadosApi<TElemento>) {
+  protected manejaDuplicadosEGarda(
+    event: SubmitEvent, elementoExistente: BaseListadoDadosApi<TElemento>, tipo: DadosComplentarios) {
+
     const isDuplicate = elementoExistente?.meta?.quantidade > 0 &&
       (this.isAdding(event) ||
        (!this.isAdding(event) && elementoExistente.meta.id !== (this.dadosDoElemento as any)?.id));
@@ -167,11 +170,11 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
         mensagem: `O nome ${this.getNomeElemento()} já existe na base de dados`
       });
     } else {
-      this.saveElemento(event);
+      this.saveElemento(event, tipo);
     }
   }
 
-  private saveElemento(event: SubmitEvent) {
+  private saveElemento(event: SubmitEvent, tipo: DadosComplentarios) {
     const elemento = this.createElementoForm();
 
     const serviceCall = this.isAdding(event)
@@ -179,7 +182,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
       : this.servicoElemento.update(elemento);
 
     serviceCall.pipe(first()).subscribe({
-      next: (v) => this.handleSaveSuccess(v, elemento),
+      next: (v) => this.handleSaveSuccess(v, elemento, tipo),
       error: (e: unknown) => this.handleSaveError(e),
       complete: () => this.handleSaveComplete()
     });
@@ -210,11 +213,10 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     return (event.submitter as HTMLButtonElement)?.value === EstadosPagina.engadir;
   }
 
-  private handleSaveSuccess(data: ResultadoMeta, elemento: TElemento) {
+  private handleSaveSuccess(data: ResultadoMeta, elemento: TElemento, tipo: DadosComplentarios) {
     if (data?.idResult > 0) {
-      if (this.eGenero(elemento)) {
-        this.usuarioAppService.setGenero(elemento);
-      }
+      elemento.id = data.idResult;
+      this.usuarioAppService.setElementoDadosOutros(elemento, tipo);
       this.handleNavigation(data, elemento);
       this.modo.set(EstadosPagina.guardar);
     } else {
@@ -236,10 +238,6 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
         this.location.back();
       }
     }
-  }
-
-  private eGenero(elemento: Genero | TElemento): elemento is Genero {
-    return 'tipo' in elemento && elemento.tipo === 'propriedade para saver que o tipo é Género';
   }
 
   private amosarMensagemErro() {

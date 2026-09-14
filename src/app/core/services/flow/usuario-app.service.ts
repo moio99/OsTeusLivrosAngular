@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Outros } from "../../models/livro.interface";
 import { Genero } from "../../models/genero.interface";
 import { DadosComplentarios } from "../../../shared/enums/estadisticasTipos";
+import { Autor, Biblioteca, Colecom, Editorial, EstiloLiterario } from "@interfaces";
 
 @Injectable({
   providedIn: 'root',
@@ -42,25 +43,122 @@ export class UsuarioAppService {
   }
 
   /**
-   * Engade ou actualiza un xenero nos datos do usuario.
-   * Se o xenero xa existe, actualiza o seu rexistro. Se non existe, engade o novo rexistro.
-   * Non modifica o estado do usuario se o xenero non se atopa entre os rexistros do usuario.
-   * @param genero Xenero a engadir ou actualizar
+   * Engade ou actualiza un autor, genero, biblioteca etc. nos datos do usuario.
+   * Se já existe, actualiza o seu registro. Se nom existe, engade o novo registro.
+   * @param dado autor, genero, biblioteca etc. a engadir ou actualizar
+   * @param tipo tipo de dado, podendo ser Autor, Genero, Biblioteca, Editorial, Colecom ou EstiloLiterario
    */
-  setGenero(genero: Genero) {
-    if (this.dadosOutros?.generos?.data) {
-      const index = this.dadosOutros.generos.data.findIndex(ele => ele.id === genero.id);
+  setElementoDadosOutros(dado: Autor | Genero | Biblioteca | Editorial | Colecom | EstiloLiterario, tipo: DadosComplentarios) {
+    if (!this.dadosOutros) return;
 
-      if (index !== -1) {
-        // Actualizar o elemento existente (inmutável)
-        this.dadosOutros.generos.data = [
-          ...this.dadosOutros.generos.data.slice(0, index),
-          genero,
-          ...this.dadosOutros.generos.data.slice(index + 1)
-        ];
-      } else {
-        // Engade o novo elemento (inmutável)
-        this.dadosOutros.generos.data = [...this.dadosOutros.generos.data, genero];
+    switch (tipo) {
+      case DadosComplentarios.Autor: {
+        const autorElemento = dado as Autor;
+        const dataActual = this.dadosOutros.autores?.data || [];
+        const existe = dataActual.some(ele => ele.id === autorElemento.id);
+
+        const novaData = existe
+          ? dataActual.map(ele => ele.id === autorElemento.id ? autorElemento : ele)
+          : [...dataActual, autorElemento];
+
+        this.dadosOutros = {
+          ...this.dadosOutros,
+          autores: {
+            ...this.dadosOutros.autores,
+            data: novaData
+          }
+        };
+        break;
+      }
+      case DadosComplentarios.Genero: {
+        const generoElemento = dado as Genero;
+        const dataActual = this.dadosOutros.generos?.data || [];
+        const existe = dataActual.some(ele => ele.id === generoElemento.id);
+
+        const novaData = existe
+          ? dataActual.map(ele => ele.id === generoElemento.id ? generoElemento : ele)
+          : [...dataActual, generoElemento];
+
+        this.dadosOutros = {
+          ...this.dadosOutros,
+          generos: {
+            ...this.dadosOutros.generos,
+            data: novaData
+          }
+        };
+        break;
+      }
+      case DadosComplentarios.Biblioteca: {
+        const bibliotecaElemento = dado as Biblioteca;
+        const dataActual = this.dadosOutros.bibliotecas?.data || [];
+        const existe = dataActual.some(ele => ele.id === bibliotecaElemento.id);
+
+        const novaData = existe
+          ? dataActual.map(ele => ele.id === bibliotecaElemento.id ? bibliotecaElemento : ele)
+          : [...dataActual, bibliotecaElemento];
+
+        this.dadosOutros = {
+          ...this.dadosOutros,
+          bibliotecas: {
+            ...this.dadosOutros.bibliotecas,
+            data: novaData
+          }
+        };
+        break;
+      }
+      case DadosComplentarios.Editorial: {
+        const editorialElemento = dado as Editorial;
+        const dataActual = this.dadosOutros.editoriais?.data || [];
+        const existe = dataActual.some(ele => ele.id === editorialElemento.id);
+
+        const novaData = existe
+          ? dataActual.map(ele => ele.id === editorialElemento.id ? editorialElemento : ele)
+          : [...dataActual, editorialElemento];
+
+        this.dadosOutros = {
+          ...this.dadosOutros,
+          editoriais: {
+            ...this.dadosOutros.editoriais,
+            data: novaData
+          }
+        };
+        break;
+      }
+      case DadosComplentarios.Colecom: {
+        const colecomElemento = dado as Colecom;
+        const dataActual = this.dadosOutros.colecons?.data || [];
+        const existe = dataActual.some(ele => ele.id === colecomElemento.id);
+
+        const novaData = existe
+          ? dataActual.map(ele => ele.id === colecomElemento.id ? colecomElemento : ele)
+          : [...dataActual, colecomElemento];
+
+        this.dadosOutros = {
+          ...this.dadosOutros,
+          colecons: {
+            ...this.dadosOutros.colecons,
+            data: novaData
+          }
+        };
+        break;
+      }
+      case DadosComplentarios.EstiloLiterario: {
+        const estiloLiterarioElemento = dado as EstiloLiterario;
+        const dataActual = this.dadosOutros.estilos?.data || [];
+        const existe = dataActual.some(ele => ele.id === estiloLiterarioElemento.id);
+
+        const novaData = existe
+          ? dataActual.map(ele => ele.id === estiloLiterarioElemento.id ? estiloLiterarioElemento : ele)
+          : [...dataActual, estiloLiterarioElemento];
+
+        this.dadosOutros = {
+          ...this.dadosOutros,
+          estilos: {
+            ...this.dadosOutros.estilos,
+            data: novaData
+          }
+        };
+        break;
       }
     }
   }
@@ -68,7 +166,7 @@ export class UsuarioAppService {
   /**
    * Elimina um registro dum autor, genero, biblioteca etc. do usuario.
    * @param id Identificador do autor, genero, biblioteca etc. a eliminar
-   * @param tipo Tipo de datos a eliminar
+   * @param tipo tipo de dado, podendo ser Autor, Genero, Biblioteca, Editorial, Colecom ou EstiloLiterario
    */
   removerElementoDadosOutros(id: string, tipo: DadosComplentarios) {
     switch (tipo) {

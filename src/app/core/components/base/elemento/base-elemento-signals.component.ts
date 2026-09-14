@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
-import { LayoutService, DadosPaginasService } from '@servizosFlow';
+import { DadosComplentarios, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
+import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { of } from 'rxjs';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
@@ -17,6 +17,7 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
   protected router = inject(Router);
   private location = inject(Location);
   private dadosPaginasService = inject(DadosPaginasService);
+  protected usuarioAppService = inject(UsuarioAppService);
 
   // No componhente que herda de BaseElementoSignalsComponent, tem que se que implementar esta funçom
   // é para poder acceder a this.formState.atualizarFromBiblioteca
@@ -60,10 +61,12 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
    * Gestiona o resultado da acçom de guardado ou modifcaçom, e estabelece o novo dado para a pagina à que se retrocede
    * @param data resultado da accom
    * @param elemento elemento que se guardou ou modificou
+   * @param tipo tipo de dado, podendo ser Autor, Genero, Biblioteca, Editorial, Colecom ou EstiloLiterario
    */
-  protected gestionarRetroceso(data: ResultadoMeta, elemento: TElemento) {
+  protected gestionarRetroceso(data: ResultadoMeta, elemento: TElemento, tipo: DadosComplentarios) {
     if (data?.idResult > 0) {
       elemento.id = data.idResult;
+      this.usuarioAppService.setElementoDadosOutros(elemento, tipo);
       const dadoModificado = this.dadosPaginasService.getNovoDadoLivro();
       if (dadoModificado) {
         const novoDado: SimpleObjet = { id: elemento.id, value: elemento.nome };

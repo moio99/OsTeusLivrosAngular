@@ -10,7 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { first, map, catchError, of, switchMap, EMPTY, tap } from 'rxjs';
-import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { BibliotecaFormPresenterComponent } from './biblioteca-form-presenter.component';
 import { BibliotecaFormStateService } from './biblioteca-form-state.service';
 import { ActivatedRoute } from '@angular/router';
@@ -120,7 +120,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
     ).subscribe({
       next: (v: any) => {
         this.formState.chamandoAPI.set(false);
-        this.gestionarRetroceso(v, elemento);
+        this.gestionarRetroceso(v, elemento, DadosComplentarios.Biblioteca);
       },
       error: (e: unknown) => {
         console.error(e);

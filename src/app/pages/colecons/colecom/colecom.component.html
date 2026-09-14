@@ -1,4 +1,4 @@
-<form [formGroup]="formuario" (ngSubmit)="onSubmit($event)">
+<form [formGroup]="formuario" (ngSubmit)="onSubmit($event, dadosComplentarios.Colecom)">
   @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
     <button color="primary" type="submit" value="{{modo()}}">
       <i class="icon-disk"></i> {{modo()}}

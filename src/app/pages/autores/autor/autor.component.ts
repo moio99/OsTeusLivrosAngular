@@ -7,7 +7,7 @@ import { Autor, ListadoLivros } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
 import { UsuarioAppService } from '@servizosFlow';
-import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Nacionalidade, SimpleObjet, Pais } from '../../../shared/models/outros.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -32,7 +32,6 @@ import { BaseElementoSignalsComponent } from '../../../core/components/base/elem
 export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
 
   private route = inject(ActivatedRoute);
-  private usuarioAppService = inject(UsuarioAppService);
   private outrosService = inject(OutrosService);
   private autoresService = inject(AutoresService);
   private livrosService = inject(LivrosService);
@@ -193,7 +192,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
           return this.autoresService.postAutor(autor).pipe(
             first(),
             tap((v) => {
-              this.gestionarRetroceso(v, autor);
+              this.gestionarRetroceso(v, autor, DadosComplentarios.Autor);
               this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor engadido.' });
             })
           );
@@ -201,7 +200,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
           return this.autoresService.putAutor(autor).pipe(
             first(),
             tap((v) => {
-              this.gestionarRetroceso(v, autor);
+              this.gestionarRetroceso(v, autor, DadosComplentarios.Autor);
               this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor guardado.' });
             })
           );

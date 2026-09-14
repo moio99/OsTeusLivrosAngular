@@ -145,7 +145,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       'o autor',
       'Autor borrado correctamente',
       (id) => this.autoresService.borrarAutor(+id),
-      (id) => this.usuarioAppService.removerElementoDadosOutros(id, DadosComplentarios.Genero)
+      (id) => this.usuarioAppService.removerElementoDadosOutros(id, DadosComplentarios.Autor)
     );
   }
 
