@@ -341,6 +341,7 @@ export class LivroComponent implements OnInit {
     else
       this.modo.set(EstadosPagina.guardar);
     this.formState.setDadosRelecturaForm(this.dadosDaRelectura);
+    this.pontuacomEstrelas = this.dadosDaRelectura.pontuacom;
   }
 
   guardarRelectura(event: any) {
