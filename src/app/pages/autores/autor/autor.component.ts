@@ -6,7 +6,6 @@ import { catchError, concatMap, EMPTY, first, map, of, tap } from 'rxjs';
 import { Autor, ListadoLivros } from '@interfaces';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
-import { UsuarioAppService } from '@servizosFlow';
 import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Nacionalidade, SimpleObjet, Pais } from '../../../shared/models/outros.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,6 +18,7 @@ import { AutorFormStateService } from './autor-form-state.service';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
 import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-autor',
@@ -50,6 +50,9 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
     { initialValue: '0' }
   );
   modo = computed(() => {
+    if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+      return EstadosPagina.soVisualizar;
+    };
     return this.idAutor() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar;
   });
 
