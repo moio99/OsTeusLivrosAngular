@@ -62,7 +62,9 @@
         <input matInput [matDatepicker]="fDateAso"
           [formField]="formState.bibliotecaForm.dataAsociamento"
           (keydown.enter)="onKeyDownImpedirEnvio($event)">
-        <mat-datepicker-toggle matSuffix [for]="fDateAso"></mat-datepicker-toggle>
+        @if (modo() !== estadosPagina.soVisualizar) {
+          <mat-datepicker-toggle matSuffix [for]="fDateAso"></mat-datepicker-toggle>
+        }
         <mat-datepicker #fDateAso></mat-datepicker>
         @if (formState.bibliotecaForm.dataAsociamento().getError('matDatepickerParse'); as erro) {
           <mat-error
@@ -78,7 +80,9 @@
         <input matInput [matDatepicker]="fDateRe"
           [formField]="formState.bibliotecaForm.dataRenovacom"
           (keydown.enter)="onKeyDownImpedirEnvio($event)">
-        <mat-datepicker-toggle matSuffix [for]="fDateRe"></mat-datepicker-toggle>
+        @if (modo() !== estadosPagina.soVisualizar) {
+          <mat-datepicker-toggle matSuffix [for]="fDateRe"></mat-datepicker-toggle>
+        }
         <mat-datepicker #fDateRe></mat-datepicker>
         @if (formState.bibliotecaForm.dataRenovacom().getError('matDatepickerParse'); as erro) {
           <mat-error

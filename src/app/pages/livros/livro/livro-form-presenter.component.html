@@ -185,14 +185,16 @@
 
     @if (!modoRelectura()) {
       <div class="data-criacom">
-        <mat-form-field class="ancho-inputs"
-          ><mat-label>Data de criaçom</mat-label
-          ><input
+        <mat-form-field class="ancho-inputs">
+          <mat-label>Data de criaçom</mat-label>
+          <input
             matInput
             [matDatepicker]="fDateCri"
-            [formControl]="livroForm().controls.dataCriacom"
-          /><mat-datepicker-toggle matSuffix [for]="fDateCri"></mat-datepicker-toggle
-          ><mat-datepicker #fDateCri></mat-datepicker>
+            [formControl]="livroForm().controls.dataCriacom"/>
+          @if (modo() !== estadosPagina.soVisualizar) {
+            <mat-datepicker-toggle matSuffix [for]="fDateCri"></mat-datepicker-toggle>
+          }
+          <mat-datepicker #fDateCri></mat-datepicker>
           @if (livroForm().controls.dataCriacom.hasError('matDatepickerParse')) {
             <mat-error>O formato válido é dd/mm/aaaa</mat-error>
           }
@@ -203,14 +205,16 @@
       </div>
     }
     <div class="data-edicom">
-      <mat-form-field class="ancho-inputs"
-        ><mat-label>Data da ediçom</mat-label
-        ><input
+      <mat-form-field class="ancho-inputs">
+        <mat-label>Data da ediçom</mat-label>
+        <input
           matInput
           [matDatepicker]="fDateEdi"
-          [formControl]="livroForm().controls.dataEdicom"
-        /><mat-datepicker-toggle matSuffix [for]="fDateEdi"></mat-datepicker-toggle
-        ><mat-datepicker #fDateEdi></mat-datepicker>
+          [formControl]="livroForm().controls.dataEdicom"/>
+        @if (modo() !== estadosPagina.soVisualizar) {
+          <mat-datepicker-toggle matSuffix [for]="fDateEdi"></mat-datepicker-toggle>
+        }
+        <mat-datepicker #fDateEdi></mat-datepicker>
         @if (livroForm().controls.dataEdicom.hasError('matDatepickerParse')) {
           <mat-error>O formato válido é dd/mm/aaaa</mat-error>
         }
@@ -242,16 +246,16 @@
       </mat-form-field>
     </div>
     <div class="data-fim-leiturata">
-      <mat-form-field class="ancho-inputs"
-        ><mat-label>Data da fim da leitura</mat-label
-        ><input
+      <mat-form-field class="ancho-inputs">
+        <mat-label>Data da fim da leitura</mat-label>
+        <input
           matInput
           [matDatepicker]="fDateFimL"
-          [formControl]="livroForm().controls.dataFimLeiturata" /><mat-datepicker-toggle
-          matSuffix
-          [for]="fDateFimL"
-        ></mat-datepicker-toggle
-        ><mat-datepicker #fDateFimL></mat-datepicker
+          [formControl]="livroForm().controls.dataFimLeiturata"/>
+        @if (modo() !== estadosPagina.soVisualizar) {
+          <mat-datepicker-toggle matSuffix [for]="fDateFimL"></mat-datepicker-toggle>
+        }
+        <mat-datepicker #fDateFimL></mat-datepicker
       ></mat-form-field>
     </div>
     <div class="idioma">

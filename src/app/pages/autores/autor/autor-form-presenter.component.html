@@ -54,7 +54,9 @@
       <mat-form-field class="ancho-inputs" [style.width.px]="170">
         <mat-label>Data de nacemento</mat-label>
         <input matInput [matDatepicker]="fDateN" [formField]="formState.autorForm.dataNacemento">
-        <mat-datepicker-toggle matSuffix [for]="fDateN"></mat-datepicker-toggle>
+        @if (modo() !== estadosPagina.soVisualizar) {
+          <mat-datepicker-toggle matSuffix [for]="fDateN"></mat-datepicker-toggle>
+        }
         <mat-datepicker #fDateN></mat-datepicker>
         @for (erro of formState.autorForm.dataNacemento().errors(); track erro.kind) {
           <mat-error>
@@ -66,7 +68,9 @@
       <mat-form-field class="ancho-inputs" [style.width.px]="170">
         <mat-label>Data de defuncom</mat-label>
         <input matInput [matDatepicker]="fDateD" [formField]="formState.autorForm.dataDefuncom">
-        <mat-datepicker-toggle matSuffix [for]="fDateD"></mat-datepicker-toggle>
+        @if (modo() !== estadosPagina.soVisualizar) {
+          <mat-datepicker-toggle matSuffix [for]="fDateD"></mat-datepicker-toggle>
+        }
         <mat-datepicker #fDateD></mat-datepicker>
         @for (erro of formState.autorForm.dataDefuncom().errors(); track erro.kind) {
           <mat-error>
