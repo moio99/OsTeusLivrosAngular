@@ -6,8 +6,10 @@ import { BaseApiService } from './base-api.service';
 //   providedIn: 'root',
 // })
 // sustituido polo de abaixo, para limitalo ao ciclo de vida de certos compontes
-// configúrase cunha propiedade simple: @Service({ autoProvided: false }) neste caso também há que meter:
+// com @Service({ autoProvided: false }) significa que o servizo non se rexistra de forma automática
+// no injector global da aplicación (root). Neste caso também há que meter:
 // providers: [EstadisticasService],
+// @Service() == @Service({ autoProvided: true })
 @Service()
 export class ColeconsService extends BaseApiService<Colecom> {
   protected rotaIntermedia = '/Colecons';

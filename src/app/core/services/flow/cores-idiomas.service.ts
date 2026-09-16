@@ -5,8 +5,10 @@ import { CORES_IDIOMAS } from '../../../shared/cores.idiomas.config';
 //   providedIn: 'root',
 // })
 // sustituido polo de abaixo, para limitalo ao ciclo de vida de certos compontes
-// configúrase cunha propiedade simple: @Service({ autoProvided: false }) neste caso também há que meter:
+// com @Service({ autoProvided: false }) significa que o servizo non se rexistra de forma automática
+// no injector global da aplicación (root). Neste caso também há que meter:
 // providers: [EstadisticasService],
+// @Service() == @Service({ autoProvided: true })
 @Service()
 export class CoresIdiomasService {
   constructor() { }
