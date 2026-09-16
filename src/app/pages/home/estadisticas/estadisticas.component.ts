@@ -10,6 +10,7 @@ import { Estadisticas, GraficosData } from '@interfaces';
 import { PeticomPendenteComponent } from '../../../peticom-pendente.guard';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { forkJoin } from 'rxjs';
+import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 
 @Component({
   selector: 'omla-estadisticas',
@@ -44,7 +45,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
 
   private readonly layoutService = inject(LayoutService);
   private readonly router = inject(Router);
-  private readonly usuarioApp = inject(UsuarioAppService);
+  private readonly dadosOutrosService = inject(DadosOutrosService);
   private readonly estadisticasService = inject(EstadisticasService);
   private readonly outrosService = inject(OutrosService);
   private readonly graficosService = inject(GraficosService);
@@ -236,7 +237,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
   }
 
   private obterDadosOutros() {
-    if (this.usuarioApp.haDadosOutrosCache()) {
+    if (this.dadosOutrosService.haDadosOutrosCache()) {
       this.isDadosCombosPendente = false;
     } else {
       this.outrosService.getTodo()
@@ -244,7 +245,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
         .subscribe({
           next: (data) => {
             this.isDadosCombosPendente = false;
-            this.usuarioApp.setDadosOutrosCache(data);
+            this.dadosOutrosService.setDadosOutrosCache(data);
           },
           error: () => {
             this.isDadosCombosPendente = false;

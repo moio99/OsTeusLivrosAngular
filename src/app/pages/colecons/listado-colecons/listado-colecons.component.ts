@@ -8,8 +8,8 @@ import { BaseListadoComponent } from '@componhentesComuns';
 import { Observable } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
-import { UsuarioAppService } from '@servizosFlow';
 import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
+import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 
 @Component({
   selector: 'omla-listado-colecons',
@@ -25,7 +25,7 @@ export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColeco
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
 
   private coleconsService = inject(ColeconsService);
-  private usuarioAppService = inject(UsuarioAppService);
+  private dadosOutrosService = inject(DadosOutrosService);
 
   // Para que BaseListadoComponent saiba de onde obter os dados
   // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
@@ -46,7 +46,7 @@ export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColeco
       'a coleçom',
       'Coleçom borrada correctamente',
       (id) => this.coleconsService.borrar(id),
-      (id) => this.usuarioAppService.removerElementoDadosOutrosCache(id, DadosComplentarios.Colecom)
+      (id) => this.dadosOutrosService.removerElementoDadosOutrosCache(id, DadosComplentarios.Colecom)
     );
   }
 }

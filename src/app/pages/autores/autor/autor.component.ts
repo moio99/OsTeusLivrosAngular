@@ -58,7 +58,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
 
   nacionalidadesResource = rxResource({
     stream: () => {
-      const cache = this.usuarioAppService.getDadosOutrosCache();
+      const cache = this.dadosOutrosService.getDadosOutrosCache();
       // Se xa están en caché, devolvemos un observable inmediato para non ir ao servidor
       if (cache?.nacionalidades) return of(cache.nacionalidades);
 
@@ -72,7 +72,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
   paisesResource = rxResource({
     stream: () => {
       // Se xa están en caché, devolvemos un observable inmediato para non ir ao servidor
-      const cache = this.usuarioAppService.getDadosOutrosCache();
+      const cache = this.dadosOutrosService.getDadosOutrosCache();
       if (cache?.paises) return of(cache.paises);
 
       return this.outrosService.getPaises().pipe(

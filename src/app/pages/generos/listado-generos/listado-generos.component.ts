@@ -9,8 +9,8 @@ import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { Observable } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
-import { UsuarioAppService } from '@servizosFlow';
 import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
+import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 
 @Component({
   selector: 'omla-listado-generos',
@@ -32,7 +32,7 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
   tipoListado = '';
 
   private generosService = inject(GenerosService);
-  private usuarioAppService = inject(UsuarioAppService);
+  private dadosOutrosService = inject(DadosOutrosService);
 
   // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
   protected definirChamadaApi(): Observable<BaseListadoDadosApi<Genero>> {
@@ -52,7 +52,7 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
       'o género',
       'Género borrada correctamente',
       (id) => this.generosService.borrar(id),
-      (id) => this.usuarioAppService.removerElementoDadosOutrosCache(id, DadosComplentarios.Genero)
+      (id) => this.dadosOutrosService.removerElementoDadosOutrosCache(id, DadosComplentarios.Genero)
     );
   }
 

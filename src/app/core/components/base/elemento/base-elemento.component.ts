@@ -4,13 +4,14 @@ import { Location } from '@angular/common';
 import { first } from 'rxjs/operators';
 import { environment, environments } from '../../../../../environments/environment';
 import { DadosComplentarios, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
-import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
+import { LayoutService, DadosPaginasService } from '@servizosFlow';
 import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 import { FormGroup } from '@angular/forms';
 import { BaseApiService } from '@servizosApi';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
 import { BaseElemento, ParametrosId, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
+import { DadosOutrosService } from '../../../services/flow/dados-outros.service';
 
 @Component({
   template: ''
@@ -41,7 +42,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   protected layoutService = inject(LayoutService);
   protected location = inject(Location);
   protected dadosPaginasService = inject(DadosPaginasService);
-  protected usuarioAppService = inject(UsuarioAppService);
+  protected dadosOutrosService = inject(DadosOutrosService);
 
   // Para tokens de tipo string ou InjectionToken
   protected servicoElemento = inject<TServico>('OMeuServizoToeken' as any);
@@ -216,7 +217,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   private handleSaveSuccess(data: ResultadoMeta, elemento: TElemento, tipo: DadosComplentarios) {
     if (data?.idResult > 0) {
       elemento.id = data.idResult;
-      this.usuarioAppService.setElementoDadosOutrosCache(elemento, tipo);
+      this.dadosOutrosService.setElementoDadosOutrosCache(elemento, tipo);
       this.handleNavigation(data, elemento);
       this.modo.set(EstadosPagina.guardar);
     } else {

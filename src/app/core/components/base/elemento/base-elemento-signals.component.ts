@@ -7,6 +7,7 @@ import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { of } from 'rxjs';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
 import { BaseElemento, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
+import { DadosOutrosService } from '../../../services/flow/dados-outros.service';
 
 @Component({
   template: ''
@@ -17,7 +18,7 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
   protected router = inject(Router);
   private location = inject(Location);
   private dadosPaginasService = inject(DadosPaginasService);
-  protected usuarioAppService = inject(UsuarioAppService);
+  protected dadosOutrosService = inject(DadosOutrosService);
 
   // No componhente que herda de BaseElementoSignalsComponent, tem que se que implementar esta funçom
   // é para poder acceder a this.formState.atualizarFromBiblioteca
@@ -66,7 +67,7 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
   protected gestionarRetroceso(data: ResultadoMeta, elemento: TElemento, tipo: DadosComplentarios) {
     if (data?.idResult > 0) {
       elemento.id = data.idResult;
-      this.usuarioAppService.setElementoDadosOutrosCache(elemento, tipo);
+      this.dadosOutrosService.setElementoDadosOutrosCache(elemento, tipo);
       const dadoModificado = this.dadosPaginasService.getNovoDadoLivro();
       if (dadoModificado) {
         const novoDado: SimpleObjet = { id: elemento.id, value: elemento.nome };

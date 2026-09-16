@@ -11,7 +11,7 @@ import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { environment, environments } from '../../../../environments/environment';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
-import { UsuarioAppService } from '@servizosFlow';
+import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 
 @Component({
   selector: 'omla-listado-autores',
@@ -34,7 +34,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   private outrosService = inject(OutrosService);
   private autoresService = inject(AutoresService);
   private route = inject(ActivatedRoute);
-  private usuarioAppService = inject(UsuarioAppService);
+  private dadosOutrosService = inject(DadosOutrosService);
 
   parametrosBusqueda = toSignal(
     this.route.queryParams.pipe(
@@ -145,7 +145,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       'o autor',
       'Autor borrado correctamente',
       (id) => this.autoresService.borrarAutor(+id),
-      (id) => this.usuarioAppService.removerElementoDadosOutrosCache(id, DadosComplentarios.Autor)
+      (id) => this.dadosOutrosService.removerElementoDadosOutrosCache(id, DadosComplentarios.Autor)
     );
   }
 

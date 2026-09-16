@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule} from '@angular/material/datepicker';
 import { ConverterAData } from '../../../shared/classes/date-convert';
-import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
+import { LayoutService, DadosPaginasService } from '@servizosFlow';
 import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { Title } from '@angular/platform-browser';
@@ -26,6 +26,7 @@ import { LivroFormPresenterComponent } from './livro-form-presenter.component';
 import { LivroFormStateService } from './livro-form-state.service';
 import { BaseListadoDadosApi, Parametros, Resultado } from '../../../shared/models/base-dados';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 
 export enum MultiGestom {
   autores = 1,
@@ -66,7 +67,7 @@ export class LivroComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private layoutService = inject(LayoutService);
-  private usuarioAppService = inject(UsuarioAppService);
+  private dadosOutrosService = inject(DadosOutrosService);
   private title = inject(Title);
   private outrosService = inject(OutrosService);
   private livrosService = inject(LivrosService);
@@ -78,14 +79,14 @@ export class LivroComponent implements OnInit {
 
   dadosApiResource = rxResource({
     stream: () => {
-      const dados = this.usuarioAppService.getDadosOutrosCache();
+      const dados = this.dadosOutrosService.getDadosOutrosCache();
       if (dados) {
         return of(dados);
       }
 
       return this.outrosService.getTodo().pipe(
         first(),
-        tap(v => this.usuarioAppService.setDadosOutrosCache(v)),
+        tap(v => this.dadosOutrosService.setDadosOutrosCache(v)),
         catchError((e) => {
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Erro, mensagem: 'Non se puideron obter os datos', duracom: 10
@@ -145,7 +146,7 @@ export class LivroComponent implements OnInit {
   }
 
   private obterOutrosDados(idLivro: string): void {
-    const dados = this.usuarioAppService.getDadosOutrosCache();
+    const dados = this.dadosOutrosService.getDadosOutrosCache();
     if (dados) {                                            // Já os tinhamos
       this.dadosOutrosObtidos(dados);
       this.obterDadosRelecturasELivro(idLivro);
@@ -155,8 +156,8 @@ export class LivroComponent implements OnInit {
         .pipe(first())
         .subscribe({
           next: (v: object) => {
-            this.usuarioAppService.setDadosOutrosCache(v);
-            this.dadosOutrosObtidos(this.usuarioAppService.getDadosOutrosCache());
+            this.dadosOutrosService.setDadosOutrosCache(v);
+            this.dadosOutrosObtidos(this.dadosOutrosService.getDadosOutrosCache());
             this.obterDadosRelecturasELivro(idLivro)
           },
           error: (e: unknown) => { console.error(e),
@@ -568,7 +569,7 @@ export class LivroComponent implements OnInit {
   }
 
   onGestomMulti(opcom: MultiGestom): void {
-    const dados = this.usuarioAppService.getDadosOutrosCache();
+    const dados = this.dadosOutrosService.getDadosOutrosCache();
     let multiDados: MultiDados = {total: [], escolma: []};
     switch (opcom) {
       case MultiGestom.autores: {
@@ -795,7 +796,7 @@ export class LivroComponent implements OnInit {
   }
 
   setDadosLivro(): Livro {
-    const dados = this.usuarioAppService.getDadosOutrosCache();
+    const dados = this.dadosOutrosService.getDadosOutrosCache();
     const autorAnonimo = dados?.autores?.data.find(autor => autor.nome === 'Anónimo');
     return this.formState.criarLivro(
       this.dadosDoLivro?.id ?? '0',
