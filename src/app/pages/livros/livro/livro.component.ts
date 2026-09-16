@@ -78,14 +78,14 @@ export class LivroComponent implements OnInit {
 
   dadosApiResource = rxResource({
     stream: () => {
-      const dados = this.usuarioAppService.getDadosOutros();
+      const dados = this.usuarioAppService.getDadosOutrosCache();
       if (dados) {
         return of(dados);
       }
 
       return this.outrosService.getTodo().pipe(
         first(),
-        tap(v => this.usuarioAppService.setDadosOutros(v)),
+        tap(v => this.usuarioAppService.setDadosOutrosCache(v)),
         catchError((e) => {
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Erro, mensagem: 'Non se puideron obter os datos', duracom: 10
@@ -145,7 +145,7 @@ export class LivroComponent implements OnInit {
   }
 
   private obterOutrosDados(idLivro: string): void {
-    const dados = this.usuarioAppService.getDadosOutros();
+    const dados = this.usuarioAppService.getDadosOutrosCache();
     if (dados) {                                            // Já os tinhamos
       this.dadosOutrosObtidos(dados);
       this.obterDadosRelecturasELivro(idLivro);
@@ -155,8 +155,8 @@ export class LivroComponent implements OnInit {
         .pipe(first())
         .subscribe({
           next: (v: object) => {
-            this.usuarioAppService.setDadosOutros(v);
-            this.dadosOutrosObtidos(this.usuarioAppService.getDadosOutros());
+            this.usuarioAppService.setDadosOutrosCache(v);
+            this.dadosOutrosObtidos(this.usuarioAppService.getDadosOutrosCache());
             this.obterDadosRelecturasELivro(idLivro)
           },
           error: (e: unknown) => { console.error(e),
@@ -568,7 +568,7 @@ export class LivroComponent implements OnInit {
   }
 
   onGestomMulti(opcom: MultiGestom): void {
-    const dados = this.usuarioAppService.getDadosOutros();
+    const dados = this.usuarioAppService.getDadosOutrosCache();
     let multiDados: MultiDados = {total: [], escolma: []};
     switch (opcom) {
       case MultiGestom.autores: {
@@ -795,7 +795,7 @@ export class LivroComponent implements OnInit {
   }
 
   setDadosLivro(): Livro {
-    const dados = this.usuarioAppService.getDadosOutros();
+    const dados = this.usuarioAppService.getDadosOutrosCache();
     const autorAnonimo = dados?.autores?.data.find(autor => autor.nome === 'Anónimo');
     return this.formState.criarLivro(
       this.dadosDoLivro?.id ?? '0',

@@ -52,7 +52,7 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
       'o género',
       'Género borrada correctamente',
       (id) => this.generosService.borrar(id),
-      (id) => this.usuarioAppService.removerElementoDadosOutros(id, DadosComplentarios.Genero)
+      (id) => this.usuarioAppService.removerElementoDadosOutrosCache(id, DadosComplentarios.Genero)
     );
   }
 

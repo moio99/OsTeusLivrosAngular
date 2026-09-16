@@ -45,7 +45,7 @@ export class ListadoBibliotecasComponent extends BaseListadoComponent<ListadoBib
       'a biblioteca',
       'Biblioteca borrada correctamente',
       (id) => this.bibliotecasService.borrar(id),
-      (id) => this.usuarioAppService.removerElementoDadosOutros(id, DadosComplentarios.Biblioteca)
+      (id) => this.usuarioAppService.removerElementoDadosOutrosCache(id, DadosComplentarios.Biblioteca)
     );
   }
 }

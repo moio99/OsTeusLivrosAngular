@@ -52,7 +52,7 @@ export class ListadoEstilosLiterariosComponent extends BaseListadoComponent<List
       'o Estilo Literario',
       'Estilo Literario borrado correctamente',
       (id) => this.estilosLiterariosService.borrar(id),
-      (id) => this.usuarioAppService.removerElementoDadosOutros(id, DadosComplentarios.EstiloLiterario)
+      (id) => this.usuarioAppService.removerElementoDadosOutrosCache(id, DadosComplentarios.EstiloLiterario)
     );
   }
 

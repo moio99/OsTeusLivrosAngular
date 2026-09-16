@@ -51,7 +51,7 @@ export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEdit
       'a editorial',
       'Editorial borrada correctamente',
       (id) => this.editoriaisService.borrar(id),
-      (id) => this.usuarioAppService.removerElementoDadosOutros(id, DadosComplentarios.Editorial)
+      (id) => this.usuarioAppService.removerElementoDadosOutrosCache(id, DadosComplentarios.Editorial)
     );
   }
 

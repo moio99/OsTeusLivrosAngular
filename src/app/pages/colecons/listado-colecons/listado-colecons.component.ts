@@ -46,7 +46,7 @@ export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColeco
       'a coleçom',
       'Coleçom borrada correctamente',
       (id) => this.coleconsService.borrar(id),
-      (id) => this.usuarioAppService.removerElementoDadosOutros(id, DadosComplentarios.Colecom)
+      (id) => this.usuarioAppService.removerElementoDadosOutrosCache(id, DadosComplentarios.Colecom)
     );
   }
 }

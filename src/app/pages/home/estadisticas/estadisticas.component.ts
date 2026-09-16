@@ -236,7 +236,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
   }
 
   private obterDadosOutros() {
-    if (this.usuarioApp.haDadosOutros()) {
+    if (this.usuarioApp.haDadosOutrosCache()) {
       this.isDadosCombosPendente = false;
     } else {
       this.outrosService.getTodo()
@@ -244,7 +244,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
         .subscribe({
           next: (data) => {
             this.isDadosCombosPendente = false;
-            this.usuarioApp.setDadosOutros(data);
+            this.usuarioApp.setDadosOutrosCache(data);
           },
           error: () => {
             this.isDadosCombosPendente = false;

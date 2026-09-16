@@ -216,7 +216,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   private handleSaveSuccess(data: ResultadoMeta, elemento: TElemento, tipo: DadosComplentarios) {
     if (data?.idResult > 0) {
       elemento.id = data.idResult;
-      this.usuarioAppService.setElementoDadosOutros(elemento, tipo);
+      this.usuarioAppService.setElementoDadosOutrosCache(elemento, tipo);
       this.handleNavigation(data, elemento);
       this.modo.set(EstadosPagina.guardar);
     } else {

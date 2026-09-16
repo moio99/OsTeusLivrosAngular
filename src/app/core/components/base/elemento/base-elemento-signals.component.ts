@@ -66,7 +66,7 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
   protected gestionarRetroceso(data: ResultadoMeta, elemento: TElemento, tipo: DadosComplentarios) {
     if (data?.idResult > 0) {
       elemento.id = data.idResult;
-      this.usuarioAppService.setElementoDadosOutros(elemento, tipo);
+      this.usuarioAppService.setElementoDadosOutrosCache(elemento, tipo);
       const dadoModificado = this.dadosPaginasService.getNovoDadoLivro();
       if (dadoModificado) {
         const novoDado: SimpleObjet = { id: elemento.id, value: elemento.nome };

@@ -9,14 +9,14 @@ import { Autor, Biblioteca, Colecom, Editorial, EstiloLiterario } from "@interfa
 })
 export class UsuarioAppService {
 
-  dadosOutros: Outros | null = null;
+  dadosOutrosCache: Outros | null = null;
 
   constructor() {}
 
   setInformacom() {
     const userLang = navigator.language;
 
-    // Lo uso para establecer el idioma del DatePicker.
+    // Uso-o para estavelecer o idioma do DatePicker.
     if (userLang === 'gl' || userLang === 'gl-ES' || userLang === 'es' || userLang === 'es-ES') {
       localStorage.setItem('UserLanguageDate', 'gl-ES');
     }
@@ -25,21 +25,21 @@ export class UsuarioAppService {
     }
   }
 
-  setDadosOutros(data: object | null) {
+  setDadosOutrosCache(data: object | null) {
     if (data)
-      this.dadosOutros = data as Outros;
+      this.dadosOutrosCache = data as Outros;
   }
 
-  getDadosOutros() {
-    return this.dadosOutros;
+  getDadosOutrosCache() {
+    return this.dadosOutrosCache;
   }
 
   /**
    * Comproba se existen datos de outros no usuario.
    * @returns {boolean} Verdadeiro se existen datos de outros, falso doutra maneira.
    */
-  haDadosOutros(): boolean {
-    return !!this.dadosOutros;
+  haDadosOutrosCache(): boolean {
+    return !!this.dadosOutrosCache;
   }
 
   /**
@@ -48,23 +48,23 @@ export class UsuarioAppService {
    * @param dado autor, genero, biblioteca etc. a engadir ou actualizar
    * @param tipo tipo de dado, podendo ser Autor, Genero, Biblioteca, Editorial, Colecom ou EstiloLiterario
    */
-  setElementoDadosOutros(dado: Autor | Genero | Biblioteca | Editorial | Colecom | EstiloLiterario, tipo: DadosComplentarios) {
-    if (!this.dadosOutros) return;
+  setElementoDadosOutrosCache(dado: Autor | Genero | Biblioteca | Editorial | Colecom | EstiloLiterario, tipo: DadosComplentarios) {
+    if (!this.dadosOutrosCache) return;
 
     switch (tipo) {
       case DadosComplentarios.Autor: {
         const autorElemento = dado as Autor;
-        const dataActual = this.dadosOutros.autores?.data || [];
+        const dataActual = this.dadosOutrosCache.autores?.data || [];
         const existe = dataActual.some(ele => ele.id === autorElemento.id);
 
         const novaData = existe
           ? dataActual.map(ele => ele.id === autorElemento.id ? autorElemento : ele)
           : [...dataActual, autorElemento];
 
-        this.dadosOutros = {
-          ...this.dadosOutros,
+        this.dadosOutrosCache = {
+          ...this.dadosOutrosCache,
           autores: {
-            ...this.dadosOutros.autores,
+            ...this.dadosOutrosCache.autores,
             data: novaData
           }
         };
@@ -72,17 +72,17 @@ export class UsuarioAppService {
       }
       case DadosComplentarios.Genero: {
         const generoElemento = dado as Genero;
-        const dataActual = this.dadosOutros.generos?.data || [];
+        const dataActual = this.dadosOutrosCache.generos?.data || [];
         const existe = dataActual.some(ele => ele.id === generoElemento.id);
 
         const novaData = existe
           ? dataActual.map(ele => ele.id === generoElemento.id ? generoElemento : ele)
           : [...dataActual, generoElemento];
 
-        this.dadosOutros = {
-          ...this.dadosOutros,
+        this.dadosOutrosCache = {
+          ...this.dadosOutrosCache,
           generos: {
-            ...this.dadosOutros.generos,
+            ...this.dadosOutrosCache.generos,
             data: novaData
           }
         };
@@ -90,17 +90,17 @@ export class UsuarioAppService {
       }
       case DadosComplentarios.Biblioteca: {
         const bibliotecaElemento = dado as Biblioteca;
-        const dataActual = this.dadosOutros.bibliotecas?.data || [];
+        const dataActual = this.dadosOutrosCache.bibliotecas?.data || [];
         const existe = dataActual.some(ele => ele.id === bibliotecaElemento.id);
 
         const novaData = existe
           ? dataActual.map(ele => ele.id === bibliotecaElemento.id ? bibliotecaElemento : ele)
           : [...dataActual, bibliotecaElemento];
 
-        this.dadosOutros = {
-          ...this.dadosOutros,
+        this.dadosOutrosCache = {
+          ...this.dadosOutrosCache,
           bibliotecas: {
-            ...this.dadosOutros.bibliotecas,
+            ...this.dadosOutrosCache.bibliotecas,
             data: novaData
           }
         };
@@ -108,17 +108,17 @@ export class UsuarioAppService {
       }
       case DadosComplentarios.Editorial: {
         const editorialElemento = dado as Editorial;
-        const dataActual = this.dadosOutros.editoriais?.data || [];
+        const dataActual = this.dadosOutrosCache.editoriais?.data || [];
         const existe = dataActual.some(ele => ele.id === editorialElemento.id);
 
         const novaData = existe
           ? dataActual.map(ele => ele.id === editorialElemento.id ? editorialElemento : ele)
           : [...dataActual, editorialElemento];
 
-        this.dadosOutros = {
-          ...this.dadosOutros,
+        this.dadosOutrosCache = {
+          ...this.dadosOutrosCache,
           editoriais: {
-            ...this.dadosOutros.editoriais,
+            ...this.dadosOutrosCache.editoriais,
             data: novaData
           }
         };
@@ -126,17 +126,17 @@ export class UsuarioAppService {
       }
       case DadosComplentarios.Colecom: {
         const colecomElemento = dado as Colecom;
-        const dataActual = this.dadosOutros.colecons?.data || [];
+        const dataActual = this.dadosOutrosCache.colecons?.data || [];
         const existe = dataActual.some(ele => ele.id === colecomElemento.id);
 
         const novaData = existe
           ? dataActual.map(ele => ele.id === colecomElemento.id ? colecomElemento : ele)
           : [...dataActual, colecomElemento];
 
-        this.dadosOutros = {
-          ...this.dadosOutros,
+        this.dadosOutrosCache = {
+          ...this.dadosOutrosCache,
           colecons: {
-            ...this.dadosOutros.colecons,
+            ...this.dadosOutrosCache.colecons,
             data: novaData
           }
         };
@@ -144,17 +144,17 @@ export class UsuarioAppService {
       }
       case DadosComplentarios.EstiloLiterario: {
         const estiloLiterarioElemento = dado as EstiloLiterario;
-        const dataActual = this.dadosOutros.estilos?.data || [];
+        const dataActual = this.dadosOutrosCache.estilos?.data || [];
         const existe = dataActual.some(ele => ele.id === estiloLiterarioElemento.id);
 
         const novaData = existe
           ? dataActual.map(ele => ele.id === estiloLiterarioElemento.id ? estiloLiterarioElemento : ele)
           : [...dataActual, estiloLiterarioElemento];
 
-        this.dadosOutros = {
-          ...this.dadosOutros,
+        this.dadosOutrosCache = {
+          ...this.dadosOutrosCache,
           estilos: {
-            ...this.dadosOutros.estilos,
+            ...this.dadosOutrosCache.estilos,
             data: novaData
           }
         };
@@ -168,47 +168,47 @@ export class UsuarioAppService {
    * @param id Identificador do autor, genero, biblioteca etc. a eliminar
    * @param tipo tipo de dado, podendo ser Autor, Genero, Biblioteca, Editorial, Colecom ou EstiloLiterario
    */
-  removerElementoDadosOutros(id: string, tipo: DadosComplentarios) {
+  removerElementoDadosOutrosCache(id: string, tipo: DadosComplentarios) {
     switch (tipo) {
       case DadosComplentarios.Autor:
-        if (!this.dadosOutros?.autores?.data) return;
+        if (!this.dadosOutrosCache?.autores?.data) return;
 
-        this.dadosOutros.autores.data = this.dadosOutros.autores.data.filter(
+        this.dadosOutrosCache.autores.data = this.dadosOutrosCache.autores.data.filter(
           ele => ele.id !== +id
         );
         break;
       case DadosComplentarios.Genero:
-        if (!this.dadosOutros?.generos?.data) return;
+        if (!this.dadosOutrosCache?.generos?.data) return;
 
-        this.dadosOutros.generos.data = this.dadosOutros.generos.data.filter(
+        this.dadosOutrosCache.generos.data = this.dadosOutrosCache.generos.data.filter(
           ele => ele.id !== +id
         );
         break;
       case DadosComplentarios.Biblioteca:
-        if (!this.dadosOutros?.bibliotecas?.data) return;
+        if (!this.dadosOutrosCache?.bibliotecas?.data) return;
 
-        this.dadosOutros.bibliotecas.data = this.dadosOutros.bibliotecas.data.filter(
+        this.dadosOutrosCache.bibliotecas.data = this.dadosOutrosCache.bibliotecas.data.filter(
           ele => ele.id !== +id
         );
         break;
       case DadosComplentarios.Editorial:
-        if (!this.dadosOutros?.editoriais?.data) return;
+        if (!this.dadosOutrosCache?.editoriais?.data) return;
 
-        this.dadosOutros.editoriais.data = this.dadosOutros.editoriais.data.filter(
+        this.dadosOutrosCache.editoriais.data = this.dadosOutrosCache.editoriais.data.filter(
           ele => ele.id !== +id
         );
         break;
       case DadosComplentarios.Colecom:
-        if (!this.dadosOutros?.colecons?.data) return;
+        if (!this.dadosOutrosCache?.colecons?.data) return;
 
-        this.dadosOutros.colecons.data = this.dadosOutros.colecons.data.filter(
+        this.dadosOutrosCache.colecons.data = this.dadosOutrosCache.colecons.data.filter(
           ele => ele.id !== +id
         );
         break;
       case DadosComplentarios.EstiloLiterario:
-        if (!this.dadosOutros?.estilos?.data) return;
+        if (!this.dadosOutrosCache?.estilos?.data) return;
 
-        this.dadosOutros.estilos.data = this.dadosOutros.estilos.data.filter(
+        this.dadosOutrosCache.estilos.data = this.dadosOutrosCache.estilos.data.filter(
           ele => ele.id !== +id
         );
         break;
