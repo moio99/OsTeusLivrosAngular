@@ -6,7 +6,7 @@ import { LayoutService, UsuarioAppService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '@componhentesComuns';
-import { Estadisticas, GraficosData } from '@interfaces';
+import { Estadisticas, GraficosData, Outros } from '@interfaces';
 import { PeticomPendenteComponent } from '../../../peticom-pendente.guard';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { forkJoin } from 'rxjs';
@@ -243,7 +243,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
       this.outrosService.getTodo()
         .pipe(first())
         .subscribe({
-          next: (data) => {
+          next: (data: Outros) => {
             this.isDadosCombosPendente = false;
             this.dadosOutrosService.setDadosOutrosCache(data);
           },

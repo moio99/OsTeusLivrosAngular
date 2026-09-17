@@ -1,5 +1,5 @@
-import { DestroyRef, Injectable, Injector, Signal, computed, inject, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { DestroyRef, Injector, Service, Signal, computed, inject, signal } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { map, merge, startWith } from 'rxjs';
 import { Livro, LivroForm, ObjetoSimpleIdNome, Relectura } from '@interfaces';
 import { SimpleObjet } from '../../../shared/models/outros.model';
@@ -8,7 +8,15 @@ import { ValidaconsAMedida } from '../../../shared/validators/custom-validators'
 import { environment, environments } from '../../../../environments/environment';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
-@Injectable()
+// @Injectable({
+//   providedIn: 'root',
+// })
+// sustituido polo de abaixo, para limitalo ao ciclo de vida de certos compontes
+// com @Service({ autoProvided: false }) significa que o servizo non se rexistra de forma automática
+// no injector global da aplicación (root). Neste caso também há que meter:
+// providers: [EstadisticasService],
+// @Service() == @Service({ autoProvided: true })
+@Service({ autoProvided: false })
 export class LivroFormStateService {
   private readonly fb = inject(FormBuilder);
   private readonly injector = inject(Injector);
@@ -89,7 +97,7 @@ export class LivroFormStateService {
 
   processarDadosCombo(
     data: ObjetoSimpleIdNome[] | undefined | null,
-    control: AbstractControl,
+    control: FormControl<string | null>,
     ordenar = true
   ) {
     const elementosOrdenados = (data ?? [])

@@ -44,7 +44,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   protected dadosPaginasService = inject(DadosPaginasService);
   protected dadosOutrosService = inject(DadosOutrosService);
 
-  // Para tokens de tipo string ou InjectionToken
+  // Para poder passar TServico dende os filhos
   protected servicoElemento = inject<TServico>('OMeuServizoToeken' as any);
 
   ngOnInit(): void {

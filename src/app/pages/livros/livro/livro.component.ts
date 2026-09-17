@@ -58,12 +58,13 @@ export class LivroComponent implements OnInit {
   dadosComplentarios = DadosComplentarios;
   autoresLivro = signal<SimpleObjet[]>([]);
   generosLivro = signal<SimpleObjet[]>([]);
-  private readonly formState = inject(LivroFormStateService);
   dadosRelecturas = signal<RelecturaListado[]>([]);
   diasLeitura = 0;
 
   pontuacomEstrelas: number | undefined;
 
+  private readonly formState = inject(LivroFormStateService);
+  livroForm = this.formState.livroForm;
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private layoutService = inject(LayoutService);
@@ -74,7 +75,6 @@ export class LivroComponent implements OnInit {
   private relecturasService = inject(RelecturasService);
   private dialog = inject(MatDialog);
   private dadosPaginasService = inject(DadosPaginasService);
-  livroForm = this.formState.livroForm;
 
 
   dadosApiResource = rxResource({
@@ -155,7 +155,7 @@ export class LivroComponent implements OnInit {
         .getTodo()          // Dados complementarios
         .pipe(first())
         .subscribe({
-          next: (v: object) => {
+          next: (v: Outros) => {
             this.dadosOutrosService.setDadosOutrosCache(v);
             this.dadosOutrosObtidos(this.dadosOutrosService.getDadosOutrosCache());
             this.obterDadosRelecturasELivro(idLivro)

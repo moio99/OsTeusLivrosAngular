@@ -17,9 +17,9 @@ export class DadosOutrosService {
 
   dadosOutrosCache: Outros | null = null;
 
-  setDadosOutrosCache(data: object | null) {
+  setDadosOutrosCache(data: Outros | null) {
     if (data)
-      this.dadosOutrosCache = data as Outros;
+      this.dadosOutrosCache = data;
   }
 
   getDadosOutrosCache() {
@@ -161,44 +161,46 @@ export class DadosOutrosService {
    * @param tipo tipo de dado, podendo ser Autor, Genero, Biblioteca, Editorial, Colecom ou EstiloLiterario
    */
   removerElementoDadosOutrosCache(id: string, tipo: DadosComplentarios) {
+    if (!this.dadosOutrosCache) return;
+
     switch (tipo) {
       case DadosComplentarios.Autor:
-        if (!this.dadosOutrosCache?.autores?.data) return;
+        if (!this.dadosOutrosCache.autores?.data) return;
 
         this.dadosOutrosCache.autores.data = this.dadosOutrosCache.autores.data.filter(
           ele => ele.id !== +id
         );
         break;
       case DadosComplentarios.Genero:
-        if (!this.dadosOutrosCache?.generos?.data) return;
+        if (!this.dadosOutrosCache.generos?.data) return;
 
         this.dadosOutrosCache.generos.data = this.dadosOutrosCache.generos.data.filter(
           ele => ele.id !== +id
         );
         break;
       case DadosComplentarios.Biblioteca:
-        if (!this.dadosOutrosCache?.bibliotecas?.data) return;
+        if (!this.dadosOutrosCache.bibliotecas?.data) return;
 
         this.dadosOutrosCache.bibliotecas.data = this.dadosOutrosCache.bibliotecas.data.filter(
           ele => ele.id !== +id
         );
         break;
       case DadosComplentarios.Editorial:
-        if (!this.dadosOutrosCache?.editoriais?.data) return;
+        if (!this.dadosOutrosCache.editoriais?.data) return;
 
         this.dadosOutrosCache.editoriais.data = this.dadosOutrosCache.editoriais.data.filter(
           ele => ele.id !== +id
         );
         break;
       case DadosComplentarios.Colecom:
-        if (!this.dadosOutrosCache?.colecons?.data) return;
+        if (!this.dadosOutrosCache.colecons?.data) return;
 
         this.dadosOutrosCache.colecons.data = this.dadosOutrosCache.colecons.data.filter(
           ele => ele.id !== +id
         );
         break;
       case DadosComplentarios.EstiloLiterario:
-        if (!this.dadosOutrosCache?.estilos?.data) return;
+        if (!this.dadosOutrosCache.estilos?.data) return;
 
         this.dadosOutrosCache.estilos.data = this.dadosOutrosCache.estilos.data.filter(
           ele => ele.id !== +id
