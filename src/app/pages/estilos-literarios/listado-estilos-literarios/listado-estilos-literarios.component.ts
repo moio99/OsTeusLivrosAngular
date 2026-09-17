@@ -39,10 +39,6 @@ export class ListadoEstilosLiterariosComponent extends BaseListadoComponent<List
     return this.estilosLiterariosService.getListadoCosLivros();
   }
 
-  // Pasamos a funçom para guardar na caché sen erros de tipos
-  protected guardarNaCache(dados: BaseListadoDadosApi<Editorial>): void {
-    this.estilosLiterariosService.setListadoCosLivros(dados);
-  }
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
     this.onBorrarElemento(

@@ -39,11 +39,6 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
     return this.generosService.getListadoCosLivros();
   }
 
-  // Pasamos a funçom para guardar na caché sen erros de tipos
-  protected guardarNaCache(dados: BaseListadoDadosApi<Genero>): void {
-    this.generosService.setListadoCosLivros(dados);
-  }
-
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
     this.onBorrarElemento(
       id,

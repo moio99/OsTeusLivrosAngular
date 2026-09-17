@@ -1,5 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService } from '@servizosFlow';
 import { Observable } from 'rxjs';
@@ -19,43 +19,73 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
 
   // Cada componhente filho implementará este método para dicir de onde saca os dados
   protected abstract definirChamadaApi(): Observable<BaseListadoDadosApi<any>>;
-  // funçom para guardar na caché
-  protected abstract guardarNaCache(dados: BaseListadoDadosApi<any>): void;
 
   // O recurso encarregase de subscribirse, fazer o unsubscribe automático e jestionar o estado (loading, error, etc.)
   protected readonly listadoResource = rxResource({
     stream: () => {
-      const chamada$ = this.definirChamadaApi();
-
-      // Ejecutamos efectos secundarios (mensagens e caché) de jeito declarativo
-      chamada$.subscribe({
-        next: (resposta) => {
-          const rexistros = resposta?.data ?? [];
-          if (rexistros.length > 0) {
+      return this.definirChamadaApi().pipe(
+        tap({
+          next: (resposta) => {
+            const rexistros = resposta?.data ?? [];
+            if (rexistros.length > 0) {
+              this.layoutService.amosarInfo({
+                tipo: InformacomPeTipo.Info,
+                mensagem: `${rexistros.length} registros obtidos`
+              });
+            } else {
+              this.layoutService.amosarInfo({
+                tipo: InformacomPeTipo.Aviso,
+                mensagem: 'Nom se obtiverom dados.'
+              });
+            }
+          },
+          error: (e) => {
+            console.error(e);
             this.layoutService.amosarInfo({
-              tipo: InformacomPeTipo.Info,
-              mensagem: `${rexistros.length} registros obtidos`
-            });
-            this.guardarNaCache(resposta);
-          } else {
-            this.layoutService.amosarInfo({
-              tipo: InformacomPeTipo.Aviso,
-              mensagem: 'Nom se obtiverom dados.'
+              tipo: InformacomPeTipo.Erro,
+              mensagem: `Nom se puiderom obter ${this.nomePlural}.`
             });
           }
-        },
-        error: (e) => {
-          console.error(e);
-          this.layoutService.amosarInfo({
-            tipo: InformacomPeTipo.Erro,
-            mensagem: `Nom se puiderom obter ${this.nomePlural}.`
-          });
-        }
-      });
-
-      return chamada$;
+        })
+      );
     }
   });
+
+
+
+  // O recurso encarregase de subscribirse, fazer o unsubscribe automático e jestionar o estado (loading, error, etc.)
+  // protected readonly listadoResource = rxResource({
+  //   stream: () => {
+  //     const chamada$ = this.definirChamadaApi();
+
+  //     // Ejecutamos efectos secundarios (mensagens e caché) de jeito declarativo
+  //     chamada$.subscribe({
+  //       next: (resposta) => {
+  //         const rexistros = resposta?.data ?? [];
+  //         if (rexistros.length > 0) {
+  //           this.layoutService.amosarInfo({
+  //             tipo: InformacomPeTipo.Info,
+  //             mensagem: `${rexistros.length} registros obtidos`
+  //           });
+  //         } else {
+  //           this.layoutService.amosarInfo({
+  //             tipo: InformacomPeTipo.Aviso,
+  //             mensagem: 'Nom se obtiverom dados.'
+  //           });
+  //         }
+  //       },
+  //       error: (e) => {
+  //         console.error(e);
+  //         this.layoutService.amosarInfo({
+  //           tipo: InformacomPeTipo.Erro,
+  //           mensagem: `Nom se puiderom obter ${this.nomePlural}.`
+  //         });
+  //       }
+  //     });
+
+  //     return chamada$;
+  //   }
+  // });
 
   // Fai um cast seguro "as unknown as T[]" para solucionar o conflito de tipos Colecom/ListadoColecons
   readonly listadoDados = computed<T[]>(() => {

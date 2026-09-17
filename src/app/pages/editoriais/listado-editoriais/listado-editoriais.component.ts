@@ -38,11 +38,6 @@ export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEdit
     return this.editoriaisService.getListadoCosLivros();
   }
 
-  // Pasamos a funçom para guardar na caché sen erros de tipos
-  protected guardarNaCache(dados: BaseListadoDadosApi<Editorial>): void {
-    this.editoriaisService.setListadoCosLivros(dados);
-  }
-
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
     this.onBorrarElemento(
       id,

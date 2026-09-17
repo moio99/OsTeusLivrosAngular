@@ -32,11 +32,6 @@ export class ListadoBibliotecasComponent extends BaseListadoComponent<ListadoBib
     return this.bibliotecasService.getListadoCosLivros();
   }
 
-  // Pasamos a funçom para guardar na caché sen erros de tipos
-  protected guardarNaCache(dados: BaseListadoDadosApi<Biblioteca>): void {
-    this.bibliotecasService.setListadoCosLivros(dados);
-  }
-
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
     this.onBorrarElemento(
       id,

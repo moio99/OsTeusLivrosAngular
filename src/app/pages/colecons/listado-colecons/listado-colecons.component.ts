@@ -33,11 +33,6 @@ export class ListadoColeconsComponent extends BaseListadoComponent<ListadoColeco
     return this.coleconsService.getListadoCosLivros();
   }
 
-  // Pasamos a funçom para guardar na caché sen erros de tipos
-  protected guardarNaCache(dados: BaseListadoDadosApi<Colecom>): void {
-    this.coleconsService.setListadoCosLivros(dados);
-  }
-
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
     this.onBorrarElemento(
       id,

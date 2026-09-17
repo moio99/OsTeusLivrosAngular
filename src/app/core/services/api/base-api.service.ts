@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { first, Observable, of, tap } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoDadosApi, ResultadoMeta } from '../../../shared/models/base-dados';
 import { inject } from '@angular/core';
@@ -32,13 +32,14 @@ export abstract class BaseApiService<T> {
     if (isProdOrPre && this.cacheData) {
       return of(this.cacheData);
     } else {
-      return this.http.get<BaseListadoDadosApi<T>>(`${environment.apiUrl}${this.rotaIntermedia}/${this.rotaIntermedia}CosLivros`);
-    }
-  }
-
-  setListadoCosLivros(dados: BaseListadoDadosApi<T>): void {
-    if (this.isProdOrPre() && !this.cacheData) {
-      this.cacheData = dados;
+      return this.http.get<BaseListadoDadosApi<T>>(`${environment.apiUrl}${this.rotaIntermedia}/${this.rotaIntermedia}CosLivros`)
+        .pipe(first(),
+          tap(resposta => {
+            if (isProdOrPre) {
+              this.cacheData = resposta;
+            }
+          })
+        );
     }
   }
 

@@ -45,7 +45,8 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
 
   tipoListadoTitulo = computed(() => {
     const params = this.parametrosBusqueda();
-    if (!params) return '';
+    if (!params)
+      return '';
 
     return Number(params.tipo) === ListadosAutoresTipos.porNacionalidade
       ? 'por nacionalidade' : 'por país';
@@ -126,15 +127,10 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
 
     // Se há parámetros válidos, filtro
     if (parametros && parametros.id !== undefined) {
-      return this.autoresService.getListadoAutoresFiltrados(parametros.id, parametros.tipo);
+      return this.autoresService.getListadoAutoresFiltrados(parametros);
     }
 
     return this.autoresService.getListadoAutores();
-  }
-
-  // Pasamos a funçom para guardar na caché sen erros de tipos
-  protected guardarNaCache(dados: BaseListadoDadosApi<ListadoAutores>): void {
-    this.autoresService.setListadoAutores(dados);
   }
 
   onBorrar(id: string, nome: string, quantidadeLivros: number) {
