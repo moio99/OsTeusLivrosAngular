@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { first, map, tap } from 'rxjs/operators';
 import { GenerosService, LivrosService, OutrosService } from '@servizosApi';
-import { LayoutService, DadosPaginasService, CoresIdiomasService } from '@servizosFlow';
+import { LayoutService, DadosPaginasService, CoresIdiomasService, DadosPagina } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo, ListadosLivrosTipos } from '../../../shared/enums/estadisticasTipos';
 import { CommonModule } from '@angular/common';
@@ -290,13 +290,11 @@ export class ListadoLivrosComponent implements OnInit {
   onIrPagina(rota: string, id: string, idRelectura: string = '0'): void{
     this.layoutService.amosarInfo(undefined);
     if (rota === 'livros/livro') {
-      this.dadosPaginasService.setDadosPagina({id: id, nomePagina: 'livro', elemento: undefined});
-      this.router.navigateByUrl(rota + '?id=' + id + '&idRelectura=' + idRelectura);
+      const dadosPagina: DadosPagina = {id: id, nomePagina: 'livro', elemento: undefined};
+      this.dadosPaginasService.setDadosPagina(dadosPagina);
+      this.router.navigateByUrl(`${rota}?id=${id}&idRelectura=${idRelectura}`);
     } else {
-      // A autores navegase co state
-      this.router.navigate([rota], {
-        state: { id: id, idRelectura: 'algo mais de probas' },
-      });
+      this.router.navigateByUrl(`/autores/autor?id=${id}`);
     }
   }
 

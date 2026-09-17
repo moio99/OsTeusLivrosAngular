@@ -23,6 +23,10 @@ export class DadosPaginasService {
 
   constructor() { }
 
+  /**
+   * Garda num listado as dados do livro antes de ir a umha página (Editoriais, Generos etc)
+   * @param dado Objeto com o id e o nome da pagina e os dados
+   */
   setDadosPagina(dado: DadosPagina) {
     let index = this.dados.findIndex(d => d.id === dado.id && d.nomePagina === dado.nomePagina);
     if (index > -1) {
@@ -33,6 +37,12 @@ export class DadosPaginasService {
     }
   }
 
+  /**
+   * Recupera do listado os dados da página de procedencia, estamos retornando a esa página.
+   * @param id do elemento
+   * @param nomePagina página de onde se saiu
+   * @returns dados que a mosar na página à que retornamos
+   */
   getDadosPagina(id: string, nomePagina: string): DadosPagina | undefined {
     if (this.dados.length === 0)
       return undefined;

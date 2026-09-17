@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule} from '@angular/material/datepicker';
 import { ConverterAData } from '../../../shared/classes/date-convert';
-import { LayoutService, DadosPaginasService } from '@servizosFlow';
+import { LayoutService, DadosPaginasService, DadosPagina } from '@servizosFlow';
 import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { Title } from '@angular/platform-browser';
@@ -625,7 +625,8 @@ export class LivroComponent implements OnInit {
 
   onIrPagina(rota: string, id: number): void {
     let livro = this.setDadosLivro();
-    this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+    const dadosPagina: DadosPagina = {id: this.idLivro, nomePagina: this.nomePagina, elemento: livro};
+    this.dadosPaginasService.setDadosPagina(dadosPagina);
     this.layoutService.amosarInfo(undefined);
     this.router.navigateByUrl(rota + '?id=' + id);
   }
@@ -668,7 +669,8 @@ export class LivroComponent implements OnInit {
     }
     if (elemento) {
       let livro = this.setDadosLivro();
-      this.dadosPaginasService.setDadosPagina({id: this.idLivro, nomePagina: this.nomePagina, elemento: livro});
+      const dadosPagina: DadosPagina = {id: this.idLivro, nomePagina: this.nomePagina, elemento: livro};
+      this.dadosPaginasService.setDadosPagina(dadosPagina);
       this.dadosPaginasService.setNovoDadoLivro({tipo: tipoDado, elemento: elemento});
       this.layoutService.amosarInfo(undefined);
       this.router.navigateByUrl(rota + '?id=' + elemento.id);
@@ -702,7 +704,8 @@ export class LivroComponent implements OnInit {
 
   private guardarDadosDoLivro(tipo: DadosComplentarios) {
     let livro = this.setDadosLivro();
-    this.dadosPaginasService.setDadosPagina({id: livro.id, nomePagina: this.nomePagina, elemento: livro});
+    const dadosPagina: DadosPagina = {id: this.idLivro, nomePagina: this.nomePagina, elemento: livro};
+    this.dadosPaginasService.setDadosPagina(dadosPagina);
     this.dadosPaginasService.setNovoDadoLivro({tipo: tipo, elemento: undefined});
     this.layoutService.amosarInfo(undefined);
   }
