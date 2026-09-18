@@ -42,7 +42,7 @@ export class PorTiposComponent {
       }
 
       return this.autoresService.getListadoAutoresPorPaises().pipe(
-        map(v => this.dadosObtidos(v, true)),
+        map(v => this.dadosObtidos(v, false)),
         catchError((erro) => {
           return this.gestomErro(erro, 'paises');
         })

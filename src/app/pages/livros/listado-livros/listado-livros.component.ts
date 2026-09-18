@@ -328,6 +328,7 @@ export class ListadoLivrosComponent implements OnInit {
   }
 }
 
+// chámase dende app.routes.ts
 export const childRoutes: Routes = [
   {
     path: '',

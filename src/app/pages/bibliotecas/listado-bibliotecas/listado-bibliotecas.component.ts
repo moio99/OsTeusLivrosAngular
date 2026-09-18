@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Routes } from '@angular/router';
 import { Biblioteca, ListadoBibliotecas } from '@interfaces';
 import { BibliotecasService } from '@servizosApi';
@@ -21,6 +21,9 @@ import { DadosOutrosService } from '../../../core/services/flow/dados-outros.ser
 export class ListadoBibliotecasComponent extends BaseListadoComponent<ListadoBibliotecas> {
 
   protected nomePlural = 'as bibliotecas';
+
+  // Obligatorio, no listado de autores sim que se usa, se for undefined en vez de null nom se chama a búsqueda no rxResource
+  protected parametrosBusqueda = signal<any>(null);
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
 

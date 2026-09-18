@@ -1,8 +1,8 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
-import { first, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ListadoAutores, ParametrosAutor } from '@interfaces';
-import { AutoresService, OutrosService } from '@servizosApi';
+import { AutoresService } from '@servizosApi';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { DadosComplentarios, InformacomPeTipo, ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
 import { AutorComponent } from '../autor/autor.component';
@@ -27,18 +27,19 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   nomeAlfabetico = ', alfabético';
   numeroLivros = ', número de livros';
   numeroLivrosLidos = ', número de livros lidos';
-  filtroPaisOuNacionalidade = signal<string>('');
+  // filtroPaisOuNacionalidade = signal<string>('');
   tipoOrdeacom = signal<string>(this.nomeAlfabetico);
   inverso = signal<boolean>(false);
 
-  private outrosService = inject(OutrosService);
   private autoresService = inject(AutoresService);
   private route = inject(ActivatedRoute);
   private dadosOutrosService = inject(DadosOutrosService);
 
-  parametrosBusqueda = toSignal(
+  protected parametrosBusqueda = toSignal(
     this.route.queryParams.pipe(
-      map(params => (params && Object.keys(params).length > 0 ? (params as ParametrosAutor) : null))
+      map(params => (
+        params && Object.keys(params).length > 0 ? (params as ParametrosAutor) : null
+      ))
     ),
     { initialValue: null } // Valor inicial mentres a URL non emita nada
   );
@@ -49,7 +50,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       return '';
 
     return Number(params.tipo) === ListadosAutoresTipos.porNacionalidade
-      ? 'por nacionalidade' : 'por país';
+      ? ' por nacionalidade' : ' por país';
   });
 
   listadoDadosOrdenados = computed(() => {
@@ -72,35 +73,6 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
     }
   );
 
-  // EFECTO: Encárgase ÚNICAMENTE de actualizar o título cando cambian os parámetros
-  // Angular xestiona este ciclo de vida sen romper a pureza do recurso
-  // Poderia mete-lo no constructor e funcionaria igual
-  trackTituloEffect = effect(() => {
-    const parametros = this.parametrosBusqueda();
-
-    // Se non hai parámetros ou non teñen ID, limpamos o filtro ou non facemos nada
-    if (!parametros || parametros.id === undefined) return;
-
-    const { id, tipo } = parametros;
-    const porNacionalidade = Number(tipo) === ListadosAutoresTipos.porNacionalidade;
-
-    const obterNome$ = porNacionalidade
-      ? this.outrosService.getNacionalidadeNome(id)
-      : this.outrosService.getPaisNome(id);
-
-    const mensaxeErroNome = porNacionalidade
-      ? `Nom se puiderom obter a nacionalidade ${id}`
-      : `Nom se puiderom obter o pais ${id}`;
-
-    obterNome$.pipe(first()).subscribe({
-      next: (nome) => this.filtroPaisOuNacionalidade.set(` ${nome}`),
-      error: (e) => {
-        console.error(e);
-        this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Erro, mensagem: mensaxeErroNome });
-      }
-    });
-  });
-
   constructor() {
     super();
 
@@ -121,13 +93,12 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
 
   // Para que BaseListadoComponent saiba de onde obter os dados
   // Indicamos a chamada correspondente (TypeScript infire o tipo correctamente)
-  protected definirChamadaApi(): Observable<BaseListadoDadosApi<ListadoAutores>> {
-
-    const parametros = this.parametrosBusqueda();
+  protected definirChamadaApi(parametros?: any): Observable<BaseListadoDadosApi<ListadoAutores>> {
 
     // Se há parámetros válidos, filtro
-    if (parametros && parametros.id !== undefined) {
-      return this.autoresService.getListadoAutoresFiltrados(parametros);
+    if (parametros && parametros.params) {
+      const param = parametros.params as ParametrosAutor;
+      return this.autoresService.getListadoAutoresFiltrados(param);
     }
 
     return this.autoresService.getListadoAutores();
@@ -161,6 +132,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   }
 }
 
+// chámase dende app.routes.ts
 export const childRoutes: Routes = [
   {
     path: '',

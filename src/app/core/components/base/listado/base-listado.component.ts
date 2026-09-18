@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { first, tap } from 'rxjs/operators';
 import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService } from '@servizosFlow';
@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { BaseListadoDadosApi } from '../../../../shared/models/base-dados';
+import { ParametrosAutor } from '@interfaces';
 
 @Component({
   template: '' // Componente abstracto, nom precisa template
@@ -18,12 +19,15 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
   readonly router = inject(Router);
 
   // Cada componhente filho implementará este método para dicir de onde saca os dados
-  protected abstract definirChamadaApi(): Observable<BaseListadoDadosApi<any>>;
+  protected abstract definirChamadaApi(params?: any): Observable<BaseListadoDadosApi<any>>;
+
+  protected abstract parametrosBusqueda: any;
 
   // O recurso encarregase de subscribirse, fazer o unsubscribe automático e jestionar o estado (loading, error, etc.)
   protected readonly listadoResource = rxResource({
-    stream: () => {
-      return this.definirChamadaApi().pipe(
+    params: () => this.parametrosBusqueda(),    // Qando os parámetros cambien relanzara-se o stream, se fossem undefined o stream non se ejecutará
+    stream: (parametrosSoAutor) => {
+      return this.definirChamadaApi(parametrosSoAutor).pipe(
         tap({
           next: (resposta) => {
             const rexistros = resposta?.data ?? [];

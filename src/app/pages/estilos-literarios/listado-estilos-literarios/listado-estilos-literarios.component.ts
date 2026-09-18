@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
@@ -23,6 +23,9 @@ import { DadosOutrosService } from '../../../core/services/flow/dados-outros.ser
 export class ListadoEstilosLiterariosComponent extends BaseListadoComponent<ListadoEstilosLiterarios> {
 
   protected nomePlural = 'os estilos literarios';
+
+  // Obligatorio, no listado de autores sim que se usa, se for undefined en vez de null nom se chama a búsqueda no rxResource
+  protected parametrosBusqueda = signal<any>(null);
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   numeroLivros = ', número de livros';

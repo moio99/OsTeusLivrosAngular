@@ -23,6 +23,9 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
 
   protected nomePlural = 'as editoriais';
 
+  // Obligatorio, no listado de autores sim que se usa, se for undefined en vez de null nom se chama a búsqueda no rxResource
+  protected parametrosBusqueda = signal<any>(null);
+
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   nomeAlfabetico = ', alfabético';
   numeroLivros = ', número de livros';
