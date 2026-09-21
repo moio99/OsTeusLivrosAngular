@@ -1,3 +1,5 @@
+@use 'constantes';
+
 .contido-taboas {
   display: flex;
   justify-content: space-around;
@@ -13,6 +15,19 @@
     font-weight: bold;
   }
 
+  .fila-listado {
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+  }
+
+  /* Resaltado ao pasar o rato por riba */
+  .fila-listado:hover {
+    background-color: constantes.$cor-fundo-clara;
+  }
+}
+
+.resaltada {
+  background-color: constantes.$cor-fundo-clara;
 }
 
 .sub-menu { display: none; }

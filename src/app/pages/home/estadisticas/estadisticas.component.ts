@@ -1,8 +1,8 @@
-import { Component, effect, ElementRef, inject, OnInit, signal, ViewChild  } from '@angular/core';
+import { Component, computed, ElementRef, inject, OnInit, signal, ViewChild  } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { EstadisticasService, GraficosService, OutrosService} from '@servizosApi';
-import { LayoutService, UsuarioAppService } from '@servizosFlow';
+import { LayoutService } from '@servizosFlow';
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { OrdeColunaComponent } from '@componhentesComuns';
@@ -38,6 +38,12 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
   ordePaginasGeneros = 'ordePaginasGeneros';
   tipoOrdeacomGeneros = signal<string>(this.ordeQuantidadeGeneros);
   inversoGeneros = signal<boolean>(true);
+
+  anosGeneroFilaActiva = signal<number[] | null>(null);
+  anosResaltadosSet = computed(() => {
+    const anos = this.anosGeneroFilaActiva();
+    return anos ? new Set(anos) : new Set<number>();
+  });
 
   @ViewChild('subMenu') subMenu!: ElementRef;
   @ViewChild('taboaAnos') taboaAnos!: ElementRef;
@@ -192,7 +198,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
     forkJoin([observavel1, observavel2, observavel3])
       .subscribe({
         next: ([res1, res2, res3]) => {
-          // só se ejecuta quando acabam as duas chamadas
+          // só se ejecuta quando acabam as tres chamadas
           this.idiomasSignal.set(this.dadosObtidos(EstadisticasTipo.Idioma, res1));
           this.anosSignal.set(this.dadosObtidos(EstadisticasTipo.Ano, res2));
           this.generosSignal.set(this.dadosObtidos(EstadisticasTipo.Genero, res3));
@@ -252,5 +258,13 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
           },
       });
     }
+  }
+
+  activarFilaGenero(anos: number[]): void {
+    this.anosGeneroFilaActiva.set(anos);
+  }
+
+  desactivarFilaGenero(): void {
+    this.anosGeneroFilaActiva.set(null);
   }
 }

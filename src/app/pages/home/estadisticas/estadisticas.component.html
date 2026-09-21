@@ -68,7 +68,7 @@
         </th>
       </tr>
       @for (entrada of anosSignal(); track entrada) {
-        <tr>
+        <tr [class.resaltada]="anosResaltadosSet().has(entrada.id)">
           <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)" class="listado-accom">
             {{entrada.nome}}
             @if ($last) {
@@ -108,7 +108,9 @@
         </th>
       </tr>
       @for (entrada of generosSignal(); track entrada) {
-        <tr>
+        <tr class="fila-listado"
+            (mouseenter)="activarFilaGenero(entrada.anos)"
+            (mouseleave)="desactivarFilaGenero()">
           <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="listado-accom">{{entrada.nome}}</td>
           <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="listado-accom">{{entrada.quantidade}}</td>
           <td>{{entrada.quantidadeRelecturas}}</td>

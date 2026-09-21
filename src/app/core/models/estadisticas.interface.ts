@@ -10,4 +10,5 @@ export interface Estadisticas {
   quantidade: number;
   quantidadepaginas: number;
   quantidadeRelecturas: number;
+  anos: number[]
 }
