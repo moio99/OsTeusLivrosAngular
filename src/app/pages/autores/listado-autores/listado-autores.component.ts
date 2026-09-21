@@ -27,7 +27,6 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   nomeAlfabetico = ', alfabético';
   numeroLivros = ', número de livros';
   numeroLivrosLidos = ', número de livros lidos';
-  // filtroPaisOuNacionalidade = signal<string>('');
   tipoOrdeacom = signal<string>(this.nomeAlfabetico);
   inverso = signal<boolean>(false);
 

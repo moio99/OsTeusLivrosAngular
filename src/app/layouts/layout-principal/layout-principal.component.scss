@@ -1,4 +1,4 @@
-@use "../../../../src/assets/styles/constantes.scss";
+@use 'constantes';
 
 $contedor: "contedor";
 
@@ -25,7 +25,7 @@ $contedor: "contedor";
   .#{$contedor}__cabezalho{
     grid-area: 1/1/2/3; //cabezalho;
     background: #9399aa url(../../../assets/images/fundoCinzento.jpg) repeat left top;
-    color: rgb(211, 207, 248);
+    color: constantes.$cor-fundo-clara;
   }
   .#{$contedor}__menu{
     grid-area: 2/1/4/2; //menu;

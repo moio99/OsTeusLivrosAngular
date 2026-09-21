@@ -43,7 +43,7 @@ button:disabled {
 
 .popup-multiselecom {
   background: #1d1d1e url(../images/fundoAzul.png) repeat left top;
-  color: rgb(211, 207, 248);
+  color: constantes.$cor-fundo-clara;
   display: flex;
   flex-direction: column;
   padding: 10px;

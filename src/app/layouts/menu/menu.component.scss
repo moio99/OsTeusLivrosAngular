@@ -1,10 +1,12 @@
+@use 'constantes';
+
 .contido-menu {
   height: 100%;
   display: flex;
   flex-direction: column;
   background: #9399aa url(../../../assets/images/fundoCinzento.jpg) repeat left top;
   gap: 10px;        // espaço entre elementos.
-  color: rgb(211, 207, 248);
+  color: constantes.$cor-fundo-clara;
 }
 
 ul {
