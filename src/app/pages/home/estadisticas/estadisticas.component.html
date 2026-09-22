@@ -69,6 +69,7 @@
         <th>CC</th>
       </tr>
       @for (entrada of anosSignal(); track entrada) {
+        <pre>{{ anosResaltadosSet().has(entrada.id) }}</pre>
         <tr class="fila-listado"
               [class.resaltada]="anosResaltadosSet().has(entrada.id)"
               (mouseenter)="activarFilaAno(entrada.generos)"

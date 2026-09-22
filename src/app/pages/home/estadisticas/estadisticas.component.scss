@@ -34,10 +34,10 @@
       height: calc(100vh - constantes.$altura-cabezalho);
     }
   }
-}
 
-.resaltada {
-  background-color: constantes.$cor-fundo-clara;
+  .resaltada {
+    background-color: constantes.$cor-fundo-clara;
+  }
 }
 
 .sub-menu { display: none; }
