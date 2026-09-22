@@ -1,6 +1,6 @@
-@use "./assets/styles/comuns.scss";
-@use "./assets/styles/constantes.scss";
-@use "./assets/styles/controis.scss";
+@use "comuns";
+@use "constantes";
+@use "controis";
 
 html, body {
   margin: 0px;

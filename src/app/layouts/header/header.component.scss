@@ -1,5 +1,7 @@
+@use "constantes";
+
 .contido {
-  height: 100%;
+  height: constantes.$altura-cabezalho;
   display: flex;
   align-items: center;
   margin: auto 10px;

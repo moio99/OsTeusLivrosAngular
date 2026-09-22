@@ -4,6 +4,7 @@
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
+  font-size: 90%;
 
   .taboa-linguas {
     display: flex;
@@ -11,7 +12,6 @@
 
   .paginas {
     font-family: 'Courier New', monospace;
-    font-size: large;
     font-weight: bold;
   }
 
@@ -23,6 +23,16 @@
   /* Resaltado ao pasar o rato por riba */
   .fila-listado:hover {
     background-color: constantes.$cor-fundo-clara;
+  }
+
+  @media (min-width: 650px) {   // Actua com umha resoluçom por riba de 650px
+    .taboa-generos {
+      overflow-y: scroll;
+      overflow-x: hidden;
+      scrollbar-color: constantes.$cor-fundo-barra-scroll constantes.$cor-barra-scroll;
+      scrollbar-width: thin;
+      height: calc(100vh - constantes.$altura-cabezalho);
+    }
   }
 }
 

@@ -84,39 +84,41 @@
   }
 
   @if (generosSignal().length > 0) {
-    <table>
-      <tr>
-        <th>Género</th>
-        <th (click)="setOrdeQuantidadeGeneros()">
-          <div style="display: flex;">
-            Quantidade
-            <omla-orde-coluna
-              [nome]="ordeQuantidadeGeneros"
-              [actual]="tipoOrdeacomGeneros()"
-              [inverso]="inversoGeneros()"></omla-orde-coluna>
-          </div>
-        </th>
-        <th>Relecturas</th>
-        <th (click)="setOrdePaginasGeneros()">
-          <div style="display: flex;">
-            Páginas
-            <omla-orde-coluna
-              [nome]="ordePaginasGeneros"
-              [actual]="tipoOrdeacomGeneros()"
-              [inverso]="inversoGeneros()"></omla-orde-coluna>
-          </div>
-        </th>
-      </tr>
-      @for (entrada of generosSignal(); track entrada) {
-        <tr class="fila-listado"
-            (mouseenter)="activarFilaGenero(entrada.anos)"
-            (mouseleave)="desactivarFilaGenero()">
-          <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="listado-accom">{{entrada.nome}}</td>
-          <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="listado-accom">{{entrada.quantidade}}</td>
-          <td>{{entrada.quantidadeRelecturas}}</td>
-          <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="paginas listado-accom">{{entrada.quantidadepaginas}}</td>
+    <div class="taboa-generos">
+      <table>
+        <tr>
+          <th>Género</th>
+          <th (click)="setOrdeQuantidadeGeneros()">
+            <div style="display: flex;">
+              Quantidade
+              <omla-orde-coluna
+                [nome]="ordeQuantidadeGeneros"
+                [actual]="tipoOrdeacomGeneros()"
+                [inverso]="inversoGeneros()"></omla-orde-coluna>
+            </div>
+          </th>
+          <th>Relecturas</th>
+          <th (click)="setOrdePaginasGeneros()">
+            <div style="display: flex;">
+              Páginas
+              <omla-orde-coluna
+                [nome]="ordePaginasGeneros"
+                [actual]="tipoOrdeacomGeneros()"
+                [inverso]="inversoGeneros()"></omla-orde-coluna>
+            </div>
+          </th>
         </tr>
-      }
-    </table>
+        @for (entrada of generosSignal(); track entrada) {
+          <tr class="fila-listado"
+              (mouseenter)="activarFilaGenero(entrada.anos)"
+              (mouseleave)="desactivarFilaGenero()">
+            <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="listado-accom">{{entrada.nome}}</td>
+            <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="listado-accom">{{entrada.quantidade}}</td>
+            <td>{{entrada.quantidadeRelecturas}}</td>
+            <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="paginas listado-accom">{{entrada.quantidadepaginas}}</td>
+          </tr>
+        }
+      </table>
+    </div>
   }
 </div>

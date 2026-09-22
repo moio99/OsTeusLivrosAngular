@@ -19,7 +19,7 @@ export class HeaderComponent {
   //   this.carregandoService.carregando$,
   //   { initialValue: false } // Valor inicial por defecto
   // );
-  protected readonly isAmosarCarregando = this.carregandoService.carregando;
+  protected readonly isAmosarCarregando = this.carregandoService.carregando;  // É um signal
 
   onAmosarMenu(): void {
     this.layoutService.abrirMenu();
