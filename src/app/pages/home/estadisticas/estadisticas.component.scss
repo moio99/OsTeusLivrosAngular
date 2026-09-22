@@ -21,7 +21,7 @@
   }
 
   /* Resaltado ao pasar o rato por riba */
-  .fila-listado:hover {
+  .fila-listado:hover td:not(.non-resaltar) {
     background-color: constantes.$cor-fundo-clara;
   }
 

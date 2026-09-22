@@ -82,7 +82,7 @@
           <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)" class="listado-accom">{{entrada.quantidade}}</td>
           <td>{{entrada.quantidadeRelecturas}}</td>
           <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)" class="paginas listado-accom">{{entrada.quantidadepaginas}}</td>
-          <td>{{anosResaltadosMapa()[entrada.id]}}</td>
+          <td class="non-resaltar">{{anosResaltadosMapa()[entrada.id]}}</td>
         </tr>
       }
     </table>
@@ -123,7 +123,7 @@
             <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="listado-accom">{{entrada.quantidade}}</td>
             <td>{{entrada.quantidadeRelecturas}}</td>
             <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="paginas listado-accom">{{entrada.quantidadepaginas}}</td>
-            <td>{{generosResaltadosMapa()[entrada.id]}}</td>
+            <td class="non-resaltar">{{generosResaltadosMapa()[entrada.id]}}</td>
           </tr>
         }
       </table>
