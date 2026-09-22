@@ -66,9 +66,13 @@
               [inverso]="inversoAnos()"></omla-orde-coluna>
           </div>
         </th>
+        <th>CC</th>
       </tr>
       @for (entrada of anosSignal(); track entrada) {
-        <tr [class.resaltada]="anosResaltadosSet().has(entrada.id)">
+        <tr class="fila-listado"
+              [class.resaltada]="anosResaltadosSet().has(entrada.id)"
+              (mouseenter)="activarFilaAno(entrada.generos)"
+              (mouseleave)="desactivarFilaAno()">
           <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)" class="listado-accom">
             {{entrada.nome}}
             @if ($last) {
@@ -78,6 +82,7 @@
           <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)" class="listado-accom">{{entrada.quantidade}}</td>
           <td>{{entrada.quantidadeRelecturas}}</td>
           <td (click)="onGoListadoLivros('/livros', tipos.Ano, entrada.id)" class="paginas listado-accom">{{entrada.quantidadepaginas}}</td>
+          <td>{{anosResaltadosMapa()[entrada.id]}}</td>
         </tr>
       }
     </table>
@@ -107,15 +112,18 @@
                 [inverso]="inversoGeneros()"></omla-orde-coluna>
             </div>
           </th>
+          <th>CC</th>
         </tr>
         @for (entrada of generosSignal(); track entrada) {
           <tr class="fila-listado"
+              [class.resaltada]="generosResaltadosSet().has(entrada.id)"
               (mouseenter)="activarFilaGenero(entrada.anos)"
               (mouseleave)="desactivarFilaGenero()">
             <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="listado-accom">{{entrada.nome}}</td>
             <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="listado-accom">{{entrada.quantidade}}</td>
             <td>{{entrada.quantidadeRelecturas}}</td>
             <td (click)="onGoListadoLivros('/livros', tipos.Genero, entrada.id)" class="paginas listado-accom">{{entrada.quantidadepaginas}}</td>
+            <td>{{generosResaltadosMapa()[entrada.id]}}</td>
           </tr>
         }
       </table>

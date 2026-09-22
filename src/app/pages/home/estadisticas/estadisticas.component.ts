@@ -39,10 +39,41 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
   tipoOrdeacomGeneros = signal<string>(this.ordeQuantidadeGeneros);
   inversoGeneros = signal<boolean>(true);
 
+  generosAnoFilaActiva = signal<number[] | null>(null);
+  generosResaltadosSet = computed(() => {
+    const generos = this.generosAnoFilaActiva();
+    return generos ? new Set(generos) : new Set<number>();  // O Set é um conjunto polo que elimina os duplicados
+  });
+  generosResaltadosMapa = computed(() => {
+    const generos = this.generosAnoFilaActiva();
+    const mapa: Record<number, number> = {};                // Objecto de tipo dicionario / mapa conceptual
+
+    if (generos) {
+      for (const genero of generos) {
+        // Conto quantas vezes aparece cada genero
+        mapa[genero] = (mapa[genero] || 0) + 1;
+      }
+    }
+    console.log(mapa);
+    return mapa; // Volta algo como: { 2026: 2, 2024: 1 }
+  });
+
   anosGeneroFilaActiva = signal<number[] | null>(null);
   anosResaltadosSet = computed(() => {
     const anos = this.anosGeneroFilaActiva();
-    return anos ? new Set(anos) : new Set<number>();
+    return anos ? new Set(anos) : new Set<number>();        // O Set é um conjunto polo que elimina os duplicados
+  });
+  anosResaltadosMapa = computed(() => {
+    const anos = this.anosGeneroFilaActiva();
+    const mapa: Record<number, number> = {};                // Objecto de tipo dicionario / mapa conceptual
+
+    if (anos) {
+      for (const ano of anos) {
+        // Conto quantas vezes aparece cada ano
+        mapa[ano] = (mapa[ano] || 0) + 1;
+      }
+    }
+    return mapa; // Volta algo como: { 2026: 2, 2024: 1 }
   });
 
   @ViewChild('subMenu') subMenu!: ElementRef;
@@ -219,6 +250,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
     if (dados != null) {
       this.estadisticasService.setGraficosPaginasPorIdiomaEAno(tipo, dados);
       resultados = dados.data;
+      console.log(resultados);
     } else {
       resultados = [];
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
@@ -258,6 +290,14 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
           },
       });
     }
+  }
+
+  activarFilaAno(genero: number[]): void {
+    this.generosAnoFilaActiva.set(genero);
+  }
+
+  desactivarFilaAno(): void {
+    this.generosAnoFilaActiva.set(null);
   }
 
   activarFilaGenero(anos: number[]): void {
