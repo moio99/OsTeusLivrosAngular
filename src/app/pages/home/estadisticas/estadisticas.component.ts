@@ -55,7 +55,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
       }
     }
     console.log(mapa);
-    return mapa; // Volta algo como: { 2026: 2, 2024: 1 }
+    return mapa; // Volta algo como: { 1: 5, 2: 2, 3: 1, 4: 1 }
   });
 
   anosGeneroFilaActiva = signal<number[] | null>(null);
