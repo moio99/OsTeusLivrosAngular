@@ -54,7 +54,6 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
         mapa[genero] = (mapa[genero] || 0) + 1;
       }
     }
-    console.log(mapa);
     return mapa; // Volta algo como: { 1: 5, 2: 2, 3: 1, 4: 1 }
   });
 
@@ -243,7 +242,6 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
     if (dados != null) {
       this.estadisticasService.setGraficosPaginasPorIdiomaEAno(tipo, dados);
       resultados = dados.data;
-      console.log(resultados);
     } else {
       resultados = [];
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
