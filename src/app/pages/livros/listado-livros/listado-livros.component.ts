@@ -34,8 +34,8 @@ export class ListadoLivrosComponent implements OnInit {
   ordePaginas = ', páginas';
   ordeRelecturas = ', relecturas';
   tituloUltimaLectura = ', última lectura';
-  tipoOrdeacom = signal<string>(this.ordeTituloAlfabetico);
-  inverso = signal<boolean>(false);
+  tipoOrdeacom = signal<string>(this.tituloUltimaLectura);
+  inverso = signal<boolean>(true);
   listadoDados = signal<ListadoLivros[]>([]);
   tipo = ListadosLivrosTipos.alfabetico;
   tipos = ListadosLivrosTipos;
@@ -198,8 +198,7 @@ export class ListadoLivrosComponent implements OnInit {
       if (listadoCompleto) {
         this.livrosService.setListadoLivros(dados);   // Se é o listado completo vou guardar os dados na cache
       }
-      resultados = dados.data.sort((a,b) => new Ordeacom().ordear(
-        a.titulo.replace(/[¿?¡!]/g,''), b.titulo.replace(/[¿?¡!]/g,'').replace('¡',''), this.inverso()));
+      resultados = dados.data.sort((a, b) => new Ordeacom().ordear(a.dataFimLeitura, b.dataFimLeitura, this.inverso(), false));
       if (amosarGrafico) {
         this.separarDadosGrafico(resultados);
       }
