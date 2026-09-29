@@ -32,7 +32,12 @@ export abstract class BaseApiService<T> {
     if (isProdOrPre && this.cacheData) {
       return of(this.cacheData);
     } else {
-      return this.http.get<BaseListadoDadosApi<T>>(`${environment.apiUrl}${this.rotaIntermedia}/${this.rotaIntermedia}CosLivros`)
+      let porto = window.location.port || '4210'; // para poder fazer no package.json "devJava": "ng serve --port 4211"
+
+      const url = porto === '4211' && this.rotaIntermedia === '/Bibliotecas'
+        ? `http://localhost:8080/api${this.rotaIntermedia}${this.rotaIntermedia}CosLivros`
+        : `${environment.apiUrl}${this.rotaIntermedia}/${this.rotaIntermedia}CosLivros`;
+      return this.http.get<BaseListadoDadosApi<T>>(url)
         .pipe(first(),
           tap(resposta => {
             if (isProdOrPre) {
@@ -44,7 +49,13 @@ export abstract class BaseApiService<T> {
   }
 
   getPorId(id: string): Observable<BaseListadoDadosApi<T>> {
-    return this.http.get<BaseListadoDadosApi<T>>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}?id=${id}`);
+
+    let porto = window.location.port || '4210'; // para poder fazer no package.json "devJava": "ng serve --port 4211"
+    const url = porto === '4211' && this.rotaIntermedia === '/Bibliotecas'
+      ? `http://localhost:8080/api${this.rotaIntermedia}/${this.getEntityName()}?id=${id}`
+      : `${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}?id=${id}`;
+
+    return this.http.get<BaseListadoDadosApi<T>>(url);
   }
 
   getPorNome(nome: string): Observable<BaseListadoDadosApi<T>> {
@@ -52,13 +63,17 @@ export abstract class BaseApiService<T> {
   }
 
   create(item: T): Observable<ResultadoMeta> {
-    console.debug('engadindo');
+    console.debug('engadindo post');
     return this.http.post<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}`, item);
   }
 
   update(item: T): Observable<ResultadoMeta> {
-    console.debug(item);
-    return this.http.put<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}`, item);
+    console.debug('atualizando put');
+    let porto = window.location.port || '4210'; // para poder fazer no package.json "devJava": "ng serve --port 4211"
+    const url = porto === '4211' && this.rotaIntermedia === '/Bibliotecas'
+      ? `http://localhost:8080/api${this.rotaIntermedia}/${this.getEntityName()}`
+      : `${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}`;
+    return this.http.put<ResultadoMeta>(url, item);
   }
 
   borrar(id: string): Observable<void> {

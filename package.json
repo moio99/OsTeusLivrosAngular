@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "dev": "ng serve --port 4210",
+    "devJava": "ng serve --port 4211",
     "startNoNecesario": "ng serve --port 4210 --proxy-config proxy.conf.json",
     "start": "npx angular-http-server --path dist/os-meus-livros/browser --p $PORT",
     "build": "node --max-old-space-size=400 ./node_modules/@angular/cli/bin/ng build --configuration production",
