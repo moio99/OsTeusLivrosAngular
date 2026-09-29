@@ -66,7 +66,7 @@
               [inverso]="inversoAnos()"></omla-orde-coluna>
           </div>
         </th>
-        <th>CC</th>
+        <th matTooltip="Cantidade" [matTooltipPosition]="'above'" >CC</th>
       </tr>
       @for (entrada of anosSignal(); track entrada) {
         <tr class="fila-listado"
@@ -112,7 +112,8 @@
                 [inverso]="inversoGeneros()"></omla-orde-coluna>
             </div>
           </th>
-          <th>CC</th>
+          <th matTooltip="Cantidade" [matTooltipPosition]="'above'">CC</th>
+          <div></div>
         </tr>
         @for (entrada of generosSignal(); track entrada) {
           <tr class="fila-listado"

@@ -6,6 +6,7 @@ import { LayoutService, DadosPaginasService, CoresIdiomasService, DadosPagina } 
 import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EstadisticasTipo, InformacomPeTipo, ListadosLivrosTipos } from '../../../shared/enums/estadisticasTipos';
 import { CommonModule } from '@angular/common';
+import { MatTooltipModule} from '@angular/material/tooltip';
 import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
 import { ListadoLivros, ParametrosLivroListado } from '@interfaces';
 import { LivroComponent } from '../livro/livro.component';
@@ -18,7 +19,7 @@ import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 @Component({
   selector: 'omla-listado-livros',
   standalone: true,
-  imports: [ CommonModule, OrdeColunaComponent, NgApexchartsModule ],
+  imports: [ CommonModule, OrdeColunaComponent, NgApexchartsModule, MatTooltipModule ],
   templateUrl: './listado-livros.component.html',
   styleUrls: ['./listado-livros.component.scss']
 })

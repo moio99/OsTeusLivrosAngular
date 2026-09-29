@@ -11,11 +11,12 @@ import { PeticomPendenteComponent } from '../../../peticom-pendente.guard';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { forkJoin } from 'rxjs';
 import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'omla-estadisticas',
   standalone: true,
-  imports: [OrdeColunaComponent],
+  imports: [OrdeColunaComponent, MatTooltipModule],
   providers: [EstadisticasService, GraficosService],
   templateUrl: './estadisticas.component.html',
   styleUrls: ['./estadisticas.component.scss']

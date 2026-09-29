@@ -49,8 +49,8 @@
         </div>
       </th>
       <th (click)="setOrdeRelecturas()">
-        <div style="display: flex;">
-          Relecturas
+        <div style="display: flex;" matTooltip="Relecturas" [matTooltipPosition]="'above'">
+          Rel
           <omla-orde-coluna
             [nome]="ordeRelecturas"
             [actual]="tipoOrdeacom()"

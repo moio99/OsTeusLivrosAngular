@@ -25,7 +25,7 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
 
   // O recurso encarregase de subscribirse, fazer o unsubscribe automático e jestionar o estado (loading, error, etc.)
   protected readonly listadoResource = rxResource({
-    params: () => this.parametrosBusqueda(),    // Qando os parámetros cambien relanzara-se o stream, se fossem undefined o stream non se ejecutará
+    params: () => this.parametrosBusqueda(),    // Qando os parámetros cambiem relanzara-se o stream, se fossem undefined o stream non se ejecutará
     stream: (parametrosSoAutor) => {
       return this.definirChamadaApi(parametrosSoAutor).pipe(
         tap({
