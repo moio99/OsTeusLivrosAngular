@@ -3,6 +3,7 @@ import { appRootingProviders } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { carregandoInterceptor } from './core/interceptors/carregando.interceptor';
 import { tokenInterceptor } from './core/interceptors/token.interceptor';
+import { noCacheInterceptor } from './core/interceptors/no-cache.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -10,8 +11,9 @@ export const appConfig: ApplicationConfig = {
     // Configuración moderna con interceptores funcionais
     provideHttpClient(
       withInterceptors([
-        tokenInterceptor,     // 1º Execútase este (engade o token)
-        carregandoInterceptor // 2º Execútase este (amosa o spinner)
+        tokenInterceptor,       // 1º Execútase este (engade o token)
+        noCacheInterceptor,     // 2º Execútase este (amosa o spinner)
+        carregandoInterceptor   // 3º Execútase este (amosa o spinner)
       ])
     )
   ]

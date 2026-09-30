@@ -57,7 +57,7 @@ export class DadosOutrosService {
           ...this.dadosOutrosCache,
           autores: {
             ...this.dadosOutrosCache.autores,
-            data: novaData
+            data: novaData  // se se já existía en this.dadosOutrosCache.autores actualiza, se nom o engade
           }
         };
         break;
@@ -75,7 +75,7 @@ export class DadosOutrosService {
           ...this.dadosOutrosCache,
           generos: {
             ...this.dadosOutrosCache.generos,
-            data: novaData
+            data: novaData  // se se já existía en this.dadosOutrosCache.generos actualiza, se nom o engade
           }
         };
         break;
@@ -93,7 +93,7 @@ export class DadosOutrosService {
           ...this.dadosOutrosCache,
           bibliotecas: {
             ...this.dadosOutrosCache.bibliotecas,
-            data: novaData
+            data: novaData  // se se já existía en this.dadosOutrosCache.bibliotecas actualiza, se nom o engade
           }
         };
         break;
@@ -111,9 +111,10 @@ export class DadosOutrosService {
           ...this.dadosOutrosCache,
           editoriais: {
             ...this.dadosOutrosCache.editoriais,
-            data: novaData
+            data: novaData  // se se já existía en this.dadosOutrosCache.editoriais actualiza, se nom o engade
           }
         };
+        console.log(this.dadosOutrosCache)
         break;
       }
       case DadosComplentarios.Colecom: {
@@ -129,7 +130,7 @@ export class DadosOutrosService {
           ...this.dadosOutrosCache,
           colecons: {
             ...this.dadosOutrosCache.colecons,
-            data: novaData
+            data: novaData  // se se já existía en this.dadosOutrosCache.colecons actualiza, se nom o engade
           }
         };
         break;
@@ -147,7 +148,7 @@ export class DadosOutrosService {
           ...this.dadosOutrosCache,
           estilos: {
             ...this.dadosOutrosCache.estilos,
-            data: novaData
+            data: novaData  // se se já existía en this.dadosOutrosCache.estilos actualiza, se nom o engade
           }
         };
         break;
