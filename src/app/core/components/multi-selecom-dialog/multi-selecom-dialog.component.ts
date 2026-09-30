@@ -57,48 +57,45 @@ export class MultiSelecomDialogComponent {
   }
 
   onMover(event: CdkDragDrop<SimpleObjet[]>): void {
-    const itemId = event.previousContainer.data[event.previousIndex].id;
+    // Extraemos o ID usando directamente o evento de Angular Material de xeito seguro
+    const itemId = event.item.data?.id || event.previousContainer.data[event.previousIndex]?.id;
+    if (!itemId) return;
 
-    // Extraemos o estado actual de xeito inmutable (unha copia limpa para traballar)
     const datos = {
       total: [...this._multiDados().total],
       escolma: [...this._multiDados().escolma]
     };
 
+    // CASO 1: De 'listadoTodo' para 'escolma'
     if (event.previousContainer.id === 'listadoTodo') {
       const item = datos.total.find(x => x.id === itemId);
       if (item) {
         datos.total = datos.total.filter(elemento => elemento.id !== itemId);
         datos.escolma.splice(event.currentIndex, 0, item);
       }
-    } else {
+    }
+    // CASO 2: De 'escolma' de volta a 'listadoTodo'
+    else {
       const item = datos.escolma.find(x => x.id === itemId);
       if (item) {
         datos.escolma = datos.escolma.filter(elemento => elemento.id !== itemId);
 
-        if (this.filtro()) {
-          if (item.value.toLowerCase().includes(this.filtro().toLowerCase())) {
-            if (event.currentIndex === 0) {
-              datos.total.splice(0, 0, item);
-            } else {
-              const ind = event.container.data[event.currentIndex];
-              if (ind) {
-                const v = datos.total.findIndex(x => x.id === ind.id);
-                datos.total.splice(v, 0, item);
-              } else {
-                datos.total.push(item);
-              }
-            }
-          } else {
-            datos.total.push(item);
-          }
+        // Procuramos o elemento visual sobre o que se soltou no contenedor de destino
+        const elementoDestinoVisual = event.container.data[event.currentIndex];
+
+        if (elementoDestinoVisual) {
+          // Se visualmente se soltou sobre alguén, buscamos a posición REAL dese veciño no array orixinal
+          const indiceReal = datos.total.findIndex(x => x.id === elementoDestinoVisual.id);
+          datos.total.splice(indiceReal, 0, item);
         } else {
-          datos.total.splice(event.currentIndex, 0, item);
+          // Se non hai elemento nesa posición (soltouse ao final da lista visual), vai ao final do array
+          datos.total.push(item);
         }
       }
     }
 
-    // Notificamos a Angular pasándolle o novo obxecto
+    // Notificamos o cambio ao Signal
     this._multiDados.set(datos);
   }
+
 }
