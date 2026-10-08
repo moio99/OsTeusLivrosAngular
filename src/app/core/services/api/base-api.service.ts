@@ -32,11 +32,7 @@ export abstract class BaseApiService<T> {
     if (isProdOrPre && this.cacheData) {
       return of(this.cacheData);
     } else {
-      let porto = window.location.port || '4210'; // para poder fazer no package.json "devJava": "ng serve --port 4211"
-
-      const url = porto === '4211' && this.rotaIntermedia === '/Bibliotecas'
-        ? `http://localhost:8080/api${this.rotaIntermedia}${this.rotaIntermedia}CosLivros`
-        : `${environment.apiUrl}${this.rotaIntermedia}/${this.rotaIntermedia}CosLivros`;
+      const url = `${environment.apiUrl}${this.rotaIntermedia}${this.rotaIntermedia}CosLivros`;
       return this.http.get<BaseListadoDadosApi<T>>(url)
         .pipe(first(),
           tap(resposta => {
@@ -49,12 +45,7 @@ export abstract class BaseApiService<T> {
   }
 
   getPorId(id: string): Observable<BaseListadoDadosApi<T>> {
-
-    let porto = window.location.port || '4210'; // para poder fazer no package.json "devJava": "ng serve --port 4211"
-    const url = porto === '4211' && this.rotaIntermedia === '/Bibliotecas'
-      ? `http://localhost:8080/api${this.rotaIntermedia}/${this.getEntityName()}?id=${id}`
-      : `${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}?id=${id}`;
-
+    const url = `${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}?id=${id}`;
     return this.http.get<BaseListadoDadosApi<T>>(url);
   }
 
@@ -69,10 +60,7 @@ export abstract class BaseApiService<T> {
 
   update(item: T): Observable<ResultadoMeta> {
     console.debug('atualizando put');
-    let porto = window.location.port || '4210'; // para poder fazer no package.json "devJava": "ng serve --port 4211"
-    const url = porto === '4211' && this.rotaIntermedia === '/Bibliotecas'
-      ? `http://localhost:8080/api${this.rotaIntermedia}/${this.getEntityName()}`
-      : `${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}`;
+    const url = `${environment.apiUrl}${this.rotaIntermedia}/${this.getEntityName()}`;
     return this.http.put<ResultadoMeta>(url, item);
   }
 

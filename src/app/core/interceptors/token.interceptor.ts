@@ -8,19 +8,19 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
 
   const token = authService.getToken();
-    const usuarioLogado = authService.getUsuarioLogado();
+  const usuarioLogado = authService.getUsuarioLogado();
 
-    if (token !== null && usuarioLogado !== undefined) {
-      const clonedRequest = req.clone({
-        setHeaders: {
-          usuarinho: usuarioLogado.nome,
-          rolroleiro: String(usuarioLogado.id), // Aseguramos que seja um String
-          authorization: `Bearer ${token}`
-        }
-      });
+  if (token !== null && usuarioLogado !== undefined) {
+    const clonedRequest = req.clone({
+      setHeaders: {
+        usuarinho: usuarioLogado.nome,
+        rolroleiro: String(usuarioLogado.id), // Aseguramos que seja um String
+        authorization: `Bearer ${token}`
+      }
+    });
 
-      return next(clonedRequest);
-    }
+    return next(clonedRequest);
+  }
 
   return next(req);
 }

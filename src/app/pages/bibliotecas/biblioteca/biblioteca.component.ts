@@ -79,7 +79,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
     if (this.formState.bibliotecaForm().invalid()) return;
 
     this.formState.chamandoAPI.set(true);
-    const nomeValue = String(this.formState.bibliotecaForm.nome()).trim();
+    const nomeValue = String(this.formState.bibliotecaModel().nome).trim();
     const elemento = this.formState.criarObjetoBiblioteca(this.idBiblioteca());
 
     // Encadeamos de xeito reactivo as dúas peticións do servidor

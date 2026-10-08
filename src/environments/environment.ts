@@ -10,7 +10,8 @@ export const environment = {
   whereIAm: environments.dev,
   // whereIAm: environments.pre,
   // whereIAm: environments.pro,
-  apiUrl: "http://localhost:5002/api"
+  portoJava: "8080",// para que se usse iste usar do package.json "devJava": "ng serve --port 4211" o interceptor desvioJava fará o resto
+  apiUrl: "http://localhost:5002/api",
   // apiUrl: "https://osteuslivrosnodejs-production.up.railway.app/api"
   // apiUrl: "https://osteuslivrosnodejs.onrender.com/api"
 };
