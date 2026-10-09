@@ -3,12 +3,12 @@ import { CanDeactivateFn } from '@angular/router';
 import { OutrosService } from '@servizosApi';
 import { Observable } from 'rxjs';
 
-// Define o tipo para o componente que implementa a lógica de "canDeactivate"
+// Define o tipo para o componhente que implementa a lógica de "canDeactivate"
 export interface PeticomPendenteComponent {
   podoDeactivate: () => boolean | Promise<boolean> | Observable<boolean>;
 }
 
-export const PeticomPendenteRequestGuard: CanDeactivateFn<PeticomPendenteComponent> = (
+export const peticomPendenteRequestGuard: CanDeactivateFn<PeticomPendenteComponent> = (
   component: PeticomPendenteComponent
 ) => {
   const todoService = inject(OutrosService); // Si necesitas el servicio en el Guard
