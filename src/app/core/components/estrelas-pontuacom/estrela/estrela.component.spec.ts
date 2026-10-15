@@ -1,113 +1,127 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EstrelaComponent } from './estrela.component';
+import { environment, environments } from '../../../../../environments/environment';
 import { Estrela } from '../estrelas-pontuacom.interface';
+import { EstrelaComponent } from './estrela.component';
 
 describe('EstrelaComponent', () => {
   let component: EstrelaComponent;
   let fixture: ComponentFixture<EstrelaComponent>;
+  let ambienteOrixinal: environments;
 
   beforeEach(async () => {
+    ambienteOrixinal = environment.whereIAm;
     await TestBed.configureTestingModule({
-      // declarations: [EstrelaComponent]     nom por que é standalone
-      imports: [ EstrelaComponent ],
+      imports: [EstrelaComponent],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(EstrelaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  afterEach(() => {
+    environment.whereIAm = ambienteOrixinal;
+  });
+
+  it('debería crear o compoñente e amosar os valores por defecto', () => {
     expect(component).toBeTruthy();
+    expect(component.numero()).toBe(-1);
+    expect(component.imagemOriginal()).toBe(component.estrelaBranca);
+    expect(fixture.nativeElement.querySelector('img').getAttribute('src')).toBe(component.estrelaBranca);
+    expect(fixture.nativeElement.querySelector('img').getAttribute('alt')).toBe('-1');
   });
 
-  it('should update imagemAmosar when simulandoPontuacom changes', () => {
-    const estrelaData: Estrela = { numero: 3, marcada: true };
+  it('debería amosar a estrela vermella cando a puntuación seleccionada a abrangue', () => {
+    fixture.componentRef.setInput('numero', 3);
+    fixture.componentRef.setInput('estavelecerNovaPontuacom', 3);
+    fixture.detectChanges();
 
-    // Test when dadosSM is defined and numero is greater than or equal to component numero
-    component.numero = 2;
-    component.simulandoPontuacom = estrelaData;
-    expect(component.imagemAmosar).toBe(component.estrelaVermelha);
-
-    // Test when dadosSM is defined and numero is less than component numero
-    component.numero = 4;
-    component.simulandoPontuacom = estrelaData;
-    expect(component.imagemAmosar).toBe(component.estrelaBranca);
-
-    // Test when dadosSM is undefined
-    component.simulandoPontuacom = undefined;
-    expect(component.imagemAmosar).toBe(component.imagemOriginal);
+    expect(component.imagemOriginal()).toBe(component.estrelaVermelha);
+    expect(fixture.nativeElement.querySelector('img').getAttribute('src')).toBe(component.estrelaVermelha);
   });
 
-  it('should update imagemOriginal and imagemAmosar when estavelecerNovaPontuacom changes', () => {
-    // Test when novoNumero is defined and greater than or equal to component numero
-    component.numero = 2;
-    component.estavelecerNovaPontuacom = 3;
-    expect(component.imagemOriginal).toBe(component.estrelaVermelha);
-    expect(component.imagemAmosar).toBe(component.estrelaVermelha);
+  it('debería amosar a estrela branca cando a puntuación seleccionada non a abrangue', () => {
+    fixture.componentRef.setInput('numero', 4);
+    fixture.componentRef.setInput('estavelecerNovaPontuacom', 3.5);
+    fixture.detectChanges();
 
-    // Test when novoNumero is defined and less than component numero
-    component.numero = 4;
-    component.estavelecerNovaPontuacom = 3;
-    expect(component.imagemOriginal).toBe(component.estrelaBranca);
-    expect(component.imagemAmosar).toBe(component.estrelaBranca);
-
-    // Test when novoNumero is undefined
-    component.estavelecerNovaPontuacom = undefined;
-    expect(component.imagemOriginal).toBe(component.estrelaBranca);
-    expect(component.imagemAmosar).toBe(component.estrelaBranca);
+    expect(component.imagemOriginal()).toBe(component.estrelaBranca);
+    expect(fixture.nativeElement.querySelector('img').getAttribute('src')).toBe(component.estrelaBranca);
   });
 
-  it('should emit simulacomEvent on entrouORato', () => {
+  it('debería previsualizar a puntuación simulada e recuperar a imaxe orixinal ao limpala', () => {
+    fixture.componentRef.setInput('numero', 4);
+    fixture.componentRef.setInput('estavelecerNovaPontuacom', 2);
+    fixture.detectChanges();
+
+    const simulacion: Estrela = { numero: 4.5, marcada: true };
+    fixture.componentRef.setInput('simulandoPontuacom', simulacion);
+    fixture.detectChanges();
+    expect(component.imagemAmosar()).toBe(component.estrelaVermelha);
+
+    fixture.componentRef.setInput('simulandoPontuacom', undefined);
+    fixture.detectChanges();
+    expect(component.imagemAmosar()).toBe(component.estrelaBranca);
+  });
+
+  it('debería aplicar a clase de imaxe ás estrelas de puntuación media', () => {
+    fixture.componentRef.setInput('numero', 2.5);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('img').classList).toContain('imagem');
+  });
+
+  it('debería emitir a estrela ao pasar o rato por riba dela', () => {
     const emitSpy = jest.spyOn(component.simulacomEvent, 'emit');
+    fixture.componentRef.setInput('numero', 3);
+    fixture.detectChanges();
 
-    component.numero = 3;
-    component.entrouORato();
+    fixture.nativeElement.querySelector('.imagem-estrela')
+      .dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+
     expect(emitSpy).toHaveBeenCalledWith({ numero: 3, marcada: true });
-
-    component.numero = -1;
-    component.entrouORato();
-    expect(emitSpy).not.toHaveBeenCalledWith({ numero: -1, marcada: true });
   });
 
-  it('should emit simulacomEvent with undefined on saiuORato', () => {
+  it('non debería emitir unha simulación para o número por defecto', () => {
     const emitSpy = jest.spyOn(component.simulacomEvent, 'emit');
-    component.saiuORato();
+    fixture.nativeElement.querySelector('.imagem-estrela')
+      .dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('debería emitir undefined ao retirar o rato', () => {
+    const emitSpy = jest.spyOn(component.simulacomEvent, 'emit');
+    fixture.nativeElement.querySelector('.imagem-estrela')
+      .dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+
     expect(emitSpy).toHaveBeenCalledWith(undefined);
   });
 
-  it('should emit estavelecerPontuacomEvent on ratoPicou', () => {
+  it('debería emitir a puntuación ao facer clic na estrela', () => {
     const emitSpy = jest.spyOn(component.estavelecerPontuacomEvent, 'emit');
-    component.numero = 5;
-    component.ratoPicou();
+    fixture.componentRef.setInput('numero', 5);
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('.imagem-estrela')
+      .dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+
     expect(emitSpy).toHaveBeenCalledWith(5);
   });
-});
 
-
-/* import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { EstrelaComponent } from './estrela.component';
-
-describe('EstrelaComponent', () => {
-  let component: EstrelaComponent;
-  let fixture: ComponentFixture<EstrelaComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ EstrelaComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(EstrelaComponent);
-    component = fixture.componentInstance;
+  it('non debería emitir eventos en ambientes que non están permitidos', () => {
+    const simulacomSpy = jest.spyOn(component.simulacomEvent, 'emit');
+    const pontuacomSpy = jest.spyOn(component.estavelecerPontuacomEvent, 'emit');
+    environment.whereIAm = environments.pro;
+    fixture.componentRef.setInput('numero', 5);
     fixture.detectChanges();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    const elemento = fixture.nativeElement.querySelector('.imagem-estrela');
+    elemento.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+    elemento.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+    elemento.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+
+    expect(simulacomSpy).not.toHaveBeenCalled();
+    expect(pontuacomSpy).not.toHaveBeenCalled();
   });
 });
- */

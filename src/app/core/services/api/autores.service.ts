@@ -1,6 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment, environments } from '../../../../environments/environment';
-import { ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
 import { inject, Service } from '@angular/core';
 import { Autor, AutorData, ParametrosAutor } from '../../models/autor.interface';
 import { Observable, of, tap } from 'rxjs';

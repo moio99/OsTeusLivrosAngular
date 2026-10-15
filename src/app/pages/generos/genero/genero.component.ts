@@ -14,7 +14,7 @@ import { BaseElementoComponent } from '@componhentesComuns';
     /* , MatDatepickerModule, MatNativeDateModule */],
   templateUrl: './genero.component.html',
   styleUrls: ['./genero.component.scss'],
-    providers: [ {provide: 'OMeuServizoToeken', useClass: GenerosService} ]
+    providers: [ {provide: 'OMeuServizoToken', useClass: GenerosService} ]
 })
 export class GeneroComponent extends BaseElementoComponent<Genero, GenerosService> {
 

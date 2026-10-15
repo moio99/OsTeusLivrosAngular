@@ -45,7 +45,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   protected dadosOutrosService = inject(DadosOutrosService);
 
   // Para poder passar TServico dende os filhos
-  protected servicoElemento = inject<TServico>('OMeuServizoToeken' as any);
+  protected servicoElemento = inject<TServico>('OMeuServizoToken' as any);
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {

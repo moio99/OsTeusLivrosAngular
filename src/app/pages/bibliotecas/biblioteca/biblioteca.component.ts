@@ -25,7 +25,7 @@ import { environment, environments } from '../../../../environments/environment'
     , MatDatepickerModule, MatNativeDateModule, BibliotecaFormPresenterComponent, ListadoLivrosElementoComponent],
   templateUrl: './biblioteca.component.html',
   styleUrls: ['./biblioteca.component.scss'],
-  providers: [ {provide: 'OMeuServizoToeken', useClass: BibliotecasService}, BibliotecaFormStateService ]
+  providers: [ {provide: 'OMeuServizoToken', useClass: BibliotecasService}, BibliotecaFormStateService ]
 })
 export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca> {
 

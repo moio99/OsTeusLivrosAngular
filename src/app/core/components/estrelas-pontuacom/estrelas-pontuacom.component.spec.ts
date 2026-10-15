@@ -1,78 +1,90 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { Estrela } from './estrelas-pontuacom.interface';
+import { EstrelaComponent } from './estrela/estrela.component';
 import { EstrelasPontuacomComponent } from './estrelas-pontuacom.component';
-import { TestBed } from '@angular/core/testing';
 
 describe('EstrelasPontuacomComponent', () => {
   let component: EstrelasPontuacomComponent;
+  let fixture: ComponentFixture<EstrelasPontuacomComponent>;
 
-  beforeEach(() => {
-    // Configurar el módulo de pruebas
-    TestBed.configureTestingModule({
-      //declarations: [EstrelasPontuacomComponent]  nom por que é standalone
-      imports: [ EstrelasPontuacomComponent ],
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [EstrelasPontuacomComponent],
+    }).compileComponents();
 
-    // Crear una instancia del componente
-    component = TestBed.createComponent(EstrelasPontuacomComponent).componentInstance;
+    fixture = TestBed.createComponent(EstrelasPontuacomComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('debería crear e amosar dez estrelas enteiras e nove medias', () => {
     expect(component).toBeTruthy();
+    expect(component.estrelas()).toHaveLength(19);
+    expect(fixture.debugElement.queryAll(By.directive(EstrelaComponent))).toHaveLength(19);
+    expect(fixture.nativeElement.querySelector('.bloco-numero').textContent.trim()).toBe('0');
   });
 
-  it('should initialize with default values', () => {
-    expect(component.cantidade).toBe(10);
-    expect(component.estrelas.length).toBe(0);
-    expect(component.numeroActual).toBe(0);
-    expect(component.novaPontuacom).toBeUndefined();
-    expect(component.estrelaSimulando).toBeUndefined();
+  it('debería crear os valores das estrelas enteiras e medias en orde', () => {
+    expect(component.estrelas().map((estrela) => estrela.numero)).toEqual([
+      1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5,
+      6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10,
+    ]);
   });
 
-  it('should initialize estrelas correctly when pontuacom is provided', () => {
-    component.pontuacom = 5;
-    component.ngOnInit();
+  it('debería inicializar a puntuación seleccionada co valor da entrada pontuacom', () => {
+    fixture.componentRef.setInput('pontuacom', 3.5);
+    fixture.detectChanges();
 
-    expect(component.estrelas.length).toBe(19);
-    expect(component.estrelas[0].marcada).toBe(false);
-    expect(component.estrelas[10].marcada).toBe(false);
-    expect(component.numeroActual).toBe(0);
+    expect(component.novaPontuacom()).toBe(3.5);
+    expect(component.numeroActual()).toBe(3.5);
+    expect(component.estrelas().filter((estrela) => estrela.marcada).map((estrela) => estrela.numero))
+      .toEqual([1, 1.5, 2, 2.5, 3, 3.5]);
+    expect(fixture.nativeElement.querySelector('.bloco-numero').textContent.trim()).toBe('3.5');
   });
 
-  it('should update numeroActual and estrelaSimulando on onSimulacom', () => {
-    const estrelaDados = { numero: 3, marcada: true };
-    component.onSimulacom(estrelaDados);
+  it('debería actualizar a puntuación seleccionada cando cambia a entrada pontuacom', () => {
+    fixture.componentRef.setInput('pontuacom', 2);
+    fixture.detectChanges();
+    component.onEstavelecerPontuacom(8);
 
-    expect(component.estrelaSimulando).toEqual(estrelaDados);
-    expect(component.numeroActual).toBe(3);
+    fixture.componentRef.setInput('pontuacom', 4.5);
+    fixture.detectChanges();
+
+    expect(component.novaPontuacom()).toBe(4.5);
+    expect(component.numeroActual()).toBe(4.5);
   });
 
-  it('should reset numeroActual to novaPontuacom when estrelaDados is undefined', () => {
-    component.novaPontuacom = 7;
+  it('debería previsualizar a puntuación durante a simulación e restaurala ao limpala', () => {
+    fixture.componentRef.setInput('pontuacom', 2);
+    fixture.detectChanges();
+
+    const estrelaSimulada: Estrela = { numero: 4.5, marcada: true };
+    component.onSimulacom(estrelaSimulada);
+    fixture.detectChanges();
+
+    expect(component.numeroActual()).toBe(4.5);
+    expect(fixture.nativeElement.querySelector('.bloco-numero').textContent.trim()).toBe('4.5');
+    expect(component.estrelas().filter((estrela) => estrela.marcada).map((estrela) => estrela.numero))
+      .toEqual([1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5]);
+
     component.onSimulacom(undefined);
+    fixture.detectChanges();
 
-    expect(component.numeroActual).toBe(7);
-    expect(component.estrelaSimulando).toBeUndefined();
+    expect(component.numeroActual()).toBe(2);
+    expect(fixture.nativeElement.querySelector('.bloco-numero').textContent.trim()).toBe('2');
   });
 
-  it('should update pontuacom and emit numero on onEstavelecerPontuacom', () => {
+  it('debería actualizar e emitir a puntuación seleccionada ao seleccionar unha estrela filla', () => {
     const emitSpy = jest.spyOn(component.numero, 'emit');
+    const primeiraEstrela = fixture.debugElement.query(By.directive(EstrelaComponent))
+      .componentInstance as EstrelaComponent;
 
-    component.ngOnInit();
+    primeiraEstrela.estavelecerPontuacomEvent.emit(6.5);
+    fixture.detectChanges();
 
-    component.onEstavelecerPontuacom(4);
-
-    expect(component.novaPontuacom).toBe(4);
-    expect(component.estrelas[0].marcada).toBe(true); // Primera estrella marcada
-    expect(component.estrelas[8].marcada).toBe(false); // Estrella 4.5 no marcada
-    expect(emitSpy).toHaveBeenCalledWith(4);
-  });
-
-  it('should handle pontuacom setter correctly', () => {
-    component.pontuacom = 6;
-    expect(component.novaPontuacom).toBe(6);
-    expect(component.numeroActual).toBe(6);
-
-    component.pontuacom = undefined;
-    expect(component.novaPontuacom).toBeUndefined();
-    expect(component.numeroActual).toBe(0);
+    expect(component.novaPontuacom()).toBe(6.5);
+    expect(component.numeroActual()).toBe(6.5);
+    expect(emitSpy).toHaveBeenCalledWith(6.5);
   });
 });

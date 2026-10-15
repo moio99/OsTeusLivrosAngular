@@ -1,5 +1,4 @@
 import { Injectable, signal } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
 import { InformacomPe } from '../../../shared/models/outros.model';
 
 @Injectable({

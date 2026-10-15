@@ -13,7 +13,7 @@ import { BaseElementoComponent } from '@componhentesComuns';
   imports: [ CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule ],
   templateUrl: './editorial.component.html',
   styleUrls: ['./editorial.component.scss'],
-  providers: [ {provide: 'OMeuServizoToeken', useClass: EditoriaisService} ]
+  providers: [ {provide: 'OMeuServizoToken', useClass: EditoriaisService} ]
 })
 export class EditorialComponent extends BaseElementoComponent<Editorial, EditoriaisService> {
 

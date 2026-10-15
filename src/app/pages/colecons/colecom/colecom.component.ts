@@ -13,7 +13,7 @@ import { BaseElementoComponent } from '@componhentesComuns';
   imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule ],
   templateUrl: './colecom.component.html',
   styleUrls: ['./colecom.component.scss'],
-  providers: [ {provide: 'OMeuServizoToeken', useClass: ColeconsService} ]
+  providers: [ {provide: 'OMeuServizoToken', useClass: ColeconsService} ]
 })
 export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsService> {
 

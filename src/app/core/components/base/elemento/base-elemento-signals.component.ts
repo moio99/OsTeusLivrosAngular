@@ -1,8 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { DadosComplentarios, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
-import { LayoutService, DadosPaginasService, UsuarioAppService } from '@servizosFlow';
+import { LayoutService, DadosPaginasService } from '@servizosFlow';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { of } from 'rxjs';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
@@ -20,7 +20,7 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
   private dadosPaginasService = inject(DadosPaginasService);
   protected dadosOutrosService = inject(DadosOutrosService);
 
-  // No componhente que herda de BaseElementoSignalsComponent, tem que se que implementar esta funçom
+  // No componhente que herda de BaseElementoSignalsComponent, tem que se implementar esta funçom
   // é para poder acceder a this.formState.atualizarFromBiblioteca
   protected abstract aplicarDatosAoFormulario(datos: TElemento): void;
 
