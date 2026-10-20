@@ -10,7 +10,7 @@ export const carregandoInterceptor: HttpInterceptorFn = (req, next) => {
   // Amosar o spinner
   carregandoService.amosar();
 
-  // Manexar a solicitude e ocultar ao finalizar
+  // manejar a solicitude e ocultar ao finalizar
   return next(req).pipe(
     finalize(() => carregandoService.ocultar())
   );

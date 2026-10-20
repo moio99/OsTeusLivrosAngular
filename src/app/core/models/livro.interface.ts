@@ -82,17 +82,26 @@ export interface datasUltimosAnos {
   dataDoLivro: string;
 }
 
+export interface metaLivro {
+  quantidade:number
+}
+
+export interface dadosComplementarios<T> {
+  data: T[],
+  meta: metaLivro
+}
+
 export interface Outros {
-  nacionalidades: { data: Nacionalidade[], meta: { quantidade:number } },
-  paises: { data: Pais[], meta: { quantidade:number } },
-  autores: { data: Autor[], meta: { quantidade:number } },
-  bibliotecas: { data: Biblioteca[], meta: { quantidade:number } },
-  editoriais: { data: Editorial[], meta: { quantidade:number } },
-  generos: { data: Genero[], meta: { quantidade:number } },
-  colecons: { data: Colecom[], meta: { quantidade:number } },
-  estilos: { data: EstiloLiterario[], meta: { quantidade:number } },
-  idiomas: { data: Idioma[], meta: { quantidade:number } },
-  seriesLivro: { data: SerieLivro[], meta: { quantidade:number } }
+  nacionalidades: dadosComplementarios<Nacionalidade>,
+  paises: dadosComplementarios<Pais>,
+  autores: dadosComplementarios<Autor>,
+  bibliotecas: dadosComplementarios<Biblioteca>,
+  editoriais: dadosComplementarios<Editorial>,
+  generos: dadosComplementarios<Genero>,
+  colecons: dadosComplementarios<Colecom>,
+  estilos: dadosComplementarios<EstiloLiterario>,
+  idiomas: dadosComplementarios<Idioma>,
+  seriesLivro: dadosComplementarios<SerieLivro>,
   ultimaLeitura: string,
   ultimasLeituras: datasUltimosAnos[]
 }

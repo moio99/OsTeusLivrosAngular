@@ -4,6 +4,17 @@ import { SchemaPathTree, validate } from "@angular/forms/signals";
 export  class ValidaconsAMedida {
 
   /**
+   * Valida que o valor que está marcado no combo seja um seleccionado (podería ser um escrito por teclado)
+   * @param control
+   * @returns null se está bem, idiomaNomSelecionado: true se nom é um valor de combo
+   */
+  static idiomaSeleccionado (control: AbstractControl): ValidationErrors | null {
+    return typeof control.value === 'number'
+      ? null
+      : { idiomaNomSelecionado: true };
+  };
+
+  /**
    * Valida que para um campasado que pode ser nulo o seu valor non exceda un certo número de caracteres.
    * @param campo nodo da árbore do formulario (un apuntador ou caminho) o chamado SchemaPath ou SchemaPathTree
    * @param max número de caracteres máximos

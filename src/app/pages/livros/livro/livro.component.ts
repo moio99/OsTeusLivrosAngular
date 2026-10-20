@@ -759,7 +759,7 @@ export class LivroComponent implements OnInit {
     if (livroRepetido != undefined && livroRepetido.meta.quantidade > 0 && (
       (event.submitter.value === EstadosPagina.engadir)
       ||
-      (event.submitter.value !== EstadosPagina.engadir && livroRepetido.meta.id != this.dadosDoLivro?.id))) { // se está actualizando os ids deben ser inguais
+      (event.submitter.value !== EstadosPagina.engadir && livroRepetido.meta.id.toString() !== this.dadosDoLivro?.id))) { // se está actualizando os ids deben ser inguais
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O título do livro já existe na base de dados'});
     }
     else {

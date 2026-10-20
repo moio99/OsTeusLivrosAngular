@@ -7,9 +7,15 @@ export interface Parametros extends ParametrosId {
   idRelectura: string;
 }
 
+export interface BaseMeta {
+   info: string;
+   quantidade: number;
+   id: number;
+}
+
 export interface BaseListadoDadosApi<T> {
   data: T[];
-  meta: any;
+  meta: BaseMeta;
 }
 // Para chama-lo:   const listado: BaseListadoDadosApi<ListadoLivros>;
 

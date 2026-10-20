@@ -1,11 +1,8 @@
-import { BaseListado } from "../../shared/models/base-dados";
+import { BaseListado, BaseListadoDadosApi } from "../../shared/models/base-dados";
 import { BaseComLivros } from "./quantidades.interface";
 
-export interface ListadoEditoriaisData<T = any> {
-  data: T[];
-  meta: any;
+export interface ListadoEditoriaisData extends Omit<BaseListadoDadosApi<ListadoEditoriais>, 'id' | 'quantidade'> {
 }
-// haberia que chamalo:   const listado: ListadoEditoriaisData<ListadoEditoriais>;
 
 export interface ListadoEditoriais extends BaseListado, BaseComLivros {
 }

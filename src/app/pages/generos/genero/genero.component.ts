@@ -44,21 +44,21 @@ export class GeneroComponent extends BaseElementoComponent<Genero, GenerosServic
     return this.livrosService.getListadoLivrosPorGenero(id);
   }
 
-  protected updateFormValues(estiloLiterario: Genero) {
+  protected updateFormValues(genero: Genero) {
     this.generoForm.patchValue({
-      nome: estiloLiterario.nome,
-      comentario: estiloLiterario.comentario
+      nome: genero.nome,
+      comentario: genero.comentario
     });
   }
 
   protected createElementoForm(): Genero {
-    const estiloLiterario: Genero = {
-      tipo: 'propriedade para saver que o tipo é Género',
+    const genero: Genero = {
+      tipo: 'propriedade para saber que o tipo é Género',
       id: Number(this.dadosDoElemento?.id),
       nome: String(this.generoForm.controls.nome.value),
       comentario: (this.generoForm.controls.comentario.value == null) ? null : String(this.generoForm.controls.comentario.value).trim()
     };
-    return estiloLiterario;
+    return genero;
   }
 
   protected getErrorMessage(context: string): string {

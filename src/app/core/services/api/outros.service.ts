@@ -30,6 +30,10 @@ export class OutrosService {
     return this.http.get<string>(environment.apiUrl + this.rotaIntermedia + '/PaisNome?id=' + id);
   }
 
+  getIdiomas() {
+    return this.http.get(environment.apiUrl + this.rotaIntermedia + '/Idiomas');
+  }
+
   getIdiomaNome(id: string) {
     return this.http.get(environment.apiUrl + this.rotaIntermedia + '/IdiomaNome?id=' + id);
   }

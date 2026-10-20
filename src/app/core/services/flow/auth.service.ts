@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, tap } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
-import { Usuario, DadosLogueo, UsuarioLogado } from '../../models/usuario.interface';
+import { DadosLogueo, UsuarioLogado } from '../../models/usuario.interface';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -18,6 +17,11 @@ export class AuthService {
   logout() {
     this._usuarioLogado = undefined;
     this._usuarioToken = undefined;
+  }
+
+  setUserData(usaurio: DadosLogueo) {
+    this._usuarioLogado = usaurio.usuario;
+    this._usuarioToken = usaurio.token;
   }
 
   getToken(): string | undefined {
@@ -42,19 +46,5 @@ export class AuthService {
       console.log('Nom está autenticado');
     }
     return !!this._usuarioLogado && !!this._usuarioToken;
-  }
-
-  postLogin(usuario: Usuario): Observable<DadosLogueo> {
-    return this.http.post(environment.apiUrl + '/login', usuario).pipe(
-      map((response: any) => response as DadosLogueo), // Cast the response to DadosLogueo
-      tap(response => {
-        if (response.token) {
-          this._usuarioLogado = response.usuario;
-          this._usuarioToken = response.token;
-          // localStorage.setItem('authToken', response.token);
-          // localStorage.setItem('usuario', JSON.stringify(response.usuario));
-        }
-      })
-    );
   }
 }

@@ -64,7 +64,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
 
       return this.outrosService.getNacionalidades().pipe(
         first(),
-        catchError((e) => this.manexarErroSoporte(e, 'das nacionalidades'))
+        catchError((e) => this.manejarErroSoporte(e, 'das nacionalidades'))
       );
     }
   });
@@ -77,7 +77,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
 
       return this.outrosService.getPaises().pipe(
         first(),
-        catchError((e) => this.manexarErroSoporte(e, 'dos países'))
+        catchError((e) => this.manejarErroSoporte(e, 'dos países'))
       );
     }
   });
@@ -89,7 +89,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
       return this.livrosService.getLivrosPorAutor(currentId).pipe(
         first(),
         map(v => this.dadosLivrosElementoObtidos(v)),
-        catchError((e) => this.manexarErroSoporte(e, 'dos livros do autor'))
+        catchError((e) => this.manejarErroSoporte(e, 'dos livros do autor'))
       );
     }
   });
@@ -106,7 +106,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
         first(),
         map(v => this.dadosObtidos(v)),
         catchError((e) => {
-          this.manexarErroSoporte(e, 'do autor');
+          this.manejarErroSoporte(e, 'do autor');
           return of(null); })
       );
     }
@@ -218,8 +218,8 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
         this.layoutService.amosarInfo({
           tipo: InformacomPeTipo.Erro,
           mensagem: botonPremido === EstadosPagina.engadir
-            ? 'Houbo un erro ao engadir o autor.'
-            : 'Houbo un erro ao guardar o autor.'
+            ? 'Houbo um erro ao engadir o autor.'
+            : 'Houbo um erro ao guardar o autor.'
         });
       }
     });

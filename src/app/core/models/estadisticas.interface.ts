@@ -1,7 +1,8 @@
+import { BaseMeta } from "../../shared/models/base-dados";
 
 export interface EstadisticasData {
   data: Estadisticas[];
-  meta: any;
+  meta: BaseMeta;
 }
 
 export interface Estadisticas {

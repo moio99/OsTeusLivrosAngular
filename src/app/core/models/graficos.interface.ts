@@ -1,7 +1,8 @@
+import { BaseMeta } from "../../shared/models/base-dados";
 
 export interface GraficosData {
   data: Graficos[];
-  meta: any;
+  meta: BaseMeta;
 }
 
 export interface Graficos {

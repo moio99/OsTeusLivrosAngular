@@ -1,9 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Usuario } from '@interfaces';
+import { DadosLogueo, Usuario } from '@interfaces';
 import { AuthService } from '@servizosFlow';
 import { first } from 'rxjs';
+import { UsuariosService } from '../../core/services/api/usuarios.service';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ import { first } from 'rxjs';
 export class LoginComponent {
   private readonly fb = inject(NonNullableFormBuilder); // Evita que os campos sexan null ao facer reset
   private readonly authService = inject(AuthService);
+  private readonly usuariosService = inject(UsuariosService);
   private readonly router = inject(Router);
 
   protected readonly loading = signal<boolean>(false);
@@ -40,14 +42,20 @@ export class LoginComponent {
       contrasinal: this.loginForm.controls.contrasinal.value
     };
 
-    this.authService.postLogin(user)
+    this.usuariosService.postLogin(user)
       .pipe(first()) // Boa práctica: pecha o fluxo automaticamente tras recibir a resposta
       .subscribe({
-        next: () => {
-          this.router.navigate(['/estadisticas']);
+        next: (usuario: DadosLogueo) => {
+          if (usuario.token) {
+            this.authService.setUserData(usuario);
+            this.router.navigate(['/estadisticas']);
+          }
+          else {
+            this.error.set('Erro no inicio da sessom');
+          }
         },
         error: (err: any) => {
-          this.error.set(err.error?.mensagem || 'Erro no inicio de sesion');
+          this.error.set(err.error?.mensagem || 'Erro no inicio da sessom');
           this.loading.set(false);
         },
         complete: () => {

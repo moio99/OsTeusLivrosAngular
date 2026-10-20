@@ -57,7 +57,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
         first(),
         map(v => this.dadosObtidos(v)),
         catchError((e) => {
-          this.manexarErroSoporte(e, 'do autor');
+          this.manejarErroSoporte(e, 'do autor');
           return of(null); })
       );
     }
@@ -70,7 +70,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
       return this.livrosService.getLivrosPorBiblioteca(currentId).pipe(
         first(),
         map(v => this.dadosLivrosElementoObtidos(v)),
-        catchError((e) => this.manexarErroSoporte(e, 'dos livros da biblioteca'))
+        catchError((e) => this.manejarErroSoporte(e, 'dos livros da biblioteca'))
       );
     }
   });
@@ -127,8 +127,8 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
         this.formState.chamandoAPI.set(false);
         this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
           mensagem: this.modo() === EstadosPagina.engadir
-            ? 'Houbo un erro ao engadir a biblioteca.'
-            : 'Houbo un erro ao guardar a biblioteca.'
+            ? 'Houbo um erro ao engadir a biblioteca.'
+            : 'Houbo um erro ao guardar a biblioteca.'
         });
       }
     });

@@ -49,7 +49,7 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
     return resultados
   }
 
-  protected manexarErroSoporte(e: any, complemntoMensagem: string) {
+  protected manejarErroSoporte(e: any, complemntoMensagem: string) {
     console.error(e);
     this.layoutService.amosarInfo({
       tipo: InformacomPeTipo.Erro,

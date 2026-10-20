@@ -14,7 +14,7 @@ export interface ParametrosAutor {
 // Os tipos son pechados e non se poden duplicar unha vez definidos.
 
 export interface AutorData<T> extends BaseListadoDadosApi<T> {
-  meta: {id:number, quantidade:number};
+  // meta: {id:number, quantidade:number};
 }
 // ou
 // export type AutorData<T> = BaseListadoDadosApi<T> & {

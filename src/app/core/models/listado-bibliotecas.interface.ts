@@ -1,11 +1,8 @@
-import { BaseListado } from "../../shared/models/base-dados";
+import { BaseListado, BaseListadoDadosApi } from "../../shared/models/base-dados";
 import { BaseQuantidadesLivros } from "./quantidades.interface";
 
-export interface ListadoBibliotecasData<T = any> {
-  data: T[];
-  meta: any;
+export interface ListadoBibliotecasData extends Omit<BaseListadoDadosApi<ListadoBibliotecas>, 'id' | 'quantidade'> {
 }
-// haberia que chamalo:   const listado: ListadoBibliotecasData<ListadoBibliotecas>;
 
 export interface ListadoBibliotecas extends BaseListado, Omit<BaseQuantidadesLivros, 'quantidadeLidos'> {
   dataRenovacom: string;
