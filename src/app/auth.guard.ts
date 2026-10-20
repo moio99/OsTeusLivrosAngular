@@ -12,6 +12,6 @@ export const autorizacomAccessoGuard: CanActivateFn = (route, state) => {
   }
 
   // Devolvemos o UrlTree directamente para que Angular faga a redirección nativa
-  return router.createUrlTree(['/Usuarios']);
+  return router.createUrlTree(['/login']);
 };
 

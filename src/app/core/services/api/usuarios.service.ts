@@ -31,6 +31,6 @@ export class UsuariosService {
   }
 
   postLogin(usuario: Usuario): Observable<DadosLogueo> {
-    return this.http.post<DadosLogueo>(environment.apiUrl + '/login', usuario);
+    return this.http.post<DadosLogueo>(`${environment.apiUrl}${this.rotaIntermedia}`, usuario);
   }
 }
