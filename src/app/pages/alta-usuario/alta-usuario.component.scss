@@ -1,4 +1,4 @@
-
+@use "@angular/material" as mat;
 @use "../../../assets/styles/controis.scss";
 
 .login-container {
@@ -27,6 +27,17 @@
 
 .aclaracom {
   font-size: small;
+}
+
+.ancho-inputs {
+  @include mat.form-field-density(-10); // Reduce o tamaño de todo
+
+  // Reduce o tamaño da fonte do texto inserido e do placeholder
+  --mat-sys-body-large-size: 12px;
+
+  --mat-form-field-container-height: 2px;
+  --mat-form-field-container-vertical-padding: 2px;
+  font-size: smaller;
 }
 
 input.is-invalid {

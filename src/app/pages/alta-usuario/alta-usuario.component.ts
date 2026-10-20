@@ -28,9 +28,8 @@ import { PeComponent } from '@componhentesComuns';
   styleUrls: ['./alta-usuario.component.scss']
 })
 export class AltaUsuarioComponent {
+  readonly loading = signal<boolean>(false);
   private readonly fb = inject(NonNullableFormBuilder); // Evita que os campos sexan null ao facer reset
-
-  private readonly loading = signal<boolean>(false);
   private readonly dadosOutrosService = inject(DadosOutrosService);
   private readonly outrosService = inject(OutrosService);
   private readonly layoutService = inject(LayoutService);
