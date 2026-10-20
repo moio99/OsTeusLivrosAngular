@@ -7,7 +7,8 @@ export const desvioJava: HttpInterceptorFn = (req, next) => {
 
   if (porto === '4211' && eBibliotecas
     && (environment.whereIAm === environments.dev || environment.whereIAm === environments.test)
-    && req.method === 'GET') {
+    && req.method === 'GET'
+    && environment.portoJava) {
 
     const urlOriginal = new URL(req.url, window.location.origin);
     urlOriginal.port = environment.portoJava;
@@ -15,7 +16,6 @@ export const desvioJava: HttpInterceptorFn = (req, next) => {
       url: urlOriginal.toString()
     });
 
-    // 4. Enviamos a petición modificada
     return next(novaReq);
   }
 
