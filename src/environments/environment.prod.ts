@@ -5,5 +5,6 @@ export enum environments {
 
 export const environment = {
   whereIAm: environments.pro,
+  portoJava: "8080",
   apiUrl: "https://osteuslivrosnodejs.onrender.com/api"
 };
