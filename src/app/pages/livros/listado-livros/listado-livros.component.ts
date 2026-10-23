@@ -310,7 +310,9 @@ export class ListadoLivrosComponent implements OnInit {
               error: (e) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o livro.'}); },
               complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
-                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro borrado.'}); }
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro borrado.'});
+                this.obterDadosDoListado();
+              }
           });
         }
       }

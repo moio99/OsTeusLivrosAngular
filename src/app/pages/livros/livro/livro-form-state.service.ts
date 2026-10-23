@@ -173,7 +173,10 @@ export class LivroFormStateService {
     }
   }
 
-  criarLivro(id: string, autores: SimpleObjet[], generos: SimpleObjet[], pontuacom?: number, autorAnonimo?: ObjetoSimpleIdNome): Livro {
+  criarLivro(id: string, autores: SimpleObjet[], generos: SimpleObjet[],
+    idIdiomaEntrada: number | null,
+    pontuacom?: number, autorAnonimo?: ObjetoSimpleIdNome): Livro {
+
     const autoresModelo: ObjetoSimpleIdNome[] = autores.map(autor => ({ id: autor.id, nome: autor.value }));
     if (autoresModelo.length === 0 && autorAnonimo) autoresModelo.push(autorAnonimo);
     const generosModelo = generos.map(genero => ({ id: genero.id, nome: genero.value }));
@@ -190,7 +193,9 @@ export class LivroFormStateService {
     const dateText = (date: { year: number; month: number; day: number }) => date.year > 0 ? `${date.year}-${date.month}-${date.day}` : '';
 
     const livro: Livro = {
-      id, titulo: String(this.livroForm.controls.titulo.value), autores: autoresModelo,
+      id, titulo: String(this.livroForm.controls.titulo.value),
+      idiomaDaEntrada: idIdiomaEntrada,
+      autores: autoresModelo,
       tituloOriginal: this.optionalText('tituloOriginal'), generos: generosModelo,
       idBiblioteca: biblioteca?.id ?? null, idEditorial: editorial?.id ?? null, idColecom: colecom?.id ?? null, idEstilo: estilo?.id ?? null,
       isbn: this.optionalText('isbn'), paginas: this.optionalText('paginas'), paginasLidas: this.optionalText('paginasLidas'),

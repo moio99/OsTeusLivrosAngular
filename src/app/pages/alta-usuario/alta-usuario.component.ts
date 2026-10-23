@@ -147,7 +147,8 @@ export class AltaUsuarioComponent {
       pergunta: String(this.af.pergunta.value),
       contestacom: String(this.af.contestacom.value),
       correio: String(this.af.correio.value),
-      idIdioma: Number(this.af.idIdioma.value)
+      idIdioma: Number(this.af.idIdioma.value),
+      ativado: true
     };
     return usuario;
   }

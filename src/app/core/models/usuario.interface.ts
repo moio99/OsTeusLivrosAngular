@@ -26,4 +26,5 @@ export interface AltaUsuario extends BaseElemento {
   contestacom: string | null,
   correio: string | null,
   idIdioma: number | null,
+  ativado: boolean,
 }

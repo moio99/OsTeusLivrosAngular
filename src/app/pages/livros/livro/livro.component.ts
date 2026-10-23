@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule} from '@angular/material/datepicker';
 import { ConverterAData } from '../../../shared/classes/date-convert';
-import { LayoutService, DadosPaginasService, DadosPagina } from '@servizosFlow';
+import { LayoutService, DadosPaginasService, DadosPagina, AuthService } from '@servizosFlow';
 import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { Title } from '@angular/platform-browser';
@@ -65,6 +65,7 @@ export class LivroComponent implements OnInit {
 
   private readonly formState = inject(LivroFormStateService);
   livroForm = this.formState.livroForm;
+  private readonly authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private layoutService = inject(LayoutService);
@@ -394,6 +395,7 @@ export class LivroComponent implements OnInit {
     let relectura: Relectura = {
       id: (this.dadosDaRelectura) ? this.dadosDaRelectura.id :'0',
       idLivro: this.dadosDoLivro!.id,
+      idiomaDaEntrada: this.authService.getUsuarioLogado()?.idioma ?? null,
       titulo: String(this.livroForm.controls.titulo.value),
       idBiblioteca: (biblioteca) ? biblioteca.id : null,
       idEditorial: (editorial) ? editorial.id : null,
@@ -805,6 +807,7 @@ export class LivroComponent implements OnInit {
       this.dadosDoLivro?.id ?? '0',
       this.autoresLivro(),
       this.generosLivro(),
+      this.authService.getUsuarioLogado()?.idioma ?? null,
       this.pontuacomEstrelas,
       autorAnonimo
     );

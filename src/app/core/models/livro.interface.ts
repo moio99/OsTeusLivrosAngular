@@ -10,6 +10,7 @@ import { Autor } from "./autor.interface";
 export interface LivroBase {
   id: string;
   titulo: string;
+  idiomaDaEntrada: number | null;
 
   idBiblioteca: number | null;
   biblioteca: string;

@@ -38,11 +38,22 @@ export class AuthService {
       return false;
     } */
 
-    // environments.pre é a versom para railway (na nuve)
-    if (environment.whereIAm !== environments.pre && environment.whereIAm !== environments.pro) {
-      return true;
-    }
     if (!this._usuarioLogado || !this._usuarioToken) {
+      // environments.pre é a versom para railway (na nuve)
+      if (environment.whereIAm !== environments.pre && environment.whereIAm !== environments.pro) {
+        const usuario: UsuarioLogado = {
+          nome: 'Algo',
+          id: 2,
+          idioma: 3
+        };
+        const usuarioLogueo: DadosLogueo = {
+          usuario: usuario,
+          token: ''
+        };
+        this.setUserData(usuarioLogueo);
+        return true;
+      }
+
       console.log('Nom está autenticado');
     }
     return !!this._usuarioLogado && !!this._usuarioToken;
