@@ -1,7 +1,7 @@
 <h3>Listado por {{tipo() === tipos.porNacionalidade ? 'Nacionalidade' : 'Pais'}}</h3>
 
 {{ listadoResource.isLoading() ? 'Carregando' : listadoResource.value()?.length + ' elementos' }}
-@if (listadoResource.hasValue()) {
+@if (listadoResource.hasValue() && listadoResource.value().length > 0) {
   <table class="taboas-listado">
     <tr>
       <th>Nome</th>
