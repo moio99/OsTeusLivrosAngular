@@ -203,7 +203,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
       .getGraficosPaginasPorIdiomaEAno()
       .pipe(first())
       .subscribe({
-        next: (v: any) => this.comprobarDadosObtidos(rota, v),
+        next: (v: GraficosData) => this.comprobarDadosObtidos(rota, v),
         error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
           // complete: () => console.info('completado listado de generos')
@@ -251,12 +251,12 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
     return resultados
   }
 
-  private comprobarDadosObtidos(rota: string, data: object) {
+  private comprobarDadosObtidos(rota: string, dados: GraficosData) {
     this.layoutService.amosarInfo(undefined);
 
-    const dados = <GraficosData>data;
     if (dados != null) {
       this.graficosService.setGraficosPaginasPorIdiomaEAno(dados);
+      this.graficosService.setNomHaNovosDados();    // Marco que obtivem os dados e agora estam na caché.
       this.router.navigate([rota], {
         state: { dados: dados.data },
       });

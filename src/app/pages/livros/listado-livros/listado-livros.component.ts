@@ -41,7 +41,6 @@ export class ListadoLivrosComponent implements OnInit {
   tipo = ListadosLivrosTipos.alfabetico;
   tipos = ListadosLivrosTipos;
   parametros: ParametrosLivroListado = { tipo: EstadisticasTipo.Ano, id: '0' };
-  coresIdiomas: { [key: string]: CoresIdioma } = {};
 
   private coresIdiomasService = inject(CoresIdiomasService);
 
@@ -78,7 +77,6 @@ export class ListadoLivrosComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.coresIdiomas = this.coresIdiomasService.getCoresIdiomas();
     this.route.queryParams
       .subscribe(params => {
         this.parametros = <ParametrosLivroListado>params;
@@ -215,6 +213,7 @@ export class ListadoLivrosComponent implements OnInit {
   private separarDadosGrafico(dados: ListadoLivros[]) {
     let paginasPorIdioma: { [key: number]: number } = {};   // Dados agrupados por idioma
     let totalIdiomasIds: number[] = [];
+    let labelsIdiomas: string[] = [];                       // Etiquetas para amosar no gráfico eijo das x
 
     dados.forEach(dado => {
       if (!paginasPorIdioma[dado.idioma]) {   // Se nom existe a matriz a vou criar
@@ -224,16 +223,16 @@ export class ListadoLivrosComponent implements OnInit {
 
       if (dado.idioma && !totalIdiomasIds.includes(dado.idioma)) {
         totalIdiomasIds.push(dado.idioma);
+        labelsIdiomas.push(dado.nomeIdioma);
       }
     });
 
     let totalPaginasPorIdioma: number[] = [];
-    let labelsIdiomas: string[] = [];                       // Etiquetas para amosar no gráfico ejo das x
     let cores: string[] = [];                               // cores para amosar
     totalIdiomasIds.forEach(idioma => {
       totalPaginasPorIdioma.push(paginasPorIdioma[idioma]);
-      labelsIdiomas.push(this.coresIdiomas[idioma].nome);
-      cores.push(this.coresIdiomas[idioma].cor);
+      this.coresIdiomasService.obterOuXerarCor(idioma);
+      cores.push(this.coresIdiomasService.getCoreIdioma(idioma));
     });
 
     this.chartOptions.series = totalPaginasPorIdioma;

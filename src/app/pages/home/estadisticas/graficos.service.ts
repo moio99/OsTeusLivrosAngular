@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { environment, environments } from '../../../../environments/environment';
 import { inject, Service } from '@angular/core';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { GraficosData } from '../../../core/models/graficos.interface';
 
 // @Injectable({
@@ -16,23 +16,39 @@ import { GraficosData } from '../../../core/models/graficos.interface';
 export class GraficosService {
 
   private rotaIntermedia = '/Graficos';
+  private haNovosDados = false;
   private cacheGraficosPaginasPorIdiomaEAno: GraficosData | undefined = undefined;
 
   private http = inject(HttpClient);
+
+  /**
+   * Fica marcado que NOM temos os dados atualizados.
+   */
+  setHaNovosDados() {
+    this.haNovosDados = true;
+  }
+
+  /**
+   * Fica marcado que já temos os dados atualizados.
+   */
+  setNomHaNovosDados() {
+    this.haNovosDados = false;
+  }
 
   /**
    * Accede à API para obter os dados dos gráficos, neste caso por Idioma e por Ano.
    * Quando nom estea em local guarda umha caché.
    * @returns Promesa de obtençom dos dados.
    */
-   getGraficosPaginasPorIdiomaEAno() {
+   getGraficosPaginasPorIdiomaEAno(): Observable<GraficosData> {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
-    if (!isProdOrPre || !this.cacheGraficosPaginasPorIdiomaEAno) {
-      return this.http.get(environment.apiUrl + this.rotaIntermedia + '/PaginasPorIdiomaEAno');
+    if (!isProdOrPre || this.haNovosDados || !this.cacheGraficosPaginasPorIdiomaEAno) {
+      return this.http.get<GraficosData>(environment.apiUrl + this.rotaIntermedia + '/PaginasPorIdiomaEAno');
     } else {
       return of(this.cacheGraficosPaginasPorIdiomaEAno);
     }
   }
+
   setGraficosPaginasPorIdiomaEAno(dados: GraficosData) {
     const isProdOrPre = environment.whereIAm === environments.pro || environment.whereIAm === environments.pre;
     if (isProdOrPre) {

@@ -4,7 +4,6 @@ import { ChartComponent, NgApexchartsModule} from "ng-apexcharts";
 import { Graficos } from '@interfaces';
 import { AreasChartOptions } from '../../../core/types/chart.options';
 import { CoresIdiomasService } from '@servizosFlow';
-import { CoresIdioma } from '../../../shared/cores.idiomas.config';
 
 @Component({
   imports: [ NgApexchartsModule ],
@@ -15,8 +14,6 @@ import { CoresIdioma } from '../../../shared/cores.idiomas.config';
 })
 export class AnosPaginasIdiomasComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
-
-  coresIdiomas: { [key: string]: CoresIdioma } = {};
 
   public chartOptions: Partial<AreasChartOptions> = {
     series: [],
@@ -58,7 +55,6 @@ export class AnosPaginasIdiomasComponent implements OnInit {
   private coresIdiomasService = inject(CoresIdiomasService);
 
   ngOnInit(): void {
-    this.coresIdiomas = this.coresIdiomasService.getCoresIdiomas();
     const state = history.state;
     if (state?.dados) {
       this.separarDadosPorIdioma(state?.dados);
@@ -86,7 +82,8 @@ export class AnosPaginasIdiomasComponent implements OnInit {
       }
       if (!idiomas.includes(dado.idioma)) {
         idiomas.push(dado.idioma);
-        cores.push(this.coresIdiomas[dado.idIdioma].cor);
+        this.coresIdiomasService.obterOuXerarCor(dado.idIdioma);
+        cores.push(this.coresIdiomasService.getCoreIdioma(dado.idIdioma));
       }
     });
     console.log(datosPorIdioma);

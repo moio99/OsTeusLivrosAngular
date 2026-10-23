@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, inject, effect } from '@angular/core';
 import { catchError, EMPTY, first, of, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LivrosService, OutrosService, RelecturasService } from '@servizosApi';
+import { GraficosService, LivrosService, OutrosService, RelecturasService } from '@servizosApi';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatInputModule} from '@angular/material/input';
@@ -76,7 +76,7 @@ export class LivroComponent implements OnInit {
   private relecturasService = inject(RelecturasService);
   private dialog = inject(MatDialog);
   private dadosPaginasService = inject(DadosPaginasService);
-
+  private readonly graficosService = inject(GraficosService);
 
   dadosApiResource = rxResource({
     stream: () => {
@@ -433,6 +433,8 @@ export class LivroComponent implements OnInit {
       this.setDadosLivroForm();
       this.modo.set(this.modoSalvadoRelectura);
       this.modoRelectura.set(false);
+
+      this.graficosService.setHaNovosDados(); // Para que se vai aos gráficos nom use os dados da caché.
     }
   }
 
@@ -817,6 +819,7 @@ export class LivroComponent implements OnInit {
     if (data) {
       livro.id = data.idResult;
       this.dadosDoLivro = livro;
+      this.graficosService.setHaNovosDados(); // Para que se vai aos gráficos nom use os dados da caché.
     }
   }
 }
