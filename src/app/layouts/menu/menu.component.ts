@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { LayoutService } from '@servizosFlow';
+import { AuthService, LayoutService } from '@servizosFlow';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -12,8 +12,14 @@ import { RouterModule } from '@angular/router';
 export class MenuComponent {
 
   private layoutService = inject(LayoutService);
+  private authService = inject(AuthService);
 
   onFecharMenu(): void {
+    this.layoutService.cerrarMenu();
+  }
+
+  onSair(): void {
+    this.authService.logout();
     this.layoutService.cerrarMenu();
   }
 }
