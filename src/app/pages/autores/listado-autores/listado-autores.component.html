@@ -18,10 +18,24 @@
   </ul>
 </div>
 
-<div>
-  {{ listadoResource.isLoading() ? 'Carregando...' : listadoDados()?.length + ' autores' }}
+<div class="procurador">
+  <!-- Caixa de texto conectada ao Signal do filtro -->
+  <input
+    type="text"
+    placeholder="Filtra polo nome..."
+    [ngModel]="autorFiltro()"
+    (ngModelChange)="autorFiltro.set($event)"
+  />
+  <span>
+    @if(listadoResource.isLoading()) {
+      'Carregando...'
+    } @else {
+      {{ listadoDadosOrdenados()?.length}}
+      autor{{ listadoDadosOrdenados()?.length > 1 ? 's' : '' }}
+    }
+  </span>
 </div>
-@if (listadoResource.hasValue() && this.listadoDados().length > 0) {
+@if (listadoResource.hasValue() && this.listadoDadosOrdenados()?.length > 0) {
   <table class="taboas-listado">
     <tr>
       <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna

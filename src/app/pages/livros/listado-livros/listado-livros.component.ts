@@ -44,8 +44,6 @@ export class ListadoLivrosComponent implements OnInit {
   tipos = ListadosLivrosTipos;
   parametros: ParametrosLivroListado = { tipo: EstadisticasTipo.Ano, id: '0' };
 
-  private coresIdiomasService = inject(CoresIdiomasService);
-
   listadoFiltrado = computed(() => {
     const textoTitulo = this.tituloFiltro().toLowerCase().trim();
     const textoAutor = this.autorFiltro().toLowerCase().trim();
@@ -65,6 +63,8 @@ export class ListadoLivrosComponent implements OnInit {
       return cumpreTitulo && cumpreAutor;
     });
   });
+
+  private coresIdiomasService = inject(CoresIdiomasService);
 
   constructor(
     private route: ActivatedRoute,

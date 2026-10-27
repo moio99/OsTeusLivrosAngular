@@ -12,11 +12,12 @@ import { environment, environments } from '../../../../environments/environment'
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'omla-listado-autores',
   standalone: true,
-  imports: [ CommonModule, OrdeColunaComponent, RouterModule ],
+  imports: [ CommonModule, OrdeColunaComponent, RouterModule, FormsModule ],
   templateUrl: './listado-autores.component.html',
   styleUrls: ['./listado-autores.component.scss']
 })
@@ -29,6 +30,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   numeroLivrosLidos = ', número de livros lidos';
   tipoOrdeacom = signal<string>(this.nomeAlfabetico);
   inverso = signal<boolean>(false);
+  autorFiltro = signal<string>('');
 
   private autoresService = inject(AutoresService);
   private route = inject(ActivatedRoute);
@@ -53,20 +55,28 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
   });
 
   listadoDadosOrdenados = computed(() => {
-    // Cada vez que o recurso mude (cheguen datos da API ou cambio o criterio de ordenaçom), o computed execútase
+    // Cada vez que o recurso mude (cheguen datos da API ou cambio o criterio de ordenaçom ou o filtro), o computed execútase
     const respostaApi = this.listadoResource.value();
     if (!respostaApi?.data) return [];
 
+    let lisatdoFiltrado = respostaApi.data;
+    const filtro = this.autorFiltro().toLowerCase().trim();
+    if (filtro) {
+      lisatdoFiltrado = lisatdoFiltrado.filter(autor =>
+        autor.nome.toLowerCase().includes(filtro)
+      );
+    }
+
     if (this.tipoOrdeacom() === this.nomeAlfabetico) {
-      return [...respostaApi.data].sort((a, b) =>
+      return [...lisatdoFiltrado].sort((a, b) =>
         new Ordeacom().ordear(a.nome, b.nome, this.inverso())
       );
     } else if (this.tipoOrdeacom() === this.numeroLivros) {
-      return [...respostaApi.data].sort((a, b) =>
+      return [...lisatdoFiltrado].sort((a, b) =>
         new Ordeacom().ordear(a.quantidadeLivros, b.quantidadeLivros, this.inverso(), false)
       );
     } else // if (this.tipoOrdeacom() === this.numeroLivrosLidos) {
-      return [...respostaApi.data].sort((a, b) =>
+      return [...lisatdoFiltrado].sort((a, b) =>
         new Ordeacom().ordear(a.quantidadeLidos, b.quantidadeLidos, this.inverso(), false)
       );
     }
