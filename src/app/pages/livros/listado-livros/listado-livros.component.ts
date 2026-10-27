@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { first, map, tap } from 'rxjs/operators';
 import { GenerosService, LivrosService, OutrosService } from '@servizosApi';
@@ -12,14 +12,14 @@ import { ListadoLivros, ParametrosLivroListado } from '@interfaces';
 import { LivroComponent } from '../livro/livro.component';
 import { ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import { TartaChartOptions } from '../../../core/types/chart.options';
-import { CoresIdioma } from '../../../shared/cores.idiomas.config';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'omla-listado-livros',
   standalone: true,
-  imports: [ CommonModule, OrdeColunaComponent, NgApexchartsModule, MatTooltipModule ],
+  imports: [ CommonModule, OrdeColunaComponent, NgApexchartsModule, MatTooltipModule, FormsModule ],
   templateUrl: './listado-livros.component.html',
   styleUrls: ['./listado-livros.component.scss']
 })
@@ -30,6 +30,8 @@ export class ListadoLivrosComponent implements OnInit {
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   titulo = signal<string>('');
   tituloListado = 'Listado';
+  tituloFiltro = signal<string>('');
+  autorFiltro = signal<string>('');
   ordeTituloAlfabetico = ', título alfabético';
   ordeAutorAlfabetico = ', autor alfabético';
   ordePaginas = ', páginas';
@@ -43,6 +45,26 @@ export class ListadoLivrosComponent implements OnInit {
   parametros: ParametrosLivroListado = { tipo: EstadisticasTipo.Ano, id: '0' };
 
   private coresIdiomasService = inject(CoresIdiomasService);
+
+  listadoFiltrado = computed(() => {
+    const textoTitulo = this.tituloFiltro().toLowerCase().trim();
+    const textoAutor = this.autorFiltro().toLowerCase().trim();
+
+    if (!textoTitulo && !textoAutor) {
+      return this.listadoDados();
+    }
+
+    return this.listadoDados().filter(elemento => {
+      const cumpreTitulo = !textoTitulo ||
+        elemento.titulo?.toLowerCase().includes(textoTitulo);
+
+      const cumpreAutor = !textoAutor ||
+        (elemento.autores && elemento.autores.some(autor =>
+          autor.nome?.toLowerCase().includes(textoAutor)
+        ));
+      return cumpreTitulo && cumpreAutor;
+    });
+  });
 
   constructor(
     private route: ActivatedRoute,
