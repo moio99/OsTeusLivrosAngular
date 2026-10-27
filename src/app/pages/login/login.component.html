@@ -1,33 +1,33 @@
-<div class="login-container">
-  <h2>Iniciar Sesión</h2>
+<div class="login-container" *transloco="let t">
+  <h2>{{t('login.titulo')}}</h2>
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
     <div class="form-group">
-      <label for="nome">Nome do usuario</label>
+      <label for="nome">{{t('login.nomeUsuario')}}</label>
       <input
         type="text"
         id="nome"
         formControlName="nome"
-        placeholder="Insire o nome do usuario"
+        [placeholder]="t('login.placeholderNome')"
         [class.is-invalid]="loginForm.controls.nome.invalid && loginForm.controls.nome.touched">
       @if (loginForm.controls.nome.invalid && loginForm.controls.nome.touched) {
         <div class="invalid-feedback">
-        O nome do usuario é obrigatorio
+          {{t('login.nomeObrigatorio')}}
         </div>
       }
     </div>
 
     <div class="form-group">
-      <label for="contrasinal">Contrasinal</label>
+      <label for="contrasinal">{{t('login.contrasinal')}}</label>
       <input
         type="password"
         id="contrasinal"
         formControlName="contrasinal"
-        placeholder="Insire o teu contrasinal"
+        [placeholder]="t('login.placeholderContrasinal')"
         [class.is-invalid]="loginForm.controls.contrasinal.invalid && loginForm.controls.contrasinal.touched">
       @if (loginForm.controls.contrasinal.invalid && loginForm.controls.contrasinal.touched) {
         <div class="invalid-feedback">
-        O contrasinal é obrigatorio
+          {{t('login.contrasinalObrigatorio')}}
         </div>
       }
     </div>
@@ -42,7 +42,12 @@
       @if (loading()) {
         <span class="spinner-border spinner-border-sm"></span>
       }
-      {{ loading() ? 'Ingresando...' : 'Ingresar' }}
+      {{ loading() ? t('login.ingresando') : t('login.ingresar') }}
     </button>
   </form>
+  <button (click)="troco('gl')">gl</button>
+  <button (click)="troco('ca')">ca</button>
+  <button (click)="troco('eu')">eu</button>
+  <button (click)="troco('es')">es</button>
+  <button (click)="troco('en')">en</button>
 </div>

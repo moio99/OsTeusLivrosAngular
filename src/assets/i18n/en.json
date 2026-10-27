@@ -1,0 +1,14 @@
+{
+  "login": {
+    "titulo": "Sign in",
+    "nomeUsuario": "Username",
+    "placeholderNome": "Enter your username",
+    "nomeObrigatorio": "Username is required",
+    "contrasinal": "Password",
+    "placeholderContrasinal": "Enter your password",
+    "contrasinalObrigatorio": "Password is required",
+    "ingresar": "Sign in",
+    "ingresando": "Signing in...",
+    "error": "Error signing in"
+  }
+}

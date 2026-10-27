@@ -1,0 +1,14 @@
+{
+  "login": {
+    "titulo": "Iniciar Sessom",
+    "nomeUsuario": "Nome do usuario",
+    "placeholderNome": "Insire o nome do usuario",
+    "nomeObrigatorio": "O nome do usuario é obrigatorio",
+    "contrasinal": "Contrasinal",
+    "placeholderContrasinal": "Insire o teu contrasinal",
+    "contrasinalObrigatorio": "O contrasinal é obrigatorio",
+    "ingresar": "Ingresar",
+    "ingresando": "Ingresando...",
+    "error": "Erro no inicio da sessom"
+  }
+}

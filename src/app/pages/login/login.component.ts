@@ -5,11 +5,12 @@ import { DadosLogueo, Usuario } from '@interfaces';
 import { AuthService } from '@servizosFlow';
 import { first } from 'rxjs';
 import { UsuariosService } from '../../core/services/api/usuarios.service';
+import { TranslocoDirective , TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslocoDirective ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -21,6 +22,7 @@ export class LoginComponent {
 
   protected readonly loading = signal<boolean>(false);
   protected readonly error = signal<string>('');
+  private readonly translocoService = inject(TranslocoService);
 
   // Formulario fortemente tipado de xeito automático
   protected readonly loginForm = this.fb.group({
@@ -51,11 +53,11 @@ export class LoginComponent {
             this.router.navigate(['/estadisticas']);
           }
           else {
-            this.error.set('Erro no inicio da sessom');
+            this.error.set(this.translocoService.translate('login.error'));
           }
         },
         error: (err: any) => {
-          this.error.set(err.error?.mensagem || 'Erro no inicio da sessom');
+          this.error.set(err.error?.mensagem || this.translocoService.translate('login.error'));
           this.loading.set(false);
         },
         complete: () => {
@@ -63,5 +65,8 @@ export class LoginComponent {
         }
       });
   }
-}
 
+  troco(idioma: string) {
+    this.translocoService.setActiveLang(idioma);
+  }
+}

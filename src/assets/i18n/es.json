@@ -1,0 +1,14 @@
+{
+  "login": {
+    "titulo": "Iniciar Sesión",
+    "nomeUsuario": "Nombre de usuario",
+    "placeholderNome": "Introduce el nombre de usuario",
+    "nomeObrigatorio": "El nombre de usuario es obligatorio",
+    "contrasinal": "Contraseña",
+    "placeholderContrasinal": "Introduce tu contraseña",
+    "contrasinalObrigatorio": "La contraseña es obligatoria",
+    "ingresar": "Acceder",
+    "ingresando": "Accediendo...",
+    "error": "Error al iniciar sesión"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "login": {
+    "titulo": "Inicia sessió",
+    "nomeUsuario": "Nom d'usuari",
+    "placeholderNome": "Introdueix el nom d'usuari",
+    "nomeObrigatorio": "El nom d'usuari és obligatori",
+    "contrasinal": "Contrasenya",
+    "placeholderContrasinal": "Introdueix la contrasenya",
+    "contrasinalObrigatorio": "La contrasenya és obligatòria",
+    "ingresar": "Inicia sessió",
+    "ingresando": "Iniciant sessió...",
+    "error": "Error en iniciar la sessió"
+  }
+}

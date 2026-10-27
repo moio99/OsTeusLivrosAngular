@@ -1,0 +1,14 @@
+{
+  "login": {
+    "titulo": "Hasi saioa",
+    "nomeUsuario": "Erabiltzaile-izena",
+    "placeholderNome": "Sartu erabiltzaile-izena",
+    "nomeObrigatorio": "Erabiltzaile-izena beharrezkoa da",
+    "contrasinal": "Pasahitza",
+    "placeholderContrasinal": "Sartu pasahitza",
+    "contrasinalObrigatorio": "Pasahitza beharrezkoa da",
+    "ingresar": "Hasi saioa",
+    "ingresando": "Saioa hasten...",
+    "error": "Errorea saioa hastean"
+  }
+}
