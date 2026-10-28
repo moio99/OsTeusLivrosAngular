@@ -1,0 +1,120 @@
+{
+  "login": {
+    "titulo": "Aniciar sesión",
+    "nomeUsuario": "Nome d'usuariu",
+    "placeholderNome": "Escribe'l nome d'usuariu",
+    "nomeObrigatorio": "El nome d'usuariu ye obligatoriu",
+    "contrasinal": "Contraseña",
+    "placeholderContrasinal": "Escribe la to contraseña",
+    "contrasinalObrigatorio": "La contraseña ye obligatoria",
+    "ingresar": "Entrar",
+    "ingresando": "Entrando...",
+    "error": "Error al aniciar sesión"
+  },
+  "app": { "title": "Xestión de llibros lleíos" },
+  "nav": {
+    "statistics": "Estadístiques", "books": "Llibros", "authors": "Autores",
+    "publishers": "Editoriales", "genres": "Xéneros", "libraries": "Biblioteques",
+    "collections": "Coleiciones", "literaryStyles": "Estilos lliterarios", "logout": "Zarrar sesión"
+  },
+  "common": {
+    "list": "Llistáu",
+    "loading": "Cargando...", "name": "Nome", "books": "Llibros", "read": "Lleíos",
+    "title": "Títulu", "originalTitle": "Títulu orixinal", "author": "Autor", "authors": "Autores",
+    "genre": "Xéneru", "genres": "Xéneros", "pages": "Páxines", "rereads": "Relectures",
+    "endReading": "Fin de llectura", "days": "Díes", "score": "Puntuación", "yes": "Sí", "no": "Non",
+    "noData": "Nun hai datos", "delete": "Desaniciar", "new": "Nuevu", "add": "Amestar", "edit": "Editar",
+    "back": "Volver", "close": "Zarrar", "manage": "Xestionar", "notFound": "Nun s'atopó",
+    "recordsLoaded": "{{count}} rexistros cargaos", "loadError": "Nun se pudieron cargar los rexistros.",
+    "confirmDelete": "¿De xuru que quies desaniciar «{{name}}»?",
+    "itemDeleted": "Desanicióse «{{name}}».", "deleteError": "Nun se pudo desaniciar «{{name}}».",
+    "deleteBlocked": "Nun se puede desaniciar «{{name}}» mientres tenga {{count}} llibros venceyaos.",
+    "filter": "Filtru", "all": "Toos", "selection": "Seleición",
+    "noFilteredItems": "Nun hai elementos que concasen col filtru.", "items": "{{count}} elementos", "inverse": "inversu",
+    "sortAlphabetical": "alfabéticamente", "sortBookCount": " pol númberu de llibros",
+    "sortReadCount": " pol númberu de llibros lleíos", "sortPageCount": ", per páxines",
+    "sortRereadCount": ", per relectures", "sortLastReading": ", per última llectura",
+    "sortTitleAlphabetical": ", per títulu alfabéticu", "sortAuthorAlphabetical": ", per autor alfabéticu",
+    "web": "Web", "comment": "Comentariu", "address": "Direición", "location": "Llocalidá",
+    "phone": "Teléfonu", "country": "País", "nationality": "Nacionalidá", "language": "Llingua",
+    "originalLanguage": "Llingua orixinal", "editionDate": "Data d'edición", "creationDate": "Data de creación",
+    "editionNumber": "Númberu d'edición", "isbn": "ISBN", "electronic": "Electrónicu", "series": "Serie",
+    "awards": "Premios", "description": "Descripción", "maxCharacters": "Máximu {{count}} caráuteres",
+    "required": "Esti campu ye obligatoriu", "tooLong": "El valor ye demasiao llargu.",
+    "invalidDates": "Comprueba que les feches sían correutes.", "lengthAtMost": "Nun puede superar los {{count}} caráuteres",
+    "validDateFormat": "El formatu válidu ye dd/mm/aaaa", "validNumber": "Escribe un valor de 0 a {{max}}",
+    "register": "Rexistrar", "save": "Guardar", "cancel": "Encaboxar", "modify": "Modificar",
+    "newReread": "Nueva relectura", "cancelNewReread": "Encaboxar nueva relectura",
+    "cancelEditReread": "Encaboxar la modificación de la relectura",
+    "countAuthors": "{{count}} autores", "countLibraries": "{{count}} biblioteques",
+    "countCollections": "{{count}} coleiciones", "countPublishers": "{{count}} editoriales",
+    "countGenres": "{{count}} xéneros", "countLiteraryStyles": "{{count}} estilos lliterarios"
+  },
+  "signup": {
+    "title": "Alta d'usuariu", "allRequired": "Tolos campos son obligatorios",
+    "username": "Nome d'usuariu", "usernamePlaceholder": "Escribe'l nome d'usuariu",
+    "usernameRequired": "El nome d'usuariu ye obligatoriu", "password": "Contraseña",
+    "passwordPlaceholder": "Escribe la to contraseña", "passwordRequired": "La contraseña ye obligatoria",
+    "email": "Corréu electrónicu", "emailPlaceholder": "Escribe'l corréu electrónicu",
+    "emailRequired": "El corréu electrónicu ye obligatoriu", "emailTooLong": "El corréu nun puede superar los 80 caráuteres.",
+    "emailInvalid": "El formatu del corréu electrónicu nun ye correutu.", "recoveryQuestion": "Pregunta de recuperación d'usuariu",
+    "recoveryQuestionPlaceholder": "Escribe la pregunta de recuperación",
+    "recoveryQuestionRequired": "La pregunta de recuperación ye obligatoria", "recoveryAnswer": "Respuesta a la pregunta",
+    "recoveryAnswerPlaceholder": "Escribe la respuesta a la pregunta",
+    "recoveryAnswerRequired": "La respuesta a la pregunta ye obligatoria", "userLanguage": "Llingua del usuariu",
+    "chooseLanguage": "Llingua:", "languageRequired": "La llingua ye obligatoria",
+    "selectLanguage": "Has de seleicionar una llingua de la llista", "languageNotFound": "Nun s'atopó la llingua",
+    "sending": "Unviando...", "submit": "Unviar",
+    "usernameExists": "El nome d'usuariu yá esiste na base de datos",
+    "userAdded": "Amestóse l'usuariu {{name}}.",
+    "addError": "Prodúxose un error al amestar l'usuariu.",
+    "languageLoadError": "Nun se pudieron cargar les llingües."
+  },
+  "statistics": {
+    "languages": "Llingües", "years": "Años", "genres": "Xéneros", "quantity": "Cantidá",
+    "rereads": "Relectures", "pages": "Páxines", "quantityTooltip": "Cantidá", "viewChart": "Ver gráficu",
+    "chartTitle": "Estadístiques per llingua", "pagesReadByYear": "Páxines lleíes per añu"
+  },
+  "booksList": {
+    "title": "Llistáu de llibros", "byLanguage": "Llistáu de llibros per llingua",
+    "byYear": "Llistáu de llibros del añu {{year}}", "byGenre": "Llistáu de llibros per xéneru",
+    "newBook": "Llibru nuevu", "inverse": "(lleíos y ensin lleer)",
+    "filterTitle": "Filtrar pel títulu...", "filterAuthor": "Filtrar pol autor...",
+    "count": "{count, plural, one {# llibru} other {# llibros}}", "authors": "Autor/es", "rereadsShort": "Relectures",
+    "lastRead": "Fin de llectura", "loadByLanguageError": "Nun se pudieron cargar los llibros de la llingua {{language}}.",
+    "loadByYearError": "Nun se pudieron cargar los llibros del añu {{year}}.",
+    "loadByGenreError": "Nun se pudieron cargar los llibros del xéneru {{genre}}.",
+    "loadError": "Nun se pudieron cargar los llibros.", "noDataReceived": "Nun se recibieron datos.",
+    "confirmDelete": "¿De xuru que quies desaniciar el llibru {{name}}?",
+    "deleteError": "Nun se pudo desaniciar el llibru.", "deleted": "Llibru desaniciáu.",
+    "deleteBlockedRereads": "Nun se puede desaniciar el llibru {{name}} mientres tenga {{count}} relectures venceyaes.",
+    "deleteBlockedSeries": "Nun se puede desaniciar el llibru {{name}} mientres sía'l primeru d'una serie de {{count}} llibros."
+  },
+  "authorsList": {
+    "title": "Llistáu d'autores", "byNationality": "Per nacionalidá", "byCountry": "Per país",
+    "count": "{count, plural, one {# autor} other {# autores}}",
+    "newAuthor": "Autor nuevu", "filter": "Filtrar pol nome...", "nationality": "Nacionalidá", "country": "País"
+  },
+  "entityList": {
+    "publishers": "Llistáu d'editoriales", "libraries": "Llistáu de biblioteques", "collections": "Llistáu de coleiciones",
+    "genres": "Llistáu de xéneros", "literaryStyles": "Llistáu d'estilos lliterarios", "newPublisher": "Editorial nueva",
+    "newLibrary": "Biblioteca nueva", "newCollection": "Coleición nueva", "newGenre": "Xéneru nuevu",
+    "newStyle": "Estilu nuevu", "renewalDate": "Data de renovación", "sortBy": "Llistáu", "by": "per"
+  },
+  "bookForm": {
+    "library": "Biblioteca:", "publisher": "Editorial:", "collection": "Coleición:",
+    "style": "Estilu lliterariu", "pagesRead": "Páxines lleíes", "read": "Lleíu",
+    "creationDate": "Data de creación", "daysRead": "Díes de llectura", "includingToday": "(incluyendo güei)",
+    "readingEndDate": "Data de fin de llectura", "series": "Forma parte d'una serie", "rating": "Puntuación:",
+    "valueRange": "Valor válidu de 0 a {{max}}",
+    "creationAfterEdition": "La data de creación nun puede ser posterior a la data d'edición",
+    "editionBeforeCreation": "La data d'edición nun puede ser anterior a la data de creación"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Filtru" },
+  "form": {
+    "nameRequired": "El nome ye obligatoriu", "birthPlace": "Llugar de nacencia", "birthDate": "Data de nacencia",
+    "deathDate": "Data de fallecimientu", "realName": "Nome real", "direction": "Direición",
+    "membershipDate": "Data d'alta", "titleOriginal": "Títulu orixinal",
+    "noRereads": "Esti llibru nun tien relectures.", "rereadList": "Llistáu de relectures"
+  }
+}

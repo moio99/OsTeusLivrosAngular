@@ -1,0 +1,108 @@
+{
+  "login": {
+    "titulo": "Logáil isteach", "nomeUsuario": "Ainm úsáideora", "placeholderNome": "Cuir isteach d'ainm úsáideora",
+    "nomeObrigatorio": "Tá ainm úsáideora riachtanach", "contrasinal": "Focal faire",
+    "placeholderContrasinal": "Cuir isteach d'fhocal faire", "contrasinalObrigatorio": "Tá focal faire riachtanach",
+    "ingresar": "Logáil isteach", "ingresando": "Ag logáil isteach...", "error": "Earráid agus tú ag logáil isteach"
+  },
+  "app": { "title": "Bainisteoir leabhar léite" },
+  "nav": {
+    "statistics": "Staitisticí", "books": "Leabhair", "authors": "Údair", "publishers": "Foilsitheoirí",
+    "genres": "Seánraí", "libraries": "Leabharlanna", "collections": "Bailiúcháin",
+    "literaryStyles": "Stíleanna liteartha", "logout": "Logáil amach"
+  },
+  "common": {
+    "list": "Liosta", "loading": "Á lódáil...", "name": "Ainm", "books": "Leabhair", "read": "Léite",
+    "title": "Teideal", "originalTitle": "Bunteideal", "author": "Údar", "authors": "Údair",
+    "genre": "Seánra", "genres": "Seánraí", "pages": "Leathanaigh", "rereads": "Athléamh",
+    "endReading": "Deireadh na léitheoireachta", "days": "Laethanta", "score": "Rátáil", "yes": "Tá", "no": "Níl",
+    "noData": "Níl aon sonraí ann", "delete": "Scrios", "new": "Nua", "add": "Cuir leis", "edit": "Cuir in eagar",
+    "back": "Ar ais", "close": "Dún", "manage": "Bainistigh", "notFound": "Níor aimsíodh",
+    "recordsLoaded": "{{count}} taifead luchtaithe", "loadError": "Níorbh fhéidir na taifid a luchtú.",
+    "confirmDelete": "An bhfuil tú cinnte gur mian leat «{{name}}» a scriosadh?",
+    "itemDeleted": "Scriosadh «{{name}}».", "deleteError": "Níorbh fhéidir «{{name}}» a scriosadh.",
+    "deleteBlocked": "Ní féidir «{{name}}» a scriosadh agus {{count}} leabhar bainteach leis.",
+    "filter": "Scagaire", "all": "Uile", "selection": "Rogha",
+    "noFilteredItems": "Níl aon mhír ag teacht leis an scagaire.", "items": "{{count}} mír", "inverse": "aisiompaithe",
+    "sortAlphabetical": "in ord aibítre", "sortBookCount": " de réir líon na leabhar",
+    "sortReadCount": " de réir líon na leabhar léite", "sortPageCount": ", de réir leathanaigh",
+    "sortRereadCount": ", de réir athléamh", "sortLastReading": ", de réir na léitheoireachta deireanaí",
+    "sortTitleAlphabetical": ", de réir teidil", "sortAuthorAlphabetical": ", de réir údair",
+    "web": "Gréasán", "comment": "Nóta", "address": "Seoladh", "location": "Suíomh",
+    "phone": "Fón", "country": "Tír", "nationality": "Náisiúntacht", "language": "Teanga",
+    "originalLanguage": "Bunteanga", "editionDate": "Dáta eagrán", "creationDate": "Dáta cruthaithe",
+    "editionNumber": "Uimhir eagrán", "isbn": "ISBN", "electronic": "Leictreonach", "series": "Sraith",
+    "awards": "Duaiseanna", "description": "Cur síos", "maxCharacters": "Uasmhéid {{count}} carachtar",
+    "required": "Tá an réimse seo riachtanach", "tooLong": "Tá an luach seo rófhada.",
+    "invalidDates": "Seiceáil go bhfuil na dátaí bailí.", "lengthAtMost": "Ní féidir dul thar {{count}} carachtar",
+    "validDateFormat": "Formáid bhailí: dd/mm/yyyy", "validNumber": "Cuir luach idir 0 agus {{max}} isteach",
+    "register": "Cláraigh", "save": "Sábháil", "cancel": "Cealaigh", "modify": "Athraigh",
+    "newReread": "Athléamh nua", "cancelNewReread": "Cealaigh athléamh nua",
+    "cancelEditReread": "Cealaigh athruithe ar an athléamh",
+    "countAuthors": "{{count}} údar", "countLibraries": "{{count}} leabharlann",
+    "countCollections": "{{count}} bailiúchán", "countPublishers": "{{count}} foilsitheoir",
+    "countGenres": "{{count}} seánra", "countLiteraryStyles": "{{count}} stíl liteartha"
+  },
+  "signup": {
+    "title": "Cruthaigh cuntas", "allRequired": "Tá gach réimse riachtanach",
+    "username": "Ainm úsáideora", "usernamePlaceholder": "Cuir ainm úsáideora isteach",
+    "usernameRequired": "Tá ainm úsáideora riachtanach", "password": "Focal faire",
+    "passwordPlaceholder": "Cuir d'fhocal faire isteach", "passwordRequired": "Tá focal faire riachtanach",
+    "email": "Seoladh ríomhphoist", "emailPlaceholder": "Cuir do sheoladh ríomhphoist isteach",
+    "emailRequired": "Tá seoladh ríomhphoist riachtanach", "emailTooLong": "Ní féidir leis an ríomhphost dul thar 80 carachtar.",
+    "emailInvalid": "Cuir seoladh ríomhphoist bailí isteach.", "recoveryQuestion": "Ceist athshlánaithe cuntais",
+    "recoveryQuestionPlaceholder": "Cuir ceist athshlánaithe isteach", "recoveryQuestionRequired": "Tá ceist athshlánaithe riachtanach",
+    "recoveryAnswer": "Freagra ar an gceist", "recoveryAnswerPlaceholder": "Cuir freagra na ceiste isteach",
+    "recoveryAnswerRequired": "Tá freagra ar an gceist riachtanach", "userLanguage": "Teanga an úsáideora",
+    "chooseLanguage": "Teanga:", "languageRequired": "Tá teanga riachtanach",
+    "selectLanguage": "Roghnaigh teanga ón liosta", "languageNotFound": "Níor aimsíodh an teanga",
+    "sending": "Á sheoladh...", "submit": "Seol", "usernameExists": "Tá an t-ainm úsáideora sin ann cheana.",
+    "userAdded": "Cuireadh {{name}} leis.", "addError": "Tharla earráid agus an t-úsáideoir á chur leis.",
+    "languageLoadError": "Níorbh fhéidir na teangacha a luchtú."
+  },
+  "statistics": {
+    "languages": "Teangacha", "years": "Blianta", "genres": "Seánraí", "quantity": "Líon",
+    "rereads": "Athléamh", "pages": "Leathanaigh", "quantityTooltip": "Líon", "viewChart": "Féach ar an gcairt",
+    "chartTitle": "Staitisticí de réir teanga", "pagesReadByYear": "Leathanaigh léite in aghaidh na bliana"
+  },
+  "booksList": {
+    "title": "Liosta leabhar", "byLanguage": "Liosta leabhar de réir teanga", "byYear": "Liosta leabhar do {{year}}",
+    "byGenre": "Liosta leabhar de réir seánra", "newBook": "Leabhar nua", "inverse": "(léite agus gan léamh)",
+    "filterTitle": "Scag de réir teidil...", "filterAuthor": "Scag de réir údair...",
+    "count": "{count, plural, one {# leabhar} other {# leabhair}}", "authors": "Údar(í)", "rereadsShort": "Athléamh",
+    "lastRead": "Deireadh na léitheoireachta", "loadByLanguageError": "Níorbh fhéidir leabhair don teanga {{language}} a luchtú.",
+    "loadByYearError": "Níorbh fhéidir leabhair do {{year}} a luchtú.", "loadByGenreError": "Níorbh fhéidir leabhair don seánra {{genre}} a luchtú.",
+    "loadError": "Níorbh fhéidir na leabhair a luchtú.", "noDataReceived": "Ní bhfuarthas sonraí.",
+    "confirmDelete": "An bhfuil tú cinnte gur mian leat an leabhar {{name}} a scriosadh?",
+    "deleteError": "Níorbh fhéidir an leabhar a scriosadh.", "deleted": "Scriosadh an leabhar.",
+    "deleteBlockedRereads": "Ní féidir {{name}} a scriosadh agus {{count}} athléamh bainteach leis.",
+    "deleteBlockedSeries": "Ní féidir {{name}} a scriosadh agus é ar an gcéad leabhar i sraith de {{count}} leabhair."
+  },
+  "authorsList": {
+    "title": "Liosta údar", "byNationality": "De réir náisiúntachta", "byCountry": "De réir tíre",
+    "count": "{count, plural, one {# údar} other {# údair}}", "newAuthor": "Údar nua",
+    "filter": "Scag de réir ainm...", "nationality": "Náisiúntacht", "country": "Tír"
+  },
+  "entityList": {
+    "publishers": "Liosta foilsitheoirí", "libraries": "Liosta leabharlann", "collections": "Liosta bailiúchán",
+    "genres": "Liosta seánraí", "literaryStyles": "Liosta stíleanna liteartha", "newPublisher": "Foilsitheoir nua",
+    "newLibrary": "Leabharlann nua", "newCollection": "Bailiúchán nua", "newGenre": "Seánra nua",
+    "newStyle": "Stíl nua", "renewalDate": "Dáta athnuachana", "sortBy": "Liosta", "by": "de réir"
+  },
+  "bookForm": {
+    "library": "Leabharlann:", "publisher": "Foilsitheoir:", "collection": "Bailiúchán:",
+    "style": "Stíl liteartha", "pagesRead": "Leathanaigh léite", "read": "Léite",
+    "creationDate": "Dáta cruthaithe", "daysRead": "Laethanta léitheoireachta", "includingToday": "(inniu san áireamh)",
+    "readingEndDate": "Dáta deiridh léitheoireachta", "series": "Cuid de shraith", "rating": "Rátáil:",
+    "valueRange": "Luach bailí idir 0 agus {{max}}",
+    "creationAfterEdition": "Ní féidir leis an dáta cruthaithe a bheith níos déanaí ná dáta an eagráin",
+    "editionBeforeCreation": "Ní féidir le dáta an eagráin a bheith níos luaithe ná an dáta cruthaithe"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Scagaire" },
+  "form": {
+    "nameRequired": "Tá ainm riachtanach", "birthPlace": "Áit bhreithe", "birthDate": "Dáta breithe",
+    "deathDate": "Dáta báis", "realName": "Fíorainm", "direction": "Seoladh",
+    "membershipDate": "Dáta ballraíochta", "titleOriginal": "Bunteideal",
+    "noRereads": "Níl aon athléamh ag an leabhar seo.", "rereadList": "Liosta athléamh"
+  }
+}

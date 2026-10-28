@@ -50,14 +50,15 @@ export class LoginComponent {
         next: (usuario: DadosLogueo) => {
           if (usuario.token) {
             this.authService.setUserData(usuario);
+            this.setIdioma(usuario.usuario?.idioma ?? 1);
             this.router.navigate(['/estadisticas']);
           }
           else {
-            this.error.set('Erro no inicio da sessom');
+            this.error.set(this.translocoService.translate('login.error'));
           }
         },
         error: (err: any) => {
-          this.error.set(err.error?.mensagem || 'Erro no inicio da sessom');
+          this.error.set(err.error?.mensagem || this.translocoService.translate('login.error'));
           this.loading.set(false);
         },
         complete: () => {
@@ -69,5 +70,64 @@ export class LoginComponent {
   troco(idioma: string) {
     this.translocoService.setActiveLang(idioma);
   }
-}
 
+  private setIdioma(idioma: number) {
+    switch (idioma) {
+      case 1:
+      case 2:
+        this.translocoService.setActiveLang('gl');
+        break;
+      case 3:
+        this.translocoService.setActiveLang('pt');
+        break;
+      case 4:
+        this.translocoService.setActiveLang('ast');
+        break;
+      case 5:
+        this.translocoService.setActiveLang('eu');
+        break;
+      case 6:
+        this.translocoService.setActiveLang('ca');
+        break;
+      case 7:
+        this.translocoService.setActiveLang('an');
+        break;
+      case 8:
+        this.translocoService.setActiveLang('es');
+        break;
+      case 9:
+        this.translocoService.setActiveLang('fr');
+        break;
+      case 15:
+        this.translocoService.setActiveLang('it');
+        break;
+      case 113: // Bretom
+        this.translocoService.setActiveLang('br');
+        break;
+      case 191:
+        this.translocoService.setActiveLang('sco');
+        break;
+      case 154: // Eire
+        this.translocoService.setActiveLang('ga');
+        break;
+      // case 191: // Corso
+      //   this.translocoService.setActiveLang('co');
+      //   break;
+      // case 191: // Sardo
+      //   this.translocoService.setActiveLang('sc');
+      //   break;
+      // case 191: // Galés
+      //   this.translocoService.setActiveLang('cy');
+      //   break;
+      // case 191: // Gaelico de Alba
+      //   this.translocoService.setActiveLang('gd');
+      //   break;
+      // case 191: // galó da bretanha francesa
+      //   this.translocoService.setActiveLang('roa-gal');
+      //   break;
+      default:
+        this.translocoService.setActiveLang('gl');
+        break;
+    }
+  }
+}

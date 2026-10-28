@@ -24,7 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
       provideTransloco({
         config: {
-          availableLangs: ['gl', 'es', 'en', 'ca', 'eu'],
+          availableLangs: ['gl', 'es', 'en', 'ca', 'eu', 'ast', 'pt', 'an', 'ga', 'fr', 'br', 'co', 'cy', 'sco', 'gd', 'it', 'sc', 'roa-gal'],
           defaultLang: 'gl',
           // Remove this option if your application doesn't support changing language in runtime.
           reRenderOnLangChange: true,

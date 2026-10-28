@@ -1,0 +1,108 @@
+{
+  "login": {
+    "titulo": "Sign in", "nomeUsuario": "Uiser name", "placeholderNome": "Pit in yer uiser name",
+    "nomeObrigatorio": "A uiser name is needit", "contrasinal": "Passwird",
+    "placeholderContrasinal": "Pit in yer passwird", "contrasinalObrigatorio": "A passwird is needit",
+    "ingresar": "Sign in", "ingresando": "Signin in...", "error": "Mistak signin in"
+  },
+  "app": { "title": "Managin read buikies" },
+  "nav": {
+    "statistics": "Statistics", "books": "Buiks", "authors": "Writers", "publishers": "Publishers",
+    "genres": "Genres", "libraries": "Libraries", "collections": "Collections",
+    "literaryStyles": "Literar styles", "logout": "Sign oot"
+  },
+  "common": {
+    "list": "Leet", "loading": "Loadin...", "name": "Name", "books": "Buiks", "read": "Read",
+    "title": "Title", "originalTitle": "Original title", "author": "Writer", "authors": "Writers",
+    "genre": "Genre", "genres": "Genres", "pages": "Pages", "rereads": "Re-reads",
+    "endReading": "End o readin", "days": "Days", "score": "Scaur", "yes": "Aye", "no": "Naw",
+    "noData": "Nae data", "delete": "Ding", "new": "New", "add": "Eik", "edit": "Edit",
+    "back": "Back", "close": "Close", "manage": "Manage", "notFound": "No fund",
+    "recordsLoaded": "{{count}} records loadit", "loadError": "Coudna load the records.",
+    "confirmDelete": "Are ye shair ye want tae ding «{{name}}»?",
+    "itemDeleted": "«{{name}}» wis dinged.", "deleteError": "Coudna ding «{{name}}».",
+    "deleteBlocked": "Cannae ding «{{name}}» while it haes {{count}} buiks linkit tae it.",
+    "filter": "Filter", "all": "A", "selection": "Chyce",
+    "noFilteredItems": "Nae items match the filter.", "items": "{{count}} items", "inverse": "reversit",
+    "sortAlphabetical": "alphabetical", "sortBookCount": " bi buik coont",
+    "sortReadCount": " bi read buik coont", "sortPageCount": ", bi pages",
+    "sortRereadCount": ", bi re-reads", "sortLastReading": ", bi last readin date",
+    "sortTitleAlphabetical": ", bi title", "sortAuthorAlphabetical": ", bi writer",
+    "web": "Wab", "comment": "Comment", "address": "Address", "location": "Place",
+    "phone": "Phone", "country": "Kintra", "nationality": "Nationality", "language": "Leid",
+    "originalLanguage": "Original leid", "editionDate": "Edition date", "creationDate": "Creation date",
+    "editionNumber": "Edition nummer", "isbn": "ISBN", "electronic": "Electronic", "series": "Series",
+    "awards": "Awards", "description": "Description", "maxCharacters": "Maist {{count}} characters",
+    "required": "This field is needit", "tooLong": "This value is ower lang.",
+    "invalidDates": "Check the dates are richt.", "lengthAtMost": "Maunna be mair nor {{count}} characters",
+    "validDateFormat": "Richt format: dd/mm/yyyy", "validNumber": "Pit in a value atween 0 an {{max}}",
+    "register": "Register", "save": "Save", "cancel": "Cancel", "modify": "Change",
+    "newReread": "New re-read", "cancelNewReread": "Cancel new re-read",
+    "cancelEditReread": "Cancel re-read chynges",
+    "countAuthors": "{{count}} writers", "countLibraries": "{{count}} libraries",
+    "countCollections": "{{count}} collections", "countPublishers": "{{count}} publishers",
+    "countGenres": "{{count}} genres", "countLiteraryStyles": "{{count}} literar styles"
+  },
+  "signup": {
+    "title": "Mak an account", "allRequired": "A fields are needit",
+    "username": "Uiser name", "usernamePlaceholder": "Pit in a uiser name",
+    "usernameRequired": "A uiser name is needit", "password": "Passwird",
+    "passwordPlaceholder": "Pit in yer passwird", "passwordRequired": "A passwird is needit",
+    "email": "Email address", "emailPlaceholder": "Pit in yer email address",
+    "emailRequired": "An email address is needit", "emailTooLong": "The email cannae be mair nor 80 characters.",
+    "emailInvalid": "Pit in a richt email address.", "recoveryQuestion": "Account recovery speir",
+    "recoveryQuestionPlaceholder": "Pit in a recovery speir", "recoveryQuestionRequired": "A recovery speir is needit",
+    "recoveryAnswer": "Answer tae the speir", "recoveryAnswerPlaceholder": "Pit in the answer tae the speir",
+    "recoveryAnswerRequired": "An answer tae the speir is needit", "userLanguage": "Uiser leid",
+    "chooseLanguage": "Leid:", "languageRequired": "A leid is needit",
+    "selectLanguage": "Chyise a leid fae the leet", "languageNotFound": "Leid no fund",
+    "sending": "Sendin...", "submit": "Send", "usernameExists": "That uiser name is awready there.",
+    "userAdded": "Uiser {{name}} wis eikit.", "addError": "A mistak cam aboot while eikin the uiser.",
+    "languageLoadError": "Coudna load the leids."
+  },
+  "statistics": {
+    "languages": "Leids", "years": "Years", "genres": "Genres", "quantity": "Coont",
+    "rereads": "Re-reads", "pages": "Pages", "quantityTooltip": "Coont", "viewChart": "See chart",
+    "chartTitle": "Statistics bi leid", "pagesReadByYear": "Pages read ilka year"
+  },
+  "booksList": {
+    "title": "Buik leet", "byLanguage": "Buik leet bi leid", "byYear": "Buik leet for {{year}}",
+    "byGenre": "Buik leet bi genre", "newBook": "New buik", "inverse": "(read an unread)",
+    "filterTitle": "Filter bi title...", "filterAuthor": "Filter bi writer...",
+    "count": "{count, plural, one {# buik} other {# buiks}}", "authors": "Writer(s)", "rereadsShort": "Re-reads",
+    "lastRead": "End o readin", "loadByLanguageError": "Coudna get buiks for leid {{language}}.",
+    "loadByYearError": "Coudna get buiks for {{year}}.", "loadByGenreError": "Coudna get buiks for genre {{genre}}.",
+    "loadError": "Coudna get the buiks.", "noDataReceived": "Nae data wis receivit.",
+    "confirmDelete": "Are ye shair ye want tae ding the buik {{name}}?",
+    "deleteError": "Coudna ding the buik.", "deleted": "Buik dinged.",
+    "deleteBlockedRereads": "Cannae ding the buik {{name}} while it haes {{count}} re-reads linkit tae it.",
+    "deleteBlockedSeries": "Cannae ding the buik {{name}} while it is first in a series o {{count}} buiks."
+  },
+  "authorsList": {
+    "title": "Writer leet", "byNationality": "Bi nationality", "byCountry": "Bi kintra",
+    "count": "{count, plural, one {# writer} other {# writers}}", "newAuthor": "New writer",
+    "filter": "Filter bi name...", "nationality": "Nationality", "country": "Kintra"
+  },
+  "entityList": {
+    "publishers": "Publisher leet", "libraries": "Library leet", "collections": "Collection leet",
+    "genres": "Genre leet", "literaryStyles": "Literar style leet", "newPublisher": "New publisher",
+    "newLibrary": "New library", "newCollection": "New collection", "newGenre": "New genre",
+    "newStyle": "New style", "renewalDate": "Renewal date", "sortBy": "Leet", "by": "bi"
+  },
+  "bookForm": {
+    "library": "Library:", "publisher": "Publisher:", "collection": "Collection:",
+    "style": "Literar style", "pagesRead": "Pages read", "read": "Read",
+    "creationDate": "Creation date", "daysRead": "Readin days", "includingToday": "(the day includit)",
+    "readingEndDate": "End date o readin", "series": "Pairt o a series", "rating": "Scaur:",
+    "valueRange": "Richt value atween 0 an {{max}}",
+    "creationAfterEdition": "The creation date cannae be efter the edition date",
+    "editionBeforeCreation": "The edition date cannae be afore the creation date"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Filter" },
+  "form": {
+    "nameRequired": "A name is needit", "birthPlace": "Birth place", "birthDate": "Birth date",
+    "deathDate": "Daith date", "realName": "Real name", "direction": "Address",
+    "membershipDate": "Joinin date", "titleOriginal": "Original title",
+    "noRereads": "This buik haes nae re-reads.", "rereadList": "Re-read leet"
+  }
+}

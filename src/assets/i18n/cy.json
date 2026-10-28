@@ -1,0 +1,108 @@
+{
+  "login": {
+    "titulo": "Mewngofnodi", "nomeUsuario": "Enw defnyddiwr", "placeholderNome": "Rhowch eich enw defnyddiwr",
+    "nomeObrigatorio": "Mae angen enw defnyddiwr", "contrasinal": "Cyfrinair",
+    "placeholderContrasinal": "Rhowch eich cyfrinair", "contrasinalObrigatorio": "Mae angen cyfrinair",
+    "ingresar": "Mewngofnodi", "ingresando": "Wrthi'n mewngofnodi...", "error": "Gwall wrth fewngofnodi"
+  },
+  "app": { "title": "Rheoli llyfrau a ddarllenwyd" },
+  "nav": {
+    "statistics": "Ystadegau", "books": "Llyfrau", "authors": "Awduron", "publishers": "Cyhoeddwyr",
+    "genres": "Genres", "libraries": "Llyfrgelloedd", "collections": "Casgliadau",
+    "literaryStyles": "Arddulliau llenyddol", "logout": "Allgofnodi"
+  },
+  "common": {
+    "list": "Rhestr", "loading": "Yn llwytho...", "name": "Enw", "books": "Llyfrau", "read": "Wedi'u darllen",
+    "title": "Teitl", "originalTitle": "Teitl gwreiddiol", "author": "Awdur", "authors": "Awduron",
+    "genre": "Genre", "genres": "Genres", "pages": "Tudalennau", "rereads": "Ailddarlleniadau",
+    "endReading": "Diwedd darllen", "days": "Dyddiau", "score": "Sgôr", "yes": "Iawn", "no": "Na",
+    "noData": "Dim data", "delete": "Dileu", "new": "Newydd", "add": "Ychwanegu", "edit": "Golygu",
+    "back": "Yn ôl", "close": "Cau", "manage": "Rheoli", "notFound": "Heb ei ganfod",
+    "recordsLoaded": "{{count}} cofnod wedi'u llwytho", "loadError": "Methu llwytho'r cofnodion.",
+    "confirmDelete": "Ydych chi'n siŵr eich bod am ddileu «{{name}}»?",
+    "itemDeleted": "Mae «{{name}}» wedi'i ddileu.", "deleteError": "Methu dileu «{{name}}».",
+    "deleteBlocked": "Methu dileu «{{name}}» tra bod {{count}} o lyfrau yn gysylltiedig ag ef.",
+    "filter": "Hidlydd", "all": "Pob un", "selection": "Dewis",
+    "noFilteredItems": "Nid oes eitemau'n cyfateb i'r hidlydd.", "items": "{{count}} eitem", "inverse": "wedi'i wrthdroi",
+    "sortAlphabetical": "yn nhrefn yr wyddor", "sortBookCount": " yn ôl nifer y llyfrau",
+    "sortReadCount": " yn ôl nifer y llyfrau a ddarllenwyd", "sortPageCount": ", yn ôl tudalennau",
+    "sortRereadCount": ", yn ôl ailddarlleniadau", "sortLastReading": ", yn ôl y darlleniad diwethaf",
+    "sortTitleAlphabetical": ", yn ôl teitl", "sortAuthorAlphabetical": ", yn ôl awdur",
+    "web": "Gwe", "comment": "Sylw", "address": "Cyfeiriad", "location": "Lleoliad",
+    "phone": "Ffôn", "country": "Gwlad", "nationality": "Cenedligrwydd", "language": "Iaith",
+    "originalLanguage": "Iaith wreiddiol", "editionDate": "Dyddiad cyhoeddi", "creationDate": "Dyddiad creu",
+    "editionNumber": "Rhifyn", "isbn": "ISBN", "electronic": "Electronig", "series": "Cyfres",
+    "awards": "Gwobrau", "description": "Disgrifiad", "maxCharacters": "Uchafswm o {{count}} nod",
+    "required": "Mae'r maes hwn yn ofynnol", "tooLong": "Mae'r gwerth hwn yn rhy hir.",
+    "invalidDates": "Gwiriwch fod y dyddiadau'n ddilys.", "lengthAtMost": "Ni ddylai fod yn fwy na {{count}} nod",
+    "validDateFormat": "Fformat dilys: dd/mm/bbbb", "validNumber": "Rhowch werth rhwng 0 a {{max}}",
+    "register": "Cofrestru", "save": "Cadw", "cancel": "Canslo", "modify": "Newid",
+    "newReread": "Ailddarlleniad newydd", "cancelNewReread": "Canslo ailddarlleniad newydd",
+    "cancelEditReread": "Canslo newidiadau i'r ailddarlleniad",
+    "countAuthors": "{{count}} awdur", "countLibraries": "{{count}} llyfrgell",
+    "countCollections": "{{count}} casgliad", "countPublishers": "{{count}} cyhoeddwr",
+    "countGenres": "{{count}} genre", "countLiteraryStyles": "{{count}} arddull lenyddol"
+  },
+  "signup": {
+    "title": "Creu cyfrif", "allRequired": "Mae angen llenwi pob maes",
+    "username": "Enw defnyddiwr", "usernamePlaceholder": "Rhowch enw defnyddiwr",
+    "usernameRequired": "Mae angen enw defnyddiwr", "password": "Cyfrinair",
+    "passwordPlaceholder": "Rhowch eich cyfrinair", "passwordRequired": "Mae angen cyfrinair",
+    "email": "Cyfeiriad e-bost", "emailPlaceholder": "Rhowch eich cyfeiriad e-bost",
+    "emailRequired": "Mae angen cyfeiriad e-bost", "emailTooLong": "Ni all yr e-bost fod dros 80 nod.",
+    "emailInvalid": "Rhowch gyfeiriad e-bost dilys.", "recoveryQuestion": "Cwestiwn adfer cyfrif",
+    "recoveryQuestionPlaceholder": "Rhowch gwestiwn adfer", "recoveryQuestionRequired": "Mae angen cwestiwn adfer",
+    "recoveryAnswer": "Ateb i'r cwestiwn", "recoveryAnswerPlaceholder": "Rhowch ateb i'r cwestiwn",
+    "recoveryAnswerRequired": "Mae angen ateb i'r cwestiwn", "userLanguage": "Iaith y defnyddiwr",
+    "chooseLanguage": "Iaith:", "languageRequired": "Mae angen dewis iaith",
+    "selectLanguage": "Dewiswch iaith o'r rhestr", "languageNotFound": "Heb ganfod yr iaith",
+    "sending": "Yn anfon...", "submit": "Anfon", "usernameExists": "Mae'r enw defnyddiwr hwnnw'n bodoli eisoes.",
+    "userAdded": "Ychwanegwyd y defnyddiwr {{name}}.", "addError": "Digwyddodd gwall wrth ychwanegu'r defnyddiwr.",
+    "languageLoadError": "Methu llwytho'r ieithoedd."
+  },
+  "statistics": {
+    "languages": "Ieithoedd", "years": "Blynyddoedd", "genres": "Genres", "quantity": "Nifer",
+    "rereads": "Ailddarlleniadau", "pages": "Tudalennau", "quantityTooltip": "Nifer", "viewChart": "Gweld siart",
+    "chartTitle": "Ystadegau yn ôl iaith", "pagesReadByYear": "Tudalennau a ddarllenwyd y flwyddyn"
+  },
+  "booksList": {
+    "title": "Rhestr lyfrau", "byLanguage": "Rhestr lyfrau yn ôl iaith", "byYear": "Rhestr lyfrau ar gyfer {{year}}",
+    "byGenre": "Rhestr lyfrau yn ôl genre", "newBook": "Llyfr newydd", "inverse": "(wedi'u darllen a heb eu darllen)",
+    "filterTitle": "Hidlo yn ôl teitl...", "filterAuthor": "Hidlo yn ôl awdur...",
+    "count": "{count, plural, one {# llyfr} other {# llyfrau}}", "authors": "Awdur(on)", "rereadsShort": "Ailddarlleniadau",
+    "lastRead": "Diwedd darllen", "loadByLanguageError": "Methu llwytho llyfrau ar gyfer yr iaith {{language}}.",
+    "loadByYearError": "Methu llwytho llyfrau ar gyfer {{year}}.", "loadByGenreError": "Methu llwytho llyfrau ar gyfer y genre {{genre}}.",
+    "loadError": "Methu llwytho'r llyfrau.", "noDataReceived": "Ni dderbyniwyd data.",
+    "confirmDelete": "Ydych chi'n siŵr eich bod am ddileu'r llyfr {{name}}?",
+    "deleteError": "Methu dileu'r llyfr.", "deleted": "Dilëwyd y llyfr.",
+    "deleteBlockedRereads": "Methu dileu'r llyfr {{name}} tra bod ganddo {{count}} ailddarlleniad cysylltiedig.",
+    "deleteBlockedSeries": "Methu dileu'r llyfr {{name}} tra mai ef yw'r cyntaf mewn cyfres o {{count}} o lyfrau."
+  },
+  "authorsList": {
+    "title": "Rhestr awduron", "byNationality": "Yn ôl cenedligrwydd", "byCountry": "Yn ôl gwlad",
+    "count": "{count, plural, one {# awdur} other {# awduron}}", "newAuthor": "Awdur newydd",
+    "filter": "Hidlo yn ôl enw...", "nationality": "Cenedligrwydd", "country": "Gwlad"
+  },
+  "entityList": {
+    "publishers": "Rhestr cyhoeddwyr", "libraries": "Rhestr llyfrgelloedd", "collections": "Rhestr casgliadau",
+    "genres": "Rhestr genres", "literaryStyles": "Rhestr arddulliau llenyddol", "newPublisher": "Cyhoeddwr newydd",
+    "newLibrary": "Llyfrgell newydd", "newCollection": "Casgliad newydd", "newGenre": "Genre newydd",
+    "newStyle": "Arddull newydd", "renewalDate": "Dyddiad adnewyddu", "sortBy": "Rhestr", "by": "yn ôl"
+  },
+  "bookForm": {
+    "library": "Llyfrgell:", "publisher": "Cyhoeddwr:", "collection": "Casgliad:",
+    "style": "Arddull lenyddol", "pagesRead": "Tudalennau a ddarllenwyd", "read": "Wedi'i ddarllen",
+    "creationDate": "Dyddiad creu", "daysRead": "Diwrnodau darllen", "includingToday": "(gan gynnwys heddiw)",
+    "readingEndDate": "Dyddiad gorffen darllen", "series": "Rhan o gyfres", "rating": "Sgôr:",
+    "valueRange": "Gwerth dilys rhwng 0 a {{max}}",
+    "creationAfterEdition": "Ni all y dyddiad creu fod ar ôl dyddiad cyhoeddi",
+    "editionBeforeCreation": "Ni all dyddiad cyhoeddi fod cyn dyddiad creu"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Hidlydd" },
+  "form": {
+    "nameRequired": "Mae angen enw", "birthPlace": "Man geni", "birthDate": "Dyddiad geni",
+    "deathDate": "Dyddiad marw", "realName": "Enw go iawn", "direction": "Cyfeiriad",
+    "membershipDate": "Dyddiad aelodaeth", "titleOriginal": "Teitl gwreiddiol",
+    "noRereads": "Nid oes ailddarlleniadau i'r llyfr hwn.", "rereadList": "Rhestr ailddarlleniadau"
+  }
+}

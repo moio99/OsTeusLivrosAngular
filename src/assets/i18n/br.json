@@ -1,0 +1,109 @@
+{
+  "login": {
+    "titulo": "Kevreañ", "nomeUsuario": "Anv implijer", "placeholderNome": "Bizskrivit hoc'h anv implijer",
+    "nomeObrigatorio": "Ret eo lakaat un anv implijer", "contrasinal": "Ger-tremen",
+    "placeholderContrasinal": "Bizskrivit ho ker-tremen", "contrasinalObrigatorio": "Ret eo lakaat ur ger-tremen",
+    "ingresar": "Kevreañ", "ingresando": "O kevreañ...", "error": "Fazi en ur gevreañ"
+  },
+  "app": { "title": "Mererezh al levrioù lennet" },
+  "nav": {
+    "statistics": "Stadegoù", "books": "Levrioù", "authors": "Skrivagnerien", "publishers": "Embannerien",
+    "genres": "Rummadoù", "libraries": "Levraouegoù", "collections": "Dastumadoù",
+    "literaryStyles": "Stiloù lennegel", "logout": "Digevreañ"
+  },
+  "common": {
+    "list": "Roll", "loading": "O kargañ...", "name": "Anv", "books": "Levrioù", "read": "Lennet",
+    "title": "Titl", "originalTitle": "Titl orin", "author": "Skrivagner", "authors": "Skrivagnerien",
+    "genre": "Rummad", "genres": "Rummadoù", "pages": "Pajennoù", "rereads": "Adlennadurioù",
+    "endReading": "Dibenn al lenn", "days": "Deizioù", "score": "Notenn", "yes": "Ya", "no": "Nann",
+    "noData": "Roadennoù ebet", "delete": "Diverkañ", "new": "Nevez", "add": "Ouzhpennañ", "edit": "Kemmañ",
+    "back": "Distreiñ", "close": "Serriñ", "manage": "Merañ", "notFound": "N'eo ket bet kavet",
+    "recordsLoaded": "{{count}} a enrolladennoù karget", "loadError": "N'haller ket kargañ an enrolladennoù.",
+    "confirmDelete": "Ha sur oc'h e fell deoc'h diverkañ «{{name}}»?",
+    "itemDeleted": "Diverket eo bet «{{name}}».", "deleteError": "N'haller ket diverkañ «{{name}}».",
+    "deleteBlocked": "N'haller ket diverkañ «{{name}}» keit ha ma'z eo liammet ouzh {{count}} levr.",
+    "filter": "Sil", "all": "Holl", "selection": "Dibab",
+    "noFilteredItems": "N'eus elfenn ebet a glot gant ar sil.", "items": "{{count}} elfenn", "inverse": "eilpennet",
+    "sortAlphabetical": "hervez an urzh alfabetek", "sortBookCount": " dre niver al levrioù",
+    "sortReadCount": " dre niver al levrioù lennet", "sortPageCount": ", dre bajennoù",
+    "sortRereadCount": ", dre adlennadurioù", "sortLastReading": ", dre zeiziad al lenn diwezhañ",
+    "sortTitleAlphabetical": ", dre ditl", "sortAuthorAlphabetical": ", dre skrivagner",
+    "web": "Web", "comment": "Evezhiadenn", "address": "Chomlec'h", "location": "Lec'hiadur",
+    "phone": "Pellgomz", "country": "Bro", "nationality": "Genel", "language": "Yezh",
+    "originalLanguage": "Yezh orin", "editionDate": "Deiziad embann", "creationDate": "Deiziad krouiñ",
+    "editionNumber": "Niverenn embann", "isbn": "ISBN", "electronic": "Elektronek", "series": "Heuliad",
+    "awards": "Prizioù", "description": "Deskrivadur", "maxCharacters": "D'ar muiañ {{count}} arouezenn",
+    "required": "Rekis eo leuniañ ar vaezienn-mañ", "tooLong": "Re hir eo ar gwerzh-mañ.",
+    "invalidDates": "Gwiriit eo mat an deiziadoù.", "lengthAtMost": "Ne c'hall ket bezañ ouzhpenn {{count}} arouezenn",
+    "validDateFormat": "Mentrezh reizh: dd/mm/yyyy", "validNumber": "Lakait un niver etre 0 ha {{max}}",
+    "register": "Enskrivañ", "save": "Enrollañ", "cancel": "Nullañ", "modify": "Kemmañ",
+    "newReread": "Adlennadur nevez", "cancelNewReread": "Nullañ an adlennadur nevez",
+    "cancelEditReread": "Nullañ kemmoù an adlennadur",
+    "countAuthors": "{{count}} a skrivagnerien", "countLibraries": "{{count}} a levraouegoù",
+    "countCollections": "{{count}} a zastumadoù", "countPublishers": "{{count}} a embannerien",
+    "countGenres": "{{count}} a rummadoù", "countLiteraryStyles": "{{count}} a stiloù lennegel"
+  },
+  "signup": {
+    "title": "Krouiñ ur gont", "allRequired": "Rekis eo leuniañ an holl vaeziennoù",
+    "username": "Anv implijer", "usernamePlaceholder": "Bizskrivit un anv implijer",
+    "usernameRequired": "Ret eo lakaat un anv implijer", "password": "Ger-tremen",
+    "passwordPlaceholder": "Bizskrivit ho ker-tremen", "passwordRequired": "Ret eo lakaat ur ger-tremen",
+    "email": "Chomlec'h postel", "emailPlaceholder": "Bizskrivit ho chomlec'h postel",
+    "emailRequired": "Ret eo lakaat ur chomlec'h postel", "emailTooLong": "Ne c'hall ket ar postel bezañ ouzhpenn 80 arouezenn.",
+    "emailInvalid": "Lakait ur chomlec'h postel reizh.", "recoveryQuestion": "Goulenn adtapout ar gont",
+    "recoveryQuestionPlaceholder": "Bizskrivit ur goulenn adtapout", "recoveryQuestionRequired": "Ret eo lakaat ur goulenn adtapout",
+    "recoveryAnswer": "Respont d'ar goulenn", "recoveryAnswerPlaceholder": "Bizskrivit ar respont d'ar goulenn",
+    "recoveryAnswerRequired": "Ret eo respont d'ar goulenn", "userLanguage": "Yezh an implijer",
+    "chooseLanguage": "Yezh:", "languageRequired": "Ret eo dibab ur yezh",
+    "selectLanguage": "Dibabit ur yezh er roll", "languageNotFound": "N'eo ket bet kavet ar yezh",
+    "sending": "O kas...", "submit": "Kas", "usernameExists": "Bez' ez eus eus an anv implijer-mañ dija.",
+    "userAdded": "Ouzhpennet eo bet an implijer {{name}}.",
+    "addError": "Ur fazi zo bet en ur ouzhpennañ an implijer.",
+    "languageLoadError": "N'haller ket kargañ ar yezhoù."
+  },
+  "statistics": {
+    "languages": "Yezhoù", "years": "Bloavezhioù", "genres": "Rummadoù", "quantity": "Niver",
+    "rereads": "Adlennadurioù", "pages": "Pajennoù", "quantityTooltip": "Niver", "viewChart": "Gwelet ar graf",
+    "chartTitle": "Stadegoù dre yezh", "pagesReadByYear": "Pajennoù lennet bep bloaz"
+  },
+  "booksList": {
+    "title": "Roll al levrioù", "byLanguage": "Roll al levrioù dre yezh", "byYear": "Roll al levrioù evit {{year}}",
+    "byGenre": "Roll al levrioù dre rummad", "newBook": "Levr nevez", "inverse": "(lennet ha nann-lennet)",
+    "filterTitle": "Silañ dre ditl...", "filterAuthor": "Silañ dre skrivagner...",
+    "count": "{count, plural, one {# levr} other {# levrioù}}", "authors": "Skrivagner(ien)", "rereadsShort": "Adlennadurioù",
+    "lastRead": "Dibenn al lenn", "loadByLanguageError": "N'haller ket kargañ al levrioù er yezh {{language}}.",
+    "loadByYearError": "N'haller ket kargañ al levrioù evit {{year}}.", "loadByGenreError": "N'haller ket kargañ al levrioù er rummad {{genre}}.",
+    "loadError": "N'haller ket kargañ al levrioù.", "noDataReceived": "Roadenn ebet bet resevet.",
+    "confirmDelete": "Ha sur oc'h e fell deoc'h diverkañ al levr {{name}}?",
+    "deleteError": "N'haller ket diverkañ al levr.", "deleted": "Diverket eo bet al levr.",
+    "deleteBlockedRereads": "N'haller ket diverkañ al levr {{name}} keit ha ma'z eus {{count}} adlennadur stag outañ.",
+    "deleteBlockedSeries": "N'haller ket diverkañ al levr {{name}} rak an hini kentañ eo en heuliad {{count}} levr."
+  },
+  "authorsList": {
+    "title": "Roll ar skrivagnerien", "byNationality": "Dre genel", "byCountry": "Dre vro",
+    "count": "{count, plural, one {# aozer} other {# oberourien}}", "newAuthor": "Skrivagner nevez",
+    "filter": "Silañ dre anv...", "nationality": "Genel", "country": "Bro"
+  },
+  "entityList": {
+    "publishers": "Roll an embannerien", "libraries": "Roll al levraouegoù", "collections": "Roll an dastumadoù",
+    "genres": "Roll ar rummadoù", "literaryStyles": "Roll ar stiloù lennegel", "newPublisher": "Embanner nevez",
+    "newLibrary": "Levraoueg nevez", "newCollection": "Dastumad nevez", "newGenre": "Rummad nevez",
+    "newStyle": "Stil nevez", "renewalDate": "Deiziad adneveziñ", "sortBy": "Roll", "by": "dre"
+  },
+  "bookForm": {
+    "library": "Levraoueg:", "publisher": "Embanner:", "collection": "Dastumad:",
+    "style": "Stil lennegel", "pagesRead": "Pajennoù lennet", "read": "Lennet",
+    "creationDate": "Deiziad krouiñ", "daysRead": "Deizioù lenn", "includingToday": "(hiriv e-barzh)",
+    "readingEndDate": "Deiziad dibenn al lenn", "series": "Lod eus un heuliad", "rating": "Notenn:",
+    "valueRange": "Talvoud reizh etre 0 ha {{max}}",
+    "creationAfterEdition": "Ne c'hall ket an deiziad krouiñ bezañ goude deiziad an embann",
+    "editionBeforeCreation": "Ne c'hall ket deiziad an embann bezañ a-raok an deiziad krouiñ"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Sil" },
+  "form": {
+    "nameRequired": "Ret eo lakaat un anv", "birthPlace": "Lec'h ganedigezh", "birthDate": "Deiziad ganedigezh",
+    "deathDate": "Deiziad marv", "realName": "Anv gwir", "direction": "Chomlec'h",
+    "membershipDate": "Deiziad enskrivañ", "titleOriginal": "Titl orin",
+    "noRereads": "Adlennadur ebet evit al levr-mañ.", "rereadList": "Roll an adlennadurioù"
+  }
+}

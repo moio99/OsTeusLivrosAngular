@@ -33,7 +33,7 @@
     "noFilteredItems": "Nom há elementos co filtro.", "items": "{{count}} elementos", "inverse": "inverso",
     "sortAlphabetical": "alfabético", "sortBookCount": " número de livros",
     "sortReadCount": " número de livros lidos", "sortPageCount": ", páginas",
-    "sortRereadCount": ", relecturas", "sortLastReading": ", última lectura",
+    "sortRereadCount": ", relecturas", "sortLastReading": ", pola última lectura",
     "sortTitleAlphabetical": ", título alfabético", "sortAuthorAlphabetical": ", autor alfabético",
     "web": "Web", "comment": "Comentario", "address": "Endereço", "location": "Localidade",
     "phone": "Telefone", "country": "País", "nationality": "Nacionalidade", "language": "Idioma",

@@ -1,0 +1,115 @@
+{
+  "login": {
+    "titulo": "Intra",
+    "nomeUsuario": "Nùmene de utente",
+    "placeholderNome": "Iscrie su nùmene de utente",
+    "nomeObrigatorio": "Su nùmene de utente est obligatòriu",
+    "contrasinal": "Crae",
+    "placeholderContrasinal": "Iscrie sa crae",
+    "contrasinalObrigatorio": "Sa crae est obligatòria",
+    "ingresar": "Intra",
+    "ingresando": "Intra in cursu...",
+    "error": "Errore in s'intrada"
+  },
+  "app": { "title": "Gestione de libros lèghidos" },
+  "nav": {
+    "statistics": "Istàtisticas", "books": "Libros", "authors": "Autores",
+    "publishers": "Editores", "genres": "Genres", "libraries": "Bibliotecas",
+    "collections": "Colletziones", "literaryStyles": "Istyles literàrios", "logout": "Essi"
+  },
+  "common": {
+    "list": "Elencu", "loading": "Carrigamentu...", "name": "Nùmene", "books": "Libros", "read": "Lèghidos",
+    "title": "Tìtulu", "originalTitle": "Tìtulu originale", "author": "Autore", "authors": "Autores",
+    "genre": "Genere", "genres": "Genres", "pages": "Pàginas", "rereads": "Torra-leghidas",
+    "endReading": "Fine de sa lèghida", "days": "Dìes", "score": "Valutatzione", "yes": "Eja", "no": "Nono",
+    "noData": "Peruna data", "delete": "Fùlia", "new": "Nou", "add": "Agungi", "edit": "Modìfica",
+    "back": "In segus", "close": "Serra", "manage": "Gesti", "notFound": "No agatadu",
+    "recordsLoaded": "{{count}} registros carrigados", "loadError": "No si podent carrigare sos registros.",
+    "confirmDelete": "Ses seguru de bòlere fùliare «{{name}}»?",
+    "itemDeleted": "«{{name}}» est istadu fùliadu.", "deleteError": "No si podet fùliare «{{name}}».",
+    "deleteBlocked": "No si podet fùliare «{{name}}» fintzas tenet {{count}} libros ligados.",
+    "filter": "Filtru", "all": "Totus", "selection": "Seletzione",
+    "noFilteredItems": "Perunu elementu no currispondet a su filtru.", "items": "{{count}} elementos", "inverse": "inversu",
+    "sortAlphabetical": "in òrdine alfabeticu", "sortBookCount": " pro nùmeru de libros",
+    "sortReadCount": " pro nùmeru de libros lèghidos", "sortPageCount": ", pro pàginas",
+    "sortRereadCount": ", pro torra-leghidas", "sortLastReading": ", pro data de s'ùrtima lèghida",
+    "sortTitleAlphabetical": ", pro tìtulu", "sortAuthorAlphabetical": ", pro autore",
+    "web": "Web", "comment": "Cummentu", "address": "Indiritzu", "location": "Localidade",
+    "phone": "Telèfonu", "country": "Paisu", "nationality": "Natzionalidade", "language": "Limba",
+    "originalLanguage": "Limba originale", "editionDate": "Data de editzione", "creationDate": "Data de creatzione",
+    "editionNumber": "Nùmeru de editzione", "isbn": "ISBN", "electronic": "Elettrònicu", "series": "Sèrie",
+    "awards": "Prèmius", "description": "Descritzione", "maxCharacters": "Màssimu {{count}} caràteres",
+    "required": "Custu campu est obligatòriu", "tooLong": "Su valore est tropu longu.",
+    "invalidDates": "Controlla chi sas datas siant bàlidas.", "lengthAtMost": "No podet superare {{count}} caràteres",
+    "validDateFormat": "Formadu vàlidu: dd/mm/aaaa", "validNumber": "Iscrie un valore intre 0 e {{max}}",
+    "register": "Registra", "save": "Sarva", "cancel": "Annulla", "modify": "Modìfica",
+    "newReread": "Torra-leghida noa", "cancelNewReread": "Annulla sa torra-leghida noa",
+    "cancelEditReread": "Annulla sas modìficas de sa torra-leghida",
+    "countAuthors": "{{count}} autores", "countLibraries": "{{count}} bibliotecas",
+    "countCollections": "{{count}} colletziones", "countPublishers": "{{count}} editores",
+    "countGenres": "{{count}} genres", "countLiteraryStyles": "{{count}} istyles literàrios"
+  },
+  "signup": {
+    "title": "Crea unu contu", "allRequired": "Totus sos campos sunt obligatòrios",
+    "username": "Nùmene de utente", "usernamePlaceholder": "Iscrie unu nùmene de utente",
+    "usernameRequired": "Su nùmene de utente est obligatòriu", "password": "Crae",
+    "passwordPlaceholder": "Iscrie sa crae", "passwordRequired": "Sa crae est obligatòria",
+    "email": "Indiritzu de posta eletrònica", "emailPlaceholder": "Iscrie s'indiritzu de posta eletrònica",
+    "emailRequired": "S'indiritzu de posta eletrònica est obligatòriu", "emailTooLong": "Sa posta no podet superare 80 caràteres.",
+    "emailInvalid": "Iscrie un'indiritzu de posta eletrònica vàlidu.", "recoveryQuestion": "Pregunta de recuperu de su contu",
+    "recoveryQuestionPlaceholder": "Iscrie una pregunta de recuperu", "recoveryQuestionRequired": "Sa pregunta de recuperu est obligatòria",
+    "recoveryAnswer": "Risposta a sa pregunta", "recoveryAnswerPlaceholder": "Iscrie sa risposta a sa pregunta",
+    "recoveryAnswerRequired": "Sa risposta a sa pregunta est obligatòria", "userLanguage": "Limba de s'utente",
+    "chooseLanguage": "Limba:", "languageRequired": "Sa limba est obligatòria",
+    "selectLanguage": "Seletziona una limba dae s'elencu", "languageNotFound": "Limba no agatada",
+    "sending": "Ispeditura in cursu...", "submit": "Ispedi", "usernameExists": "Custu nùmene de utente esistit giai.",
+    "userAdded": "S'utente {{name}} est istadu aguntu.", "addError": "Un'errore est capitadu in s'aggiunta de s'utente.",
+    "languageLoadError": "No si podent carrigare sas limbas."
+  },
+  "statistics": {
+    "languages": "Limbas", "years": "Annos", "genres": "Genres", "quantity": "Cantidad",
+    "rereads": "Torra-leghidas", "pages": "Pàginas", "quantityTooltip": "Cantidad", "viewChart": "Ammustra su gràficu",
+    "chartTitle": "Istàtisticas pro limba", "pagesReadByYear": "Pàginas lèghidas cada annu"
+  },
+  "booksList": {
+    "title": "Elencu de libros", "byLanguage": "Elencu de libros pro limba",
+    "byYear": "Elencu de libros de {{year}}", "byGenre": "Elencu de libros pro genre",
+    "newBook": "Libru nou", "inverse": "(lèghidos e no lèghidos)",
+    "filterTitle": "Filtra pro tìtulu...", "filterAuthor": "Filtra pro autore...",
+    "count": "{count, plural, one {# libru} other {# libros}}", "authors": "Autore(s)", "rereadsShort": "Torra-leghidas",
+    "lastRead": "Fine de sa lèghida", "loadByLanguageError": "No si podent carrigare sos libros de sa limba {{language}}.",
+    "loadByYearError": "No si podent carrigare sos libros de {{year}}.", "loadByGenreError": "No si podent carrigare sos libros de su genre {{genre}}.",
+    "loadError": "No si podent carrigare sos libros.", "noDataReceived": "Peruna data arretzida.",
+    "confirmDelete": "Ses seguru de bòlere fùliare su libru {{name}}?",
+    "deleteError": "No si podet fùliare su libru.", "deleted": "Su libru est istadu fùliadu.",
+    "deleteBlockedRereads": "No si podet fùliare su libru {{name}} fintzas tenet {{count}} torra-leghidas ligadas.",
+    "deleteBlockedSeries": "No si podet fùliare su libru {{name}} fintzas est su primu de una sèrie de {{count}} libros."
+  },
+  "authorsList": {
+    "title": "Elencu de sos autores", "byNationality": "Pro natzionalidade", "byCountry": "Pro paisu",
+    "count": "{count, plural, one {# autore} other {# autores}}", "newAuthor": "Autore nou",
+    "filter": "Filtra pro nùmene...", "nationality": "Natzionalidade", "country": "Paisu"
+  },
+  "entityList": {
+    "publishers": "Elencu de sos editores", "libraries": "Elencu de sas bibliotecas", "collections": "Elencu de sas colletziones",
+    "genres": "Elencu de sos genres", "literaryStyles": "Elencu de sos istyles literàrios", "newPublisher": "Editore nou",
+    "newLibrary": "Biblioteca noa", "newCollection": "Colletzione noa", "newGenre": "Genre nou",
+    "newStyle": "Istyle nou", "renewalDate": "Data de rinnovu", "sortBy": "Elencu", "by": "pro"
+  },
+  "bookForm": {
+    "library": "Biblioteca:", "publisher": "Editore:", "collection": "Colletzione:",
+    "style": "Istyle literàriu", "pagesRead": "Pàginas lèghidas", "read": "Lèghidu",
+    "creationDate": "Data de creatzione", "daysRead": "Dìes de lèghida", "includingToday": "(cumprendende oe)",
+    "readingEndDate": "Data de fine de sa lèghida", "series": "Parte de una sèrie", "rating": "Valutatzione:",
+    "valueRange": "Valore vàlidu intre 0 e {{max}}",
+    "creationAfterEdition": "Sa data de creatzione no podet èssere posterior a sa data de editzione",
+    "editionBeforeCreation": "Sa data de editzione no podet èssere anterior a sa data de creatzione"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Filtru" },
+  "form": {
+    "nameRequired": "Su nùmene est obligatòriu", "birthPlace": "Logu de nàschida", "birthDate": "Data de nàschida",
+    "deathDate": "Data de morte", "realName": "Nùmene reale", "direction": "Indiritzu",
+    "membershipDate": "Data de iscritzione", "titleOriginal": "Tìtulu originale",
+    "noRereads": "Custu libru no tenet torra-leghidas.", "rereadList": "Elencu de sas torra-leghidas"
+  }
+}

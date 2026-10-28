@@ -1,0 +1,108 @@
+{
+  "login": {
+    "titulo": "Log a-steach", "nomeUsuario": "Ainm-cleachdaiche", "placeholderNome": "Cuir a-steach d’ ainm-cleachdaiche",
+    "nomeObrigatorio": "Tha ainm-cleachdaiche a dhìth", "contrasinal": "Facal-faire",
+    "placeholderContrasinal": "Cuir a-steach am facal-faire agad", "contrasinalObrigatorio": "Tha facal-faire a dhìth",
+    "ingresar": "Log a-steach", "ingresando": "A’ logadh a-steach...", "error": "Mearachd le logadh a-steach"
+  },
+  "app": { "title": "Stiùireadh nan leabhraichean a chaidh a leughadh" },
+  "nav": {
+    "statistics": "Staitistig", "books": "Leabhraichean", "authors": "Ùghdaran", "publishers": "Foillsichearan",
+    "genres": "Gnèithean", "libraries": "Leabharlannan", "collections": "Cruinneachaidhean",
+    "literaryStyles": "Stoidhlichean litreachais", "logout": "Log a-mach"
+  },
+  "common": {
+    "list": "Liosta", "loading": "A’ luchdadh...", "name": "Ainm", "books": "Leabhraichean", "read": "Leughte",
+    "title": "Tiotal", "originalTitle": "Tiotal tùsail", "author": "Ùghdar", "authors": "Ùghdaran",
+    "genre": "Gnè", "genres": "Gnèithean", "pages": "Duilleagan", "rereads": "Ath-leughaidhean",
+    "endReading": "Deireadh leughaidh", "days": "Làithean", "score": "Rangachadh", "yes": "Tha", "no": "Chan eil",
+    "noData": "Chan eil dàta ann", "delete": "Sguab às", "new": "Ùr", "add": "Cuir ris", "edit": "Deasaich",
+    "back": "Air ais", "close": "Dùin", "manage": "Stiùirich", "notFound": "Cha deach a lorg",
+    "recordsLoaded": "{{count}} clàr air an luchdadh", "loadError": "Cha b’ urrainn dhuinn na clàran a luchdadh.",
+    "confirmDelete": "A bheil thu cinnteach gu bheil thu airson «{{name}}» a sguabadh às?",
+    "itemDeleted": "Chaidh «{{name}}» a sguabadh às.", "deleteError": "Cha b’ urrainn dhuinn «{{name}}» a sguabadh às.",
+    "deleteBlocked": "Chan fhaodar «{{name}}» a sguabadh às fhad ’s a tha {{count}} leabhar ceangailte ris.",
+    "filter": "Criathrag", "all": "A h-uile", "selection": "Taghadh",
+    "noFilteredItems": "Chan eil nithean a’ freagairt air a’ chriathrag.", "items": "{{count}} nì", "inverse": "air a thionndadh",
+    "sortAlphabetical": "a rèir na h-aibidil", "sortBookCount": " a rèir àireamh nan leabhraichean",
+    "sortReadCount": " a rèir àireamh nan leabhraichean a chaidh a leughadh", "sortPageCount": ", a rèir dhuilleagan",
+    "sortRereadCount": ", a rèir ath-leughaidhean", "sortLastReading": ", a rèir an leughaidh mu dheireadh",
+    "sortTitleAlphabetical": ", a rèir tiotail", "sortAuthorAlphabetical": ", a rèir ùghdair",
+    "web": "Làrach-lìn", "comment": "Beachd", "address": "Seòladh", "location": "Àite",
+    "phone": "Fòn", "country": "Dùthaich", "nationality": "Nàiseantachd", "language": "Cànan",
+    "originalLanguage": "Cànan tùsail", "editionDate": "Ceann-là foillseachaidh", "creationDate": "Ceann-là cruthachaidh",
+    "editionNumber": "Àireamh foillseachaidh", "isbn": "ISBN", "electronic": "Eileagtronaigeach", "series": "Sreath",
+    "awards": "Duaisean", "description": "Tuairisgeul", "maxCharacters": "Uas-mheud {{count}} caractar",
+    "required": "Tha feum air an raon seo", "tooLong": "Tha an luach seo ro fhada.",
+    "invalidDates": "Dèan cinnteach gu bheil na cinn-là dligheach.", "lengthAtMost": "Chan fhaod e a bhith nas fhaide na {{count}} caractar",
+    "validDateFormat": "Cruth dligheach: dd/mm/yyyy", "validNumber": "Cuir a-steach luach eadar 0 agus {{max}}",
+    "register": "Clàraich", "save": "Sàbhail", "cancel": "Sguir dheth", "modify": "Atharraich",
+    "newReread": "Ath-leughadh ùr", "cancelNewReread": "Sguir dheth an ath-leughadh ùr",
+    "cancelEditReread": "Sguir dheth atharrachaidhean an ath-leughaidh",
+    "countAuthors": "{{count}} ùghdar", "countLibraries": "{{count}} leabharlann",
+    "countCollections": "{{count}} cruinneachadh", "countPublishers": "{{count}} foillsichear",
+    "countGenres": "{{count}} gnè", "countLiteraryStyles": "{{count}} stoidhle litreachais"
+  },
+  "signup": {
+    "title": "Cruthaich cunntas", "allRequired": "Tha feum air gach raon",
+    "username": "Ainm-cleachdaiche", "usernamePlaceholder": "Cuir a-steach ainm-cleachdaiche",
+    "usernameRequired": "Tha ainm-cleachdaiche a dhìth", "password": "Facal-faire",
+    "passwordPlaceholder": "Cuir a-steach am facal-faire agad", "passwordRequired": "Tha facal-faire a dhìth",
+    "email": "Seòladh puist-d", "emailPlaceholder": "Cuir a-steach do sheòladh puist-d",
+    "emailRequired": "Tha seòladh puist-d a dhìth", "emailTooLong": "Chan fhaod am post-d a bhith nas fhaide na 80 caractar.",
+    "emailInvalid": "Cuir a-steach seòladh puist-d dligheach.", "recoveryQuestion": "Ceist ath-bheothachaidh cunntais",
+    "recoveryQuestionPlaceholder": "Cuir a-steach ceist ath-bheothachaidh", "recoveryQuestionRequired": "Tha ceist ath-bheothachaidh a dhìth",
+    "recoveryAnswer": "Freagairt na ceiste", "recoveryAnswerPlaceholder": "Cuir a-steach freagairt na ceiste",
+    "recoveryAnswerRequired": "Tha freagairt na ceiste a dhìth", "userLanguage": "Cànan a’ chleachdaiche",
+    "chooseLanguage": "Cànan:", "languageRequired": "Tha feum air cànan",
+    "selectLanguage": "Tagh cànan on liosta", "languageNotFound": "Cha deach an cànan a lorg",
+    "sending": "Ga chur...", "submit": "Cuir", "usernameExists": "Tha an t-ainm-cleachdaiche sin ann mar-thà.",
+    "userAdded": "Chaidh an cleachdaiche {{name}} a chur ris.", "addError": "Thachair mearachd fhad ’s a bha sinn a’ cur a’ chleachdaiche ris.",
+    "languageLoadError": "Cha b’ urrainn dhuinn na cànanan a luchdadh."
+  },
+  "statistics": {
+    "languages": "Cànanan", "years": "Bliadhnaichean", "genres": "Gnèithean", "quantity": "Àireamh",
+    "rereads": "Ath-leughaidhean", "pages": "Duilleagan", "quantityTooltip": "Àireamh", "viewChart": "Seall a’ chairt",
+    "chartTitle": "Staitistig a rèir cànain", "pagesReadByYear": "Duilleagan air an leughadh gach bliadhna"
+  },
+  "booksList": {
+    "title": "Liosta leabhraichean", "byLanguage": "Liosta leabhraichean a rèir cànain", "byYear": "Liosta leabhraichean airson {{year}}",
+    "byGenre": "Liosta leabhraichean a rèir gnè", "newBook": "Leabhar ùr", "inverse": "(leughte agus gun leughadh)",
+    "filterTitle": "Criathraich a rèir tiotail...", "filterAuthor": "Criathraich a rèir ùghdair...",
+    "count": "{count, plural, one {# leabhar} other {# leabhraichean}}", "authors": "Ùghdar(an)", "rereadsShort": "Ath-leughaidhean",
+    "lastRead": "Deireadh leughaidh", "loadByLanguageError": "Cha b’ urrainn dhuinn leabhraichean airson a’ chànain {{language}} a luchdadh.",
+    "loadByYearError": "Cha b’ urrainn dhuinn leabhraichean airson {{year}} a luchdadh.", "loadByGenreError": "Cha b’ urrainn dhuinn leabhraichean airson a’ ghnè {{genre}} a luchdadh.",
+    "loadError": "Cha b’ urrainn dhuinn na leabhraichean a luchdadh.", "noDataReceived": "Cha d’ fhuaras dàta.",
+    "confirmDelete": "A bheil thu cinnteach gu bheil thu airson an leabhar {{name}} a sguabadh às?",
+    "deleteError": "Cha b’ urrainn dhuinn an leabhar a sguabadh às.", "deleted": "Chaidh an leabhar a sguabadh às.",
+    "deleteBlockedRereads": "Chan fhaodar an leabhar {{name}} a sguabadh às fhad ’s a tha {{count}} ath-leughadh ceangailte ris.",
+    "deleteBlockedSeries": "Chan fhaodar an leabhar {{name}} a sguabadh às fhad ’s a tha e air thoiseach ann an sreath de {{count}} leabhar."
+  },
+  "authorsList": {
+    "title": "Liosta ùghdaran", "byNationality": "A rèir nàiseantachd", "byCountry": "A rèir dùthcha",
+    "count": "{count, plural, one {# ùghdar} other {# ùghdaran}}", "newAuthor": "Ùghdar ùr",
+    "filter": "Criathraich a rèir ainm...", "nationality": "Nàiseantachd", "country": "Dùthaich"
+  },
+  "entityList": {
+    "publishers": "Liosta fhoillsichearan", "libraries": "Liosta leabharlannan", "collections": "Liosta chruinneachaidhean",
+    "genres": "Liosta ghnèithean", "literaryStyles": "Liosta stoidhlichean litreachais", "newPublisher": "Foillsichear ùr",
+    "newLibrary": "Leabharlann ùr", "newCollection": "Cruinneachadh ùr", "newGenre": "Gnè ùr",
+    "newStyle": "Stoidhle ùr", "renewalDate": "Ceann-là ath-nuadhachaidh", "sortBy": "Liosta", "by": "a rèir"
+  },
+  "bookForm": {
+    "library": "Leabharlann:", "publisher": "Foillsichear:", "collection": "Cruinneachadh:",
+    "style": "Stoidhle litreachais", "pagesRead": "Duilleagan air an leughadh", "read": "Leughte",
+    "creationDate": "Ceann-là cruthachaidh", "daysRead": "Làithean leughaidh", "includingToday": "(a’ gabhail a-steach an-diugh)",
+    "readingEndDate": "Ceann-là crìochnachaidh leughaidh", "series": "Pàirt de shreath", "rating": "Rangachadh:",
+    "valueRange": "Luach dligheach eadar 0 agus {{max}}",
+    "creationAfterEdition": "Chan fhaod ceann-là cruthachaidh a bhith às dèidh ceann-là foillseachaidh",
+    "editionBeforeCreation": "Chan fhaod ceann-là foillseachaidh a bhith ro cheann-là cruthachaidh"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Criathrag" },
+  "form": {
+    "nameRequired": "Tha ainm a dhìth", "birthPlace": "Àite breith", "birthDate": "Ceann-là breith",
+    "deathDate": "Ceann-là bàis", "realName": "Fìor ainm", "direction": "Seòladh",
+    "membershipDate": "Ceann-là ballrachd", "titleOriginal": "Tiotal tùsail",
+    "noRereads": "Chan eil ath-leughaidhean aig an leabhar seo.", "rereadList": "Liosta ath-leughaidhean"
+  }
+}

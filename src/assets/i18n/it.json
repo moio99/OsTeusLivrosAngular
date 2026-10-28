@@ -1,0 +1,115 @@
+{
+  "login": {
+    "titulo": "Accedi",
+    "nomeUsuario": "Nome utente",
+    "placeholderNome": "Inserisci il tuo nome utente",
+    "nomeObrigatorio": "Il nome utente è obbligatorio",
+    "contrasinal": "Password",
+    "placeholderContrasinal": "Inserisci la tua password",
+    "contrasinalObrigatorio": "La password è obbligatoria",
+    "ingresar": "Accedi",
+    "ingresando": "Accesso in corso...",
+    "error": "Errore durante l'accesso"
+  },
+  "app": { "title": "Gestione dei libri letti" },
+  "nav": {
+    "statistics": "Statistiche", "books": "Libri", "authors": "Autori",
+    "publishers": "Editori", "genres": "Generi", "libraries": "Biblioteche",
+    "collections": "Collezioni", "literaryStyles": "Stili letterari", "logout": "Esci"
+  },
+  "common": {
+    "list": "Elenco", "loading": "Caricamento...", "name": "Nome", "books": "Libri", "read": "Letti",
+    "title": "Titolo", "originalTitle": "Titolo originale", "author": "Autore", "authors": "Autori",
+    "genre": "Genere", "genres": "Generi", "pages": "Pagine", "rereads": "Riletture",
+    "endReading": "Fine lettura", "days": "Giorni", "score": "Valutazione", "yes": "Sì", "no": "No",
+    "noData": "Nessun dato", "delete": "Elimina", "new": "Nuovo", "add": "Aggiungi", "edit": "Modifica",
+    "back": "Indietro", "close": "Chiudi", "manage": "Gestisci", "notFound": "Non trovato",
+    "recordsLoaded": "{{count}} record caricati", "loadError": "Impossibile caricare i record.",
+    "confirmDelete": "Vuoi davvero eliminare «{{name}}»?",
+    "itemDeleted": "«{{name}}» è stato eliminato.", "deleteError": "Impossibile eliminare «{{name}}».",
+    "deleteBlocked": "Impossibile eliminare «{{name}}» finché ha {{count}} libri associati.",
+    "filter": "Filtro", "all": "Tutti", "selection": "Selezione",
+    "noFilteredItems": "Nessun elemento corrisponde al filtro.", "items": "{{count}} elementi", "inverse": "inverso",
+    "sortAlphabetical": "in ordine alfabetico", "sortBookCount": " per numero di libri",
+    "sortReadCount": " per numero di libri letti", "sortPageCount": ", per pagine",
+    "sortRereadCount": ", per riletture", "sortLastReading": ", per data dell'ultima lettura",
+    "sortTitleAlphabetical": ", per titolo", "sortAuthorAlphabetical": ", per autore",
+    "web": "Sito web", "comment": "Commento", "address": "Indirizzo", "location": "Località",
+    "phone": "Telefono", "country": "Paese", "nationality": "Nazionalità", "language": "Lingua",
+    "originalLanguage": "Lingua originale", "editionDate": "Data di edizione", "creationDate": "Data di creazione",
+    "editionNumber": "Numero di edizione", "isbn": "ISBN", "electronic": "Elettronico", "series": "Serie",
+    "awards": "Premi", "description": "Descrizione", "maxCharacters": "Massimo {{count}} caratteri",
+    "required": "Questo campo è obbligatorio", "tooLong": "Il valore è troppo lungo.",
+    "invalidDates": "Verifica che le date siano valide.", "lengthAtMost": "Non può superare {{count}} caratteri",
+    "validDateFormat": "Formato valido: gg/mm/aaaa", "validNumber": "Inserisci un valore tra 0 e {{max}}",
+    "register": "Registrati", "save": "Salva", "cancel": "Annulla", "modify": "Modifica",
+    "newReread": "Nuova rilettura", "cancelNewReread": "Annulla la nuova rilettura",
+    "cancelEditReread": "Annulla le modifiche alla rilettura",
+    "countAuthors": "{{count}} autori", "countLibraries": "{{count}} biblioteche",
+    "countCollections": "{{count}} collezioni", "countPublishers": "{{count}} editori",
+    "countGenres": "{{count}} generi", "countLiteraryStyles": "{{count}} stili letterari"
+  },
+  "signup": {
+    "title": "Crea account", "allRequired": "Tutti i campi sono obbligatori",
+    "username": "Nome utente", "usernamePlaceholder": "Inserisci un nome utente",
+    "usernameRequired": "Il nome utente è obbligatorio", "password": "Password",
+    "passwordPlaceholder": "Inserisci la password", "passwordRequired": "La password è obbligatoria",
+    "email": "Indirizzo e-mail", "emailPlaceholder": "Inserisci il tuo indirizzo e-mail",
+    "emailRequired": "L'indirizzo e-mail è obbligatorio", "emailTooLong": "L'e-mail non può superare 80 caratteri.",
+    "emailInvalid": "Inserisci un indirizzo e-mail valido.", "recoveryQuestion": "Domanda di recupero dell'account",
+    "recoveryQuestionPlaceholder": "Inserisci una domanda di recupero", "recoveryQuestionRequired": "La domanda di recupero è obbligatoria",
+    "recoveryAnswer": "Risposta alla domanda", "recoveryAnswerPlaceholder": "Inserisci la risposta alla domanda",
+    "recoveryAnswerRequired": "La risposta alla domanda è obbligatoria", "userLanguage": "Lingua dell'utente",
+    "chooseLanguage": "Lingua:", "languageRequired": "La lingua è obbligatoria",
+    "selectLanguage": "Seleziona una lingua dall'elenco", "languageNotFound": "Lingua non trovata",
+    "sending": "Invio in corso...", "submit": "Invia", "usernameExists": "Il nome utente esiste già.",
+    "userAdded": "L'utente {{name}} è stato aggiunto.", "addError": "Si è verificato un errore durante l'aggiunta dell'utente.",
+    "languageLoadError": "Impossibile caricare le lingue."
+  },
+  "statistics": {
+    "languages": "Lingue", "years": "Anni", "genres": "Generi", "quantity": "Quantità",
+    "rereads": "Riletture", "pages": "Pagine", "quantityTooltip": "Quantità", "viewChart": "Visualizza grafico",
+    "chartTitle": "Statistiche per lingua", "pagesReadByYear": "Pagine lette per anno"
+  },
+  "booksList": {
+    "title": "Elenco dei libri", "byLanguage": "Elenco dei libri per lingua",
+    "byYear": "Elenco dei libri del {{year}}", "byGenre": "Elenco dei libri per genere",
+    "newBook": "Nuovo libro", "inverse": "(letti e non letti)",
+    "filterTitle": "Filtra per titolo...", "filterAuthor": "Filtra per autore...",
+    "count": "{count, plural, one {# libro} other {# libri}}", "authors": "Autore/i", "rereadsShort": "Riletture",
+    "lastRead": "Fine lettura", "loadByLanguageError": "Impossibile caricare i libri per la lingua {{language}}.",
+    "loadByYearError": "Impossibile caricare i libri del {{year}}.", "loadByGenreError": "Impossibile caricare i libri del genere {{genre}}.",
+    "loadError": "Impossibile caricare i libri.", "noDataReceived": "Nessun dato ricevuto.",
+    "confirmDelete": "Vuoi davvero eliminare il libro {{name}}?",
+    "deleteError": "Impossibile eliminare il libro.", "deleted": "Libro eliminato.",
+    "deleteBlockedRereads": "Impossibile eliminare il libro {{name}} finché ha {{count}} riletture associate.",
+    "deleteBlockedSeries": "Impossibile eliminare il libro {{name}} finché è il primo di una serie di {{count}} libri."
+  },
+  "authorsList": {
+    "title": "Elenco degli autori", "byNationality": "Per nazionalità", "byCountry": "Per paese",
+    "count": "{count, plural, one {# autore} other {# autori}}", "newAuthor": "Nuovo autore",
+    "filter": "Filtra per nome...", "nationality": "Nazionalità", "country": "Paese"
+  },
+  "entityList": {
+    "publishers": "Elenco degli editori", "libraries": "Elenco delle biblioteche", "collections": "Elenco delle collezioni",
+    "genres": "Elenco dei generi", "literaryStyles": "Elenco degli stili letterari", "newPublisher": "Nuovo editore",
+    "newLibrary": "Nuova biblioteca", "newCollection": "Nuova collezione", "newGenre": "Nuovo genere",
+    "newStyle": "Nuovo stile", "renewalDate": "Data di rinnovo", "sortBy": "Elenco", "by": "per"
+  },
+  "bookForm": {
+    "library": "Biblioteca:", "publisher": "Editore:", "collection": "Collezione:",
+    "style": "Stile letterario", "pagesRead": "Pagine lette", "read": "Letto",
+    "creationDate": "Data di creazione", "daysRead": "Giorni di lettura", "includingToday": "(oggi incluso)",
+    "readingEndDate": "Data di fine lettura", "series": "Fa parte di una serie", "rating": "Valutazione:",
+    "valueRange": "Valore valido tra 0 e {{max}}",
+    "creationAfterEdition": "La data di creazione non può essere successiva alla data di edizione",
+    "editionBeforeCreation": "La data di edizione non può essere precedente alla data di creazione"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Filtra" },
+  "form": {
+    "nameRequired": "Il nome è obbligatorio", "birthPlace": "Luogo di nascita", "birthDate": "Data di nascita",
+    "deathDate": "Data di morte", "realName": "Nome reale", "direction": "Indirizzo",
+    "membershipDate": "Data di iscrizione", "titleOriginal": "Titolo originale",
+    "noRereads": "Questo libro non ha riletture.", "rereadList": "Elenco delle riletture"
+  }
+}

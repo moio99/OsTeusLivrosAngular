@@ -1,0 +1,119 @@
+{
+  "login": {
+    "titulo": "Encetar sesión",
+    "nomeUsuario": "Nombre d'usuario",
+    "placeholderNome": "Escribe o nombre d'usuario",
+    "nomeObrigatorio": "O nombre d'usuario ye obligatorio",
+    "contrasinal": "Contrasenya",
+    "placeholderContrasinal": "Escribe a tuya contrasenya",
+    "contrasinalObrigatorio": "A contrasenya ye obligatoria",
+    "ingresar": "Entrar",
+    "ingresando": "Encetando sesión...",
+    "error": "Error en encetar sesión"
+  },
+  "app": { "title": "Chestión de libros leitos" },
+  "nav": {
+    "statistics": "Estadisticas", "books": "Libros", "authors": "Autors",
+    "publishers": "Editors", "genres": "Cheneros", "libraries": "Bibliotecas",
+    "collections": "Coleccions", "literaryStyles": "Estilos literarios", "logout": "Zarrar sesión"
+  },
+  "common": {
+    "list": "Lista", "loading": "Cargando...", "name": "Nombre", "books": "Libros", "read": "Leitos",
+    "title": "Titol", "originalTitle": "Titol orichinal", "author": "Autor", "authors": "Autors",
+    "genre": "Chenero", "genres": "Cheneros", "pages": "Pachinas", "rereads": "Relecturas",
+    "endReading": "Fin de lectura", "days": "Dias", "score": "Puntuación", "yes": "Sí", "no": "No",
+    "noData": "No i hai datos", "delete": "Borrar", "new": "Nuevo", "add": "Anyadir", "edit": "Editar",
+    "back": "Tornar", "close": "Zarrar", "manage": "Chestionar", "notFound": "No trobau",
+    "recordsLoaded": "{{count}} rechistros cargaus", "loadError": "No s'han puesto cargar os rechistros.",
+    "confirmDelete": "Yes seguro que quiers borrar «{{name}}»?",
+    "itemDeleted": "S'ha borrau «{{name}}».", "deleteError": "No s'ha puesto borrar «{{name}}».",
+    "deleteBlocked": "No se puede borrar «{{name}}» mientres tienga {{count}} libros asociaus.",
+    "filter": "Filtro", "all": "Totz", "selection": "Selección",
+    "noFilteredItems": "No i hai elementos que coincidan con o filtro.", "items": "{{count}} elementos", "inverse": "inverso",
+    "sortAlphabetical": "alfabeticament", "sortBookCount": " por numero de libros",
+    "sortReadCount": " por numero de libros leitos", "sortPageCount": ", por pachinas",
+    "sortRereadCount": ", por relecturas", "sortLastReading": ", por zaguer lectura",
+    "sortTitleAlphabetical": ", por titol alfabetico", "sortAuthorAlphabetical": ", por autor alfabetico",
+    "web": "Web", "comment": "Comentario", "address": "Adreza", "location": "Localidat",
+    "phone": "Telefono", "country": "País", "nationality": "Nacionalidat", "language": "Idioma",
+    "originalLanguage": "Idioma orichinal", "editionDate": "Calendata d'edición", "creationDate": "Calendata de creyación",
+    "editionNumber": "Numero d'edición", "isbn": "ISBN", "electronic": "Electronico", "series": "Serie",
+    "awards": "Premios", "description": "Descripción", "maxCharacters": "Maximo {{count}} caracters",
+    "required": "Iste campo ye obligatorio", "tooLong": "O valor ye masiau luengo.",
+    "invalidDates": "Comprueba que as calendatas sían correctas.", "lengthAtMost": "No puede superar os {{count}} caracters",
+    "validDateFormat": "O formato valido ye dd/mm/aaaa", "validNumber": "Escribe un valor de 0 a {{max}}",
+    "register": "Rechistrar", "save": "Alzar", "cancel": "Cancelar", "modify": "Modificar",
+    "newReread": "Nueva relectura", "cancelNewReread": "Cancelar nueva relectura",
+    "cancelEditReread": "Cancelar modificación d'a relectura",
+    "countAuthors": "{{count}} autors", "countLibraries": "{{count}} bibliotecas",
+    "countCollections": "{{count}} coleccions", "countPublishers": "{{count}} editors",
+    "countGenres": "{{count}} cheneros", "countLiteraryStyles": "{{count}} estilos literarios"
+  },
+  "signup": {
+    "title": "Alta d'usuario", "allRequired": "Totz os campos son obligatorios",
+    "username": "Nombre d'usuario", "usernamePlaceholder": "Escribe o nombre d'usuario",
+    "usernameRequired": "O nombre d'usuario ye obligatorio", "password": "Contrasenya",
+    "passwordPlaceholder": "Escribe a contrasenya", "passwordRequired": "A contrasenya ye obligatoria",
+    "email": "Correu electronico", "emailPlaceholder": "Escribe o correu electronico",
+    "emailRequired": "O correu electronico ye obligatorio", "emailTooLong": "O correu no puede superar os 80 caracters.",
+    "emailInvalid": "O formato d'o correu electronico no ye valido.", "recoveryQuestion": "Pregunta de recuperación d'usuario",
+    "recoveryQuestionPlaceholder": "Escribe a pregunta de recuperación",
+    "recoveryQuestionRequired": "A pregunta de recuperación ye obligatoria", "recoveryAnswer": "Respuesta a la pregunta",
+    "recoveryAnswerPlaceholder": "Escribe a respuesta a la pregunta",
+    "recoveryAnswerRequired": "A respuesta a la pregunta ye obligatoria", "userLanguage": "Idioma de l'usuario",
+    "chooseLanguage": "Idioma:", "languageRequired": "O idioma ye obligatorio",
+    "selectLanguage": "Has de triar un idioma d'a lista", "languageNotFound": "Idioma no trobau",
+    "sending": "Ninviando...", "submit": "Ninviar",
+    "usernameExists": "O nombre d'usuario ya existe en a base de datos",
+    "userAdded": "S'ha anyadiu l'usuario {{name}}.",
+    "addError": "S'ha produciu una error en anyadir l'usuario.",
+    "languageLoadError": "No s'han puesto cargar os idiomas."
+  },
+  "statistics": {
+    "languages": "Idiomas", "years": "Annos", "genres": "Cheneros", "quantity": "Cantidat",
+    "rereads": "Relecturas", "pages": "Pachinas", "quantityTooltip": "Cantidat", "viewChart": "Veyer grafico",
+    "chartTitle": "Estadisticas por idioma", "pagesReadByYear": "Pachinas leitas por anno"
+  },
+  "booksList": {
+    "title": "Lista de libros", "byLanguage": "Lista de libros por idioma",
+    "byYear": "Lista de libros de l'anno {{year}}", "byGenre": "Lista de libros por chenero",
+    "newBook": "Libro nuevo", "inverse": "(leitos y no leitos)",
+    "filterTitle": "Filtrar por titol...", "filterAuthor": "Filtrar por autor...",
+    "count": "{count, plural, one {# libro} other {# libros}}", "authors": "Autor/es", "rereadsShort": "Relecturas",
+    "lastRead": "Fin de lectura", "loadByLanguageError": "No s'han puesto obtener os libros de l'idioma {{language}}.",
+    "loadByYearError": "No s'han puesto obtener os libros de l'anno {{year}}.",
+    "loadByGenreError": "No s'han puesto obtener os libros d'o chenero {{genre}}.",
+    "loadError": "No s'han puesto obtener os libros.", "noDataReceived": "No s'han recibiu datos.",
+    "confirmDelete": "Yes seguro que quiers borrar o libro {{name}}?",
+    "deleteError": "No s'ha puesto borrar o libro.", "deleted": "Libro borrau.",
+    "deleteBlockedRereads": "No se puede borrar o libro {{name}} mientres tienga {{count}} relecturas asociaus.",
+    "deleteBlockedSeries": "No se puede borrar o libro {{name}} mientres siga o primero d'una serie de {{count}} libros."
+  },
+  "authorsList": {
+    "title": "Lista d'autors", "byNationality": "Por nacionalidat", "byCountry": "Por país",
+    "count": "{count, plural, one {# autor} other {# autors}}",
+    "newAuthor": "Autor nuevo", "filter": "Filtrar por nombre...", "nationality": "Nacionalidat", "country": "País"
+  },
+  "entityList": {
+    "publishers": "Lista d'editors", "libraries": "Lista de bibliotecas", "collections": "Lista de coleccions",
+    "genres": "Lista de cheneros", "literaryStyles": "Lista d'estilos literarios", "newPublisher": "Editor nuevo",
+    "newLibrary": "Biblioteca nueva", "newCollection": "Colección nueva", "newGenre": "Chenero nuevo",
+    "newStyle": "Estilo nuevo", "renewalDate": "Calendata de renovación", "sortBy": "Lista", "by": "por"
+  },
+  "bookForm": {
+    "library": "Biblioteca:", "publisher": "Editor:", "collection": "Colección:",
+    "style": "Estilo literario", "pagesRead": "Pachinas leitas", "read": "Leito",
+    "creationDate": "Calendata de creyación", "daysRead": "Dias de lectura", "includingToday": "(incluyindo hue)",
+    "readingEndDate": "Calendata de fin de lectura", "series": "Forma parte d'una serie", "rating": "Puntuación:",
+    "valueRange": "Valor valido de 0 a {{max}}",
+    "creationAfterEdition": "A calendata de creyación no puede estar dimpués d'a calendata d'edición",
+    "editionBeforeCreation": "A calendata d'edición no puede estar antes d'a calendata de creyación"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Filtro" },
+  "form": {
+    "nameRequired": "O nombre ye obligatorio", "birthPlace": "Lugar de naiximiento", "birthDate": "Calendata de naiximiento",
+    "deathDate": "Calendata de muerte", "realName": "Nombre verdadero", "direction": "Adreza",
+    "membershipDate": "Calendata d'alta", "titleOriginal": "Titol orichinal",
+    "noRereads": "Iste libro no tien relecturas.", "rereadList": "Lista de relecturas"
+  }
+}
