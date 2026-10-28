@@ -1,17 +1,22 @@
-<h3>Listado de Autores{{tipoListadoTitulo()}}{{tipoOrdeacom()}}
+<h3 class="separacom-spans">
+  <span>{{ 'authorsList.title' | transloco }}</span>
+  @if (tipoListadoTitulo()) {
+    <span>{{ tipoListadoTitulo() | transloco }}</span>
+  }
+  <span>{{ tipoOrdeacom() | transloco }}</span>
   @if (inverso()) {
-    <span>inverso</span>
+    <span>{{ 'common.inverse' | transloco }}</span>
   }
 </h3>
 
 <div class="botoneira">
   <ul>
-    <li><a routerLink="/autores/porNacionalidade">Por Nacionalidade</a></li>
-    <li><a routerLink="/autores/porPais">Por Pais</a></li>
+    <li><a routerLink="/autores/porNacionalidade">{{ 'authorsList.byNationality' | transloco }}</a></li>
+    <li><a routerLink="/autores/porPais">{{ 'authorsList.byCountry' | transloco }}</a></li>
     <li>
       @if (!soVisualizar) {
         <button class="botom-novo-resgistro" (click)="onIrPagina('autores/autor', '0')">
-          Novo Autor
+          {{ 'authorsList.newAuthor' | transloco }}
         </button>
       }
     </li>
@@ -22,31 +27,30 @@
   <!-- Caixa de texto conectada ao Signal do filtro -->
   <input
     type="text"
-    placeholder="Filtra polo nome..."
+    [placeholder]="'authorsList.filter' | transloco"
     [ngModel]="autorFiltro()"
     (ngModelChange)="autorFiltro.set($event)"
   />
-  <span>
+  <span class="separacom-cantidade">
     @if(listadoResource.isLoading()) {
-      'Carregando...'
+      {{ 'common.loading' | transloco }}
     } @else {
-      {{ listadoDadosOrdenados()?.length}}
-      autor{{ listadoDadosOrdenados()?.length > 1 ? 's' : '' }}
+      <span>{{ 'authorsList.count' | transloco: { count: listadoDadosOrdenados().length } }}</span>
     }
   </span>
 </div>
 @if (listadoResource.hasValue() && this.listadoDadosOrdenados()?.length > 0) {
   <table class="taboas-listado">
     <tr>
-      <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna
+      <th (click)="ordeAlfabetico()">{{ 'common.name' | transloco }}<omla-orde-coluna
         [nome]="nomeAlfabetico"
         [actual]="tipoOrdeacom()"
         [inverso]="inverso()"></omla-orde-coluna></th>
-      <th (click)="ordeNumeroLivros()">Livros<omla-orde-coluna
+      <th (click)="ordeNumeroLivros()">{{ 'common.books' | transloco }}<omla-orde-coluna
         [nome]="numeroLivros"
         [actual]="tipoOrdeacom()"
         [inverso]="inverso()"></omla-orde-coluna></th>
-      <th (click)="ordeNumeroLivrosLidos()">Lidos<omla-orde-coluna
+      <th (click)="ordeNumeroLivrosLidos()">{{ 'common.read' | transloco }}<omla-orde-coluna
         [nome]="numeroLivrosLidos"
         [actual]="tipoOrdeacom()"
         [inverso]="inverso()"></omla-orde-coluna></th>
@@ -58,7 +62,7 @@
         <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>
         @if (!soVisualizar) {
           <td (click)="$event.stopPropagation()">
-            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar"
+            <img src="../../../../assets/images/cubo-lixo.png" [alt]="'common.delete' | transloco"
               (click)="onBorrar(entrada.id, entrada.nome, entrada.quantidadeLivros)">
           </td>
         }

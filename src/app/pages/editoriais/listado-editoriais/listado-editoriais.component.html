@@ -1,22 +1,22 @@
-<h3>Listado de Editoriais</h3>
+<h3>{{ 'entityList.publishers' | transloco }}</h3>
 @if (!soVisualizar) {
   <button class="botom-novo-resgistro" (click)="onIrPagina('/editoriais/editorial', '0')">
-    Nova Editorial
+    {{ 'entityList.newPublisher' | transloco }}
   </button>
 }
 
 <div>
-  {{ listadoResource.isLoading() ? 'Carregando...' : listadoDados()?.length + ' editoriais' }}
+  {{ listadoResource.isLoading() ? ('common.loading' | transloco) : ('common.countPublishers' | transloco: { count: listadoDados()?.length }) }}
 </div>
 @if (listadoResource.hasValue() && this.listadoDados().length > 0) {
   <table class="taboas-listado">
     <tr>
-      <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna
+      <th (click)="ordeAlfabetico()">{{ 'common.name' | transloco }}<omla-orde-coluna
         [nome]="this.nomeAlfabetico"
         [actual]="this.tipoOrdeacom"
         [inverso]="this.inverso"></omla-orde-coluna></th>
-      <th>Web</th>
-      <th (click)="ordeNumeroLivros()">Livros<omla-orde-coluna
+      <th>{{ 'common.web' | transloco }}</th>
+      <th (click)="ordeNumeroLivros()">{{ 'common.books' | transloco }}<omla-orde-coluna
         [nome]="this.numeroLivros"
         [actual]="this.tipoOrdeacom"
         [inverso]="this.inverso"></omla-orde-coluna></th>
@@ -28,7 +28,7 @@
         <td (click)="onIrPagina('/editoriais/editorial', entrada.id)">{{entrada.quantidadeLivros}}</td>
         @if (!soVisualizar) {
           <td (click)="$event.stopPropagation()">
-            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar"
+            <img src="../../../../assets/images/cubo-lixo.png" [alt]="'common.delete' | transloco"
               (click)="onBorrar(entrada.id, entrada.nome, entrada.quantidadeLivros)">
           </td>
         }

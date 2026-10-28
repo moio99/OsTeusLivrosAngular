@@ -1,13 +1,13 @@
 <form [formGroup]="livroForm()" (ngSubmit)="submitForm.emit($event)">
   @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
     <button class="botom-guardar-resgistro" color="primary" type="submit" [value]="modo()">
-      {{ modo() }}
+      {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
     </button>
     @if (!modoRelectura() && modo() !== estadosPagina.engadir) {
-      <button type="button" (click)="novaRelectura.emit()">Nova relectura</button>
+      <button type="button" (click)="novaRelectura.emit()">{{ 'common.newReread' | transloco }}</button>
     } @else if (modoRelectura()) {
       <button type="button" (click)="cancelarRelectura.emit()">
-        Cancelar {{ modo() === estadosPagina.engadir ? 'nova' : 'modificar' }} relectura
+        {{ modo() === estadosPagina.engadir ? ('common.cancelNewReread' | transloco) : ('common.cancelEditReread' | transloco) }}
       </button>
     }
   }
@@ -15,10 +15,10 @@
   <div class="dadosLivro">
     <div class="titulo">
       <mat-form-field class="ancho-inputs">
-        <mat-label>Título</mat-label>
+        <mat-label>{{ 'common.title' | transloco }}</mat-label>
         <input matInput [formControl]="livroForm().controls.titulo" maxlength="100" />
         @if (livroForm().controls.titulo.hasError('maxlength')) {
-          <mat-error>Máximo 100 caracteres</mat-error>
+          <mat-error>{{ 'common.maxCharacters' | transloco: { count: 100 } }}</mat-error>
         }
       </mat-form-field>
     </div>
@@ -39,10 +39,10 @@
 
       <div class="titulo-original">
         <mat-form-field class="ancho-inputs">
-          <mat-label>Título original</mat-label>
+          <mat-label>{{ 'common.originalTitle' | transloco }}</mat-label>
           <input matInput [formControl]="livroForm().controls.tituloOriginal" maxlength="100" />
           @if (livroForm().controls.tituloOriginal.hasError('maxlength')) {
-            <mat-error>Máximo 100 caracteres</mat-error>
+            <mat-error>{{ 'common.maxCharacters' | transloco: { count: 100 } }}</mat-error>
           }
         </mat-form-field>
       </div>
@@ -50,7 +50,7 @@
 
     <div class="biblioteca listado-seleccom">
       <mat-form-field class="ancho-inputs listado-seleccom__input">
-        <input type="text" placeholder="Biblioteca:" aria-label="Number" matInput
+        <input type="text" [placeholder]="'bookForm.library' | transloco" [attr.aria-label]="'bookForm.library' | transloco" matInput
           [formControl]="livroForm().controls.idBiblioteca" [matAutocomplete]="idBiblio" />
         <mat-autocomplete #idBiblio="matAutocomplete">
           @for (option of formState.bibliotecasFiltradas(); track option.id) {
@@ -62,10 +62,10 @@
         <div class="listado-seleccom__botons">
           <button type="button"
             (click)="engadirComplementario.emit(dadosComplentarios.Biblioteca)">
-            Engadir
+            {{ 'common.add' | transloco }}
           </button>
           @if (livroForm().controls.idBiblioteca.getRawValue()) {
-            <button type="button" (click)="editarBiblioteca.emit()">Editar</button>
+            <button type="button" (click)="editarBiblioteca.emit()">{{ 'common.edit' | transloco }}</button>
           }
         </div>
       }
@@ -73,7 +73,7 @@
 
     <div class="editorial listado-seleccom">
       <mat-form-field class="ancho-inputs listado-seleccom__input">
-        <input type="text" placeholder="Editorial:" aria-label="Number" matInput
+        <input type="text" [placeholder]="'bookForm.publisher' | transloco" [attr.aria-label]="'bookForm.publisher' | transloco" matInput
           [formControl]="livroForm().controls.idEditorial" [matAutocomplete]="idedito" />
         <mat-autocomplete #idedito="matAutocomplete">
           @for (option of formState.editoriaisFiltradas(); track option.id) {
@@ -85,10 +85,10 @@
         <div class="listado-seleccom__botons">
           <button type="button"
             (click)="engadirComplementario.emit(dadosComplentarios.Editorial)">
-            Engadir
+            {{ 'common.add' | transloco }}
           </button>
           @if (livroForm().controls.idEditorial.getRawValue()) {
-            <button type="button" (click)="editarEditorial.emit()">Editar</button>
+            <button type="button" (click)="editarEditorial.emit()">{{ 'common.edit' | transloco }}</button>
           }
         </div>
       }
@@ -99,7 +99,7 @@
         <input
           matInput
           type="text"
-          placeholder="Colecom:"
+          [placeholder]="'bookForm.collection' | transloco"
           [formControl]="livroForm().controls.idColecom"
           [matAutocomplete]="idcoleC"
         />
@@ -113,10 +113,10 @@
         <div class="listado-seleccom__botons">
           <button type="button"
             (click)="engadirComplementario.emit(dadosComplentarios.Colecom)">
-            Engadir
+            {{ 'common.add' | transloco }}
           </button>
           @if (livroForm().controls.idColecom.getRawValue()) {
-            <button type="button" (click)="editarColecom.emit()">Editar</button>
+            <button type="button" (click)="editarColecom.emit()">{{ 'common.edit' | transloco }}</button>
           }
         </div>
       }
@@ -129,7 +129,7 @@
             <input
               matInput
               type="text"
-              placeholder="Estilo literario"
+              [placeholder]="'bookForm.style' | transloco"
               [formControl]="livroForm().controls.idEstilo"
               [matAutocomplete]="idestiloLi"
             />
@@ -145,10 +145,10 @@
         <div class="listado-seleccom__botons">
           <button type="button"
             (click)="engadirComplementario.emit(dadosComplentarios.EstiloLiterario)">
-            Engadir
+            {{ 'common.add' | transloco }}
           </button>
           @if (livroForm().controls.idEstilo.getRawValue()) {
-            <button type="button" (click)="editarEstilo.emit()">Editar</button>
+            <button type="button" (click)="editarEstilo.emit()">{{ 'common.edit' | transloco }}</button>
           }
         </div>
       }
@@ -156,38 +156,38 @@
 
     <div class="paginas">
       <mat-form-field class="ancho-inputs"
-        ><mat-label>Páginas</mat-label
+        ><mat-label>{{ 'common.pages' | transloco }}</mat-label
         ><input matInput [formControl]="livroForm().controls.paginas" maxlength="7" />
         @if (livroForm().controls.paginas.hasError('pattern')) {
-          <mat-error>Valor correto de 0 a 1000000</mat-error>
+          <mat-error>{{ 'common.validNumber' | transloco: { max: 1000000 } }}</mat-error>
         }
       </mat-form-field>
     </div>
     <div class="paginas-lidas">
       <mat-form-field class="ancho-inputs"
-        ><mat-label>Páginas lidas</mat-label
+        ><mat-label>{{ 'bookForm.pagesRead' | transloco }}</mat-label
         ><input matInput [formControl]="livroForm().controls.paginasLidas" maxlength="7" />
         @if (livroForm().controls.paginasLidas.hasError('pattern')) {
-          <mat-error>Valor correto de 0 a 1000000</mat-error>
+          <mat-error>{{ 'common.validNumber' | transloco: { max: 1000000 } }}</mat-error>
         }
       </mat-form-field>
     </div>
     <div class="isbn">
       <mat-form-field class="ancho-inputs"
-        ><mat-label>ISBN:</mat-label><input matInput [formControl]="livroForm().controls.isbn" />
+        ><mat-label>{{ 'common.isbn' | transloco }}:</mat-label><input matInput [formControl]="livroForm().controls.isbn" />
         @if (livroForm().controls.isbn.hasError('maxlength')) {
-          <mat-error>Máximo 20 caracteres</mat-error>
+          <mat-error>{{ 'common.maxCharacters' | transloco: { count: 20 } }}</mat-error>
         }
       </mat-form-field>
     </div>
     <div class="lido">
-      <mat-checkbox [formControl]="livroForm().controls.lido">Lido</mat-checkbox>
+      <mat-checkbox [formControl]="livroForm().controls.lido">{{ 'bookForm.read' | transloco }}</mat-checkbox>
     </div>
 
     @if (!modoRelectura()) {
       <div class="data-criacom">
         <mat-form-field class="ancho-inputs">
-          <mat-label>Data de criaçom</mat-label>
+          <mat-label>{{ 'bookForm.creationDate' | transloco }}</mat-label>
           <input
             matInput
             [matDatepicker]="fDateCri"
@@ -197,17 +197,17 @@
           }
           <mat-datepicker #fDateCri></mat-datepicker>
           @if (livroForm().controls.dataCriacom.hasError('matDatepickerParse')) {
-            <mat-error>O formato válido é dd/mm/aaaa</mat-error>
+            <mat-error>{{ 'common.validDateFormat' | transloco }}</mat-error>
           }
           @if (livroForm().controls.dataCriacom.hasError('datasInvalidas')) {
-            <mat-error>A data da criaçom nom pode ser superior á data da ediçom</mat-error>
+            <mat-error>{{ 'bookForm.creationAfterEdition' | transloco }}</mat-error>
           }
         </mat-form-field>
       </div>
     }
     <div class="data-edicom">
       <mat-form-field class="ancho-inputs">
-        <mat-label>Data da ediçom</mat-label>
+        <mat-label>{{ 'common.editionDate' | transloco }}</mat-label>
         <input
           matInput
           [matDatepicker]="fDateEdi"
@@ -217,38 +217,38 @@
         }
         <mat-datepicker #fDateEdi></mat-datepicker>
         @if (livroForm().controls.dataEdicom.hasError('matDatepickerParse')) {
-          <mat-error>O formato válido é dd/mm/aaaa</mat-error>
+          <mat-error>{{ 'common.validDateFormat' | transloco }}</mat-error>
         }
         @if (livroForm().controls.dataEdicom.hasError('datasInvalidas')) {
-          <mat-error>A data da ediçom nom pode ser inferior á data de criaçom</mat-error>
+          <mat-error>{{ 'bookForm.editionBeforeCreation' | transloco }}</mat-error>
         }
       </mat-form-field>
     </div>
     <div class="numero-edicom">
       <mat-form-field class="ancho-inputs"
-        ><mat-label>Número da ediçom</mat-label
+        ><mat-label>{{ 'common.editionNumber' | transloco }}</mat-label
         ><input matInput [formControl]="livroForm().controls.numeroEdicom" maxlength="4" />
         @if (livroForm().controls.numeroEdicom.hasError('pattern')) {
-          <mat-error>Valor correto de 0 a 1000</mat-error>
+          <mat-error>{{ 'common.validNumber' | transloco: { max: 1000 } }}</mat-error>
         }
       </mat-form-field>
     </div>
     <div class="dias-leitura">
       <mat-form-field class="ancho-inputs"
         ><mat-label
-          >Dias leitura
+          >{{ 'bookForm.daysRead' | transloco }}
           @if (idLivro() === '0') {
-            <span>(incluido hoje)</span>
+            <span>{{ 'bookForm.includingToday' | transloco }}</span>
           }</mat-label
         ><input matInput [formControl]="livroForm().controls.diasLeitura" maxlength="4" />
         @if (livroForm().controls.diasLeitura.hasError('pattern')) {
-          <mat-error>Valor correto de 0 a 1000</mat-error>
+          <mat-error>{{ 'common.validNumber' | transloco: { max: 1000 } }}</mat-error>
         }
       </mat-form-field>
     </div>
     <div class="data-fim-leiturata">
       <mat-form-field class="ancho-inputs">
-        <mat-label>Data da fim da leitura</mat-label>
+        <mat-label>{{ 'bookForm.readingEndDate' | transloco }}</mat-label>
         <input
           matInput
           [matDatepicker]="fDateFimL"
@@ -264,7 +264,7 @@
         ><input
           matInput
           type="text"
-          placeholder="Idioma:"
+          [placeholder]="'common.language' | transloco"
           [formControl]="livroForm().controls.idioma"
           [matAutocomplete]="idiomaC"
         />
@@ -281,7 +281,7 @@
           ><input
             matInput
             type="text"
-            placeholder="Idioma Original:"
+            [placeholder]="'common.originalLanguage' | transloco"
             [formControl]="livroForm().controls.idiomaOriginal"
             [matAutocomplete]="idiomaOrig"
           />
@@ -294,13 +294,13 @@
       </div>
     }
     <div class="electronico">
-      <mat-checkbox [formControl]="livroForm().controls.electronico">Electrónico</mat-checkbox>
+      <mat-checkbox [formControl]="livroForm().controls.electronico">{{ 'common.electronic' | transloco }}</mat-checkbox>
     </div>
     <div class="som-serie">
       <mat-checkbox
         (change)="somSerieAlterado.emit($event)"
         [formControl]="livroForm().controls.somSerie"
-        >Som Serie</mat-checkbox
+        >{{ 'bookForm.series' | transloco }}</mat-checkbox
       >
     </div>
     <div class="serie-combo">
@@ -308,7 +308,7 @@
         ><input
           matInput
           type="text"
-          placeholder="Serie:"
+          [placeholder]="'common.series' | transloco"
           [formControl]="livroForm().controls.serie"
           [matAutocomplete]="serieLivro"
         />
@@ -323,34 +323,34 @@
     @if (!modoRelectura()) {
       <div class="premios">
         <mat-form-field class="ancho-inputs"
-          ><mat-label>Prémios:</mat-label
+          ><mat-label>{{ 'common.awards' | transloco }}:</mat-label
           ><textarea matInput [formControl]="livroForm().controls.premios" rows="4"></textarea>
           @if (livroForm().controls.premios.hasError('maxlength')) {
-            <mat-error>Máximo 255 caracteres</mat-error>
+            <mat-error>{{ 'common.maxCharacters' | transloco: { count: 255 } }}</mat-error>
           }
         </mat-form-field>
       </div>
       <div class="descricom">
         <mat-form-field class="ancho-inputs"
-          ><mat-label>Descriçom:</mat-label
+          ><mat-label>{{ 'common.description' | transloco }}:</mat-label
           ><textarea matInput [formControl]="livroForm().controls.descricom" rows="4"></textarea>
           @if (livroForm().controls.descricom.hasError('maxlength')) {
-            <mat-error>Máximo 50000 caracteres</mat-error>
+            <mat-error>{{ 'common.maxCharacters' | transloco: { count: 50000 } }}</mat-error>
           }
         </mat-form-field>
       </div>
     }
     <div class="comentario">
       <mat-form-field class="ancho-inputs"
-        ><mat-label>Comentario:</mat-label
+        ><mat-label>{{ 'common.comment' | transloco }}:</mat-label
         ><textarea matInput [formControl]="livroForm().controls.comentario" rows="4"></textarea>
         @if (livroForm().controls.comentario.hasError('maxlength')) {
-          <mat-error>Máximo 50000 caracteres</mat-error>
+          <mat-error>{{ 'common.maxCharacters' | transloco: { count: 50000 } }}</mat-error>
         }
       </mat-form-field>
     </div>
     <div class="pontuacom">
-      <span>Pontuaçom:</span
+      <span>{{ 'bookForm.rating' | transloco }}</span
       ><omla-estrelas-pontuacom
         [pontuacom]="pontuacomEstrelas()"
         (numero)="pontuacaoAlterada.emit($event)"
@@ -360,13 +360,13 @@
 
   @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
     <button class="botom-guardar-resgistro" color="primary" type="submit" [value]="modo()">
-      {{ modo() }}
+      {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
     </button>
     @if (!modoRelectura()) {
-      <button type="button" (click)="novaRelectura.emit()">Nova relectura</button>
+      <button type="button" (click)="novaRelectura.emit()">{{ 'common.newReread' | transloco }}</button>
     } @else {
       <button type="button" (click)="cancelarRelectura.emit()">
-        Cancelar {{ modo() === estadosPagina.engadir ? 'nova' : 'modificar' }} relectura
+        {{ modo() === estadosPagina.engadir ? ('common.cancelNewReread' | transloco) : ('common.cancelEditReread' | transloco) }}
       </button>
     }
   }

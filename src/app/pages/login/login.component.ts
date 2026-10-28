@@ -53,11 +53,11 @@ export class LoginComponent {
             this.router.navigate(['/estadisticas']);
           }
           else {
-            this.error.set(this.translocoService.translate('login.error'));
+            this.error.set('Erro no inicio da sessom');
           }
         },
         error: (err: any) => {
-          this.error.set(err.error?.mensagem || this.translocoService.translate('login.error'));
+          this.error.set(err.error?.mensagem || 'Erro no inicio da sessom');
           this.loading.set(false);
         },
         complete: () => {
@@ -70,3 +70,4 @@ export class LoginComponent {
     this.translocoService.setActiveLang(idioma);
   }
 }
+

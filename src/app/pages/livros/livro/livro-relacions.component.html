@@ -1,10 +1,10 @@
 <div class="autor">
   <div class="lista-etiqueta">
-    <div>Autor@if (temAutoresLivro()) { <span>es</span> }:</div>
+    <div>{{ (temAutoresLivro() ? 'common.authors' : 'common.author') | transloco }}:</div>
     @if (modo() !== estadosPagina.soVisualizar) {
       <div>
-        <button type="button" (click)="gestionarAutores.emit()">Gestionar</button>
-        <button type="button" (click)="engadirAutor.emit()">Engadir</button>
+        <button type="button" (click)="gestionarAutores.emit()">{{ 'common.manage' | transloco }}</button>
+        <button type="button" (click)="engadirAutor.emit()">{{ 'common.add' | transloco }}</button>
       </div>
     }
   </div>
@@ -19,11 +19,11 @@
 
 <div class="genero">
   <div class="lista-etiqueta">
-    <div>Género@if (temGenerosLivro()) { <span>s</span> }:</div>
+    <div>{{ (temGenerosLivro() ? 'common.genres' : 'common.genre') | transloco }}:</div>
     @if (modo() !== estadosPagina.soVisualizar) {
       <div>
-        <button type="button" (click)="gestionarGeneros.emit()">Gestionar</button>
-        <button type="button" (click)="engadirGenero.emit()">Engadir</button>
+        <button type="button" (click)="gestionarGeneros.emit()">{{ 'common.manage' | transloco }}</button>
+        <button type="button" (click)="engadirGenero.emit()">{{ 'common.add' | transloco }}</button>
       </div>
     }
   </div>

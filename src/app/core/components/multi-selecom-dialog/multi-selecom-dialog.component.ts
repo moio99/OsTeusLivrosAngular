@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { SimpleObjet } from '../../../shared/models/outros.model';
 import { CommonModule } from '@angular/common';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 export interface MultiDados {
   total: SimpleObjet[];
@@ -12,7 +13,7 @@ export interface MultiDados {
 @Component({
   selector: 'omla-multi-selecom-dialog',
   standalone: true,
-  imports: [ CommonModule, DragDropModule ],
+  imports: [ CommonModule, DragDropModule, TranslocoPipe ],
   templateUrl: './multi-selecom-dialog.component.html',
   styleUrls: ['./multi-selecom-dialog.component.scss']
 })

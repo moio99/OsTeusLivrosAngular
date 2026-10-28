@@ -1,3 +1,11 @@
+.separacom-spans {
+  display: flex;
+  gap: 5px;
+}
+.separacom-cantidade {
+  margin-left: 5px;
+}
+
 .lista-com-comas {
   ul { padding: 0px; margin: 0px; }
   li { display: inline; list-style-type: none; }

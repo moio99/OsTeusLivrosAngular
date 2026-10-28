@@ -1,30 +1,32 @@
-<h3>Listado de Géneros{{this.tipoOrdeacom()}}
+<h3 class="separacom-spans">
+  <span>{{ 'entityList.genres' | transloco }}</span>
+  <span>{{ this.tipoOrdeacom() | transloco }}</span>
   @if(this.inverso) {
-    <span>inverso</span>
+    <span>{{ 'common.inverse' | transloco }}</span>
   }
 </h3>
 
 @if (!soVisualizar) {
   <button class="botom-novo-resgistro" (click)="onIrPagina('/generos/genero', '0')">
-    Novo Género
+    {{ 'entityList.newGenre' | transloco }}
   </button>
 }
 
 <div>
-  {{ listadoResource.isLoading() ? 'Carregando...' : listadoDados()?.length + ' generos' }}
+  {{ listadoResource.isLoading() ? ('common.loading' | transloco) : ('common.countGenres' | transloco: { count: listadoDados()?.length }) }}
 </div>
 @if (listadoResource.hasValue() && this.listadoDados().length > 0) {
   <table class="taboas-listado">
     <tr>
-      <th (click)="ordeAlfabetico()">Nome<omla-orde-coluna
+      <th (click)="ordeAlfabetico()">{{ 'common.name' | transloco }}<omla-orde-coluna
         [nome]="this.nomeAlfabetico"
         [actual]="this.tipoOrdeacom()"
         [inverso]="this.inverso"></omla-orde-coluna></th>
-      <th (click)="ordeNumeroLivros()">Livros<omla-orde-coluna
+      <th (click)="ordeNumeroLivros()">{{ 'common.books' | transloco }}<omla-orde-coluna
         [nome]="this.numeroLivros"
         [actual]="this.tipoOrdeacom()"
         [inverso]="this.inverso"></omla-orde-coluna></th>
-      <th (click)="ordeNumeroLivrosLidos()">Lidos<omla-orde-coluna
+      <th (click)="ordeNumeroLivrosLidos()">{{ 'common.read' | transloco }}<omla-orde-coluna
         [nome]="this.numeroLivrosLidos"
         [actual]="this.tipoOrdeacom()"
         [inverso]="this.inverso"></omla-orde-coluna></th>
@@ -36,7 +38,7 @@
         <td (click)="onIrPagina('/generos/genero', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>
         @if (!soVisualizar) {
           <td (click)="$event.stopPropagation()">
-            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar"
+            <img src="../../../../assets/images/cubo-lixo.png" [alt]="'common.delete' | transloco"
               (click)="onBorrar(entrada.id, entrada.nome, entrada.quantidadeLivros)">
           </td>
         }

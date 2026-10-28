@@ -7,10 +7,10 @@ import { noCacheInterceptor } from './core/interceptors/no-cache.interceptor';
 import { desvioJava } from './core/interceptors/desvio-java.interceptor';
 import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@jsverse/transloco';
+import { provideTranslocoMessageformat } from '@jsverse/transloco-messageformat';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    appRootingProviders,
     // Configuración moderna con interceptores funcionais
     provideHttpClient(
       withInterceptors([
@@ -33,6 +33,8 @@ export const appConfig: ApplicationConfig = {
         loader: TranslocoHttpLoader,
       }
     ),
+    appRootingProviders,
+    provideTranslocoMessageformat()        // para traduzir correctamente os plurais (livro -> livros, liburu -> liburuak)
   ],
 };
 

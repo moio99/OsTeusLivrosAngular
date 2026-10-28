@@ -7,11 +7,11 @@
   </div>
 
   <img src="../../../assets/images/titulo_esquerda.png" alt="">
-  <span>Gestom dos livros lidos</span>
+  <span>{{ 'app.title' | transloco }}</span>
   <img src="../../../assets/images/titulo_dereita.png" alt="">
 </div>
 <div class="carregando">
   @if (isAmosarCarregando()) {
-    <img src="../../../assets/images/carregando.gif" alt="Carregando">
+    <img src="../../../assets/images/carregando.gif" [alt]="'common.loading' | transloco">
   }
 </div>

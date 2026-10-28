@@ -10,11 +10,12 @@ import { environment, environments } from '../../../../environments/environment'
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
 import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-listado-colecons',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslocoPipe],
   templateUrl: './listado-colecons.component.html',
   styleUrls: ['./listado-colecons.component.scss']
 })

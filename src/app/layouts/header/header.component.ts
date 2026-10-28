@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { LayoutService } from '@servizosFlow';
 import { MatIconModule } from '@angular/material/icon';
 import { CarregandoService } from '../../core/services/tools/carregando.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-header',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, TranslocoPipe],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })

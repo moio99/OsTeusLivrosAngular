@@ -6,11 +6,12 @@ import { MatInputModule } from '@angular/material/input';
 import { LivrosService, EstilosLiterariosService } from '@servizosApi';
 import { BaseElementoComponent } from '@componhentesComuns';
 import { EstiloLiterario } from '@interfaces';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-estilo-literario',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule
+  imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslocoPipe
     /* , MatDatepickerModule, MatNativeDateModule */],
   templateUrl: './estilo-literario.component.html',
   styleUrls: ['./estilo-literario.component.scss'],

@@ -1,20 +1,20 @@
 <form [formRoot]="formState.bibliotecaForm" (ngSubmit)="submitForm.emit($event)">
   @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
     <button color="primary" type="submit" [value]="modo()" [disabled]="formState.chamandoAPI()">
-      <i class="icon-disk"></i> {{modo()}}
+      <i class="icon-disk"></i> {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
     </button>
     <button color="primary" type="button" (click)="cancelar.emit()" [disabled]="formState.chamandoAPI()">
-      <i class="icon-disk"></i> Retroceder
+      <i class="icon-disk"></i> {{ 'common.back' | transloco }}
     </button>
   }
   <div class="formulario-dados">
     <div>
       <mat-form-field [style.width.px]=500>
-        <mat-label>Nome:</mat-label>
+        <mat-label>{{ 'common.name' | transloco }}:</mat-label>
         <input matInput [formField]="formState.bibliotecaForm.nome" width="200">
         @for (erro of formState.bibliotecaForm.nome().errors(); track erro.kind) {
           <mat-error>
-            {{ erro.message }}
+            {{ erro.kind === 'required' ? ('common.required' | transloco) : ('common.tooLong' | transloco) }}
           </mat-error>
         }
       </mat-form-field>
@@ -22,11 +22,11 @@
 
     <div>
       <mat-form-field [style.width.px]=500>
-        <mat-label>Endereço:</mat-label>
+        <mat-label>{{ 'common.address' | transloco }}:</mat-label>
         <input matInput [formField]="formState.bibliotecaForm.endereco">
         @if (formState.bibliotecaForm.endereco().getError('maxLength'); as erro) {
           <mat-error>
-            {{ erro.message }}
+            {{ 'common.tooLong' | transloco }}
           </mat-error>
         }
       </mat-form-field>
@@ -34,11 +34,11 @@
 
     <div>
       <mat-form-field [style.width.px]=300>
-        <mat-label>Localidade:</mat-label>
+        <mat-label>{{ 'common.location' | transloco }}:</mat-label>
         <input matInput [formField]="formState.bibliotecaForm.localidade">
         @if (formState.bibliotecaForm.localidade().getError('maxLength'); as erro) {
           <mat-error>
-            {{ erro.message }}
+            {{ 'common.tooLong' | transloco }}
           </mat-error>
         }
       </mat-form-field>
@@ -46,11 +46,11 @@
 
     <div>
       <mat-form-field [style.width.px]=150>
-        <mat-label>Telefone:</mat-label>
+        <mat-label>{{ 'common.phone' | transloco }}:</mat-label>
         <input matInput [formField]="formState.bibliotecaForm.telefone">
         @if (formState.bibliotecaForm.telefone().getError('maxLength'); as erro) {
           <mat-error>
-            {{ erro.message }}
+            {{ 'common.tooLong' | transloco }}
           </mat-error>
         }
       </mat-form-field>
@@ -58,7 +58,7 @@
 
     <div class="data-criacom">
       <mat-form-field class="ancho-inputs" [style.width.px]=170>
-        <mat-label>Data de asociamento</mat-label>
+        <mat-label>{{ 'form.membershipDate' | transloco }}</mat-label>
         <input matInput [matDatepicker]="fDateAso"
           [formField]="formState.bibliotecaForm.dataAsociamento"
           (keydown.enter)="onKeyDownImpedirEnvio($event)">
@@ -68,7 +68,7 @@
         <mat-datepicker #fDateAso></mat-datepicker>
         @if (formState.bibliotecaForm.dataAsociamento().getError('matDatepickerParse'); as erro) {
           <mat-error
-            [innerHTML]="'O formato válido é dd/mm/aaaa'">
+            [innerHTML]="'common.validDateFormat' | transloco">
           </mat-error>
         }
       </mat-form-field>
@@ -76,7 +76,7 @@
 
     <div class="data-criacom">
       <mat-form-field class="ancho-inputs" [style.width.px]=170>
-        <mat-label>Data de renovaçom</mat-label>
+        <mat-label>{{ 'entityList.renewalDate' | transloco }}</mat-label>
         <input matInput [matDatepicker]="fDateRe"
           [formField]="formState.bibliotecaForm.dataRenovacom"
           (keydown.enter)="onKeyDownImpedirEnvio($event)">
@@ -86,7 +86,7 @@
         <mat-datepicker #fDateRe></mat-datepicker>
         @if (formState.bibliotecaForm.dataRenovacom().getError('matDatepickerParse'); as erro) {
           <mat-error
-            [innerHTML]="'O formato válido é dd/mm/aaaa'">
+            [innerHTML]="'common.validDateFormat' | transloco">
           </mat-error>
         }
       </mat-form-field>
@@ -94,11 +94,11 @@
 
     <div>
       <mat-form-field [style.width.px]=500>
-        <mat-label>Comentario:</mat-label>
+        <mat-label>{{ 'common.comment' | transloco }}:</mat-label>
         <textarea matInput [formField]="formState.bibliotecaForm.comentario" rows="4"></textarea>
         @if (formState.bibliotecaForm.comentario().getError('maxLength'); as erro) {
           <mat-error>
-            {{ erro.message }}
+            {{ 'common.tooLong' | transloco }}
           </mat-error>
         }
       </mat-form-field>

@@ -1,22 +1,22 @@
 @if (amosar()) {
   @if (!temRelecturas()) {
-    <div>Nom há relecturas para este livro.</div>
+    <div>{{ 'form.noRereads' | transloco }}</div>
   } @else {
-    <h3>Listado de relecturas</h3>
+    <h3>{{ 'form.rereadList' | transloco }}</h3>
     <table>
       <tr>
-        <th>Título</th>
-        <th>Páginas</th>
-        <th>Lido</th>
-        <th>Fim Leitura</th>
-        <th>Dias</th>
-        <th>Pontuaçom</th>
+        <th>{{ 'common.title' | transloco }}</th>
+        <th>{{ 'common.pages' | transloco }}</th>
+        <th>{{ 'common.read' | transloco }}</th>
+        <th>{{ 'common.endReading' | transloco }}</th>
+        <th>{{ 'common.days' | transloco }}</th>
+        <th>{{ 'common.score' | transloco }}</th>
       </tr>
       @for (entrada of relecturas(); track entrada.id) {
         <tr class="listado-accom">
           <td (click)="editarRelectura.emit(entrada.id)">{{entrada.titulo}}</td>
           <td (click)="editarRelectura.emit(entrada.id)">{{entrada.paginas}}</td>
-          <td (click)="editarRelectura.emit(entrada.id)">{{entrada.lido ? 'Si' : 'Nom'}}</td>
+          <td (click)="editarRelectura.emit(entrada.id)">{{ entrada.lido ? ('common.yes' | transloco) : ('common.no' | transloco) }}</td>
           <td (click)="editarRelectura.emit(entrada.id)">
             {{entrada.dataFimLeitura ? (entrada.dataFimLeitura | date:'dd/MM/yyyy') : '---'}}
           </td>
@@ -24,7 +24,7 @@
           <td (click)="editarRelectura.emit(entrada.id)">{{entrada.pontuacom}}</td>
           @if (!soVisualizar) {
             <td (click)="borrar.emit(entrada)">
-              <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+              <img src="../../../../assets/images/cubo-lixo.png" [alt]="'common.delete' | transloco">
             </td>
           }
         </tr>

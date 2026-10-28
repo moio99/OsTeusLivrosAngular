@@ -6,11 +6,12 @@ import { EditoriaisService, LivrosService } from '@servizosApi';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BaseElementoComponent } from '@componhentesComuns';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-editorial',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule ],
+  imports: [ CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, TranslocoPipe ],
   templateUrl: './editorial.component.html',
   styleUrls: ['./editorial.component.scss'],
   providers: [ {provide: 'OMeuServizoToken', useClass: EditoriaisService} ]

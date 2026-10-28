@@ -12,11 +12,12 @@ import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { forkJoin } from 'rxjs';
 import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-estadisticas',
   standalone: true,
-  imports: [OrdeColunaComponent, MatTooltipModule],
+  imports: [OrdeColunaComponent, MatTooltipModule, TranslocoPipe],
   providers: [EstadisticasService, GraficosService],
   templateUrl: './estadisticas.component.html',
   styleUrls: ['./estadisticas.component.scss']

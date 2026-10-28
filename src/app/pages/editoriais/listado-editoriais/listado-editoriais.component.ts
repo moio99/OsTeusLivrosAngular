@@ -11,11 +11,12 @@ import { environment, environments } from '../../../../environments/environment'
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
 import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-listado-editoriais',
   standalone: true,
-  imports: [CommonModule, OrdeColunaComponent],
+  imports: [CommonModule, OrdeColunaComponent, TranslocoPipe],
   templateUrl: './listado-editoriais.component.html',
   styleUrls: ['./listado-editoriais.component.scss']
 })
@@ -27,8 +28,8 @@ export class ListadoEditoriaisComponent extends BaseListadoComponent<ListadoEdit
   protected parametrosBusqueda = signal<any>(null);
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
-  nomeAlfabetico = ', alfabético';
-  numeroLivros = ', número de livros';
+  nomeAlfabetico = 'common.sortAlphabetical';
+  numeroLivros = 'common.sortBookCount';
   tipoOrdeacom = this.nomeAlfabetico;
   inverso = false;
   tipoListado = '';

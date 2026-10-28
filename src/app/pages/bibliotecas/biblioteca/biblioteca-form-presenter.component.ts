@@ -9,12 +9,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { BibliotecaFormStateService } from './biblioteca-form-state.service';
 import { FormField, FormRoot } from '@angular/forms/signals';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-biblioteca-form-presenter',
   standalone: true,
   imports: [ CommonModule, FormsModule, FormRoot, FormField, MatFormFieldModule, MatInputModule, MatNativeDateModule,
-    MatDatepickerModule, MatAutocompleteModule ],
+    MatDatepickerModule, MatAutocompleteModule, TranslocoPipe ],
   templateUrl: './biblioteca-form-presenter.component.html'
 })
 export class BibliotecaFormPresenterComponent {

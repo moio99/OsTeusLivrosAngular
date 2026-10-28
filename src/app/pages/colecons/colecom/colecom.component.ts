@@ -6,11 +6,12 @@ import { MatInputModule } from '@angular/material/input';
 import { Colecom, ColecomForm } from '@interfaces';
 import { ColeconsService, LivrosService } from '@servizosApi';
 import { BaseElementoComponent } from '@componhentesComuns';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-colecom',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule ],
+  imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslocoPipe ],
   templateUrl: './colecom.component.html',
   styleUrls: ['./colecom.component.scss'],
   providers: [ {provide: 'OMeuServizoToken', useClass: ColeconsService} ]

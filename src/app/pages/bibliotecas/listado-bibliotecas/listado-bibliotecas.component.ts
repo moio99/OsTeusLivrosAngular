@@ -10,11 +10,12 @@ import { Observable } from 'rxjs';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
 import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-listado-bibliotecas',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslocoPipe],
   templateUrl: './listado-bibliotecas.component.html',
   styleUrls: ['./listado-bibliotecas.component.scss']
 })

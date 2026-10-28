@@ -7,11 +7,13 @@ import { AutoresService } from '@servizosApi';
 import { LayoutService } from '@servizosFlow';
 import { ListadosAutoresTipos, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-por-tipos',
   standalone: true,
-  imports: [ CommonModule ],
+  imports: [ CommonModule, TranslocoPipe ],
   templateUrl: './por-tipos.component.html',
   styleUrls: ['./por-tipos.component.scss']
 })
@@ -23,6 +25,7 @@ export class PorTiposComponent {
   private autoresService = inject(AutoresService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private readonly translocoService = inject(TranslocoService);
 
   tipo = signal<ListadosAutoresTipos | undefined>(
     this.route.snapshot.url[1].path === 'porPais' ? ListadosAutoresTipos.porPais : ListadosAutoresTipos.porNacionalidade
@@ -36,7 +39,7 @@ export class PorTiposComponent {
         return this.autoresService.getListadoAutoresPorNacons().pipe(
           map(v => this.dadosObtidos(v, true)),
           catchError((erro) => {
-            return this.gestomErro(erro, 'naçons');
+            return this.gestomErro(erro);
           })
         );
       }
@@ -44,7 +47,7 @@ export class PorTiposComponent {
       return this.autoresService.getListadoAutoresPorPaises().pipe(
         map(v => this.dadosObtidos(v, false)),
         catchError((erro) => {
-          return this.gestomErro(erro, 'paises');
+          return this.gestomErro(erro);
         })
       );
     }
@@ -54,8 +57,9 @@ export class PorTiposComponent {
     effect(() => {
       if (this.listadoResource.hasValue()) {
         this.layoutService.amosarInfo({
-          tipo: InformacomPeTipo.Info, mensagem: this.listadoResource.value().length + ' registros obtidos'}
-        );
+          tipo: InformacomPeTipo.Info,
+          mensagem: this.translocoService.translate('common.recordsLoaded', { count: this.listadoResource.value().length })
+        });
       }
     });
   }
@@ -85,10 +89,10 @@ export class PorTiposComponent {
     return resultados
   }
 
-  private gestomErro(erro: unknown, palabraMensagem: string) {
+  private gestomErro(erro: unknown) {
     console.error(erro);
     this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-      mensagem: `Nom se puido obter o listado de autores por ${palabraMensagem}.`});
+      mensagem: this.translocoService.translate('common.loadError')});
     // Retorno un array baleiro para que a app non rompa
     return of([]);
   }

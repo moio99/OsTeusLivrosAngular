@@ -10,5 +10,109 @@
     "ingresar": "Inicia sessió",
     "ingresando": "Iniciant sessió...",
     "error": "Error en iniciar la sessió"
+  },
+  "app": { "title": "Gestió dels llibres llegits" },
+  "nav": {
+    "statistics": "Estadístiques", "books": "Llibres", "authors": "Autors",
+    "publishers": "Editorials", "genres": "Gèneres", "libraries": "Biblioteques",
+    "collections": "Col·leccions", "literaryStyles": "Estils literaris", "logout": "Tanca la sessió"
+  },
+  "common": {
+    "loading": "Carregant...", "name": "Nom", "books": "Llibres", "read": "Llegits",
+    "title": "Títol", "originalTitle": "Títol original", "author": "Autor", "authors": "Autors",
+    "genre": "Gènere", "genres": "Gèneres", "pages": "Pàgines", "rereads": "Relectures",
+    "endReading": "Fi de lectura", "days": "Dies", "score": "Puntuació", "yes": "Sí", "no": "No",
+    "noData": "No hi ha dades", "delete": "Suprimeix", "new": "Nou", "add": "Afegeix", "edit": "Edita",
+    "back": "Enrere", "close": "Tanca", "manage": "Gestiona", "notFound": "No s'ha trobat",
+    "recordsLoaded": "S'han obtingut {{count}} registres", "loadError": "No s'han pogut carregar els registres.",
+    "confirmDelete": "Vols suprimir «{{name}}»?",
+    "itemDeleted": "S'ha suprimit «{{name}}».", "deleteError": "No s'ha pogut suprimir «{{name}}».",
+    "deleteBlocked": "No es pot suprimir «{{name}}» mentre tingui {{count}} llibres associats.",
+    "filter": "Filtre", "all": "Tots", "selection": "Selecció",
+    "noFilteredItems": "No hi ha elements que coincideixin amb el filtre.", "items": "{{count}} elements", "inverse": "invers",
+    "sortAlphabetical": "alfabèticament", "sortBookCount": " per nombre de llibres",
+    "sortReadCount": " per nombre de llibres llegits", "sortPageCount": ", per pàgines",
+    "sortRereadCount": ", per relectures", "sortLastReading": ", per última lectura",
+    "sortTitleAlphabetical": ", per títol", "sortAuthorAlphabetical": ", per autor",
+    "web": "Web", "comment": "Comentari", "address": "Adreça", "location": "Localitat",
+    "phone": "Telèfon", "country": "País", "nationality": "Nacionalitat", "language": "Idioma",
+    "originalLanguage": "Idioma original", "editionDate": "Data d'edició", "creationDate": "Data de creació",
+    "editionNumber": "Número d'edició", "isbn": "ISBN", "electronic": "Electrònic", "series": "Sèrie",
+    "awards": "Premis", "description": "Descripció", "maxCharacters": "Màxim {{count}} caràcters",
+    "required": "Aquest camp és obligatori", "tooLong": "El valor és massa llarg.",
+    "invalidDates": "Comprova que les dates siguin vàlides.", "lengthAtMost": "No pot superar els {{count}} caràcters",
+    "validDateFormat": "El format vàlid és dd/mm/aaaa", "validNumber": "Introdueix un valor entre 0 i {{max}}",
+    "register": "Registra", "save": "Desa", "cancel": "Cancel·la", "modify": "Modifica",
+    "newReread": "Nova relectura", "cancelNewReread": "Cancel·la la nova relectura",
+    "cancelEditReread": "Cancel·la els canvis de la relectura", "countBooks": "{{count}} llibres",
+    "countAuthors": "{{count}} autors", "countLibraries": "{{count}} biblioteques",
+    "countCollections": "{{count}} col·leccions", "countPublishers": "{{count}} editorials",
+    "countGenres": "{{count}} gèneres", "countLiteraryStyles": "{{count}} estils literaris"
+  },
+  "signup": {
+    "title": "Crear usuari", "allRequired": "Tots els camps són obligatoris",
+    "username": "Nom d'usuari", "usernamePlaceholder": "Introdueix el nom d'usuari",
+    "usernameRequired": "El nom d'usuari és obligatori", "password": "Contrasenya",
+    "passwordPlaceholder": "Introdueix la contrasenya", "passwordRequired": "La contrasenya és obligatòria",
+    "email": "Adreça electrònica", "emailPlaceholder": "Introdueix l'adreça electrònica",
+    "emailRequired": "L'adreça electrònica és obligatòria", "emailTooLong": "El correu no pot superar els 80 caràcters.",
+    "emailInvalid": "El format del correu electrònic no és vàlid.", "recoveryQuestion": "Pregunta de recuperació de l'usuari",
+    "recoveryQuestionPlaceholder": "Introdueix la pregunta de recuperació",
+    "recoveryQuestionRequired": "La pregunta de recuperació és obligatòria", "recoveryAnswer": "Resposta a la pregunta",
+    "recoveryAnswerPlaceholder": "Introdueix la resposta a la pregunta",
+    "recoveryAnswerRequired": "La resposta a la pregunta és obligatòria", "userLanguage": "Idioma de l'usuari",
+    "chooseLanguage": "Idioma:", "languageRequired": "L'idioma és obligatori",
+    "selectLanguage": "Selecciona un idioma de la llista", "languageNotFound": "No s'ha trobat l'idioma",
+    "sending": "Enviant...", "submit": "Envia",
+    "usernameExists": "Aquest nom d'usuari ja existeix.",
+    "userAdded": "S'ha afegit l'usuari {{name}}.",
+    "addError": "S'ha produït un error en afegir l'usuari.",
+    "languageLoadError": "No s'han pogut obtenir els idiomes."
+  },
+  "statistics": {
+    "languages": "Idiomes", "years": "Anys", "genres": "Gèneres", "quantity": "Quantitat",
+    "rereads": "Relectures", "pages": "Pàgines", "quantityTooltip": "Quantitat", "viewChart": "Mostra el gràfic",
+    "chartTitle": "Estadístiques per idioma", "pagesReadByYear": "Pàgines llegides per any"
+  },
+  "booksList": {
+    "title": "Llista de llibres", "byLanguage": "Llista de llibres per idioma", "byYear": "Llista de llibres de l'any {{year}}",
+    "byGenre": "Llista de llibres per gènere", "newBook": "Llibre nou", "inverse": "(llegits i no llegits)",
+    "filterTitle": "Filtra per títol...", "filterAuthor": "Filtra per autor...",
+    "count": "{count, plural, one {# llibre} other {# llibres}}", "authors": "Autor/s", "rereadsShort": "Relectures",
+    "lastRead": "Fi de lectura", "loadByLanguageError": "No s'han pogut obtenir els llibres per idioma {{language}}.",
+    "loadByYearError": "No s'han pogut obtenir els llibres de l'any {{year}}.",
+    "loadByGenreError": "No s'han pogut obtenir els llibres del gènere {{genre}}.",
+    "loadError": "No s'han pogut obtenir els llibres.", "noDataReceived": "No s'han obtingut dades.",
+    "confirmDelete": "Segur que vols eliminar el llibre {{name}}?",
+    "deleteError": "No s'ha pogut eliminar el llibre.", "deleted": "Llibre eliminat.",
+    "deleteBlockedRereads": "No es pot eliminar el llibre {{name}} mentre tingui {{count}} relectures associades.",
+    "deleteBlockedSeries": "No es pot eliminar el llibre {{name}} mentre sigui el primer d'una sèrie de {{count}} llibres."
+  },
+  "authorsList": {
+    "title": "Llista d'autors", "byNationality": "Per nacionalitat", "byCountry": "Per país",
+    "count": "{count, plural, one {# autor} other {# autors}}",
+    "newAuthor": "Autor nou", "filter": "Filtra per nom...", "nationality": "Nacionalitat", "country": "País"
+  },
+  "entityList": {
+    "publishers": "Llista d'editorials", "libraries": "Llista de biblioteques", "collections": "Llista de col·leccions",
+    "genres": "Llista de gèneres", "literaryStyles": "Llista d'estils literaris", "newPublisher": "Editorial nova",
+    "newLibrary": "Biblioteca nova", "newCollection": "Col·lecció nova", "newGenre": "Gènere nou",
+    "newStyle": "Estil nou", "renewalDate": "Data de renovació", "sortBy": "Llista", "by": "per"
+  },
+  "bookForm": {
+    "library": "Biblioteca:", "publisher": "Editorial:", "collection": "Col·lecció:",
+    "style": "Estil literari", "pagesRead": "Pàgines llegides", "read": "Llegit",
+    "creationDate": "Data de creació", "daysRead": "Dies de lectura", "includingToday": "(incloent-hi avui)",
+    "readingEndDate": "Data de finalització de lectura", "series": "Forma part d'una sèrie", "rating": "Puntuació:",
+    "valueRange": "Valor vàlid entre 0 i {{max}}",
+    "creationAfterEdition": "La data de creació no pot ser posterior a la data d'edició",
+    "editionBeforeCreation": "La data d'edició no pot ser anterior a la data de creació"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Filtre" },
+  "form": {
+    "nameRequired": "El nom és obligatori", "birthPlace": "Lloc de naixement", "birthDate": "Data de naixement",
+    "deathDate": "Data de defunció", "realName": "Nom real", "direction": "Adreça",
+    "membershipDate": "Data d'alta", "titleOriginal": "Títol original",
+    "noRereads": "Aquest llibre no té relectures.", "rereadList": "Llista de relectures"
   }
 }

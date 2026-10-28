@@ -1,20 +1,20 @@
-<h3>Listado de Coleçons</h3>
+<h3>{{ 'entityList.collections' | transloco }}</h3>
 @if (!soVisualizar) {
   <button class="botom-novo-resgistro" (click)="onIrPagina('/colecons/colecom', '0')">
-    Nova Coleçom
+    {{ 'entityList.newCollection' | transloco }}
   </button>
 }
 
 
 <div>
-  {{ listadoResource.isLoading() ? 'Carregando...' : listadoDados()?.length + ' coleçons' }}
+  {{ listadoResource.isLoading() ? ('common.loading' | transloco) : ('common.countCollections' | transloco: { count: listadoDados()?.length }) }}
 </div>
 @if (listadoResource.hasValue() && this.listadoDados().length > 0) {
   <table class="taboas-listado">
     <tr>
-      <th>Nome</th>
-      <th>web</th>
-      <th>Livros</th>
+      <th>{{ 'common.name' | transloco }}</th>
+      <th>{{ 'common.web' | transloco }}</th>
+      <th>{{ 'common.books' | transloco }}</th>
     </tr>
 
     @for (entrada of this.listadoDados(); track entrada.id) {
@@ -24,7 +24,7 @@
         <td (click)="onIrPagina('/colecons/colecom', entrada.id)">{{entrada.quantidadeLivros}}</td>
         @if (!soVisualizar) {
           <td (click)="$event.stopPropagation()">
-            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar"
+            <img src="../../../../assets/images/cubo-lixo.png" [alt]="'common.delete' | transloco"
               (click)="onBorrar(entrada.id, entrada.nome, entrada.quantidadeLivros)">
           </td>
         }

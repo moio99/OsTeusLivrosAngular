@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { BaseListadoDadosApi } from '../../../../shared/models/base-dados';
 import { ParametrosAutor } from '@interfaces';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   template: '' // Componente abstracto, nom precisa template
@@ -17,6 +18,7 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
 
   readonly layoutService = inject(LayoutService);
   readonly router = inject(Router);
+  protected readonly translocoService = inject(TranslocoService);
 
   // Cada componhente filho implementará este método para dicir de onde saca os dados
   protected abstract definirChamadaApi(params?: any): Observable<BaseListadoDadosApi<any>>;
@@ -34,12 +36,12 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
             if (rexistros.length > 0) {
               this.layoutService.amosarInfo({
                 tipo: InformacomPeTipo.Info,
-                mensagem: `${rexistros.length} registros obtidos`
+                mensagem: this.translocoService.translate('common.recordsLoaded', { count: rexistros.length })
               });
             } else {
               this.layoutService.amosarInfo({
                 tipo: InformacomPeTipo.Aviso,
-                mensagem: 'Nom se obtiverom dados.'
+                mensagem: this.translocoService.translate('common.noData')
               });
             }
           },
@@ -47,7 +49,7 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
             console.error(e);
             this.layoutService.amosarInfo({
               tipo: InformacomPeTipo.Erro,
-              mensagem: `Nom se puiderom obter ${this.nomePlural}.`
+              mensagem: this.translocoService.translate('common.loadError')
             });
           }
         })
@@ -101,14 +103,14 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
     id: string,
     livros: number,
     nomeDoElemento: string,
-    nomeComArtigo: string,
-    successMessage: string = 'Elemento borrado correctamente',
+    _nomeComArtigo: string,
+    _successMessage: string = 'Elemento borrado correctamente',
     serviceDelete: (id: string) => Observable<unknown>,
     borrarElementoDadosOutros?: (id: string) => void     // Se se passa este parámetro, borrar o elemento da caché (outros)
   ): void {
 
     if (livros === 0) {
-      if (confirm(`Está certo de querer borrar ${nomeComArtigo} ${nomeDoElemento}?`)) {
+      if (confirm(this.translocoService.translate('common.confirmDelete', { name: nomeDoElemento }))) {
         serviceDelete(id)
           .pipe(first())
           .subscribe({
@@ -119,21 +121,23 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
               }
               this.layoutService.amosarInfo({
                 tipo: InformacomPeTipo.Sucesso,
-                mensagem: successMessage
+                mensagem: this.translocoService.translate('common.itemDeleted', { name: nomeDoElemento })
               });
             },
             error: (e: unknown) => {
               console.error(e);
               this.layoutService.amosarInfo({
                 tipo: InformacomPeTipo.Erro,
-                mensagem: `Nom se pode apagar ${nomeComArtigo}.`
+                mensagem: this.translocoService.translate('common.deleteError', { name: nomeDoElemento })
               });
             }
           });
       }
     } else {
-      const plural = livros === 1 ? 'livro associado' : 'livros associados';
-      const mensagem = `Nom se pode apagar ${nomeComArtigo} mentres tenha ${livros} ${plural}`;
+      const mensagem = this.translocoService.translate('common.deleteBlocked', {
+        name: nomeDoElemento,
+        count: livros
+      });
 
       this.layoutService.amosarInfo({
         tipo: InformacomPeTipo.Aviso,

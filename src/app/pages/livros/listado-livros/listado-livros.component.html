@@ -1,16 +1,16 @@
 
-<h3>
-  {{titulo()}}{{tipoOrdeacom()}}
+<h3 class="separacom-spans">
+  <span>{{titulo()}}{{ tipoOrdeacom() | transloco }}</span>
   @if (inverso()) {
-    <span> inverso </span>
+    <span>{{ 'common.inverse' | transloco }}</span>
   }
-  <span>(lidos e nom lidos)</span>
+  <span>{{ 'booksList.inverse' | transloco }}</span>
 </h3>
 
 @if (!soVisualizar) {
   <div class="botoneira">
     <button class="botom-novo-resgistro" (click)="onIrPagina('livros/livro', '0')">
-      Novo Livro
+      {{ 'booksList.newBook' | transloco }}
     </button>
   </div>
 }
@@ -31,34 +31,34 @@
   <!-- Caixa de texto conectada ao Signal do filtro -->
   <input
     type="text"
-    placeholder="Filtra polo título..."
+    [placeholder]="'booksList.filterTitle' | transloco"
     [ngModel]="tituloFiltro()"
     (ngModelChange)="tituloFiltro.set($event)"
   />
   <input
     type="text"
-    placeholder="Filtra polo autor..."
+    [placeholder]="'booksList.filterAuthor' | transloco"
     [ngModel]="autorFiltro()"
     (ngModelChange)="autorFiltro.set($event)"
   />
-  <span>{{listadoFiltrado().length}} livro{{listadoFiltrado().length > 1 ? 's' : ''}}</span>
+  <span class="separacom-cantidade">{{ 'booksList.count' | transloco: { count: listadoFiltrado().length } }}</span>
 </div>
 
 @if (listadoDados().length > 0) {
   <table class="taboas-listado">
     <tr>
-      <th (click)="setOrdeTituloAlfabetico()">Título<omla-orde-coluna
+      <th (click)="setOrdeTituloAlfabetico()">{{ 'common.title' | transloco }}<omla-orde-coluna
         [nome]="ordeTituloAlfabetico"
         [actual]="tipoOrdeacom()"
         [inverso]="inverso()"></omla-orde-coluna></th>
-      <th>Título Original</th>
-      <th (click)="setOrdeAutorAlfabetico()">Autor/es<omla-orde-coluna
+      <th>{{ 'common.originalTitle' | transloco }}</th>
+      <th (click)="setOrdeAutorAlfabetico()">{{ 'booksList.authors' | transloco }}<omla-orde-coluna
         [nome]="ordeAutorAlfabetico"
         [actual]="tipoOrdeacom()"
         [inverso]="inverso()"></omla-orde-coluna></th>
       <th (click)="setOrdePaginas()">
         <div style="display: flex;">
-          Páginas
+          {{ 'common.pages' | transloco }}
           <omla-orde-coluna
             [nome]="ordePaginas"
             [actual]="tipoOrdeacom()"
@@ -66,8 +66,8 @@
         </div>
       </th>
       <th (click)="setOrdeRelecturas()">
-        <div style="display: flex;" matTooltip="Relecturas" [matTooltipPosition]="'above'">
-          Rel
+        <div style="display: flex;" [matTooltip]="'common.rereads' | transloco" [matTooltipPosition]="'above'">
+          {{ 'booksList.rereadsShort' | transloco }}
           <omla-orde-coluna
             [nome]="ordeRelecturas"
             [actual]="tipoOrdeacom()"
@@ -76,7 +76,7 @@
       </th>
       <th (click)="setOrdeUltmaLectura()">
         <span class="cabeceira-pequena">
-          Fim Leitura
+          {{ 'booksList.lastRead' | transloco }}
           <omla-orde-coluna
             [nome]="tituloUltimaLectura"
             [actual]="tipoOrdeacom()"
@@ -104,12 +104,12 @@
         <td>{{entrada.dataFimLeitura ? (entrada.dataFimLeitura | date:'dd/MM/yyyy') : '---'}}</td>
         @if (!soVisualizar) {
           <td (click)="onBorrarElemento(entrada.id, entrada.titulo, entrada.quantidadeSerie, entrada.quantidadeRelecturas)">
-            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar">
+            <img src="../../../../assets/images/cubo-lixo.png" [alt]="'common.delete' | transloco">
           </td>
         }
       </tr>
     }
   </table>
 } @else {
-  <p>Nom há dados</p>
+  <p>{{ 'common.noData' | transloco }}</p>
 }

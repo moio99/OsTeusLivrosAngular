@@ -10,5 +10,112 @@
     "ingresar": "Hasi saioa",
     "ingresando": "Saioa hasten...",
     "error": "Errorea saioa hastean"
+  },
+  "app": { "title": "Irakurritako liburuen kudeaketa" },
+  "nav": {
+    "statistics": "Estatistikak", "books": "Liburuak", "authors": "Egileak",
+    "publishers": "Argitaletxeak", "genres": "Generoak", "libraries": "Liburutegiak",
+    "collections": "Bildumak", "literaryStyles": "Literatura-estiloak", "logout": "Amaitu saioa"
+  },
+  "common": {
+    "loading": "Kargatzen...", "name": "Izena", "books": "Liburuak", "read": "Irakurrita",
+    "title": "Izenburua", "originalTitle": "Jatorrizko izenburua", "author": "Egilea", "authors": "Egileak",
+    "genre": "Generoa", "genres": "Generoak", "pages": "Orriak", "rereads": "Berrirakurketak",
+    "endReading": "Irakurketaren amaiera", "days": "Egunak", "score": "Puntuazioa", "yes": "Bai", "no": "Ez",
+    "noData": "Ez dago daturik", "delete": "Ezabatu", "new": "Berria", "add": "Gehitu", "edit": "Editatu",
+    "back": "Atzera", "close": "Itxi", "manage": "Kudeatu", "notFound": "Ez da aurkitu",
+    "recordsLoaded": "{{count}} erregistro kargatu dira", "loadError": "Ezin izan dira erregistroak kargatu.",
+    "confirmDelete": "Ziur zaude «{{name}}» ezabatu nahi duzula?",
+    "itemDeleted": "«{{name}}» ezabatu da.", "deleteError": "Ezin izan da «{{name}}» ezabatu.",
+    "deleteBlocked": "Ezin da «{{name}}» ezabatu {{count}} liburu lotuta dituen bitartean.",
+    "filter": "Iragazkia", "all": "Guztiak", "selection": "Hautaketa",
+    "noFilteredItems": "Ez dago iragazkiarekin bat datorren elementurik.", "items": "{{count}} elementu",
+    "inverse": "alderantziz", "sortAlphabetical": "alfabetikoki", "sortBookCount": " liburu kopuruaren arabera",
+    "sortReadCount": " irakurritako liburu kopuruaren arabera", "sortPageCount": ", orri kopuruaren arabera",
+    "sortRereadCount": ", berrirakurketen arabera", "sortLastReading": ", azken irakurketaren arabera",
+    "sortTitleAlphabetical": ", izenburuaren arabera", "sortAuthorAlphabetical": ", egilearen arabera",
+    "web": "Webgunea", "comment": "Iruzkina", "address": "Helbidea",
+    "location": "Herria", "phone": "Telefonoa", "country": "Herrialdea", "nationality": "Nazionalitatea",
+    "language": "Hizkuntza", "originalLanguage": "Jatorrizko hizkuntza", "editionDate": "Edizio-data",
+    "creationDate": "Sorrera-data", "editionNumber": "Edizio-zenbakia", "isbn": "ISBN",
+    "electronic": "Elektronikoa", "series": "Bilduma", "awards": "Sariak", "description": "Deskribapena",
+    "maxCharacters": "Gehienez {{count}} karaktere", "required": "Eremu hau beharrezkoa da",
+    "tooLong": "Balioa luzeegia da.", "invalidDates": "Egiaztatu datak baliozkoak direla.",
+    "lengthAtMost": "Ezin ditu {{count}} karaktere baino gehiago izan",
+    "validDateFormat": "Baliozko formatua: dd/mm/yyyy", "validNumber": "Sartu 0 eta {{max}} arteko balioa",
+    "register": "Erregistratu", "save": "Gorde", "cancel": "Utzi", "modify": "Aldatu",
+    "newReread": "Berrirakurketa berria", "cancelNewReread": "Utzi berrirakurketa berria",
+    "cancelEditReread": "Utzi berrirakurketaren aldaketak", "countBooks": "{{count}} liburu",
+    "countAuthors": "{{count}} egile", "countLibraries": "{{count}} liburutegi",
+    "countCollections": "{{count}} bilduma", "countPublishers": "{{count}} argitaletxe",
+    "countGenres": "{{count}} genero", "countLiteraryStyles": "{{count}} literatura-estilo"
+  },
+  "signup": {
+    "title": "Sortu erabiltzailea", "allRequired": "Eremu guztiak beharrezkoak dira",
+    "username": "Erabiltzaile-izena", "usernamePlaceholder": "Sartu erabiltzaile-izena",
+    "usernameRequired": "Erabiltzaile-izena beharrezkoa da", "password": "Pasahitza",
+    "passwordPlaceholder": "Sartu pasahitza", "passwordRequired": "Pasahitza beharrezkoa da",
+    "email": "Helbide elektronikoa", "emailPlaceholder": "Sartu helbide elektronikoa",
+    "emailRequired": "Helbide elektronikoa beharrezkoa da", "emailTooLong": "Posta elektronikoak ezin ditu 80 karaktere baino gehiago izan.",
+    "emailInvalid": "Sartu baliozko helbide elektronikoa.", "recoveryQuestion": "Erabiltzailea berreskuratzeko galdera",
+    "recoveryQuestionPlaceholder": "Sartu berreskuratzeko galdera",
+    "recoveryQuestionRequired": "Berreskuratzeko galdera beharrezkoa da", "recoveryAnswer": "Galderaren erantzuna",
+    "recoveryAnswerPlaceholder": "Sartu galderaren erantzuna",
+    "recoveryAnswerRequired": "Galderaren erantzuna beharrezkoa da", "userLanguage": "Erabiltzailearen hizkuntza",
+    "chooseLanguage": "Hizkuntza:", "languageRequired": "Hizkuntza beharrezkoa da",
+    "selectLanguage": "Hautatu zerrendako hizkuntza bat", "languageNotFound": "Ez da hizkuntza aurkitu",
+    "sending": "Bidaltzen...", "submit": "Bidali",
+    "usernameExists": "Erabiltzaile-izen hori badago lehendik.",
+    "userAdded": "{{name}} erabiltzailea gehitu da.",
+    "addError": "Errorea gertatu da erabiltzailea gehitzean.",
+    "languageLoadError": "Ezin izan dira hizkuntzak kargatu."
+  },
+  "statistics": {
+    "languages": "Hizkuntzak", "years": "Urteak", "genres": "Generoak", "quantity": "Kopurua",
+    "rereads": "Berrirakurketak", "pages": "Orriak", "quantityTooltip": "Kopurua", "viewChart": "Ikusi grafikoa",
+    "chartTitle": "Estatistikak hizkuntzaren arabera", "pagesReadByYear": "Urtean irakurritako orriak"
+  },
+  "booksList": {
+    "title": "Liburuen zerrenda", "byLanguage": "Liburuen zerrenda hizkuntzaren arabera",
+    "byYear": "{{year}} urteko liburuen zerrenda", "byGenre": "Liburuen zerrenda generoaren arabera",
+    "newBook": "Liburu berria", "inverse": "(irakurrita eta irakurri gabe)",
+    "filterTitle": "Iragazi izenburuaren arabera...", "filterAuthor": "Iragazi egilearen arabera...",
+    "count": "{count, plural, one {# liburu} other {# liburuak}}", "authors": "Egilea(k)", "rereadsShort": "Berrirakurketak",
+    "lastRead": "Irakurketaren amaiera",
+    "loadByLanguageError": "Ezin izan dira {{language}} hizkuntzako liburuak eskuratu.",
+    "loadByYearError": "Ezin izan dira {{year}} urteko liburuak eskuratu.",
+    "loadByGenreError": "Ezin izan dira {{genre}} generoko liburuak eskuratu.",
+    "loadError": "Ezin izan dira liburuak eskuratu.", "noDataReceived": "Ez da daturik jaso.",
+    "confirmDelete": "Ziur zaude {{name}} liburua ezabatu nahi duzula?",
+    "deleteError": "Ezin izan da liburua ezabatu.", "deleted": "Liburua ezabatu da.",
+    "deleteBlockedRereads": "Ezin da {{name}} liburua ezabatu, {{count}} berrirakurketa baititu.",
+    "deleteBlockedSeries": "Ezin da {{name}} liburua ezabatu, {{count}} liburuko serie baten lehena baita."
+  },
+  "authorsList": {
+    "title": "Egileen zerrenda", "byNationality": "Nazionalitatearen arabera", "byCountry": "Herrialdearen arabera",
+    "count": "{count, plural, one {# egilea} other {# egileak}}",
+    "newAuthor": "Egile berria", "filter": "Iragazi izenaren arabera...", "nationality": "Nazionalitatea", "country": "Herrialdea"
+  },
+  "entityList": {
+    "publishers": "Argitaletxeen zerrenda", "libraries": "Liburutegien zerrenda", "collections": "Bildumen zerrenda",
+    "genres": "Generoen zerrenda", "literaryStyles": "Literatura-estiloen zerrenda", "newPublisher": "Argitaletxe berria",
+    "newLibrary": "Liburutegi berria", "newCollection": "Bilduma berria", "newGenre": "Genero berria",
+    "newStyle": "Estilo berria", "renewalDate": "Berritze-data", "sortBy": "Zerrenda", "by": "arabera"
+  },
+  "bookForm": {
+    "library": "Liburutegia:", "publisher": "Argitaletxea:", "collection": "Bilduma:",
+    "style": "Literatura-estiloa", "pagesRead": "Irakurritako orriak", "read": "Irakurrita",
+    "creationDate": "Sorrera-data", "daysRead": "Irakurketa-egunak", "includingToday": "(gaur barne)",
+    "readingEndDate": "Irakurketaren amaiera-data", "series": "Bilduma batekoa da", "rating": "Puntuazioa:",
+    "valueRange": "Baliozko balioa: 0 eta {{max}} artean",
+    "creationAfterEdition": "Sorrera-data ezin da edizio-data baino geroagokoa izan",
+    "editionBeforeCreation": "Edizio-data ezin da sorrera-data baino lehenagokoa izan"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Iragazkia" },
+  "form": {
+    "nameRequired": "Izena beharrezkoa da", "birthPlace": "Jaioterria", "birthDate": "Jaiotze-data",
+    "deathDate": "Heriotza-data", "realName": "Benetako izena", "direction": "Helbidea",
+    "membershipDate": "Alta-data", "titleOriginal": "Jatorrizko izenburua",
+    "noRereads": "Liburu honek ez du berrirakurketarik.", "rereadList": "Berrirakurketa-zerrenda"
   }
 }

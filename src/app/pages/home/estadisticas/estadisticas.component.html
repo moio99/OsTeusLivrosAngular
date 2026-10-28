@@ -1,8 +1,8 @@
 <span #subMenu></span>
 <div class="sub-menu">
-  <a (click)="scrollAoElemento(subMenu)">Idiomas</a>
-  <a (click)="scrollAoElemento(taboaAnos)">Anos</a>
-  <a (click)="scrollAoElemento(taboaGenero)">Géneros</a>
+  <a (click)="scrollAoElemento(subMenu)">{{ 'statistics.languages' | transloco }}</a>
+  <a (click)="scrollAoElemento(taboaAnos)">{{ 'statistics.years' | transloco }}</a>
+  <a (click)="scrollAoElemento(taboaGenero)">{{ 'statistics.genres' | transloco }}</a>
 </div>
 
 <div class="contido-taboas">
@@ -10,10 +10,10 @@
     <div class="taboa-linguas">
       <table>
         <tr>
-          <th>Idioma</th>
-          <th>Quantidade</th>
-          <th>Relecturas</th>
-          <th>Páginas</th>
+          <th>{{ 'common.language' | transloco }}</th>
+          <th>{{ 'statistics.quantity' | transloco }}</th>
+          <th>{{ 'statistics.rereads' | transloco }}</th>
+          <th>{{ 'statistics.pages' | transloco }}</th>
         </tr>
         @for (entrada of idiomasSignal(); track entrada; let first = $first, derradeiro = $last) {
           <tr>
@@ -30,7 +30,7 @@
         }
       </table>
       <span (click)="onGoGraficos('/graficos')">
-        <img src="../../../../assets/images/grafico.png" alt="Ver o gráfico" class="grafico">
+        <img src="../../../../assets/images/grafico.png" [alt]="'statistics.viewChart' | transloco" class="grafico">
       </span>
     </div>
   }
@@ -40,7 +40,7 @@
       <tr>
         <th (click)="setOrdeAnos()">
           <div style="display: flex;">
-            Ano
+            {{ 'statistics.years' | transloco }}
             <omla-orde-coluna
               [nome]="ordeAnos"
               [actual]="tipoOrdeacomAnos"
@@ -49,24 +49,24 @@
         </th>
         <th (click)="setOrdeQuantidadeAnos()">
           <div style="display: flex;">
-            Quantidade
+            {{ 'statistics.quantity' | transloco }}
             <omla-orde-coluna
               [nome]="ordeQuantidadeAnos"
               [actual]="tipoOrdeacomAnos"
               [inverso]="inversoAnos()"></omla-orde-coluna>
           </div>
         </th>
-        <th>Relecturas</th>
+        <th>{{ 'statistics.rereads' | transloco }}</th>
         <th (click)="setOrdePaginasAnos()">
           <div style="display: flex;">
-            Páginas
+            {{ 'statistics.pages' | transloco }}
             <omla-orde-coluna
               [nome]="ordePaginasAnos"
               [actual]="tipoOrdeacomAnos"
               [inverso]="inversoAnos()"></omla-orde-coluna>
           </div>
         </th>
-        <th matTooltip="Cantidade" [matTooltipPosition]="'above'" >CC</th>
+        <th [matTooltip]="'statistics.quantityTooltip' | transloco" [matTooltipPosition]="'above'" >CC</th>
       </tr>
       @for (entrada of anosSignal(); track entrada) {
         <tr class="fila-listado"
@@ -92,27 +92,27 @@
     <div class="taboa-generos">
       <table>
         <tr>
-          <th>Género</th>
+          <th>{{ 'common.genre' | transloco }}</th>
           <th (click)="setOrdeQuantidadeGeneros()">
             <div style="display: flex;">
-              Quantidade
+              {{ 'statistics.quantity' | transloco }}
               <omla-orde-coluna
                 [nome]="ordeQuantidadeGeneros"
                 [actual]="tipoOrdeacomGeneros()"
                 [inverso]="inversoGeneros()"></omla-orde-coluna>
             </div>
           </th>
-          <th>Relecturas</th>
+          <th>{{ 'statistics.rereads' | transloco }}</th>
           <th (click)="setOrdePaginasGeneros()">
             <div style="display: flex;">
-              Páginas
+              {{ 'statistics.pages' | transloco }}
               <omla-orde-coluna
                 [nome]="ordePaginasGeneros"
                 [actual]="tipoOrdeacomGeneros()"
                 [inverso]="inversoGeneros()"></omla-orde-coluna>
             </div>
           </th>
-          <th matTooltip="Cantidade" [matTooltipPosition]="'above'">CC</th>
+          <th [matTooltip]="'statistics.quantityTooltip' | transloco" [matTooltipPosition]="'above'">CC</th>
           <div></div>
         </tr>
         @for (entrada of generosSignal(); track entrada) {
@@ -132,6 +132,6 @@
   }
 
   @if (idiomasSignal().length == 0 && anosSignal().length == 0 && generosSignal().length == 0) {
-    <p>Nom há dados</p>
+    <p>{{ 'common.noData' | transloco }}</p>
   }
 </div>

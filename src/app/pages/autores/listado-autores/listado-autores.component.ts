@@ -13,11 +13,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 import { FormsModule } from '@angular/forms';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-listado-autores',
   standalone: true,
-  imports: [ CommonModule, OrdeColunaComponent, RouterModule, FormsModule ],
+  imports: [ CommonModule, OrdeColunaComponent, RouterModule, FormsModule, TranslocoPipe ],
   templateUrl: './listado-autores.component.html',
   styleUrls: ['./listado-autores.component.scss']
 })
@@ -25,9 +26,9 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
 
   protected nomePlural = 'os autores';
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
-  nomeAlfabetico = ', alfabético';
-  numeroLivros = ', número de livros';
-  numeroLivrosLidos = ', número de livros lidos';
+  nomeAlfabetico = 'common.sortAlphabetical';
+  numeroLivros = 'common.sortBookCount';
+  numeroLivrosLidos = 'common.sortReadCount';
   tipoOrdeacom = signal<string>(this.nomeAlfabetico);
   inverso = signal<boolean>(false);
   autorFiltro = signal<string>('');
@@ -51,7 +52,7 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       return '';
 
     return Number(params.tipo) === ListadosAutoresTipos.porNacionalidade
-      ? ' por nacionalidade' : ' por país';
+      ? 'authorsList.byNationality' : 'authorsList.byCountry';
   });
 
   listadoDadosOrdenados = computed(() => {
@@ -89,11 +90,12 @@ export class ListadoAutoresComponent extends BaseListadoComponent<ListadoAutores
       if (this.listadoResource.hasValue()) {
         if (this.listadoDados().length === 0) {
           this.layoutService.amosarInfo({
-            tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'
+            tipo: InformacomPeTipo.Aviso, mensagem: this.translocoService.translate('common.noData')
           });
         } else {
           this.layoutService.amosarInfo({
-            tipo: InformacomPeTipo.Info, mensagem: this.listadoDados()?.length + ' registros obtidos'
+            tipo: InformacomPeTipo.Info,
+            mensagem: this.translocoService.translate('common.recordsLoaded', { count: this.listadoDados()?.length })
           });
         }
       }

@@ -2,36 +2,36 @@
 <form [formGroup]="formuario" (ngSubmit)="onSubmit($event, dadosComplentarios.EstiloLiterario)">
   @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
     <button color="primary" type="submit" value="{{modo()}}">
-      <i class="icon-disk"></i> {{modo()}}
+      <i class="icon-disk"></i> {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
     </button>
     <button color="primary" type="button" (click)="onCancelar()">
-      <i class="icon-disk"></i> Retroceder
+      <i class="icon-disk"></i> {{ 'common.back' | transloco }}
     </button>
   }
   <div class="formulario-dados dados-estilos">
     <div>
       <mat-form-field [style.width.px]=500>
-        <mat-label>Nome:</mat-label>
+        <mat-label>{{ 'common.name' | transloco }}:</mat-label>
         <input matInput [formControl]="formuario.get('nome')" width="200">
         @if (formuario.get('nome').hasError('maxlength')) {
           <mat-error>
-            A longitude nom debe superar os 150 caracteres
+            {{ 'common.lengthAtMost' | transloco: { count: 150 } }}
           </mat-error>
         }
         @if (formuario.get('nome').hasError('required')) {
           <mat-error>
-            O Nome é obrigatorio
+            {{ 'form.nameRequired' | transloco }}
           </mat-error>
         }
       </mat-form-field>
     </div>
     <div>
       <mat-form-field class="comentario-ancho">
-        <mat-label>Comentario:</mat-label>
+        <mat-label>{{ 'common.comment' | transloco }}:</mat-label>
         <textarea matInput [formControl]="formuario.get('comentario')" rows="7"></textarea>
         @if (formuario.get('comentario').hasError('maxlength')) {
           <mat-error>
-            A longitude nom debe superar os 5000 caracteres
+            {{ 'common.lengthAtMost' | transloco: { count: 5000 } }}
           </mat-error>
         }
       </mat-form-field>
@@ -40,12 +40,12 @@
 </form>
 
 @if (temLivros()) {
-  <h3>Listado de livros</h3>
+  <h3>{{ 'booksList.title' | transloco }}</h3>
   <table>
     <tr>
-      <th>Titulo</th>
-      <th>TituloOriginal</th>
-      <th>Autor</th>
+      <th>{{ 'common.title' | transloco }}</th>
+      <th>{{ 'common.originalTitle' | transloco }}</th>
+      <th>{{ 'common.author' | transloco }}</th>
     </tr>
     @for (entrada of livrosDoElemento(); track entrada.id) {
       <tr class="listado-accom">

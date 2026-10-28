@@ -1,58 +1,58 @@
 <form [formRoot]="formState.autorForm" (ngSubmit)="submitForm.emit($event)">
   @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
     <button color="primary" type="submit" [value]="modo()">
-      <i class="icon-disk"></i> {{modo()}}
+      <i class="icon-disk"></i> {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
     </button>
     <button color="primary" type="button" (click)="cancelar.emit()">
-      <i class="icon-disk"></i> Retroceder
+      <i class="icon-disk"></i> {{ 'common.back' | transloco }}
     </button>
   }
   <div class="formulario-dados">
     <div>
       <mat-form-field [style.width.px]="400">
-        <mat-label>Nome:</mat-label>
+        <mat-label>{{ 'common.name' | transloco }}:</mat-label>
         <input matInput [formField]="formState.autorForm.nome">
         @for (erro of formState.autorForm.nome().errors(); track erro.kind) {
           <mat-error>
-            {{ erro.message }}
+            {{ (erro.kind === 'required' ? 'common.required' : erro.kind === 'datasInvalidas' ? 'common.invalidDates' : 'common.tooLong') | transloco }}
           </mat-error>
         }
       </mat-form-field>
 
       <mat-form-field [style.width.px]="400">
-        <mat-label>Nome real:</mat-label>
+        <mat-label>{{ 'form.realName' | transloco }}:</mat-label>
         <input matInput [formField]="formState.autorForm.nomeReal">
         @if (formState.autorForm.nomeReal().getError('maxLength'); as erro) {
           <mat-error>
-            {{ erro.message }}
+            {{ 'common.tooLong' | transloco }}
           </mat-error>
         }
       </mat-form-field>
     </div>
     <div>
       <mat-form-field [style.width.px]="400">
-        <mat-label>Lugar de nacemento:</mat-label>
+        <mat-label>{{ 'form.birthPlace' | transloco }}:</mat-label>
         <input matInput [formField]="formState.autorForm.lugarNacemento">
         @if (formState.autorForm.lugarNacemento().getError('maxLength'); as erro) {
           <mat-error>
-            {{ erro.message }}
+            {{ 'common.tooLong' | transloco }}
           </mat-error>
         }
       </mat-form-field>
 
       <mat-form-field [style.width.px]="300">
-        <mat-label>Web:</mat-label>
+        <mat-label>{{ 'common.web' | transloco }}:</mat-label>
         <input matInput [formField]="formState.autorForm.web">
         @if (formState.autorForm.web().getError('maxLength'); as erro) {
           <mat-error>
-            {{ erro.message }}
+            {{ 'common.tooLong' | transloco }}
           </mat-error>
         }
       </mat-form-field>
     </div>
     <div>
       <mat-form-field class="ancho-inputs" [style.width.px]="170">
-        <mat-label>Data de nacemento</mat-label>
+        <mat-label>{{ 'form.birthDate' | transloco }}</mat-label>
         <input matInput [matDatepicker]="fDateN" [formField]="formState.autorForm.dataNacemento">
         @if (modo() !== estadosPagina.soVisualizar) {
           <mat-datepicker-toggle matSuffix [for]="fDateN"></mat-datepicker-toggle>
@@ -60,13 +60,13 @@
         <mat-datepicker #fDateN></mat-datepicker>
         @for (erro of formState.autorForm.dataNacemento().errors(); track erro.kind) {
           <mat-error>
-            {{ erro.message }}
+            {{ 'common.invalidDates' | transloco }}
           </mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="ancho-inputs" [style.width.px]="170">
-        <mat-label>Data de defuncom</mat-label>
+        <mat-label>{{ 'form.deathDate' | transloco }}</mat-label>
         <input matInput [matDatepicker]="fDateD" [formField]="formState.autorForm.dataDefuncom">
         @if (modo() !== estadosPagina.soVisualizar) {
           <mat-datepicker-toggle matSuffix [for]="fDateD"></mat-datepicker-toggle>
@@ -74,40 +74,40 @@
         <mat-datepicker #fDateD></mat-datepicker>
         @for (erro of formState.autorForm.dataDefuncom().errors(); track erro.kind) {
           <mat-error>
-            {{ erro.message }}
+            {{ 'common.invalidDates' | transloco }}
           </mat-error>
         }
       </mat-form-field>
 
       <mat-form-field>
-        <input type="text" placeholder="Nacionalidade:" aria-label="Number" matInput
+        <input type="text" [placeholder]="'common.nationality' | transloco" [attr.aria-label]="'common.nationality' | transloco" matInput
           [formField]="formState.autorForm.nomeNacionalidade" [matAutocomplete]="autoNacionalidades">
         <mat-autocomplete #autoNacionalidades="matAutocomplete" [displayWith]="formState.amosarNacionalidade"
           (optionSelected)="formState.seleccionarNacionalidade($event.option.value)">
           @for (element of formState.nacionalidadesFiltradas(); track element.id) {
             <mat-option [value]="element.id">{{element.value}}</mat-option>
           } @empty {
-            <mat-option disabled>Nacionalidade nom atopada</mat-option>
+            <mat-option disabled>{{ 'common.notFound' | transloco }}</mat-option>
           }
         </mat-autocomplete>
       </mat-form-field>
 
       <mat-form-field>
-        <input type="text" placeholder="País:" aria-label="Number" matInput
+        <input type="text" [placeholder]="'common.country' | transloco" [attr.aria-label]="'common.country' | transloco" matInput
           [formField]="formState.autorForm.nomePais" [matAutocomplete]="autoPaises">
         <mat-autocomplete #autoPaises="matAutocomplete" [displayWith]="formState.amosarPais"
           (optionSelected)="formState.seleccionarPais($event.option.value)">
           @for (element of formState.paisesFiltrados(); track element.id) {
             <mat-option [value]="element.id">{{element.value}}</mat-option>
           } @empty {
-            <mat-option disabled>País nom atopado</mat-option>
+            <mat-option disabled>{{ 'common.notFound' | transloco }}</mat-option>
           }
         </mat-autocomplete>
       </mat-form-field>
     </div>
     <div>
       <mat-form-field [style.width.px]="700">
-        <mat-label>Comentario:</mat-label>
+        <mat-label>{{ 'common.comment' | transloco }}:</mat-label>
         <textarea matInput [formField]="formState.autorForm.comentario" rows="4"></textarea>
       </mat-form-field>
     </div>

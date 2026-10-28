@@ -9,12 +9,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutorFormStateService } from './autor-form-state.service';
 import { FormRoot, FormField } from '@angular/forms/signals';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-autor-form-presenter',
   standalone: true,
   imports: [ CommonModule, FormsModule, FormRoot, FormField, MatFormFieldModule, MatInputModule, MatNativeDateModule,
-    MatDatepickerModule, MatAutocompleteModule ],
+    MatDatepickerModule, MatAutocompleteModule, TranslocoPipe ],
   templateUrl: './autor-form-presenter.component.html'
 })
 export class AutorFormPresenterComponent {

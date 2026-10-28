@@ -1,11 +1,11 @@
-<h3>Listado por {{tipo() === tipos.porNacionalidade ? 'Nacionalidade' : 'Pais'}}</h3>
+<h3>{{ 'authorsList.title' | transloco }} {{tipo() === tipos.porNacionalidade ? ('authorsList.nationality' | transloco) : ('authorsList.country' | transloco)}}</h3>
 
-{{ listadoResource.isLoading() ? 'Carregando' : listadoResource.value()?.length + ' elementos' }}
+{{ listadoResource.isLoading() ? ('common.loading' | transloco) : ('common.items' | transloco: { count: listadoResource.value()?.length }) }}
 @if (listadoResource.hasValue() && listadoResource.value().length > 0) {
   <table class="taboas-listado">
     <tr>
-      <th>Nome</th>
-      <th>Quantidade</th>
+      <th>{{ 'common.name' | transloco }}</th>
+      <th>{{ 'statistics.quantity' | transloco }}</th>
     </tr>
     @for (entrada of listadoResource.value(); track entrada.id) {
       <tr class="listado-accom">

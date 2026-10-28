@@ -1,100 +1,100 @@
 <div class="login-container">
-  <h2 class="frase">Alta de usuario</h2>
-  <p class="frase aclaracom">Todos os campos som obrigatorios</p>
+  <h2 class="frase">{{ 'signup.title' | transloco }}</h2>
+  <p class="frase aclaracom">{{ 'signup.allRequired' | transloco }}</p>
 
   <form [formGroup]="altaForm" (ngSubmit)="onSubmit()" class="login-form">
     <div class="form-group">
-      <label for="nome">Nome do usuario</label>
+      <label for="nome">{{ 'signup.username' | transloco }}</label>
       <input
         type="text"
         id="nome"
         formControlName="nome"
-        placeholder="Insira o nome do usuario"
+        [placeholder]="'signup.usernamePlaceholder' | transloco"
         [class.is-invalid]="af.nome.invalid && af.nome.touched">
       @if (af.nome.invalid && af.nome.touched) {
         <div class="invalid-feedback">
-        O nome do usuario é obrigatorio
+        {{ 'signup.usernameRequired' | transloco }}
         </div>
       }
     </div>
 
     <div class="form-group">
-      <label for="pass">Contrasinal</label>
+      <label for="pass">{{ 'signup.password' | transloco }}</label>
       <input
         type="password"
         id="pass"
         formControlName="pass"
-        placeholder="Insira o teu pass"
+        [placeholder]="'signup.passwordPlaceholder' | transloco"
         [class.is-invalid]="af.pass.invalid && af.pass.touched">
       @if (af.pass.invalid && af.pass.touched) {
         <div class="invalid-feedback">
-        O contrasinal é obrigatorio
+        {{ 'signup.passwordRequired' | transloco }}
         </div>
       }
     </div>
 
     <div class="form-group">
-      <label for="correio">Correio electrónico</label>
+      <label for="correio">{{ 'signup.email' | transloco }}</label>
       <input
         type="text"
         id="correio"
         formControlName="correio"
-        placeholder="Insira o correio electrónico"
+        [placeholder]="'signup.emailPlaceholder' | transloco"
         [class.is-invalid]="af.correio.invalid && af.correio.touched">
       @if (af.correio.touched && af.correio.errors) {
         <mat-error>
           @if (af.correio.errors['required']) {
-            O correio electrónico é obrigatorio
+            {{ 'signup.emailRequired' | transloco }}
           }
           @if (af.correio.errors['maxlength']) {
-            O correio nom pode superar os 80 caracteres.
+            {{ 'signup.emailTooLong' | transloco }}
           }
           @if (af.correio.errors['email'] || af.correio.errors['pattern']) {
-            O formato do correio electrónico nom é correcto.
+            {{ 'signup.emailInvalid' | transloco }}
           }
         </mat-error>
       }
     </div>
 
     <div class="form-group">
-      <label for="pergunta">Pergunta de recuperaçom de usuario</label>
+      <label for="pergunta">{{ 'signup.recoveryQuestion' | transloco }}</label>
       <input
         type="text"
         id="pergunta"
         formControlName="pergunta"
-        placeholder="Insira a pergunta de recuperaçom"
+        [placeholder]="'signup.recoveryQuestionPlaceholder' | transloco"
         [class.is-invalid]="af.pergunta.invalid && af.pergunta.touched">
       @if (af.pergunta.invalid && af.pergunta.touched) {
         <div class="invalid-feedback">
-        A pergunta de recuperaçom é obrigatoria
+        {{ 'signup.recoveryQuestionRequired' | transloco }}
         </div>
       }
     </div>
 
 
     <div class="form-group">
-      <label for="contestacom">Contestaçom da pergunta</label>
+      <label for="contestacom">{{ 'signup.recoveryAnswer' | transloco }}</label>
       <input
         type="text"
         id="contestacom"
         formControlName="contestacom"
-        placeholder="Insira a contestaçom da pergunta"
+        [placeholder]="'signup.recoveryAnswerPlaceholder' | transloco"
         [class.is-invalid]="af.contestacom.invalid && af.contestacom.touched">
       @if (af.contestacom.invalid && af.contestacom.touched) {
         <div class="invalid-feedback">
-        O contestaçom da pergunta é obrigatoria
+        {{ 'signup.recoveryAnswerRequired' | transloco }}
         </div>
       }
     </div>
 
     <div class="form-group">
-      <label for="Idioma">Idioma do usuario</label>
+      <label for="Idioma">{{ 'signup.userLanguage' | transloco }}</label>
       <mat-form-field class="ancho-inputs" subscriptSizing="dynamic"
         ><input
           matInput
           type="text"
           id="Idioma"
-          placeholder="Idioma:"
+          [placeholder]="'signup.chooseLanguage' | transloco"
           [formControl]="af.idIdioma"
           [matAutocomplete]="idiomaC"
         />
@@ -107,9 +107,9 @@
       @if (af.idIdioma.touched && af.idIdioma.errors) {
         <mat-error>
           @if (af.idIdioma.errors['required']) {
-            O idioma é obrigatorio
+            {{ 'signup.languageRequired' | transloco }}
           } @else if (af.idIdioma.errors['idiomaNomSelecionado']) {
-            Deve selecionar um idioma da lista
+            {{ 'signup.selectLanguage' | transloco }}
           }
         </mat-error>
       }
@@ -125,7 +125,7 @@
       @if (loading()) {
         <span class="spinner-border spinner-border-sm"></span>
       }
-      {{ loading() ? 'Enviando...' : 'Enviar' }}
+      {{ loading() ? ('signup.sending' | transloco) : ('signup.submit' | transloco) }}
     </button>
   </form>
 </div>

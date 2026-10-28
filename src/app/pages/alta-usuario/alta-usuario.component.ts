@@ -14,6 +14,7 @@ import { AltaUsuario, dadosComplementarios } from '@interfaces';
 import { ValidaconsAMedida } from '../../shared/validators/custom-validators';
 import { UsuariosService } from '../../core/services/api/usuarios.service';
 import { PeComponent } from '@componhentesComuns';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-alta',
@@ -23,6 +24,7 @@ import { PeComponent } from '@componhentesComuns';
     MatInputModule,
     MatAutocompleteModule,
     PeComponent,
+    TranslocoPipe,
   ],
   templateUrl: './alta-usuario.component.html',
   styleUrls: ['./alta-usuario.component.scss']
@@ -34,6 +36,7 @@ export class AltaUsuarioComponent {
   private readonly outrosService = inject(OutrosService);
   private readonly layoutService = inject(LayoutService);
   private readonly usuariosService = inject(UsuariosService);
+  private readonly translocoService = inject(TranslocoService);
 
   readonly altaForm = this.fb.group({
     nome: new FormControl('', [Validators.required, Validators.maxLength(15)]),
@@ -67,7 +70,7 @@ export class AltaUsuarioComponent {
           }
           return [];
         }),
-        catchError((e) => this.manejarErroSoporte(e, 'dos idiomas'))
+        catchError((e) => this.manejarErroSoporte(e))
       );
     }
   });
@@ -111,7 +114,7 @@ export class AltaUsuarioComponent {
         if (usuario && usuario.meta.quantidade > 0) {
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Aviso,
-            mensagem: 'O nome do usuario já existe na base de dados'
+            mensagem: this.translocoService.translate('signup.usernameExists')
           });
           this.loading.set(false);
           return EMPTY; // Corta o fluxo de forma segura se está repetido
@@ -124,7 +127,7 @@ export class AltaUsuarioComponent {
         this.loading.set(false);
         this.layoutService.amosarInfo({
           tipo: InformacomPeTipo.Sucesso,
-          mensagem: `O usuario ${novoUsuario.nome} foi engadido.`
+          mensagem: this.translocoService.translate('signup.userAdded', { name: novoUsuario.nome })
         });
         this.altaForm.reset();
       },
@@ -133,7 +136,7 @@ export class AltaUsuarioComponent {
         this.loading.set(false);
         this.layoutService.amosarInfo({
           tipo: InformacomPeTipo.Erro,
-          mensagem: 'Houbo um erro ao engadir o usuario.'
+          mensagem: this.translocoService.translate('signup.addError')
         });
       }
     });
@@ -153,11 +156,11 @@ export class AltaUsuarioComponent {
     return usuario;
   }
 
-  private manejarErroSoporte(e: any, complemntoMensagem: string) {
+  private manejarErroSoporte(e: any) {
     console.error(e);
     this.layoutService.amosarInfo({
       tipo: InformacomPeTipo.Erro,
-      mensagem: `Nom se puiderom obter os dados ${complemntoMensagem}.`
+      mensagem: this.translocoService.translate('signup.languageLoadError')
     });
     return of([]);
   }

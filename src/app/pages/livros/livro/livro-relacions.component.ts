@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { SimpleObjet } from '../../../shared/models/outros.model';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-livro-relacions',
   standalone: true,
-  imports: [CommonModule, MatButtonModule],
+  imports: [CommonModule, MatButtonModule, TranslocoPipe],
   templateUrl: './livro-relacions.component.html',
   styleUrls: ['./livro-relacions.component.scss']
 })

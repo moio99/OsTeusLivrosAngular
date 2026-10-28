@@ -16,6 +16,7 @@ import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
 import { SimpleObjet } from '../../../shared/models/outros.model';
 import { LivroRelacionsComponent } from './livro-relacions.component';
 import { LivroFormStateService } from './livro-form-state.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-livro-form-presenter',
@@ -32,7 +33,8 @@ import { LivroFormStateService } from './livro-form-state.service';
     MatAutocompleteModule,
     MatNativeDateModule,
     EstrelasPontuacomComponent,
-    LivroRelacionsComponent
+    LivroRelacionsComponent,
+    TranslocoPipe
   ],
   templateUrl: './livro-form-presenter.component.html',
   styleUrls: ['./livro-form-presenter.component.scss']

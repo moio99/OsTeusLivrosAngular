@@ -10,5 +10,109 @@
     "ingresar": "Sign in",
     "ingresando": "Signing in...",
     "error": "Error signing in"
+  },
+  "app": { "title": "Reading tracker" },
+  "nav": {
+    "statistics": "Statistics", "books": "Books", "authors": "Authors",
+    "publishers": "Publishers", "genres": "Genres", "libraries": "Libraries",
+    "collections": "Collections", "literaryStyles": "Literary styles", "logout": "Log out"
+  },
+  "common": {
+    "list": "List",
+    "loading": "Loading...", "name": "Name", "books": "Books", "read": "Read",
+    "title": "Title", "originalTitle": "Original title", "author": "Author", "authors": "Authors",
+    "genre": "Genre", "genres": "Genres", "pages": "Pages", "rereads": "Rereads",
+    "endReading": "End of reading", "days": "Days", "score": "Rating", "yes": "Yes", "no": "No",
+    "noData": "No data", "delete": "Delete", "new": "New", "add": "Add", "edit": "Edit",
+    "back": "Back", "close": "Close", "manage": "Manage", "notFound": "Not found",
+    "recordsLoaded": "{{count}} records loaded", "loadError": "Could not load the records.",
+    "confirmDelete": "Are you sure you want to delete “{{name}}”?",
+    "itemDeleted": "“{{name}}” was deleted.", "deleteError": "Could not delete “{{name}}”.",
+    "deleteBlocked": "Cannot delete “{{name}}” while it has {{count}} associated books.",
+    "filter": "Filter", "all": "All", "selection": "Selection",
+    "noFilteredItems": "No items match the filter.", "items": "{{count}} items", "inverse": "reversed",
+    "sortAlphabetical": "alphabetically", "sortBookCount": " by book count",
+    "sortReadCount": " by read book count", "sortPageCount": ", by pages",
+    "sortRereadCount": ", by rereads", "sortLastReading": ", by last reading date",
+    "sortTitleAlphabetical": ", by title", "sortAuthorAlphabetical": ", by author",
+    "web": "Web", "comment": "Comment", "address": "Address", "location": "Location",
+    "phone": "Phone", "country": "Country", "nationality": "Nationality", "language": "Language",
+    "originalLanguage": "Original language", "editionDate": "Edition date", "creationDate": "Creation date",
+    "editionNumber": "Edition number", "isbn": "ISBN", "electronic": "Electronic", "series": "Series",
+    "awards": "Awards", "description": "Description", "maxCharacters": "Maximum {{count}} characters",
+    "required": "This field is required", "tooLong": "This value is too long.",
+    "invalidDates": "Check that the dates are valid.", "lengthAtMost": "Must not exceed {{count}} characters",
+    "validDateFormat": "Valid format: dd/mm/yyyy", "validNumber": "Enter a value between 0 and {{max}}",
+    "register": "Register", "save": "Save", "cancel": "Cancel", "modify": "Edit",
+    "newReread": "New reread", "cancelNewReread": "Cancel new reread",
+    "cancelEditReread": "Cancel reread changes", "countBooks": "{{count}} books",
+    "countAuthors": "{{count}} authors", "countLibraries": "{{count}} libraries",
+    "countCollections": "{{count}} collections", "countPublishers": "{{count}} publishers",
+    "countGenres": "{{count}} genres", "countLiteraryStyles": "{{count}} literary styles"
+  },
+  "signup": {
+    "title": "Create account", "allRequired": "All fields are required",
+    "username": "Username", "usernamePlaceholder": "Enter a username",
+    "usernameRequired": "Username is required", "password": "Password",
+    "passwordPlaceholder": "Enter your password", "passwordRequired": "Password is required",
+    "email": "Email address", "emailPlaceholder": "Enter your email address",
+    "emailRequired": "Email address is required", "emailTooLong": "Email cannot exceed 80 characters.",
+    "emailInvalid": "Enter a valid email address.", "recoveryQuestion": "Account recovery question",
+    "recoveryQuestionPlaceholder": "Enter a recovery question",
+    "recoveryQuestionRequired": "Recovery question is required", "recoveryAnswer": "Answer to the question",
+    "recoveryAnswerPlaceholder": "Enter the answer to the question",
+    "recoveryAnswerRequired": "An answer to the question is required", "userLanguage": "User language",
+    "chooseLanguage": "Language:", "languageRequired": "Language is required",
+    "selectLanguage": "Select a language from the list", "languageNotFound": "Language not found",
+    "sending": "Sending...", "submit": "Submit",
+    "usernameExists": "That username already exists.",
+    "userAdded": "User {{name}} has been added.",
+    "addError": "An error occurred while adding the user.",
+    "languageLoadError": "Could not load the languages."
+  },
+  "statistics": {
+    "languages": "Languages", "years": "Years", "genres": "Genres", "quantity": "Count",
+    "rereads": "Rereads", "pages": "Pages", "quantityTooltip": "Count", "viewChart": "View chart",
+    "chartTitle": "Statistics by language", "pagesReadByYear": "Pages read per year"
+  },
+  "booksList": {
+    "title": "Book list", "byLanguage": "Book list by language", "byYear": "Book list for {{year}}",
+    "byGenre": "Book list by genre", "newBook": "New book", "inverse": "(read and unread)",
+    "filterTitle": "Filter by title...", "filterAuthor": "Filter by author...",
+    "count": "{count, plural, one {# book} other {# books}}", "authors": "Author(s)", "rereadsShort": "Rereads",
+    "lastRead": "End of reading", "loadByLanguageError": "Could not load books for language {{language}}.",
+    "loadByYearError": "Could not load books for {{year}}.", "loadByGenreError": "Could not load books for genre {{genre}}.",
+    "loadError": "Could not load books.", "noDataReceived": "No data was received.",
+    "confirmDelete": "Are you sure you want to delete the book {{name}}?",
+    "deleteError": "Could not delete the book.", "deleted": "Book deleted.",
+    "deleteBlockedRereads": "The book {{name}} cannot be deleted while it has {{count}} rereads associated with it.",
+    "deleteBlockedSeries": "The book {{name}} cannot be deleted while it is the first in a series of {{count}} books."
+  },
+  "authorsList": {
+    "title": "Author list", "byNationality": "By nationality", "byCountry": "By country",
+    "count": "{count, plural, one {# author} other {# authors}}",
+    "newAuthor": "New author", "filter": "Filter by name...", "nationality": "Nationality", "country": "Country"
+  },
+  "entityList": {
+    "publishers": "Publisher list", "libraries": "Library list", "collections": "Collection list",
+    "genres": "Genre list", "literaryStyles": "Literary style list", "newPublisher": "New publisher",
+    "newLibrary": "New library", "newCollection": "New collection", "newGenre": "New genre",
+    "newStyle": "New style", "renewalDate": "Renewal date", "sortBy": "List", "by": "by"
+  },
+  "bookForm": {
+    "library": "Library:", "publisher": "Publisher:", "collection": "Collection:",
+    "style": "Literary style", "pagesRead": "Pages read", "read": "Read",
+    "creationDate": "Creation date", "daysRead": "Reading days", "includingToday": "(including today)",
+    "readingEndDate": "Reading end date", "series": "Part of a series", "rating": "Rating:",
+    "valueRange": "Valid value: 0 to {{max}}",
+    "creationAfterEdition": "Creation date cannot be later than the edition date",
+    "editionBeforeCreation": "Edition date cannot be earlier than the creation date"
+  },
+  "multiSelect": { "filterPlaceholder": "⌕ Filter" },
+  "form": {
+    "nameRequired": "Name is required", "birthPlace": "Place of birth", "birthDate": "Date of birth",
+    "deathDate": "Date of death", "realName": "Real name", "direction": "Address",
+    "membershipDate": "Membership date", "titleOriginal": "Original title",
+    "noRereads": "There are no rereads for this book.", "rereadList": "Reread list"
   }
 }

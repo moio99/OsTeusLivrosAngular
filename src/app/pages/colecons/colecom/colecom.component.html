@@ -1,24 +1,24 @@
 <form [formGroup]="formuario" (ngSubmit)="onSubmit($event, dadosComplentarios.Colecom)">
   @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
     <button color="primary" type="submit" value="{{modo()}}">
-      <i class="icon-disk"></i> {{modo()}}
+      <i class="icon-disk"></i> {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
     </button>
     <button color="primary" type="button" (click)="onCancelar()">
-      <i class="icon-disk"></i> Retroceder
+      <i class="icon-disk"></i> {{ 'common.back' | transloco }}
     </button>
   }
   <div class="formulario-dados">
     <mat-form-field [style.width.px]=500>
-      <mat-label>Nome:</mat-label>
+      <mat-label>{{ 'common.name' | transloco }}:</mat-label>
       <input matInput [formControl]="colecomForm.controls.nome" width="200">
       @if (colecomForm.controls.nome.hasError('maxlength')) {
         <mat-error>
-          A longitude nom debe superar os 150 caracteres
+          {{ 'common.lengthAtMost' | transloco: { count: 150 } }}
         </mat-error>
       }
       @if (colecomForm.controls.nome.hasError('required')) {
         <mat-error>
-          O Nome é obrigatorio
+          {{ 'common.required' | transloco }}
         </mat-error>
       }
     </mat-form-field>
@@ -28,27 +28,27 @@
       <input matInput [formControl]="colecomForm.controls.isbn">
       @if (colecomForm.controls.isbn.hasError('maxlength')) {
         <mat-error>
-          A longitude nom debe superar os 20 caracteres
+          {{ 'common.lengthAtMost' | transloco: { count: 20 } }}
         </mat-error>
       }
     </mat-form-field>
 
     <mat-form-field [style.width.px]=300>
-      <mat-label>web:</mat-label>
+      <mat-label>{{ 'common.web' | transloco }}:</mat-label>
       <input matInput [formControl]="colecomForm.controls.web">
       @if (colecomForm.controls.web.hasError('maxlength')) {
         <mat-error>
-          A longitude nom debe superar os 150 caracteres
+          {{ 'common.lengthAtMost' | transloco: { count: 150 } }}
         </mat-error>
       }
     </mat-form-field>
 
     <mat-form-field [style.width.px]=500>
-      <mat-label>Comentario:</mat-label>
+      <mat-label>{{ 'common.comment' | transloco }}:</mat-label>
       <textarea matInput [formControl]="colecomForm.controls.comentario" rows="4"></textarea>
       @if (colecomForm.controls.comentario.hasError('maxlength')) {
         <mat-error>
-          A longitude nom debe superar os 5000 caracteres
+          {{ 'common.lengthAtMost' | transloco: { count: 5000 } }}
         </mat-error>
       }
     </mat-form-field>
@@ -56,12 +56,12 @@
 </form>
 
 @if (this.temLivros()) {
-  <h3>Listado de livros</h3>
+  <h3>{{ 'booksList.title' | transloco }}</h3>
   <table>
     <tr>
-      <th>Titulo</th>
-      <th>TituloOriginal</th>
-      <th>Autor</th>
+      <th>{{ 'common.title' | transloco }}</th>
+      <th>{{ 'common.originalTitle' | transloco }}</th>
+      <th>{{ 'common.author' | transloco }}</th>
     </tr>
 
     @for (entrada of this.livrosDoElemento(); track entrada.id) {

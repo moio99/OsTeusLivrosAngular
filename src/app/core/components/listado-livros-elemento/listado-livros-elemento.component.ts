@@ -1,9 +1,11 @@
 import { Component, input, output } from '@angular/core';
 import { ListadoLivros } from '@interfaces';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-listado-livros-elemento',
   standalone: true,
+  imports: [TranslocoPipe],
   templateUrl: './listado-livros-elemento.component.html'
 })
 export class ListadoLivrosElementoComponent {

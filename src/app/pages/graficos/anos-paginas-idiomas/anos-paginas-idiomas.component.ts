@@ -1,9 +1,11 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
 import { Routes } from '@angular/router';
 import { ChartComponent, NgApexchartsModule} from "ng-apexcharts";
 import { Graficos } from '@interfaces';
 import { AreasChartOptions } from '../../../core/types/chart.options';
 import { CoresIdiomasService } from '@servizosFlow';
+import { TranslocoService } from '@jsverse/transloco';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   imports: [ NgApexchartsModule ],
@@ -32,11 +34,11 @@ export class AnosPaginasIdiomasComponent implements OnInit {
     },
 
     title: {
-      text: "Estadísticas por idioma",
+      text: "",
       align: "left"
     },
     subtitle: {
-      text: "Páginas lidas por ano",
+      text: "",
       align: "left"
     },
     labels: [],
@@ -53,6 +55,15 @@ export class AnosPaginasIdiomasComponent implements OnInit {
 
 
   private coresIdiomasService = inject(CoresIdiomasService);
+  private readonly translocoService = inject(TranslocoService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  constructor() {
+    this.actualizarTextosGrafico();
+    this.translocoService.langChanges$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.actualizarTextosGrafico());
+  }
 
   ngOnInit(): void {
     const state = history.state;
@@ -137,11 +148,11 @@ export class AnosPaginasIdiomasComponent implements OnInit {
       },
 
       title: {
-        text: "Estadísticas por idioma",
+        text: "",
         align: "left"
       },
       subtitle: {
-        text: "Páginas lidas por ano",
+        text: "",
         align: "left"
       },
       labels: labelsAnos,
@@ -154,6 +165,15 @@ export class AnosPaginasIdiomasComponent implements OnInit {
       legend: {
         horizontalAlign: "left"
       }
+    };
+    this.actualizarTextosGrafico();
+  }
+
+  private actualizarTextosGrafico(): void {
+    this.chartOptions = {
+      ...this.chartOptions,
+      title: { text: this.translocoService.translate('statistics.chartTitle'), align: 'left' },
+      subtitle: { text: this.translocoService.translate('statistics.pagesReadByYear'), align: 'left' }
     };
   }
 }

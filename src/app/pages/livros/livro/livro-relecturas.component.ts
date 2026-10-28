@@ -2,11 +2,12 @@ import { Component, computed, EventEmitter, input, Input, output, Output } from 
 import { CommonModule } from '@angular/common';
 import { RelecturaListado } from '@interfaces';
 import { environment, environments } from '../../../../environments/environment';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-livro-relecturas',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslocoPipe],
   templateUrl: './livro-relecturas.component.html'
 })
 export class LivroRelecturasComponent {

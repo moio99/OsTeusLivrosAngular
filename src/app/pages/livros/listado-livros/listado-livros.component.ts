@@ -15,11 +15,12 @@ import { TartaChartOptions } from '../../../core/types/chart.options';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { FormsModule } from '@angular/forms';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-listado-livros',
   standalone: true,
-  imports: [ CommonModule, OrdeColunaComponent, NgApexchartsModule, MatTooltipModule, FormsModule ],
+  imports: [ CommonModule, OrdeColunaComponent, NgApexchartsModule, MatTooltipModule, FormsModule, TranslocoPipe ],
   templateUrl: './listado-livros.component.html',
   styleUrls: ['./listado-livros.component.scss']
 })
@@ -29,14 +30,13 @@ export class ListadoLivrosComponent implements OnInit {
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
   titulo = signal<string>('');
-  tituloListado = 'Listado';
   tituloFiltro = signal<string>('');
   autorFiltro = signal<string>('');
-  ordeTituloAlfabetico = ', título alfabético';
-  ordeAutorAlfabetico = ', autor alfabético';
-  ordePaginas = ', páginas';
-  ordeRelecturas = ', relecturas';
-  tituloUltimaLectura = ', última lectura';
+  ordeTituloAlfabetico = 'common.sortTitleAlphabetical';
+  ordeAutorAlfabetico = 'common.sortAuthorAlphabetical';
+  ordePaginas = 'common.sortPageCount';
+  ordeRelecturas = 'common.sortRereadCount';
+  tituloUltimaLectura = 'common.sortLastReading';
   tipoOrdeacom = signal<string>(this.tituloUltimaLectura);
   inverso = signal<boolean>(true);
   listadoDados = signal<ListadoLivros[]>([]);
@@ -65,6 +65,7 @@ export class ListadoLivrosComponent implements OnInit {
   });
 
   private coresIdiomasService = inject(CoresIdiomasService);
+  private translocoService = inject(TranslocoService);
 
   constructor(
     private route: ActivatedRoute,
@@ -111,7 +112,7 @@ export class ListadoLivrosComponent implements OnInit {
     if (this.parametros.tipo) {
       switch (+this.parametros.tipo) {    // Póde-se chegar para amosar o listado de livros por Ano, por Idioma etc
         case EstadisticasTipo.Idioma:
-          this.titulo.set(`${this.tituloListado} polo idioma`);
+          this.titulo.set(this.translocoService.translate('booksList.byLanguage'));
           this.livrosService
             .getListadoLivrosPorIdioma(this.parametros.id)
             .pipe(first())
@@ -122,20 +123,24 @@ export class ListadoLivrosComponent implements OnInit {
               error: (e) => { console.error(e),
                 this.layoutService.amosarInfo({
                   tipo: InformacomPeTipo.Erro,
-                  mensagem: `Nom se puiderom obter os livros polo idioma ${this.parametros.id}`
+                  mensagem: this.translocoService.translate('booksList.loadByLanguageError', {
+                    language: this.parametros.id
+                  })
                 }); },
               //complete: () => console.info('completado listado de livros por Idioma')
           });
           this.outrosService.getIdiomaNome(this.parametros.id)
             .pipe(first())
             .subscribe({
-              next: (v) => this.titulo.update((textoOriginal) => `${textoOriginal}${v}`),
+              next: (v) => this.titulo.update((textoOriginal) => `${textoOriginal} ${v}`),
               error: (e) => { console.error(e) },
             //complete: () => console.info('completado listado de livros por Idioma')
             });
           break;
         case EstadisticasTipo.Ano:
-          this.titulo.set(`${this.tituloListado} polo ano ${this.parametros.id}`);
+          this.titulo.set(this.translocoService.translate('booksList.byYear', {
+            year: this.parametros.id
+          }));
           this.livrosService
             .getListadoLivrosPorAno(this.parametros.id)
             .pipe(first())
@@ -146,13 +151,15 @@ export class ListadoLivrosComponent implements OnInit {
               error: (e) => { console.error(e),
                 this.layoutService.amosarInfo({
                   tipo: InformacomPeTipo.Erro,
-                  mensagem: `Nom se puiderom obter os livros polo ano ${this.parametros.id}`
+                  mensagem: this.translocoService.translate('booksList.loadByYearError', {
+                    year: this.parametros.id
+                  })
                 }); },
             //complete: () => console.info('completado listado de livros por Ano')
           });
           break;
         case EstadisticasTipo.Genero:
-          this.titulo.set(`${this.tituloListado} polo género`);
+          this.titulo.set(this.translocoService.translate('booksList.byGenre'));
           this.livrosService.getListadoLivrosPorGenero(this.parametros.id)
             .pipe(first())
             .subscribe({
@@ -162,7 +169,9 @@ export class ListadoLivrosComponent implements OnInit {
               error: (e) => { console.error(e),
                 this.layoutService.amosarInfo({
                   tipo: InformacomPeTipo.Erro,
-                  mensagem: `Nom se puiderom obter os livros polo género ${this.parametros.id}`
+                  mensagem: this.translocoService.translate('booksList.loadByGenreError', {
+                    genre: this.parametros.id
+                  })
                 }); },
               //complete: () => console.info('completado listado de livros por Genero')
           });
@@ -173,7 +182,7 @@ export class ListadoLivrosComponent implements OnInit {
             )
             .subscribe({
               next: (v) => {
-                if (v) this.titulo.update(textoActual => textoActual + v.nome);
+                if (v) this.titulo.update(textoActual => `${textoActual} ${v.nome}`);
               },
               error: (e) => console.error(e)
               //complete: () => console.info('completado listado de livros por Genero')
@@ -190,7 +199,7 @@ export class ListadoLivrosComponent implements OnInit {
   }
 
   listadoPorDefectoAlfabetico() {
-    this.titulo.set(this.tituloListado);
+    this.titulo.set(this.translocoService.translate('common.list'));
     this.livrosService
       .getListadoLivros()
       .pipe(
@@ -206,7 +215,10 @@ export class ListadoLivrosComponent implements OnInit {
       .subscribe({
         next: (v) => this.listadoDados.set(this.dadosObtidos(v, false)),
         error: (e) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os livros.'}); },
+          this.layoutService.amosarInfo({
+            tipo: InformacomPeTipo.Erro,
+            mensagem: this.translocoService.translate('booksList.loadError')
+          }); },
       //complete: () => console.info('completado listado de livros')
     });
   }
@@ -215,7 +227,12 @@ export class ListadoLivrosComponent implements OnInit {
     let resultados: ListadoLivros[];
     const dados = <BaseListadoDadosApi<ListadoLivros>>data;
     if (dados != null) {
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Info, mensagem: dados.data.length + ' registros obtidos'});
+      this.layoutService.amosarInfo({
+        tipo: InformacomPeTipo.Info,
+        mensagem: this.translocoService.translate('common.recordsLoaded', {
+          count: dados.data.length
+        })
+      });
       if (listadoCompleto) {
         this.livrosService.setListadoLivros(dados);   // Se é o listado completo vou guardar os dados na cache
       }
@@ -225,7 +242,10 @@ export class ListadoLivrosComponent implements OnInit {
       }
     } else {
       resultados = [];
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
+      this.layoutService.amosarInfo({
+        tipo: InformacomPeTipo.Aviso,
+        mensagem: this.translocoService.translate('booksList.noDataReceived')
+      });
       console.debug('Nom se obtiverom dados');
     }
     return resultados
@@ -322,29 +342,41 @@ export class ListadoLivrosComponent implements OnInit {
   onBorrarElemento(id: string, nome: string, livrosSerie: number, relecturas: number) {
     if (livrosSerie == undefined || livrosSerie == 0) {
       if (relecturas == undefined || relecturas == 0) {
-        if(confirm("Está certo de querer borrar o livro " + nome + "?")) {
+        if (confirm(this.translocoService.translate('booksList.confirmDelete', { name: nome }))) {
           this.livrosService
             .borrarLivro(id)
             .pipe(first())
             .subscribe({
               next: (v) => console.debug(v),
               error: (e) => { console.error(e),
-                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara o livro.'}); },
+                this.layoutService.amosarInfo({
+                  tipo: InformacomPeTipo.Erro,
+                  mensagem: this.translocoService.translate('booksList.deleteError')
+                }); },
               complete: () => { // console.debug('Borrado feito'); this.obterDadosDoListado();
-                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro borrado.'});
+                this.layoutService.amosarInfo({
+                  tipo: InformacomPeTipo.Sucesso,
+                  mensagem: this.translocoService.translate('booksList.deleted')
+                });
                 this.obterDadosDoListado();
               }
           });
         }
       }
       else {
-        let aviso = 'Nom se pode borrar o livro ' + nome + ' mentres tenha relecturas asociadas ' + relecturas;
+        const aviso = this.translocoService.translate('booksList.deleteBlockedRereads', {
+          name: nome,
+          count: relecturas
+        });
         this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: aviso});
         alert(aviso);
       }
     }
     else {
-      let aviso = 'Nom se pode borrar o livro ' + nome + ' mentres seja o primeiro dumha serie de ' + livrosSerie + ' livros';
+      const aviso = this.translocoService.translate('booksList.deleteBlockedSeries', {
+        name: nome,
+        count: livrosSerie
+      });
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: aviso});
       alert(aviso);
     }

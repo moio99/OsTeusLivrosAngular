@@ -1,29 +1,29 @@
-<h3>Listado de Estilos literarios{{this.tipoOrdeacom}}
+<h3>{{ 'entityList.literaryStyles' | transloco }}{{ this.tipoOrdeacom | transloco }}
   @if(this.inverso) {
-    <span> inverso</span>
+    <span> {{ 'common.inverse' | transloco }}</span>
   }
 </h3>
 @if (!soVisualizar) {
   <button class="botom-novo-resgistro" (click)="onIrPagina('/estilos-literarios/estilo-literario', '0')">
-    Novo Estilo
+    {{ 'entityList.newStyle' | transloco }}
   </button>
 }
 @if(tipoListado.length > 0) {
-  <h1>Listado {{this.tipoListado}}</h1>
+  <h1>{{ 'entityList.sortBy' | transloco }} {{this.tipoListado}}</h1>
 }
 
 <div>
-  {{ listadoResource.isLoading() ? 'Carregando...' : listadoDados()?.length + ' estilos literarios' }}
+  {{ listadoResource.isLoading() ? ('common.loading' | transloco) : ('common.countLiteraryStyles' | transloco: { count: listadoDados()?.length }) }}
 </div>
 @if (listadoResource.hasValue() && this.listadoDados().length > 0) {
   <table class="taboas-listado">
     <tr>
-      <th>Nome</th>
-      <th (click)="ordeNumeroLivros()">Livros<omla-orde-coluna
+      <th>{{ 'common.name' | transloco }}</th>
+      <th (click)="ordeNumeroLivros()">{{ 'common.books' | transloco }}<omla-orde-coluna
         [nome]="this.numeroLivros"
         [actual]="this.tipoOrdeacom"
         [inverso]="this.inverso"></omla-orde-coluna></th>
-      <th (click)="ordeNumeroLivrosLidos()">Lidos<omla-orde-coluna
+      <th (click)="ordeNumeroLivrosLidos()">{{ 'common.read' | transloco }}<omla-orde-coluna
         [nome]="this.numeroLivrosLidos"
         [actual]="this.tipoOrdeacom"
         [inverso]="this.inverso"></omla-orde-coluna></th>
@@ -35,7 +35,7 @@
         <td (click)="onIrPagina('/estilos-literarios/estilo-literario', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>
         @if (!soVisualizar) {
           <td (click)="$event.stopPropagation()">
-            <img src="../../../../assets/images/cubo-lixo.png" alt="Borrar"
+            <img src="../../../../assets/images/cubo-lixo.png" [alt]="'common.delete' | transloco"
               (click)="onBorrar(entrada.id, entrada.nome, entrada.quantidadeLivros)">
           </td>
         }

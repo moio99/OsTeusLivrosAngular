@@ -11,11 +11,12 @@ import { environment, environments } from '../../../../environments/environment'
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
 import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-listado-generos',
   standalone: true,
-  imports: [CommonModule, OrdeColunaComponent],
+  imports: [CommonModule, OrdeColunaComponent, TranslocoPipe],
   templateUrl: './listado-generos.component.html',
   styleUrls: ['./listado-generos.component.scss']
 })
@@ -27,9 +28,9 @@ export class ListadoGenerosComponent extends BaseListadoComponent<ListadoGeneros
   protected parametrosBusqueda = signal<any>(null);
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
-  nomeAlfabetico = ', alfabético';
-  numeroLivros = ', número de livros';
-  numeroLivrosLidos = ', número de livros lidos';
+  nomeAlfabetico = 'common.sortAlphabetical';
+  numeroLivros = 'common.sortBookCount';
+  numeroLivrosLidos = 'common.sortReadCount';
   tipoOrdeacom = signal<string>(this.nomeAlfabetico);
   inverso = false;
   tipoListado = '';

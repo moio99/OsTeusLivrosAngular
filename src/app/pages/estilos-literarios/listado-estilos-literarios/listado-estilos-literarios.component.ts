@@ -11,11 +11,12 @@ import { environment, environments } from '../../../../environments/environment'
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
 import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-listado-estilos-literarios',
   standalone: true,
-  imports: [CommonModule, OrdeColunaComponent],
+  imports: [CommonModule, OrdeColunaComponent, TranslocoPipe],
   providers: [EstilosLiterariosService],
   templateUrl: './listado-estilos-literarios.component.html',
   styleUrls: ['./listado-estilos-literarios.component.scss']
@@ -28,8 +29,8 @@ export class ListadoEstilosLiterariosComponent extends BaseListadoComponent<List
   protected parametrosBusqueda = signal<any>(null);
 
   soVisualizar = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro;
-  numeroLivros = ', número de livros';
-  numeroLivrosLidos = ', número de livros lidos';
+  numeroLivros = 'common.sortBookCount';
+  numeroLivrosLidos = 'common.sortReadCount';
   tipoOrdeacom = '';
   inverso = false;
   tipoListado = '';
