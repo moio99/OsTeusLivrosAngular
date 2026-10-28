@@ -45,7 +45,7 @@
     "validDateFormat": "O formato válido é dd/mm/aaaa", "validNumber": "Insire um valor de 0 a {{max}}",
     "register": "Registar", "save": "Guardar", "cancel": "Cancelar", "modify": "Modificar",
     "newReread": "Nova relectura", "cancelNewReread": "Cancelar nova relectura",
-    "cancelEditReread": "Cancelar modificaçom da relectura", "countBooks": "{{count}} livros",
+    "cancelEditReread": "Cancelar modificaçom da relectura",
     "countAuthors": "{{count}} autores", "countLibraries": "{{count}} bibliotecas",
     "countCollections": "{{count}} coleçons", "countPublishers": "{{count}} editoriais",
     "countGenres": "{{count}} géneros", "countLiteraryStyles": "{{count}} estilos literarios"

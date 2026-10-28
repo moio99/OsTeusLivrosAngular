@@ -45,7 +45,7 @@
     "validDateFormat": "Baliozko formatua: dd/mm/yyyy", "validNumber": "Sartu 0 eta {{max}} arteko balioa",
     "register": "Erregistratu", "save": "Gorde", "cancel": "Utzi", "modify": "Aldatu",
     "newReread": "Berrirakurketa berria", "cancelNewReread": "Utzi berrirakurketa berria",
-    "cancelEditReread": "Utzi berrirakurketaren aldaketak", "countBooks": "{{count}} liburu",
+    "cancelEditReread": "Utzi berrirakurketaren aldaketak",
     "countAuthors": "{{count}} egile", "countLibraries": "{{count}} liburutegi",
     "countCollections": "{{count}} bilduma", "countPublishers": "{{count}} argitaletxe",
     "countGenres": "{{count}} genero", "countLiteraryStyles": "{{count}} literatura-estilo"

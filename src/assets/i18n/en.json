@@ -45,7 +45,7 @@
     "validDateFormat": "Valid format: dd/mm/yyyy", "validNumber": "Enter a value between 0 and {{max}}",
     "register": "Register", "save": "Save", "cancel": "Cancel", "modify": "Edit",
     "newReread": "New reread", "cancelNewReread": "Cancel new reread",
-    "cancelEditReread": "Cancel reread changes", "countBooks": "{{count}} books",
+    "cancelEditReread": "Cancel reread changes",
     "countAuthors": "{{count}} authors", "countLibraries": "{{count}} libraries",
     "countCollections": "{{count}} collections", "countPublishers": "{{count}} publishers",
     "countGenres": "{{count}} genres", "countLiteraryStyles": "{{count}} literary styles"

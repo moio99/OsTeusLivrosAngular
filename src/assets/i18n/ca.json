@@ -44,7 +44,7 @@
     "validDateFormat": "El format vàlid és dd/mm/aaaa", "validNumber": "Introdueix un valor entre 0 i {{max}}",
     "register": "Registra", "save": "Desa", "cancel": "Cancel·la", "modify": "Modifica",
     "newReread": "Nova relectura", "cancelNewReread": "Cancel·la la nova relectura",
-    "cancelEditReread": "Cancel·la els canvis de la relectura", "countBooks": "{{count}} llibres",
+    "cancelEditReread": "Cancel·la els canvis de la relectura",
     "countAuthors": "{{count}} autors", "countLibraries": "{{count}} biblioteques",
     "countCollections": "{{count}} col·leccions", "countPublishers": "{{count}} editorials",
     "countGenres": "{{count}} gèneres", "countLiteraryStyles": "{{count}} estils literaris"

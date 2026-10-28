@@ -103,7 +103,6 @@
     "newReread": "Nueva relectura",
     "cancelNewReread": "Cancelar nueva relectura",
     "cancelEditReread": "Cancelar modificación de relectura",
-    "countBooks": "{{count}} libros",
     "countAuthors": "{{count}} autores",
     "countLibraries": "{{count}} bibliotecas",
     "countCollections": "{{count}} colecciones",

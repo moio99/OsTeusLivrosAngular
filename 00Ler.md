@@ -54,8 +54,25 @@ C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosAPP\tsconfig.spec.json
 ```
 C:\Trabalho\Programacom\Angular\OsMeusLivros\OsMeusLivrosAPP\src\setup.jest.ts
 import 'jest-preset-angular/setup-jest';
-```
-
 
 para lanzar um so test:
 npm test -- --runTestsByPath src/app/pages/generos/genero/genero.component.spec.ts --silent
+```
+
+# Render
+
+```
+botom       + New   (riba de todo à dereita)
+  escolher  Static Site
+
+em Publish Directory ponher dist/os-meus-livros/browser
+
+no menú sa esquerda ir a Redirects/Rewrites
+                          Add Rule
+                            Source        /*
+                            Destination   /index.html
+                            Action          Rewrite
+                            isto é para que ao ponher app.onrender.com/login nom dea um 404
+
+no nodejs meter umha rota allowed para cors   https://osteuslivrosapp.onrender.com
+```

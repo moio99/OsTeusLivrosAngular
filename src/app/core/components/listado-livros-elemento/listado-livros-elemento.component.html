@@ -1,4 +1,12 @@
-{{ estaCarregando() ? ('common.loading' | transloco) : ('common.countBooks' | transloco: { count: livros()?.length ?? 0 }) }}
+
+
+<div class="separacom-cantidade">
+  @if(estaCarregando()) {
+    {{ 'common.loading' | transloco }}
+  } @else {
+    <span>{{ 'booksList.count' | transloco: { count:  livros()?.length ?? 0 } }}</span>
+  }
+</div>
 @if (livros() && (livros()?.length ?? 0) > 0) {
   <h3>{{ 'booksList.title' | transloco }}</h3>
   <table>
