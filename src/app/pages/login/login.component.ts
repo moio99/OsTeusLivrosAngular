@@ -104,27 +104,27 @@ export class LoginComponent {
       case 113: // Bretom
         this.translocoService.setActiveLang('br');
         break;
-      case 191:
-        this.translocoService.setActiveLang('sco');
-        break;
       case 154: // Eire
         this.translocoService.setActiveLang('ga');
         break;
-      // case 191: // Corso
-      //   this.translocoService.setActiveLang('co');
-      //   break;
-      // case 191: // Sardo
-      //   this.translocoService.setActiveLang('sc');
-      //   break;
-      // case 191: // Galés
-      //   this.translocoService.setActiveLang('cy');
-      //   break;
-      // case 191: // Gaelico de Alba
-      //   this.translocoService.setActiveLang('gd');
-      //   break;
-      // case 191: // galó da bretanha francesa
-      //   this.translocoService.setActiveLang('roa-gal');
-      //   break;
+      case 138: // Corso
+        this.translocoService.setActiveLang('co');
+        break;
+      case 190: // Sardo
+        this.translocoService.setActiveLang('sc');
+        break;
+      case 191: // Gaelico de Alba
+        this.translocoService.setActiveLang('gd');
+        break;
+      case 214: // Galés
+        this.translocoService.setActiveLang('cy');
+        break;
+      case 215: // galó da bretanha francesa
+        this.translocoService.setActiveLang('roa-gal');
+        break;
+      case 216: // Escoces
+        this.translocoService.setActiveLang('sco');
+        break;
       default:
         this.translocoService.setActiveLang('gl');
         break;

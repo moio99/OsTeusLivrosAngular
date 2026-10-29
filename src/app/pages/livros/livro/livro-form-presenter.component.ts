@@ -1,7 +1,6 @@
-import { Component, EventEmitter, inject, input, Input, output, Output } from '@angular/core';
+import { Component, EventEmitter, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';

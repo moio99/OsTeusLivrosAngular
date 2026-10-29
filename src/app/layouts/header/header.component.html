@@ -6,9 +6,28 @@
     ></mat-icon>
   </div>
 
-  <img src="../../../assets/images/titulo_esquerda.png" alt="">
-  <span>{{ 'app.title' | transloco }}</span>
-  <img src="../../../assets/images/titulo_dereita.png" alt="">
+  <div class="contido-titulo">
+    <img src="../../../assets/images/titulo_esquerda.png" alt="">
+    <span>{{ 'app.title' | transloco }}</span>
+    <img src="../../../assets/images/titulo_dereita.png" alt="">
+  </div>
+  <div class="contido-combo" [style.display]="layoutService.isMenuAberto() ? 'none' : 'flex'">
+    <!-- <mat-form-field>
+      <mat-label>{{ 'common.language' | transloco}}</mat-label>
+      <mat-select [value]="obxectoSeleccionado" (selectionChange)="trocarIdioma($event.value)">
+        @for (idioma of linguas; track idioma) {
+          <mat-option [value]="idioma">{{idioma.nome}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field> -->
+
+    <!-- Ponho este combo porque é mais fino que o de material (excesivamente alto) -->
+    <select (change)="trocarIdioma($event)" #selectLingua>
+      @for (idioma of linguas; track idioma.codigo) {
+        <option [value]="idioma.codigo">{{ idioma.nome }}</option>
+      }
+    </select>
+  </div>
 </div>
 <div class="carregando">
   @if (isAmosarCarregando()) {

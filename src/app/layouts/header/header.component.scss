@@ -1,10 +1,13 @@
 @use "constantes";
 
 .contido {
+  display: flex;
+  justify-content: space-between;
+}
+.contido-titulo {
   height: constantes.$altura-cabezalho;
   display: flex;
   align-items: center;
-  margin: auto 10px;
   font-family: 'Courier New', monospace;
   font-weight: bold;
   font-size: larger;
@@ -13,13 +16,17 @@
     margin: 0 8px;
   }
 }
+.contido-combo {
+  align-items: center;
+  margin-right: 30px;
+}
 .menu-movel {
   display: none;
 }
 .carregando {
   position: absolute;
   z-index: 10;
-  right: 55px;
+  right: 5px;
   top: 10px;
   img {
     width: 25px;
@@ -27,7 +34,8 @@
 }
 @media (max-width: 650px) {   // Actua com umha resoluçom por debaixo de 651px
   .menu-movel {
-    display: block;
+    align-items: center;
+    display: flex;
     cursor: pointer;
   }
 }

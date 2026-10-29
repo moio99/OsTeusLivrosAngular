@@ -1,4 +1,4 @@
-import { Component, computed, EventEmitter, input, Input, output, Output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { SimpleObjet } from '../../../shared/models/outros.model';

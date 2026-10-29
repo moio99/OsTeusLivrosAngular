@@ -14,7 +14,6 @@ export class MenuComponent {
 
   private layoutService = inject(LayoutService);
   private authService = inject(AuthService);
-  private readonly translocoService = inject(TranslocoService);
 
   onFecharMenu(): void {
     this.layoutService.cerrarMenu();
@@ -23,9 +22,5 @@ export class MenuComponent {
   onSair(): void {
     this.authService.logout();
     this.layoutService.cerrarMenu();
-  }
-
-  troco(idioma: string): void {
-    this.translocoService.setActiveLang(idioma);
   }
 }
