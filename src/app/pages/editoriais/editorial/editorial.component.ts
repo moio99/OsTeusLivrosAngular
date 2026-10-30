@@ -59,12 +59,12 @@ export class EditorialComponent extends BaseElementoComponent<Editorial, Editori
 
   protected getErrorMessage(context: string): string {
     return context === 'obtención'
-      ? 'Nom se puiderom obter os dados da editorial.'
-      : 'Nom chegarom dados da editorial';
+      ? 'common.loadDataError'
+      : 'common.noDataReceived';
   }
 
   protected getLivrosErrorMessage(): string {
-    return 'Nom se puiderom obter os Livros da editorial.';
+    return 'common.books';
   }
 
   protected createElementoForm(): Editorial {

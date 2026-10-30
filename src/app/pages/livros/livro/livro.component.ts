@@ -27,6 +27,7 @@ import { LivroFormStateService } from './livro-form-state.service';
 import { BaseListadoDadosApi, Parametros, Resultado } from '../../../shared/models/base-dados';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
+import { TranslocoService } from '@jsverse/transloco';
 
 export enum MultiGestom {
   autores = 1,
@@ -77,6 +78,7 @@ export class LivroComponent implements OnInit {
   private dialog = inject(MatDialog);
   private dadosPaginasService = inject(DadosPaginasService);
   private readonly graficosService = inject(GraficosService);
+  private readonly translocoService = inject(TranslocoService);
 
   dadosApiResource = rxResource({
     stream: () => {
@@ -90,7 +92,7 @@ export class LivroComponent implements OnInit {
         tap(v => this.dadosOutrosService.setDadosOutrosCache(v)),
         catchError((e) => {
           this.layoutService.amosarInfo({
-            tipo: InformacomPeTipo.Erro, mensagem: 'Non se puideron obter os datos', duracom: 10
+            tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.loadDataError'), duracom: 10
           });
           return EMPTY;
         })
@@ -162,7 +164,7 @@ export class LivroComponent implements OnInit {
             this.obterDadosRelecturasELivro(idLivro)
           },
           error: (e: unknown) => { console.error(e),
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados', duracom: 10}); },
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.loadDataError'), duracom: 10}); },
       });
     }
   }
@@ -228,7 +230,7 @@ export class LivroComponent implements OnInit {
       }
     }
     else
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados', duracom: 10});
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.noDataReceived'), duracom: 10});
   }
 
     /**
@@ -304,7 +306,7 @@ export class LivroComponent implements OnInit {
       .subscribe({
         next: (v: object) => this.dadosRelecturasObtidos(v),
         error: (e: unknown) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados das relecturas', duracom: 10}); },
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.loadRelatedError', { name: this.translocoService.translate('common.rereads') }), duracom: 10}); },
           complete: () => this.obterDadosDoLivro(idLivro)       // Dados do livro
     });
   }
@@ -325,14 +327,16 @@ export class LivroComponent implements OnInit {
       .subscribe({
         next: (v) => this.amosarDadosRelectura(v),
         error: (e: unknown) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a relectura.'}); },
+          this.layoutService.amosarInfo({
+            tipo: InformacomPeTipo.Erro,
+            mensagem: this.translocoService.translate('common.loadRereadError')}); },
           complete: () => console.debug('completada a obtençom da relectura do livro')
     });
   }
 
   private amosarDadosRelectura(dados: RelecturaData) {
     if (!dados || !dados.data || dados.data.length === 0) {
-      this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados da relectura', duracom: 10 });
+      this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.noDataReceived'), duracom: 10 });
       return;
     }
 
@@ -356,11 +360,11 @@ export class LivroComponent implements OnInit {
         .subscribe({
           next: (v) => {console.debug(v), this.gestionarExitoRelectura(v, relectura)},
           error: (e: unknown) => {
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir a relectura.', duracom: 10});
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.addErrorMessage'), duracom: 10});
             console.error(e) },
             complete: () => {
               this.modo.set(EstadosPagina.guardar);
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura engadida.'});
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: this.translocoService.translate('common.itemAdded')});
               // console.debug('post completado');
             }
       });
@@ -372,10 +376,10 @@ export class LivroComponent implements OnInit {
         .subscribe({
           next: (v) => {console.debug(v), this.gestionarExitoRelectura(v, relectura)},
           error: (e: unknown) => {
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar a relectura.', duracom: 10});
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.saveErrorMessage'), duracom: 10});
             console.error(e) },
             complete: () => {
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura guardada.'});
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: this.translocoService.translate('common.itemSaved')});
             console.debug('put completado') }
       });
     }
@@ -439,13 +443,12 @@ export class LivroComponent implements OnInit {
   }
 
   onBorrarRelectura(relectura: RelecturaListado) {
-    let pergunta = `Está certo de querer borrar a relectura ${relectura.titulo}`;
+    let nomeRelectura = relectura.titulo;
     if (relectura.dataFimLeitura) {
       let dateConvert = new ConverterAData();
-      pergunta = `${pergunta} do día ${dateConvert.getDataString(relectura.dataFimLeitura, '/')}?`;
+      nomeRelectura += ` (${dateConvert.getDataString(relectura.dataFimLeitura, '/')})`;
     }
-    else
-      pergunta += "?";
+    const pergunta = this.translocoService.translate('common.confirmDelete', { name: nomeRelectura });
     if(confirm(pergunta)) {
       this.relecturasService
             .borrarRelectura(relectura.id)
@@ -453,10 +456,10 @@ export class LivroComponent implements OnInit {
             .subscribe({
               next: (v: object) => console.debug(v),
               error: (e: unknown) => { console.error(e),
-                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido borrara a relectura.'}); },
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.deleteError', { name: this.translocoService.translate('common.rereads') })}); },
                 complete: () => { // console.debug('Borrado feito');
                 this.obterDadosRelecturasELivro(this.idLivro);
-                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Relectura borrada.'}); }
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: this.translocoService.translate('common.itemDeleted', { name: relectura.titulo })}); }
           });
     }
   }
@@ -476,7 +479,7 @@ export class LivroComponent implements OnInit {
         .subscribe({
           next: (v: object) => this.dadosObtidosDoLivro(v),
           error: (e: unknown) => { console.error(e),
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro', duracom: 10}); },
+            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.loadDataError'), duracom: 10}); },
             complete: () => console.debug('completada a obtençom dos dados do livro')
       });
     }
@@ -493,7 +496,7 @@ export class LivroComponent implements OnInit {
       this.pontuacomEstrelas = this.dadosDoLivro.pontuacom;       // Estrelas
     }
     else
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados do livro', duracom: 10});
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.noDataReceived'), duracom: 10});
   }
 
   /**
@@ -587,7 +590,7 @@ export class LivroComponent implements OnInit {
           };
         }
         else {
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom há autores disponhiveis'});
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: this.translocoService.translate('common.authorsUnavailable')});
         }
         break;
       }
@@ -602,7 +605,7 @@ export class LivroComponent implements OnInit {
           };
         }
         else {
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom há géneros disponhiveis'});
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: this.translocoService.translate('common.genresUnavailable')});
         }
         break;
       }
@@ -752,7 +755,7 @@ export class LivroComponent implements OnInit {
           .subscribe({
             next: (v) => livroRepetido = v,
             error: (e: unknown) => { console.error(e),
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os dados do livro.'}); },
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.loadDataError')}); },
               complete: () => this.guardarLivro(event, livroRepetido)
         });
       }
@@ -764,7 +767,7 @@ export class LivroComponent implements OnInit {
       (event.submitter.value === EstadosPagina.engadir)
       ||
       (event.submitter.value !== EstadosPagina.engadir && livroRepetido.meta.id.toString() !== this.dadosDoLivro?.id))) { // se está actualizando os ids deben ser inguais
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'O título do livro já existe na base de dados'});
+      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: this.translocoService.translate('common.nameExists', { name: String(this.livroForm.controls.titulo.value).trim() })});
     }
     else {
       let livro = this.setDadosLivro();
@@ -776,11 +779,11 @@ export class LivroComponent implements OnInit {
           .subscribe({
             next: (v) => {console.debug(v), this.gestionarExito(v, livro)},
             error: (e: unknown) => {
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido engadir o livro.', duracom: 10});
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.addErrorMessage'), duracom: 10});
               console.error(e) },
               complete: () => {
                 this.modo.set(EstadosPagina.guardar);
-                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro engadido.'});
+                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: this.translocoService.translate('common.itemAdded')});
                 // console.debug('post completado');
               }
         });
@@ -792,10 +795,10 @@ export class LivroComponent implements OnInit {
           .subscribe({
             next: (v) => {console.debug(v), this.gestionarExito(v, livro)},
             error: (e: unknown) => {
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puido guardar o livro.', duracom: 10});
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.saveErrorMessage'), duracom: 10});
               console.error(e) },
               complete: () => {
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: 'Livro guardado.'});
+              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: this.translocoService.translate('common.itemSaved')});
               console.debug('put completado') }
         });
       }

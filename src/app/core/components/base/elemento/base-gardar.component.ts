@@ -10,6 +10,7 @@ import { BaseApiService } from '@servizosApi';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
 import { BaseElemento, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
 import { DadosOutrosService } from '../../../services/flow/dados-outros.service';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   template: ''
@@ -35,6 +36,7 @@ export abstract class BaseGardarComponent<TElemento extends BaseElemento, TServi
   protected location = inject(Location);
   protected dadosPaginasService = inject(DadosPaginasService);
   protected dadosOutrosService = inject(DadosOutrosService);
+  protected translocoService = inject(TranslocoService);
 
   // Para poder passar TServico dende os filhos
   protected servicoElemento = inject<TServico>('OMeuServizoToken' as any);
@@ -71,7 +73,7 @@ export abstract class BaseGardarComponent<TElemento extends BaseElemento, TServi
     if (isDuplicate) {
       this.layoutService.amosarInfo({
         tipo: InformacomPeTipo.Aviso,
-        mensagem: `O nome ${this.getNomeElemento()} já existe na base de dados`
+        mensagem: this.translocoService.translate('common.nameExists', { name: this.getNomeElemento() })
       });
     } else {
       this.saveElemento(event, tipo);
@@ -88,7 +90,7 @@ export abstract class BaseGardarComponent<TElemento extends BaseElemento, TServi
     serviceCall.pipe(first()).subscribe({
       next: (v) => this.handleSaveSuccess(v, elemento, tipo),
       error: (e: unknown) => this.handleSaveError(e),
-      complete: () => this.handleSaveComplete()
+      complete: () => this.handleSaveComplete(this.isAdding(event))
     });
   }
 
@@ -97,11 +99,12 @@ export abstract class BaseGardarComponent<TElemento extends BaseElemento, TServi
     this.amosarMensagemErro();
   }
 
-  protected handleSaveComplete() {
-    const action = this.modo() === EstadosPagina.engadir ? 'engadida' : 'guardada';
+  protected handleSaveComplete(adding: boolean) {
     this.layoutService.amosarInfo({
       tipo: InformacomPeTipo.Sucesso,
-      mensagem: `${this.getNomeElemento()} ${action}.`
+      mensagem: this.translocoService.translate(
+        adding ? 'common.itemAdded' : 'common.itemSaved'
+      )
     });
   }
 
@@ -109,7 +112,7 @@ export abstract class BaseGardarComponent<TElemento extends BaseElemento, TServi
     console.error(error);
     this.layoutService.amosarInfo({
       tipo: InformacomPeTipo.Erro,
-      mensagem: `Nom se puiderom obter os dados ${this.getNomeElemento()}.`
+      mensagem: this.translocoService.translate('common.loadDataError')
     });
   }
 
@@ -145,10 +148,11 @@ export abstract class BaseGardarComponent<TElemento extends BaseElemento, TServi
   }
 
   private amosarMensagemErro() {
-    const action = this.modo() === EstadosPagina.engadir ? 'engadir' : 'guardar';
     this.layoutService.amosarInfo({
       tipo: InformacomPeTipo.Erro,
-      mensagem: `Nom se puido ${action} ${this.getNomeElemento()}.`
+      mensagem: this.translocoService.translate(
+        this.modo() === EstadosPagina.engadir ? 'common.addErrorMessage' : 'common.saveErrorMessage'
+      )
     });
   }
 }

@@ -23,6 +23,7 @@
     "libraries": "Bibliotecas",
     "collections": "Colecciones",
     "literaryStyles": "Estilos literarios",
+    "user": "Usuario",
     "logout": "Cerrar sesión"
   },
   "common": {
@@ -58,6 +59,15 @@
     "itemDeleted": "Se ha eliminado «{{name}}».",
     "deleteError": "No se pudo eliminar «{{name}}».",
     "deleteBlocked": "No se puede eliminar «{{name}}» mientras tenga {{count}} libros asociados.",
+    "nameExists": "El nombre {{name}} ya existe en la base de datos.",
+    "itemAdded": "Elemento añadido.", "itemSaved": "Cambios guardados.",
+    "addErrorMessage": "Se ha producido un error al añadir el elemento.",
+    "saveErrorMessage": "Se ha producido un error al guardar el elemento.",
+    "loadDataError": "No se han podido cargar los datos.", "noDataReceived": "No se han recibido datos.",
+    "loadRelatedError": "No se han podido cargar {{name}}.",
+    "loadRereadError": "No se han podido obtener los datos de la relectura.",
+    "authorsUnavailable": "No hay autores disponibles.", "genresUnavailable": "No hay géneros disponibles.",
+    "pendingData": "Aún no se han cargado todos los datos. Espera un momento.",
     "filter": "Filtro",
     "all": "Todos",
     "selection": "Selección",
@@ -111,6 +121,7 @@
     "countLiteraryStyles": "{{count}} estilos literarios"
   },
   "signup": {
+    "modify": "Modificar usuario",
     "title": "Crear usuario",
     "allRequired": "Todos los campos son obligatorios",
     "username": "Nombre de usuario",
@@ -137,9 +148,11 @@
     "languageNotFound": "No se ha encontrado el idioma",
     "sending": "Enviando...",
     "submit": "Enviar",
-    "usernameExists": "El nombre de usuario ya existe en la base de datos",
+    "usernameExists": "El nombre de usuario {{name}} ya existe en la base de datos",
     "userAdded": "Se ha añadido el usuario {{name}}.",
+    "userSaved": "Se ha guardado el usuario {{name}}.",
     "addError": "Se ha producido un error al añadir el usuario.",
+    "saveError": "Se ha producido un error al guardar el usuario.",
     "languageLoadError": "No se han podido obtener los idiomas."
   },
   "statistics": {

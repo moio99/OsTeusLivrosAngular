@@ -15,7 +15,7 @@
   "nav": {
     "statistics": "Statistiques", "books": "Livres", "authors": "Auteurs",
     "publishers": "Editeurs", "genres": "Genres", "libraries": "Bibliothèques",
-    "collections": "Collections", "literaryStyles": "Manières littéraires", "logout": "Sôrti"
+    "collections": "Collections", "literaryStyles": "Manières littéraires", "user": "Utilisaire", "logout": "Sôrti"
   },
   "common": {
     "list": "Liste", "loading": "En train de charger...", "name": "Nom", "books": "Livres", "read": "Leus",
@@ -28,6 +28,15 @@
     "confirmDelete": "Etous sûr de v'lo bouter «{{name}}» ?",
     "itemDeleted": "«{{name}}» ét bouté.", "deleteError": "On peut pas bouter «{{name}}».",
     "deleteBlocked": "On peut pas bouter «{{name}}» tant qu'i'a {{count}} livres attachés.",
+    "nameExists": "Le nom {{name}} ét déjà dans la base de données.",
+    "itemAdded": "Élément ajouté.", "itemSaved": "Changements gardés.",
+    "addErrorMessage": "Y'a eu un failli en ajoutant l'élément.",
+    "saveErrorMessage": "Y'a eu un failli en gardant l'élément.",
+    "loadDataError": "On peut pas charger les données.", "noDataReceived": "On n'a reçu aucune donnée.",
+    "loadRelatedError": "On peut pas charger {{name}}.",
+    "loadRereadError": "On peut pas charger les données de la relecture.",
+    "authorsUnavailable": "Y'a pas d'auteur disponible.", "genresUnavailable": "Y'a pas de genre disponible.",
+    "pendingData": "Toutes les données sont pas encore chargées. Attendez un moment.",
     "filter": "Filtre", "all": "Tous", "selection": "Choix",
     "noFilteredItems": "Y'a pas d'élément qui va avec le filtre.", "items": "{{count}} éléments", "inverse": "à l'envers",
     "sortAlphabetical": "par ordre alphabétique", "sortBookCount": " par nombre de livres",
@@ -50,6 +59,7 @@
     "countGenres": "{{count}} genres", "countLiteraryStyles": "{{count}} manières littéraires"
   },
   "signup": {
+    "modify": "Candjî l'utilisaire",
     "title": "Créer un compte", "allRequired": "Tous les champs sont de besogne",
     "username": "Nom d'utilisaire", "usernamePlaceholder": "Metéz un nom d'utilisaire",
     "usernameRequired": "Le nom d'utilisaire ét de besogne", "password": "Mot de passe",
@@ -64,9 +74,11 @@
     "chooseLanguage": "Langue :", "languageRequired": "La langue ét de besogne",
     "selectLanguage": "Choisissez une langue dans la liste", "languageNotFound": "Langue pas trouvée",
     "sending": "En train d'envoyer...", "submit": "Envoyer",
-    "usernameExists": "Le nom d'utilisaire ét déjà dans la base de données",
+    "usernameExists": "Le nom d'utilisaire {{name}} ét déjà dans la base de données",
     "userAdded": "L'utilisaire {{name}} ét ajouté.",
+    "userSaved": "L'utilisaire {{name}} ét gardé.",
     "addError": "Y'a eu un failli en ajoutant l'utilisaire.",
+    "saveError": "Y'a eu un failli en gardant l'utilisaire.",
     "languageLoadError": "On peut pas charger les langues."
   },
   "statistics": {

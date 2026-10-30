@@ -15,7 +15,7 @@
   "nav": {
     "statistics": "Estatistikak", "books": "Liburuak", "authors": "Egileak",
     "publishers": "Argitaletxeak", "genres": "Generoak", "libraries": "Liburutegiak",
-    "collections": "Bildumak", "literaryStyles": "Literatura-estiloak", "logout": "Amaitu saioa"
+    "collections": "Bildumak", "literaryStyles": "Literatura-estiloak", "user": "Erabiltzailea", "logout": "Amaitu saioa"
   },
   "common": {
     "loading": "Kargatzen...", "name": "Izena", "books": "Liburuak", "read": "Irakurrita",
@@ -28,6 +28,15 @@
     "confirmDelete": "Ziur zaude «{{name}}» ezabatu nahi duzula?",
     "itemDeleted": "«{{name}}» ezabatu da.", "deleteError": "Ezin izan da «{{name}}» ezabatu.",
     "deleteBlocked": "Ezin da «{{name}}» ezabatu {{count}} liburu lotuta dituen bitartean.",
+    "nameExists": "{{name}} izena datu-basean dago jada.",
+    "itemAdded": "Elementua gehitu da.", "itemSaved": "Aldaketak gorde dira.",
+    "addErrorMessage": "Errorea gertatu da elementua gehitzean.",
+    "saveErrorMessage": "Errorea gertatu da elementua gordetzean.",
+    "loadDataError": "Ezin izan dira datuak kargatu.", "noDataReceived": "Ez da daturik jaso.",
+    "loadRelatedError": "Ezin izan da {{name}} kargatu.",
+    "loadRereadError": "Ezin izan dira berrirakurketaren datuak kargatu.",
+    "authorsUnavailable": "Ez dago egile erabilgarririk.", "genresUnavailable": "Ez dago genero erabilgarririk.",
+    "pendingData": "Datu guztiak ez dira oraindik kargatu. Itxaron une batez.",
     "filter": "Iragazkia", "all": "Guztiak", "selection": "Hautaketa",
     "noFilteredItems": "Ez dago iragazkiarekin bat datorren elementurik.", "items": "{{count}} elementu",
     "inverse": "alderantziz", "sortAlphabetical": "alfabetikoki", "sortBookCount": " liburu kopuruaren arabera",
@@ -51,6 +60,7 @@
     "countGenres": "{{count}} genero", "countLiteraryStyles": "{{count}} literatura-estilo"
   },
   "signup": {
+    "modify": "Aldatu erabiltzailea",
     "title": "Sortu erabiltzailea", "allRequired": "Eremu guztiak beharrezkoak dira",
     "username": "Erabiltzaile-izena", "usernamePlaceholder": "Sartu erabiltzaile-izena",
     "usernameRequired": "Erabiltzaile-izena beharrezkoa da", "password": "Pasahitza",
@@ -65,9 +75,11 @@
     "chooseLanguage": "Hizkuntza:", "languageRequired": "Hizkuntza beharrezkoa da",
     "selectLanguage": "Hautatu zerrendako hizkuntza bat", "languageNotFound": "Ez da hizkuntza aurkitu",
     "sending": "Bidaltzen...", "submit": "Bidali",
-    "usernameExists": "Erabiltzaile-izen hori badago lehendik.",
+    "usernameExists": "{{name}} erabiltzaile-izena lehendik dago.",
     "userAdded": "{{name}} erabiltzailea gehitu da.",
+    "userSaved": "{{name}} erabiltzailea gorde da.",
     "addError": "Errorea gertatu da erabiltzailea gehitzean.",
+    "saveError": "Errorea gertatu da erabiltzailea gordetzean.",
     "languageLoadError": "Ezin izan dira hizkuntzak kargatu."
   },
   "statistics": {

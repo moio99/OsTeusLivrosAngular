@@ -15,7 +15,7 @@
   "nav": {
     "statistics": "Estatísticas", "books": "Livros", "authors": "Autores",
     "publishers": "Editoras", "genres": "Géneros", "libraries": "Bibliotecas",
-    "collections": "Coleções", "literaryStyles": "Estilos literários", "logout": "Terminar sessão"
+    "collections": "Coleções", "literaryStyles": "Estilos literários", "user": "Utilizador", "logout": "Terminar sessão"
   },
   "common": {
     "list": "Lista", "loading": "A carregar...", "name": "Nome", "books": "Livros", "read": "Lidos",
@@ -28,6 +28,15 @@
     "confirmDelete": "Tem a certeza de que pretende eliminar «{{name}}»?",
     "itemDeleted": "«{{name}}» foi eliminado.", "deleteError": "Não foi possível eliminar «{{name}}».",
     "deleteBlocked": "Não é possível eliminar «{{name}}» enquanto tiver {{count}} livros associados.",
+    "nameExists": "O nome {{name}} já existe na base de dados.",
+    "itemAdded": "Elemento adicionado.", "itemSaved": "Alterações guardadas.",
+    "addErrorMessage": "Ocorreu um erro ao adicionar o elemento.",
+    "saveErrorMessage": "Ocorreu um erro ao guardar o elemento.",
+    "loadDataError": "Não foi possível carregar os dados.", "noDataReceived": "Não foram recebidos dados.",
+    "loadRelatedError": "Não foi possível carregar {{name}}.",
+    "loadRereadError": "Não foi possível carregar os dados da releitura.",
+    "authorsUnavailable": "Não existem autores disponíveis.", "genresUnavailable": "Não existem géneros disponíveis.",
+    "pendingData": "Ainda não foram carregados todos os dados. Aguarde um momento.",
     "filter": "Filtro", "all": "Todos", "selection": "Seleção",
     "noFilteredItems": "Não existem elementos que correspondam ao filtro.", "items": "{{count}} elementos", "inverse": "inverso",
     "sortAlphabetical": "alfabeticamente", "sortBookCount": " por número de livros",
@@ -50,6 +59,7 @@
     "countGenres": "{{count}} géneros", "countLiteraryStyles": "{{count}} estilos literários"
   },
   "signup": {
+    "modify": "Modificar utilizador",
     "title": "Criar utilizador", "allRequired": "Todos os campos são obrigatórios",
     "username": "Nome de utilizador", "usernamePlaceholder": "Introduza o nome de utilizador",
     "usernameRequired": "O nome de utilizador é obrigatório", "password": "Palavra-passe",
@@ -64,9 +74,11 @@
     "chooseLanguage": "Idioma:", "languageRequired": "O idioma é obrigatório",
     "selectLanguage": "Tem de selecionar um idioma da lista", "languageNotFound": "Idioma não encontrado",
     "sending": "A enviar...", "submit": "Enviar",
-    "usernameExists": "O nome de utilizador já existe na base de dados",
+    "usernameExists": "O nome de utilizador {{name}} já existe na base de dados",
     "userAdded": "O utilizador {{name}} foi adicionado.",
+    "userSaved": "O utilizador {{name}} foi guardado.",
     "addError": "Ocorreu um erro ao adicionar o utilizador.",
+    "saveError": "Ocorreu um erro ao guardar o utilizador.",
     "languageLoadError": "Não foi possível carregar os idiomas."
   },
   "statistics": {

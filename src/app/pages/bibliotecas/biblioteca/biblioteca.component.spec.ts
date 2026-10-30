@@ -11,6 +11,7 @@ import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.s
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { TranslocoService } from '@jsverse/transloco';
 
 describe('BibliotecaComponent', () => {
   let component: BibliotecaComponent;
@@ -83,6 +84,7 @@ describe('BibliotecaComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: routerMock },
         { provide: Location, useValue: locationMock },
+        { provide: TranslocoService, useValue: { translate: (key: string) => key } },
       ],
     }).compileComponents();
 
@@ -128,7 +130,7 @@ describe('BibliotecaComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith(expect.objectContaining({
       tipo: InformacomPeTipo.Erro,
-      mensagem: expect.stringContaining('Nom se puiderom obter os dados da biblioteca')
+      mensagem: 'common.loadRelatedError'
     }));
   });
 
@@ -178,7 +180,7 @@ describe('BibliotecaComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Aviso,
-      mensagem: 'O nome da biblioteca já existe na base de dados'
+      mensagem: 'common.nameExists'
     });
     expect(bibliotecasServiceMock.create).not.toHaveBeenCalled();
   });
@@ -213,7 +215,7 @@ describe('BibliotecaComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Erro,
-      mensagem: 'Nom se puido engadir da biblioteca.'
+      mensagem: 'common.addErrorMessage'
     });
   });
 
@@ -244,7 +246,7 @@ describe('BibliotecaComponent', () => {
     }));
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Sucesso,
-      mensagem: 'da biblioteca guardada.'
+      mensagem: 'common.itemSaved'
     });
   });
 
@@ -267,7 +269,7 @@ describe('BibliotecaComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Erro,
-      mensagem: 'Nom se puido guardar da biblioteca.'
+      mensagem: 'common.saveErrorMessage'
     });
   });
 

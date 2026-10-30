@@ -9,7 +9,7 @@
   "nav": {
     "statistics": "Staitistig", "books": "Leabhraichean", "authors": "Ùghdaran", "publishers": "Foillsichearan",
     "genres": "Gnèithean", "libraries": "Leabharlannan", "collections": "Cruinneachaidhean",
-    "literaryStyles": "Stoidhlichean litreachais", "logout": "Log a-mach"
+    "literaryStyles": "Stoidhlichean litreachais", "user": "Cleachdaiche", "logout": "Log a-mach"
   },
   "common": {
     "list": "Liosta", "loading": "A’ luchdadh...", "name": "Ainm", "books": "Leabhraichean", "read": "Leughte",
@@ -22,6 +22,15 @@
     "confirmDelete": "A bheil thu cinnteach gu bheil thu airson «{{name}}» a sguabadh às?",
     "itemDeleted": "Chaidh «{{name}}» a sguabadh às.", "deleteError": "Cha b’ urrainn dhuinn «{{name}}» a sguabadh às.",
     "deleteBlocked": "Chan fhaodar «{{name}}» a sguabadh às fhad ’s a tha {{count}} leabhar ceangailte ris.",
+    "nameExists": "Tha an t-ainm {{name}} ann mar-thà san stòr-dàta.",
+    "itemAdded": "Chaidh an nì a chur ris.", "itemSaved": "Chaidh na h-atharrachaidhean a shàbhaladh.",
+    "addErrorMessage": "Thachair mearachd fhad ’s a bha sinn a’ cur an nì ris.",
+    "saveErrorMessage": "Thachair mearachd fhad ’s a bha sinn a’ sàbhaladh an nì.",
+    "loadDataError": "Cha b’ urrainn dhuinn an dàta a luchdadh.", "noDataReceived": "Cha d’ fhuaradh dàta sam bith.",
+    "loadRelatedError": "Cha b’ urrainn dhuinn {{name}} a luchdadh.",
+    "loadRereadError": "Cha b’ urrainn dhuinn dàta an ath-leughaidh a luchdadh.",
+    "authorsUnavailable": "Chan eil ùghdaran rim faighinn.", "genresUnavailable": "Chan eil gnèithean rim faighinn.",
+    "pendingData": "Chan eil an dàta uile air a luchdadh fhathast. Fuirich mionaid.",
     "filter": "Criathrag", "all": "A h-uile", "selection": "Taghadh",
     "noFilteredItems": "Chan eil nithean a’ freagairt air a’ chriathrag.", "items": "{{count}} nì", "inverse": "air a thionndadh",
     "sortAlphabetical": "a rèir na h-aibidil", "sortBookCount": " a rèir àireamh nan leabhraichean",
@@ -44,6 +53,7 @@
     "countGenres": "{{count}} gnè", "countLiteraryStyles": "{{count}} stoidhle litreachais"
   },
   "signup": {
+    "modify": "Atharraich an cleachdaiche",
     "title": "Cruthaich cunntas", "allRequired": "Tha feum air gach raon",
     "username": "Ainm-cleachdaiche", "usernamePlaceholder": "Cuir a-steach ainm-cleachdaiche",
     "usernameRequired": "Tha ainm-cleachdaiche a dhìth", "password": "Facal-faire",
@@ -56,8 +66,9 @@
     "recoveryAnswerRequired": "Tha freagairt na ceiste a dhìth", "userLanguage": "Cànan a’ chleachdaiche",
     "chooseLanguage": "Cànan:", "languageRequired": "Tha feum air cànan",
     "selectLanguage": "Tagh cànan on liosta", "languageNotFound": "Cha deach an cànan a lorg",
-    "sending": "Ga chur...", "submit": "Cuir", "usernameExists": "Tha an t-ainm-cleachdaiche sin ann mar-thà.",
+    "sending": "Ga chur...", "submit": "Cuir", "usernameExists": "Tha an t-ainm-cleachdaiche {{name}} ann mar-thà.",
     "userAdded": "Chaidh an cleachdaiche {{name}} a chur ris.", "addError": "Thachair mearachd fhad ’s a bha sinn a’ cur a’ chleachdaiche ris.",
+    "userSaved": "Chaidh an cleachdaiche {{name}} a shàbhaladh.", "saveError": "Thachair mearachd fhad ’s a bha sinn a’ sàbhaladh a’ chleachdaiche.",
     "languageLoadError": "Cha b’ urrainn dhuinn na cànanan a luchdadh."
   },
   "statistics": {

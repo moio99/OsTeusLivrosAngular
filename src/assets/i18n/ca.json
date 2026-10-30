@@ -15,7 +15,7 @@
   "nav": {
     "statistics": "Estadístiques", "books": "Llibres", "authors": "Autors",
     "publishers": "Editorials", "genres": "Gèneres", "libraries": "Biblioteques",
-    "collections": "Col·leccions", "literaryStyles": "Estils literaris", "logout": "Tanca la sessió"
+    "collections": "Col·leccions", "literaryStyles": "Estils literaris", "user": "Usuari", "logout": "Tanca la sessió"
   },
   "common": {
     "loading": "Carregant...", "name": "Nom", "books": "Llibres", "read": "Llegits",
@@ -28,6 +28,15 @@
     "confirmDelete": "Vols suprimir «{{name}}»?",
     "itemDeleted": "S'ha suprimit «{{name}}».", "deleteError": "No s'ha pogut suprimir «{{name}}».",
     "deleteBlocked": "No es pot suprimir «{{name}}» mentre tingui {{count}} llibres associats.",
+    "nameExists": "El nom {{name}} ja existeix a la base de dades.",
+    "itemAdded": "Element afegit.", "itemSaved": "Canvis desats.",
+    "addErrorMessage": "S'ha produït un error en afegir l'element.",
+    "saveErrorMessage": "S'ha produït un error en desar l'element.",
+    "loadDataError": "No s'han pogut obtenir les dades.", "noDataReceived": "No s'han rebut dades.",
+    "loadRelatedError": "No s'han pogut carregar {{name}}.",
+    "loadRereadError": "No s'han pogut obtenir les dades de la relectura.",
+    "authorsUnavailable": "No hi ha autors disponibles.", "genresUnavailable": "No hi ha gèneres disponibles.",
+    "pendingData": "Encara no s'han carregat totes les dades. Espera un moment.",
     "filter": "Filtre", "all": "Tots", "selection": "Selecció",
     "noFilteredItems": "No hi ha elements que coincideixin amb el filtre.", "items": "{{count}} elements", "inverse": "invers",
     "sortAlphabetical": "alfabèticament", "sortBookCount": " per nombre de llibres",
@@ -50,6 +59,7 @@
     "countGenres": "{{count}} gèneres", "countLiteraryStyles": "{{count}} estils literaris"
   },
   "signup": {
+    "modify": "Modificar usuari",
     "title": "Crear usuari", "allRequired": "Tots els camps són obligatoris",
     "username": "Nom d'usuari", "usernamePlaceholder": "Introdueix el nom d'usuari",
     "usernameRequired": "El nom d'usuari és obligatori", "password": "Contrasenya",
@@ -64,9 +74,11 @@
     "chooseLanguage": "Idioma:", "languageRequired": "L'idioma és obligatori",
     "selectLanguage": "Selecciona un idioma de la llista", "languageNotFound": "No s'ha trobat l'idioma",
     "sending": "Enviant...", "submit": "Envia",
-    "usernameExists": "Aquest nom d'usuari ja existeix.",
+    "usernameExists": "El nom d'usuari {{name}} ja existeix.",
     "userAdded": "S'ha afegit l'usuari {{name}}.",
+    "userSaved": "S'ha desat l'usuari {{name}}.",
     "addError": "S'ha produït un error en afegir l'usuari.",
+    "saveError": "S'ha produït un error en desar l'usuari.",
     "languageLoadError": "No s'han pogut obtenir els idiomes."
   },
   "statistics": {

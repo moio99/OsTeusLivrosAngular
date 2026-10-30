@@ -15,7 +15,7 @@
   "nav": {
     "statistics": "Statistiche", "books": "Libri", "authors": "Autori",
     "publishers": "Editori", "genres": "Generi", "libraries": "Biblioteche",
-    "collections": "Collezioni", "literaryStyles": "Stili letterari", "logout": "Esci"
+    "collections": "Collezioni", "literaryStyles": "Stili letterari", "user": "Utente", "logout": "Esci"
   },
   "common": {
     "list": "Elenco", "loading": "Caricamento...", "name": "Nome", "books": "Libri", "read": "Letti",
@@ -28,6 +28,15 @@
     "confirmDelete": "Vuoi davvero eliminare «{{name}}»?",
     "itemDeleted": "«{{name}}» è stato eliminato.", "deleteError": "Impossibile eliminare «{{name}}».",
     "deleteBlocked": "Impossibile eliminare «{{name}}» finché ha {{count}} libri associati.",
+    "nameExists": "Il nome {{name}} esiste già nel database.",
+    "itemAdded": "Elemento aggiunto.", "itemSaved": "Modifiche salvate.",
+    "addErrorMessage": "Si è verificato un errore durante l'aggiunta dell'elemento.",
+    "saveErrorMessage": "Si è verificato un errore durante il salvataggio dell'elemento.",
+    "loadDataError": "Impossibile caricare i dati.", "noDataReceived": "Nessun dato ricevuto.",
+    "loadRelatedError": "Impossibile caricare {{name}}.",
+    "loadRereadError": "Impossibile caricare i dati della rilettura.",
+    "authorsUnavailable": "Nessun autore disponibile.", "genresUnavailable": "Nessun genere disponibile.",
+    "pendingData": "I dati non sono ancora stati caricati tutti. Attendi un momento.",
     "filter": "Filtro", "all": "Tutti", "selection": "Selezione",
     "noFilteredItems": "Nessun elemento corrisponde al filtro.", "items": "{{count}} elementi", "inverse": "inverso",
     "sortAlphabetical": "in ordine alfabetico", "sortBookCount": " per numero di libri",
@@ -50,6 +59,7 @@
     "countGenres": "{{count}} generi", "countLiteraryStyles": "{{count}} stili letterari"
   },
   "signup": {
+    "modify": "Modifica utente",
     "title": "Crea account", "allRequired": "Tutti i campi sono obbligatori",
     "username": "Nome utente", "usernamePlaceholder": "Inserisci un nome utente",
     "usernameRequired": "Il nome utente è obbligatorio", "password": "Password",
@@ -62,8 +72,9 @@
     "recoveryAnswerRequired": "La risposta alla domanda è obbligatoria", "userLanguage": "Lingua dell'utente",
     "chooseLanguage": "Lingua:", "languageRequired": "La lingua è obbligatoria",
     "selectLanguage": "Seleziona una lingua dall'elenco", "languageNotFound": "Lingua non trovata",
-    "sending": "Invio in corso...", "submit": "Invia", "usernameExists": "Il nome utente esiste già.",
+    "sending": "Invio in corso...", "submit": "Invia", "usernameExists": "Il nome utente {{name}} esiste già.",
     "userAdded": "L'utente {{name}} è stato aggiunto.", "addError": "Si è verificato un errore durante l'aggiunta dell'utente.",
+    "userSaved": "L'utente {{name}} è stato salvato.", "saveError": "Si è verificato un errore durante il salvataggio dell'utente.",
     "languageLoadError": "Impossibile caricare le lingue."
   },
   "statistics": {

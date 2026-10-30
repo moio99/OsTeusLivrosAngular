@@ -5,6 +5,7 @@ import { AutorComponent } from './autor.component';
 import { AutoresService } from '../../../core/services/api/autores.service';
 import { OutrosService } from '../../../core/services/api/outros.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
+import { TranslocoService } from '@jsverse/transloco';
 
 describe('AutorComponent', () => {
   let component: AutorComponent;
@@ -38,7 +39,8 @@ describe('AutorComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: AutoresService, useValue: autoresServiceMock },
         { provide: LivrosService, useValue: livrosServiceMock },
-        { provide: OutrosService, useValue: outrosServiceMock }
+        { provide: OutrosService, useValue: outrosServiceMock },
+        { provide: TranslocoService, useValue: { translate: (key: string) => key } }
       ]
     })
     .compileComponents();

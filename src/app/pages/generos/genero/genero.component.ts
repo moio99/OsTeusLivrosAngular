@@ -64,12 +64,12 @@ export class GeneroComponent extends BaseElementoComponent<Genero, GenerosServic
 
   protected getErrorMessage(context: string): string {
     return context === 'obtención'
-      ? 'Nom se puiderom obter os dados dos géneros.'
-      : 'Nom chegarom dados dos géneros';
+      ? 'common.loadDataError'
+      : 'common.noDataReceived';
   }
 
   protected getLivrosErrorMessage(): string {
-    return 'Nom se puiderom obter os Livros dos géneros.';
+    return 'common.books';
   }
 
   protected getNomeElemento(): string {

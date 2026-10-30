@@ -15,7 +15,7 @@
   "nav": {
     "statistics": "Istàtisticas", "books": "Libros", "authors": "Autores",
     "publishers": "Editores", "genres": "Genres", "libraries": "Bibliotecas",
-    "collections": "Colletziones", "literaryStyles": "Istyles literàrios", "logout": "Essi"
+    "collections": "Colletziones", "literaryStyles": "Istyles literàrios", "user": "Utente", "logout": "Essi"
   },
   "common": {
     "list": "Elencu", "loading": "Carrigamentu...", "name": "Nùmene", "books": "Libros", "read": "Lèghidos",
@@ -28,6 +28,15 @@
     "confirmDelete": "Ses seguru de bòlere fùliare «{{name}}»?",
     "itemDeleted": "«{{name}}» est istadu fùliadu.", "deleteError": "No si podet fùliare «{{name}}».",
     "deleteBlocked": "No si podet fùliare «{{name}}» fintzas tenet {{count}} libros ligados.",
+    "nameExists": "Su nùmene {{name}} esistit giai in sa base de datos.",
+    "itemAdded": "Elementu aguntu.", "itemSaved": "Mudàntzias sarvadas.",
+    "addErrorMessage": "Un'errore est capitadu in s'aggiunta de s'elementu.",
+    "saveErrorMessage": "Un'errore est capitadu in su sarvamentu de s'elementu.",
+    "loadDataError": "No si podent carrigare sos datos.", "noDataReceived": "No si sunt retzidos datos.",
+    "loadRelatedError": "No si podet carrigare {{name}}.",
+    "loadRereadError": "No si podent carrigare sos datos de sa torraleghida.",
+    "authorsUnavailable": "No b'at autores disponìbiles.", "genresUnavailable": "No b'at genres disponìbiles.",
+    "pendingData": "Non totu sos datos sunt carrigados giai. Abeta unu momentu.",
     "filter": "Filtru", "all": "Totus", "selection": "Seletzione",
     "noFilteredItems": "Perunu elementu no currispondet a su filtru.", "items": "{{count}} elementos", "inverse": "inversu",
     "sortAlphabetical": "in òrdine alfabeticu", "sortBookCount": " pro nùmeru de libros",
@@ -50,6 +59,7 @@
     "countGenres": "{{count}} genres", "countLiteraryStyles": "{{count}} istyles literàrios"
   },
   "signup": {
+    "modify": "Modìfica utente",
     "title": "Crea unu contu", "allRequired": "Totus sos campos sunt obligatòrios",
     "username": "Nùmene de utente", "usernamePlaceholder": "Iscrie unu nùmene de utente",
     "usernameRequired": "Su nùmene de utente est obligatòriu", "password": "Crae",
@@ -62,8 +72,9 @@
     "recoveryAnswerRequired": "Sa risposta a sa pregunta est obligatòria", "userLanguage": "Limba de s'utente",
     "chooseLanguage": "Limba:", "languageRequired": "Sa limba est obligatòria",
     "selectLanguage": "Seletziona una limba dae s'elencu", "languageNotFound": "Limba no agatada",
-    "sending": "Ispeditura in cursu...", "submit": "Ispedi", "usernameExists": "Custu nùmene de utente esistit giai.",
+    "sending": "Ispeditura in cursu...", "submit": "Ispedi", "usernameExists": "Su nùmene de utente {{name}} esistit giai.",
     "userAdded": "S'utente {{name}} est istadu aguntu.", "addError": "Un'errore est capitadu in s'aggiunta de s'utente.",
+    "userSaved": "S'utente {{name}} est istadu sarvadu.", "saveError": "Un'errore est capitadu in su sarvamentu de s'utente.",
     "languageLoadError": "No si podent carrigare sas limbas."
   },
   "statistics": {

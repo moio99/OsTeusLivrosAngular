@@ -15,7 +15,7 @@
   "nav": {
     "statistics": "Statistics", "books": "Books", "authors": "Authors",
     "publishers": "Publishers", "genres": "Genres", "libraries": "Libraries",
-    "collections": "Collections", "literaryStyles": "Literary styles", "logout": "Log out"
+    "collections": "Collections", "literaryStyles": "Literary styles", "user": "User", "logout": "Log out"
   },
   "common": {
     "list": "List",
@@ -29,6 +29,15 @@
     "confirmDelete": "Are you sure you want to delete “{{name}}”?",
     "itemDeleted": "“{{name}}” was deleted.", "deleteError": "Could not delete “{{name}}”.",
     "deleteBlocked": "Cannot delete “{{name}}” while it has {{count}} associated books.",
+    "nameExists": "The name {{name}} already exists in the database.",
+    "itemAdded": "Item added.", "itemSaved": "Changes saved.",
+    "addErrorMessage": "An error occurred while adding the item.",
+    "saveErrorMessage": "An error occurred while saving the item.",
+    "loadDataError": "Could not load the data.", "noDataReceived": "No data was received.",
+    "loadRelatedError": "Could not load {{name}}.",
+    "loadRereadError": "Could not load the reread data.",
+    "authorsUnavailable": "No authors are available.", "genresUnavailable": "No genres are available.",
+    "pendingData": "Not all data has loaded yet. Please wait a moment.",
     "filter": "Filter", "all": "All", "selection": "Selection",
     "noFilteredItems": "No items match the filter.", "items": "{{count}} items", "inverse": "reversed",
     "sortAlphabetical": "alphabetically", "sortBookCount": " by book count",
@@ -51,6 +60,7 @@
     "countGenres": "{{count}} genres", "countLiteraryStyles": "{{count}} literary styles"
   },
   "signup": {
+    "modify": "Modify user",
     "title": "Create account", "allRequired": "All fields are required",
     "username": "Username", "usernamePlaceholder": "Enter a username",
     "usernameRequired": "Username is required", "password": "Password",
@@ -65,9 +75,11 @@
     "chooseLanguage": "Language:", "languageRequired": "Language is required",
     "selectLanguage": "Select a language from the list", "languageNotFound": "Language not found",
     "sending": "Sending...", "submit": "Submit",
-    "usernameExists": "That username already exists.",
+    "usernameExists": "The username {{name}} already exists.",
     "userAdded": "User {{name}} has been added.",
+    "userSaved": "User {{name}} has been saved.",
     "addError": "An error occurred while adding the user.",
+    "saveError": "An error occurred while saving the user.",
     "languageLoadError": "Could not load the languages."
   },
   "statistics": {

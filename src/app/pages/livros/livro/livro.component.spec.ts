@@ -9,6 +9,7 @@ import { OutrosService } from '../../../core/services/api/outros.service';
 import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { RelecturasService } from './relecturas.service';
+import { TranslocoService } from '@jsverse/transloco';
 
 describe('LivroComponent', () => {
   let component: LivroComponent;
@@ -84,6 +85,7 @@ describe('LivroComponent', () => {
         { provide: RelecturasService, useValue: relecturasServiceMock },
         { provide: LayoutService, useValue: layoutServiceMock },
         { provide: ActivatedRoute, useValue: activatedRoute },
+        { provide: TranslocoService, useValue: { translate: (key: string) => key } },
       ]
     })
     .compileComponents();
@@ -96,4 +98,3 @@ describe('LivroComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-

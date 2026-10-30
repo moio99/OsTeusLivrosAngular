@@ -19,6 +19,7 @@ import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
 import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
 import { environment, environments } from '../../../../environments/environment';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-autor',
@@ -63,7 +64,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
 
       return this.outrosService.getNacionalidades().pipe(
         first(),
-        catchError((e) => this.manejarErroSoporte(e, 'das nacionalidades'))
+        catchError((e) => this.manejarErroSoporte(e, 'common.nationality'))
       );
     }
   });
@@ -76,7 +77,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
 
       return this.outrosService.getPaises().pipe(
         first(),
-        catchError((e) => this.manejarErroSoporte(e, 'dos países'))
+        catchError((e) => this.manejarErroSoporte(e, 'common.country'))
       );
     }
   });
@@ -88,7 +89,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
       return this.livrosService.getLivrosPorAutor(currentId).pipe(
         first(),
         map(v => this.dadosLivrosElementoObtidos(v)),
-        catchError((e) => this.manejarErroSoporte(e, 'dos livros do autor'))
+        catchError((e) => this.manejarErroSoporte(e, 'common.books'))
       );
     }
   });
@@ -105,7 +106,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
         first(),
         map(v => this.dadosObtidos(v)),
         catchError((e) => {
-          this.manejarErroSoporte(e, 'do autor');
+          this.manejarErroSoporte(e, 'common.authors');
           return of(null); })
       );
     }
@@ -149,7 +150,10 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
       const autor = this.autorResource.value();
       const libros = this.livrosAutorResource.value();
       if (autor && autor.id > 0 && this.livrosAutorResource.hasValue() && libros?.length === 0) {
-        this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados dos livros do autor' });
+        this.layoutService.amosarInfo({
+          tipo: InformacomPeTipo.Aviso,
+          mensagem: this.translocoService.translate('common.noDataReceived')
+        });
       }
     });
   }
@@ -179,7 +183,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
           if (botonPremido === EstadosPagina.engadir || autorRepetido.meta.id !== this.autorResource.value()?.id) {
             this.layoutService.amosarInfo({
               tipo: InformacomPeTipo.Aviso,
-              mensagem: 'O nome do autor já existe na base de dados'
+              mensagem: this.translocoService.translate('common.nameExists', { name: nomeFormulario })
             });
             return EMPTY; // Corta o fluxo de forma segura se está repetido
           }
@@ -191,7 +195,10 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
             first(),
             tap((v) => {
               this.gestionarRetroceso(v, autor, DadosComplentarios.Autor);
-              this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor engadido.' });
+              this.layoutService.amosarInfo({
+                tipo: InformacomPeTipo.Sucesso,
+                mensagem: this.translocoService.translate('common.itemAdded')
+              });
             })
           );
         } else {
@@ -199,7 +206,10 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
             first(),
             tap((v) => {
               this.gestionarRetroceso(v, autor, DadosComplentarios.Autor);
-              this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Autor guardado.' });
+              this.layoutService.amosarInfo({
+                tipo: InformacomPeTipo.Sucesso,
+                mensagem: this.translocoService.translate('common.itemSaved')
+              });
             })
           );
         }
@@ -213,8 +223,8 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
         this.layoutService.amosarInfo({
           tipo: InformacomPeTipo.Erro,
           mensagem: botonPremido === EstadosPagina.engadir
-            ? 'Houbo um erro ao engadir o autor.'
-            : 'Houbo um erro ao guardar o autor.'
+            ? this.translocoService.translate('common.addErrorMessage')
+            : this.translocoService.translate('common.saveErrorMessage')
         });
       }
     });

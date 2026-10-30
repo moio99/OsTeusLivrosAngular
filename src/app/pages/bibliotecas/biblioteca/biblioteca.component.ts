@@ -17,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
 import { environment, environments } from '../../../../environments/environment';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-biblioteca',
@@ -57,7 +58,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
         first(),
         map(v => this.dadosObtidos(v)),
         catchError((e) => {
-          this.manejarErroSoporte(e, 'do autor');
+          this.manejarErroSoporte(e, 'nav.libraries');
           return of(null); })
       );
     }
@@ -70,7 +71,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
       return this.livrosService.getLivrosPorBiblioteca(currentId).pipe(
         first(),
         map(v => this.dadosLivrosElementoObtidos(v)),
-        catchError((e) => this.manejarErroSoporte(e, 'dos livros da biblioteca'))
+        catchError((e) => this.manejarErroSoporte(e, 'common.books'))
       );
     }
   });
@@ -105,7 +106,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
         if (isDuplicate) {
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Aviso,
-            mensagem: `O nome ${nomeValue} já existe na base de dados`
+            mensagem: this.translocoService.translate('common.nameExists', { name: nomeValue })
           });
           this.formState.chamandoAPI.set(false);
           // Cortamos o fluxo devolvendo un observable baleiro sen facer o gardado
@@ -116,14 +117,20 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
           return this.bibliotecasService.create(elemento).pipe(
             first(),
             tap(() => {
-              this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca engadida.' });
+              this.layoutService.amosarInfo({
+                tipo: InformacomPeTipo.Sucesso,
+                mensagem: this.translocoService.translate('common.itemAdded')
+              });
             })
           );
         } else {
           return this.bibliotecasService.update(elemento).pipe(
             first(),
             tap(() => {
-              this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Biblioteca guardada.' });
+              this.layoutService.amosarInfo({
+                tipo: InformacomPeTipo.Sucesso,
+                mensagem: this.translocoService.translate('common.itemSaved')
+              });
             })
           );
         }
@@ -138,8 +145,8 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
         this.formState.chamandoAPI.set(false);
         this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
           mensagem: this.modo() === EstadosPagina.engadir
-            ? 'Houbo um erro ao engadir a biblioteca.'
-            : 'Houbo um erro ao guardar a biblioteca.'
+            ? this.translocoService.translate('common.addErrorMessage')
+            : this.translocoService.translate('common.saveErrorMessage')
         });
       }
     });

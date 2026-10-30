@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
 import { BaseElemento, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
 import { DadosOutrosService } from '../../../services/flow/dados-outros.service';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   template: ''
@@ -19,6 +20,7 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
   private location = inject(Location);
   private dadosPaginasService = inject(DadosPaginasService);
   protected dadosOutrosService = inject(DadosOutrosService);
+  protected translocoService = inject(TranslocoService);
 
   protected dadosLivrosElementoObtidos(data: object): ListadoLivros[] {
     let resultados: ListadoLivros[];
@@ -46,7 +48,9 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
     console.error(e);
     this.layoutService.amosarInfo({
       tipo: InformacomPeTipo.Erro,
-      mensagem: `Nom se puiderom obter os dados ${complemntoMensagem}.`
+      mensagem: this.translocoService.translate('common.loadRelatedError', {
+        name: this.translocoService.translate(complemntoMensagem)
+      })
     });
     return of([]);
   }

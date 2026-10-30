@@ -63,12 +63,12 @@ export class EstiloLiterarioComponent extends BaseElementoComponent<EstiloLitera
 
   protected getErrorMessage(context: string): string {
     return context === 'obtención'
-      ? 'Nom se puiderom obter os dados dos estilos literarios.'
-      : 'Nom chegarom dados dos estilos literarios';
+      ? 'common.loadDataError'
+      : 'common.noDataReceived';
   }
 
   protected getLivrosErrorMessage(): string {
-    return 'Nom se puiderom obter os Livros dos estilos literarios.';
+    return 'common.books';
   }
 
   protected getNomeElemento(): string {

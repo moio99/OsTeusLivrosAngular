@@ -12,7 +12,7 @@ import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { forkJoin } from 'rxjs';
 import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-estadisticas',
@@ -87,6 +87,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
   private readonly estadisticasService = inject(EstadisticasService);
   private readonly outrosService = inject(OutrosService);
   private readonly graficosService = inject(GraficosService);
+  private readonly translocoService = inject(TranslocoService);
 
   ngOnInit(): void {
     this.layoutService.amosarInfo(undefined);
@@ -96,7 +97,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
 
   podoDeactivate(): boolean {
     if (this.isDadosCombosPendente) {
-      alert('Todabía todos os dados nom forom carregados, agarde um chisco...');
+      alert(this.translocoService.translate('common.pendingData'));
       return false
     }
     return true;
@@ -206,7 +207,12 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
       .subscribe({
         next: (v: GraficosData) => this.comprobarDadosObtidos(rota, v),
         error: (e: unknown) => { console.error(e),
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom se puiderom obter os géneros.'}); },
+          this.layoutService.amosarInfo({
+            tipo: InformacomPeTipo.Erro,
+            mensagem: this.translocoService.translate('common.loadRelatedError', {
+              name: this.translocoService.translate('common.genres')
+            })
+          }); },
           // complete: () => console.info('completado listado de generos')
     });
   }
@@ -230,7 +236,7 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
         },
         error: (err) => {
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-            mensagem: 'Nom se puiderom obter as estadísticas.'});
+            mensagem: this.translocoService.translate('common.loadDataError')});
         },
         // complete: () => {
         //   console.log('Todas las estadísticas cargadas');
@@ -246,7 +252,10 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
       resultados = dados.data;
     } else {
       resultados = [];
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
+      this.layoutService.amosarInfo({
+        tipo: InformacomPeTipo.Aviso,
+        mensagem: this.translocoService.translate('common.noDataReceived')
+      });
       // console.debug('Nom se obtiverom dados');
     }
     return resultados
@@ -262,7 +271,10 @@ export class EstadisticasComponent implements OnInit, PeticomPendenteComponent {
         state: { dados: dados.data },
       });
     } else {
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: 'Nom se obtiverom dados.'});
+      this.layoutService.amosarInfo({
+        tipo: InformacomPeTipo.Aviso,
+        mensagem: this.translocoService.translate('common.noDataReceived')
+      });
       console.debug('Nom se obtiverom dados');
     }
   }

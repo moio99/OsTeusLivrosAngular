@@ -15,7 +15,7 @@
   "nav": {
     "statistics": "Estadístiques", "books": "Llibros", "authors": "Autores",
     "publishers": "Editoriales", "genres": "Xéneros", "libraries": "Biblioteques",
-    "collections": "Coleiciones", "literaryStyles": "Estilos lliterarios", "logout": "Zarrar sesión"
+    "collections": "Coleiciones", "literaryStyles": "Estilos lliterarios", "user": "Usuariu", "logout": "Zarrar sesión"
   },
   "common": {
     "list": "Llistáu",
@@ -29,6 +29,15 @@
     "confirmDelete": "¿De xuru que quies desaniciar «{{name}}»?",
     "itemDeleted": "Desanicióse «{{name}}».", "deleteError": "Nun se pudo desaniciar «{{name}}».",
     "deleteBlocked": "Nun se puede desaniciar «{{name}}» mientres tenga {{count}} llibros venceyaos.",
+    "nameExists": "El nome {{name}} yá esiste na base de datos.",
+    "itemAdded": "Elementu amestáu.", "itemSaved": "Cambios guardaos.",
+    "addErrorMessage": "Prodúxose un error al amestar l'elementu.",
+    "saveErrorMessage": "Prodúxose un error al guardar l'elementu.",
+    "loadDataError": "Nun se pudieron cargar los datos.", "noDataReceived": "Nun se recibieron datos.",
+    "loadRelatedError": "Nun se pudieron cargar {{name}}.",
+    "loadRereadError": "Nun se pudieron cargar los datos de la relectura.",
+    "authorsUnavailable": "Nun hai autores disponibles.", "genresUnavailable": "Nun hai xéneros disponibles.",
+    "pendingData": "Entá nun se cargaron tolos datos. Espera un momentu.",
     "filter": "Filtru", "all": "Toos", "selection": "Seleición",
     "noFilteredItems": "Nun hai elementos que concasen col filtru.", "items": "{{count}} elementos", "inverse": "inversu",
     "sortAlphabetical": "alfabéticamente", "sortBookCount": " pol númberu de llibros",
@@ -51,6 +60,7 @@
     "countGenres": "{{count}} xéneros", "countLiteraryStyles": "{{count}} estilos lliterarios"
   },
   "signup": {
+    "modify": "Modificar usuariu",
     "title": "Alta d'usuariu", "allRequired": "Tolos campos son obligatorios",
     "username": "Nome d'usuariu", "usernamePlaceholder": "Escribe'l nome d'usuariu",
     "usernameRequired": "El nome d'usuariu ye obligatoriu", "password": "Contraseña",
@@ -65,9 +75,11 @@
     "chooseLanguage": "Llingua:", "languageRequired": "La llingua ye obligatoria",
     "selectLanguage": "Has de seleicionar una llingua de la llista", "languageNotFound": "Nun s'atopó la llingua",
     "sending": "Unviando...", "submit": "Unviar",
-    "usernameExists": "El nome d'usuariu yá esiste na base de datos",
+    "usernameExists": "El nome d'usuariu {{name}} yá esiste na base de datos",
     "userAdded": "Amestóse l'usuariu {{name}}.",
+    "userSaved": "Guardóse l'usuariu {{name}}.",
     "addError": "Prodúxose un error al amestar l'usuariu.",
+    "saveError": "Prodúxose un error al guardar l'usuariu.",
     "languageLoadError": "Nun se pudieron cargar les llingües."
   },
   "statistics": {

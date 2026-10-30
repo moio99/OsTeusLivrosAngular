@@ -6,6 +6,7 @@ import { EstadisticasService } from './estadisticas.service';
 import { LayoutService } from '../../../core/services/flow/layout.service';
 import { GraficosService } from './graficos.service';
 import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { TranslocoService } from '@jsverse/transloco';
 
 describe('EstadisticasComponent', () => {
   let component: EstadisticasComponent;
@@ -47,6 +48,7 @@ describe('EstadisticasComponent', () => {
         { provide: LayoutService, useValue: layoutServiceMock },
         { provide: Router, useValue: routerMock },
         { provide: GraficosService, useValue: graficosServiceMock },
+        { provide: TranslocoService, useValue: { translate: (key: string) => key } },
       ],
     }).compileComponents();
 
@@ -96,7 +98,7 @@ describe('EstadisticasComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Erro,
-      mensagem: 'Nom se puiderom obter as estadísticas por idiomas.',
+      mensagem: 'common.loadDataError',
     });
   });
 
@@ -110,7 +112,7 @@ describe('EstadisticasComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Erro,
-      mensagem: 'Nom se puiderom obter as estadísticas por anos.',
+      mensagem: 'common.loadDataError',
     });
   });
 

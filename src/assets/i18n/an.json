@@ -15,7 +15,7 @@
   "nav": {
     "statistics": "Estadisticas", "books": "Libros", "authors": "Autors",
     "publishers": "Editors", "genres": "Cheneros", "libraries": "Bibliotecas",
-    "collections": "Coleccions", "literaryStyles": "Estilos literarios", "logout": "Zarrar sesión"
+    "collections": "Coleccions", "literaryStyles": "Estilos literarios", "user": "Usuario", "logout": "Zarrar sesión"
   },
   "common": {
     "list": "Lista", "loading": "Cargando...", "name": "Nombre", "books": "Libros", "read": "Leitos",
@@ -28,6 +28,15 @@
     "confirmDelete": "Yes seguro que quiers borrar «{{name}}»?",
     "itemDeleted": "S'ha borrau «{{name}}».", "deleteError": "No s'ha puesto borrar «{{name}}».",
     "deleteBlocked": "No se puede borrar «{{name}}» mientres tienga {{count}} libros asociaus.",
+    "nameExists": "O nombre {{name}} ya existe en a base de datos.",
+    "itemAdded": "Elemento anyadiu.", "itemSaved": "Cambios alzaus.",
+    "addErrorMessage": "S'ha produciu una error en anyadir o elemento.",
+    "saveErrorMessage": "S'ha produciu una error en alzar o elemento.",
+    "loadDataError": "No s'han puesto cargar os datos.", "noDataReceived": "No s'han recibiu datos.",
+    "loadRelatedError": "No s'han puesto cargar {{name}}.",
+    "loadRereadError": "No s'han puesto cargar os datos d'a relectura.",
+    "authorsUnavailable": "No i hai autors disponibles.", "genresUnavailable": "No i hai cheneros disponibles.",
+    "pendingData": "Encara no s'han cargau totz os datos. Asperet un inte.",
     "filter": "Filtro", "all": "Totz", "selection": "Selección",
     "noFilteredItems": "No i hai elementos que coincidan con o filtro.", "items": "{{count}} elementos", "inverse": "inverso",
     "sortAlphabetical": "alfabeticament", "sortBookCount": " por numero de libros",
@@ -50,6 +59,7 @@
     "countGenres": "{{count}} cheneros", "countLiteraryStyles": "{{count}} estilos literarios"
   },
   "signup": {
+    "modify": "Modificar usuario",
     "title": "Alta d'usuario", "allRequired": "Totz os campos son obligatorios",
     "username": "Nombre d'usuario", "usernamePlaceholder": "Escribe o nombre d'usuario",
     "usernameRequired": "O nombre d'usuario ye obligatorio", "password": "Contrasenya",
@@ -64,9 +74,11 @@
     "chooseLanguage": "Idioma:", "languageRequired": "O idioma ye obligatorio",
     "selectLanguage": "Has de triar un idioma d'a lista", "languageNotFound": "Idioma no trobau",
     "sending": "Ninviando...", "submit": "Ninviar",
-    "usernameExists": "O nombre d'usuario ya existe en a base de datos",
+    "usernameExists": "O nombre d'usuario {{name}} ya existe en a base de datos",
     "userAdded": "S'ha anyadiu l'usuario {{name}}.",
+    "userSaved": "S'ha alzau l'usuario {{name}}.",
     "addError": "S'ha produciu una error en anyadir l'usuario.",
+    "saveError": "S'ha produciu una error en alzar l'usuario.",
     "languageLoadError": "No s'han puesto cargar os idiomas."
   },
   "statistics": {

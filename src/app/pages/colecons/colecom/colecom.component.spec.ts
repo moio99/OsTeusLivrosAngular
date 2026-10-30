@@ -11,6 +11,7 @@ import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.s
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { TranslocoService } from '@jsverse/transloco';
 
 describe('ColecomComponent', () => {
   let component: ColecomComponent;
@@ -83,6 +84,7 @@ describe('ColecomComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: routerMock },
         { provide: Location, useValue: locationMock },
+        { provide: TranslocoService, useValue: { translate: (key: string) => key } },
       ],
     }).compileComponents();
 
@@ -128,7 +130,7 @@ describe('ColecomComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith(expect.objectContaining({
       tipo: InformacomPeTipo.Erro,
-      mensagem: expect.stringContaining('Nom se puiderom obter os dados da cole')
+      mensagem: 'common.loadDataError'
     }));
   });
 
@@ -176,7 +178,7 @@ describe('ColecomComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Aviso,
-      mensagem: 'O nome da colecom já existe na base de dados'
+      mensagem: 'common.nameExists'
     });
     expect(coleconsServiceMock.create).not.toHaveBeenCalled();
   });
@@ -209,7 +211,7 @@ describe('ColecomComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Erro,
-      mensagem: 'Nom se puido engadir da colecom.'
+      mensagem: 'common.addErrorMessage'
     });
   });
 
@@ -238,7 +240,7 @@ describe('ColecomComponent', () => {
     }));
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Sucesso,
-      mensagem: 'da colecom guardada.'
+      mensagem: 'common.itemSaved'
     });
   });
 
@@ -260,7 +262,7 @@ describe('ColecomComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Erro,
-      mensagem: 'Nom se puido guardar da colecom.'
+      mensagem: 'common.saveErrorMessage'
     });
   });
 

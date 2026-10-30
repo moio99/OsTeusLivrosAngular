@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EditorialComponent } from './editorial.component';
 import { EditoriaisService } from '../../../core/services/api/editoriais.service';
 import { LivrosService } from '../../../core/services/api/livros.service';
+import { TranslocoService } from '@jsverse/transloco';
 
 describe('EditorialComponent', () => {
   let component: EditorialComponent;
@@ -28,7 +29,8 @@ describe('EditorialComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: EditoriaisService, useValue: editoriaisServiceMock },
-        { provide: LivrosService, useValue: livrosServiceMock }
+        { provide: LivrosService, useValue: livrosServiceMock },
+        { provide: TranslocoService, useValue: { translate: (key: string) => key } }
       ]
     })
     .compileComponents();

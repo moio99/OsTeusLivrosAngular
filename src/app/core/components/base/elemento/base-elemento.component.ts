@@ -78,7 +78,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
           console.error(e);
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Erro,
-            mensagem: this.getErrorMessage('obtención')
+            mensagem: this.translocoService.translate(this.getErrorMessage('obtención'))
           });
         },
         complete: () => this.obterLivros(id)
@@ -92,7 +92,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
     } else {
       this.layoutService.amosarInfo({
         tipo: InformacomPeTipo.Erro,
-        mensagem: this.getErrorMessage('datos')
+        mensagem: this.translocoService.translate(this.getErrorMessage('datos'))
       });
       return undefined;
     }
@@ -111,7 +111,9 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
           console.error(e);
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Erro,
-            mensagem: this.getLivrosErrorMessage()
+            mensagem: this.translocoService.translate('common.loadRelatedError', {
+              name: this.translocoService.translate(this.getLivrosErrorMessage())
+            })
           });
         },
         complete: () => console.debug('completada a obtençom dos livros')

@@ -9,7 +9,7 @@
   "nav": {
     "statistics": "Stadegoù", "books": "Levrioù", "authors": "Skrivagnerien", "publishers": "Embannerien",
     "genres": "Rummadoù", "libraries": "Levraouegoù", "collections": "Dastumadoù",
-    "literaryStyles": "Stiloù lennegel", "logout": "Digevreañ"
+    "literaryStyles": "Stiloù lennegel", "user": "Implijer", "logout": "Digevreañ"
   },
   "common": {
     "list": "Roll", "loading": "O kargañ...", "name": "Anv", "books": "Levrioù", "read": "Lennet",
@@ -22,6 +22,15 @@
     "confirmDelete": "Ha sur oc'h e fell deoc'h diverkañ «{{name}}»?",
     "itemDeleted": "Diverket eo bet «{{name}}».", "deleteError": "N'haller ket diverkañ «{{name}}».",
     "deleteBlocked": "N'haller ket diverkañ «{{name}}» keit ha ma'z eo liammet ouzh {{count}} levr.",
+    "nameExists": "Anv {{name}} a zo anezhañ dija en diaz roadennoù.",
+    "itemAdded": "Elfenn ouzhpennet.", "itemSaved": "Kemmoù enrollet.",
+    "addErrorMessage": "Ur fazi zo bet en ur ouzhpennañ an elfenn.",
+    "saveErrorMessage": "Ur fazi zo bet en ur enrollañ an elfenn.",
+    "loadDataError": "N'haller ket kargañ ar roadennoù.", "noDataReceived": "N'eus bet resevet roadenn ebet.",
+    "loadRelatedError": "N'haller ket kargañ {{name}}.",
+    "loadRereadError": "N'haller ket kargañ roadennoù an adlennadur.",
+    "authorsUnavailable": "N'eus skrivagner ebet hegerz.", "genresUnavailable": "N'eus rummad ebet hegerz.",
+    "pendingData": "N'eo ket bet karget an holl roadennoù c'hoazh. Gortozit un tamm.",
     "filter": "Sil", "all": "Holl", "selection": "Dibab",
     "noFilteredItems": "N'eus elfenn ebet a glot gant ar sil.", "items": "{{count}} elfenn", "inverse": "eilpennet",
     "sortAlphabetical": "hervez an urzh alfabetek", "sortBookCount": " dre niver al levrioù",
@@ -44,6 +53,7 @@
     "countGenres": "{{count}} a rummadoù", "countLiteraryStyles": "{{count}} a stiloù lennegel"
   },
   "signup": {
+    "modify": "Kemmañ an implijer",
     "title": "Krouiñ ur gont", "allRequired": "Rekis eo leuniañ an holl vaeziennoù",
     "username": "Anv implijer", "usernamePlaceholder": "Bizskrivit un anv implijer",
     "usernameRequired": "Ret eo lakaat un anv implijer", "password": "Ger-tremen",
@@ -56,9 +66,11 @@
     "recoveryAnswerRequired": "Ret eo respont d'ar goulenn", "userLanguage": "Yezh an implijer",
     "chooseLanguage": "Yezh:", "languageRequired": "Ret eo dibab ur yezh",
     "selectLanguage": "Dibabit ur yezh er roll", "languageNotFound": "N'eo ket bet kavet ar yezh",
-    "sending": "O kas...", "submit": "Kas", "usernameExists": "Bez' ez eus eus an anv implijer-mañ dija.",
+    "sending": "O kas...", "submit": "Kas", "usernameExists": "An anv implijer {{name}} a zo anezhañ dija.",
     "userAdded": "Ouzhpennet eo bet an implijer {{name}}.",
+    "userSaved": "Enrollet eo bet an implijer {{name}}.",
     "addError": "Ur fazi zo bet en ur ouzhpennañ an implijer.",
+    "saveError": "Ur fazi zo bet en ur enrollañ an implijer.",
     "languageLoadError": "N'haller ket kargañ ar yezhoù."
   },
   "statistics": {

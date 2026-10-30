@@ -9,7 +9,7 @@
   "nav": {
     "statistics": "Staitisticí", "books": "Leabhair", "authors": "Údair", "publishers": "Foilsitheoirí",
     "genres": "Seánraí", "libraries": "Leabharlanna", "collections": "Bailiúcháin",
-    "literaryStyles": "Stíleanna liteartha", "logout": "Logáil amach"
+    "literaryStyles": "Stíleanna liteartha", "user": "Úsáideoir", "logout": "Logáil amach"
   },
   "common": {
     "list": "Liosta", "loading": "Á lódáil...", "name": "Ainm", "books": "Leabhair", "read": "Léite",
@@ -22,6 +22,15 @@
     "confirmDelete": "An bhfuil tú cinnte gur mian leat «{{name}}» a scriosadh?",
     "itemDeleted": "Scriosadh «{{name}}».", "deleteError": "Níorbh fhéidir «{{name}}» a scriosadh.",
     "deleteBlocked": "Ní féidir «{{name}}» a scriosadh agus {{count}} leabhar bainteach leis.",
+    "nameExists": "Tá an t-ainm {{name}} sa bhunachar sonraí cheana féin.",
+    "itemAdded": "Cuireadh an mhír leis.", "itemSaved": "Sábháladh na hathruithe.",
+    "addErrorMessage": "Tharla earráid agus an mhír á cur leis.",
+    "saveErrorMessage": "Tharla earráid agus an mhír á sábháil.",
+    "loadDataError": "Níorbh fhéidir na sonraí a luchtú.", "noDataReceived": "Ní bhfuarthas aon sonraí.",
+    "loadRelatedError": "Níorbh fhéidir {{name}} a luchtú.",
+    "loadRereadError": "Níorbh fhéidir sonraí an athléimh a luchtú.",
+    "authorsUnavailable": "Níl aon údair ar fáil.", "genresUnavailable": "Níl aon seánraí ar fáil.",
+    "pendingData": "Níl na sonraí go léir luchtaithe fós. Fan nóiméad.",
     "filter": "Scagaire", "all": "Uile", "selection": "Rogha",
     "noFilteredItems": "Níl aon mhír ag teacht leis an scagaire.", "items": "{{count}} mír", "inverse": "aisiompaithe",
     "sortAlphabetical": "in ord aibítre", "sortBookCount": " de réir líon na leabhar",
@@ -44,6 +53,7 @@
     "countGenres": "{{count}} seánra", "countLiteraryStyles": "{{count}} stíl liteartha"
   },
   "signup": {
+    "modify": "Athraigh an t-úsáideoir",
     "title": "Cruthaigh cuntas", "allRequired": "Tá gach réimse riachtanach",
     "username": "Ainm úsáideora", "usernamePlaceholder": "Cuir ainm úsáideora isteach",
     "usernameRequired": "Tá ainm úsáideora riachtanach", "password": "Focal faire",
@@ -56,8 +66,9 @@
     "recoveryAnswerRequired": "Tá freagra ar an gceist riachtanach", "userLanguage": "Teanga an úsáideora",
     "chooseLanguage": "Teanga:", "languageRequired": "Tá teanga riachtanach",
     "selectLanguage": "Roghnaigh teanga ón liosta", "languageNotFound": "Níor aimsíodh an teanga",
-    "sending": "Á sheoladh...", "submit": "Seol", "usernameExists": "Tá an t-ainm úsáideora sin ann cheana.",
+    "sending": "Á sheoladh...", "submit": "Seol", "usernameExists": "Tá an t-ainm úsáideora {{name}} ann cheana.",
     "userAdded": "Cuireadh {{name}} leis.", "addError": "Tharla earráid agus an t-úsáideoir á chur leis.",
+    "userSaved": "Sábháladh an t-úsáideoir {{name}}.", "saveError": "Tharla earráid agus an t-úsáideoir á shábháil.",
     "languageLoadError": "Níorbh fhéidir na teangacha a luchtú."
   },
   "statistics": {

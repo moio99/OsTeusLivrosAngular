@@ -169,7 +169,7 @@ export class UsuarioComponent {
           if (isDuplicate) {
             this.layoutService.amosarInfo({
               tipo: InformacomPeTipo.Aviso,
-              mensagem: `O nome ${nomeValue} já existe na base de dados`
+              mensagem: this.translocoService.translate('common.nameExists', { name: nomeValue })
             });
             // Cortamos o fluxo devolvendo un observable baleiro sen facer o gardado
             return EMPTY;
@@ -179,7 +179,10 @@ export class UsuarioComponent {
             return this.usuariosService.postUsuario(elemento).pipe(
               first(),
               tap(() => {
-                this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Usuario engadido.' });
+                this.layoutService.amosarInfo({
+                  tipo: InformacomPeTipo.Sucesso,
+                  mensagem: this.translocoService.translate('signup.userAdded', { name: nomeValue })
+                });
               })
             );
           } else {
@@ -187,7 +190,10 @@ export class UsuarioComponent {
             return this.usuariosService.putUsuario(elemento).pipe(
               first(),
               tap(() => {
-                this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Usuario guardado.' });
+                this.layoutService.amosarInfo({
+                  tipo: InformacomPeTipo.Sucesso,
+                  mensagem: this.translocoService.translate('signup.userSaved', { name: nomeValue })
+                });
               })
             );
           }
@@ -197,8 +203,8 @@ export class UsuarioComponent {
           console.error(e);
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
             mensagem: this.idUsuario === 0
-              ? 'Houbo um erro ao engadir o usuario.'
-              : 'Houbo um erro ao guardar o usuario.'
+            ? this.translocoService.translate('signup.addError')
+            : this.translocoService.translate('signup.saveError')
           });
         }
       });

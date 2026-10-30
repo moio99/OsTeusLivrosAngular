@@ -9,7 +9,7 @@
   "nav": {
     "statistics": "Statistics", "books": "Buiks", "authors": "Writers", "publishers": "Publishers",
     "genres": "Genres", "libraries": "Libraries", "collections": "Collections",
-    "literaryStyles": "Literar styles", "logout": "Sign oot"
+    "literaryStyles": "Literar styles", "user": "Uiser", "logout": "Sign oot"
   },
   "common": {
     "list": "Leet", "loading": "Loadin...", "name": "Name", "books": "Buiks", "read": "Read",
@@ -22,6 +22,15 @@
     "confirmDelete": "Are ye shair ye want tae ding «{{name}}»?",
     "itemDeleted": "«{{name}}» wis dinged.", "deleteError": "Coudna ding «{{name}}».",
     "deleteBlocked": "Cannae ding «{{name}}» while it haes {{count}} buiks linkit tae it.",
+    "nameExists": "The name {{name}} is awready in the database.",
+    "itemAdded": "Item eikit.", "itemSaved": "Chynges saved.",
+    "addErrorMessage": "A mistak cam aboot while eikin the item.",
+    "saveErrorMessage": "A mistak cam aboot while savin the item.",
+    "loadDataError": "Coudna load the data.", "noDataReceived": "Nae data wis received.",
+    "loadRelatedError": "Coudna load {{name}}.",
+    "loadRereadError": "Coudna load the re-read data.",
+    "authorsUnavailable": "Nae writers are available.", "genresUnavailable": "Nae genres are available.",
+    "pendingData": "No aw the data haes loaded yet. Haud on a wee.",
     "filter": "Filter", "all": "A", "selection": "Chyce",
     "noFilteredItems": "Nae items match the filter.", "items": "{{count}} items", "inverse": "reversit",
     "sortAlphabetical": "alphabetical", "sortBookCount": " bi buik coont",
@@ -44,6 +53,7 @@
     "countGenres": "{{count}} genres", "countLiteraryStyles": "{{count}} literar styles"
   },
   "signup": {
+    "modify": "Modify uiser",
     "title": "Mak an account", "allRequired": "A fields are needit",
     "username": "Uiser name", "usernamePlaceholder": "Pit in a uiser name",
     "usernameRequired": "A uiser name is needit", "password": "Passwird",
@@ -56,8 +66,9 @@
     "recoveryAnswerRequired": "An answer tae the speir is needit", "userLanguage": "Uiser leid",
     "chooseLanguage": "Leid:", "languageRequired": "A leid is needit",
     "selectLanguage": "Chyise a leid fae the leet", "languageNotFound": "Leid no fund",
-    "sending": "Sendin...", "submit": "Send", "usernameExists": "That uiser name is awready there.",
+    "sending": "Sendin...", "submit": "Send", "usernameExists": "The uiser name {{name}} is awready there.",
     "userAdded": "Uiser {{name}} wis eikit.", "addError": "A mistak cam aboot while eikin the uiser.",
+    "userSaved": "Uiser {{name}} wis saved.", "saveError": "A mistak cam aboot while savin the uiser.",
     "languageLoadError": "Coudna load the leids."
   },
   "statistics": {

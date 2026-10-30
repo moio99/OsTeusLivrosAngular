@@ -11,6 +11,7 @@ import { DadosPaginasService } from '../../../core/services/flow/dados-paginas.s
 import { UsuarioAppService } from '../../../core/services/flow/usuario-app.service';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { TranslocoService } from '@jsverse/transloco';
 
 describe('GeneroComponent', () => {
   let component: GeneroComponent;
@@ -83,6 +84,7 @@ describe('GeneroComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: routerMock },
         { provide: Location, useValue: locationMock },
+        { provide: TranslocoService, useValue: { translate: (key: string) => key } },
       ],
     }).compileComponents();
 
@@ -126,7 +128,7 @@ describe('GeneroComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith(expect.objectContaining({
       tipo: InformacomPeTipo.Erro,
-      mensagem: expect.stringContaining('Nom se puiderom obter os dados')
+      mensagem: 'common.loadDataError'
     }));
   });
 
@@ -170,7 +172,7 @@ describe('GeneroComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Aviso,
-      mensagem: 'O nome do género já existe na base de dados'
+      mensagem: 'common.nameExists'
     });
     expect(generosServiceMock.create).not.toHaveBeenCalled();
   });
@@ -199,7 +201,7 @@ describe('GeneroComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Erro,
-      mensagem: 'Nom se puido engadir do género.'
+      mensagem: 'common.addErrorMessage'
     });
   });
 
@@ -224,7 +226,7 @@ describe('GeneroComponent', () => {
     }));
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Sucesso,
-      mensagem: 'do género guardada.'
+      mensagem: 'common.itemSaved'
     });
   });
 
@@ -244,7 +246,7 @@ describe('GeneroComponent', () => {
 
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Erro,
-      mensagem: 'Nom se puido guardar do género.'
+      mensagem: 'common.saveErrorMessage'
     });
   });
 

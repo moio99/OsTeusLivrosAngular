@@ -9,7 +9,7 @@
   "nav": {
     "statistics": "Statistiques", "books": "Livres", "authors": "Auteurs", "publishers": "Éditeurs",
     "genres": "Genres", "libraries": "Bibliothèques", "collections": "Collections",
-    "literaryStyles": "Styles littéraires", "logout": "Se déconnecter"
+    "literaryStyles": "Styles littéraires", "user": "Utilisateur", "logout": "Se déconnecter"
   },
   "common": {
     "list": "Liste", "loading": "Chargement...", "name": "Nom", "books": "Livres", "read": "Lus",
@@ -22,6 +22,15 @@
     "confirmDelete": "Voulez-vous vraiment supprimer « {{name}} » ?",
     "itemDeleted": "« {{name}} » a été supprimé.", "deleteError": "Impossible de supprimer « {{name}} ».",
     "deleteBlocked": "Impossible de supprimer « {{name}} » tant qu'il est associé à {{count}} livres.",
+    "nameExists": "Le nom {{name}} existe déjà dans la base de données.",
+    "itemAdded": "Élément ajouté.", "itemSaved": "Modifications enregistrées.",
+    "addErrorMessage": "Une erreur est survenue lors de l'ajout de l'élément.",
+    "saveErrorMessage": "Une erreur est survenue lors de l'enregistrement de l'élément.",
+    "loadDataError": "Impossible de charger les données.", "noDataReceived": "Aucune donnée reçue.",
+    "loadRelatedError": "Impossible de charger {{name}}.",
+    "loadRereadError": "Impossible de charger les données de la relecture.",
+    "authorsUnavailable": "Aucun auteur disponible.", "genresUnavailable": "Aucun genre disponible.",
+    "pendingData": "Toutes les données ne sont pas encore chargées. Veuillez patienter.",
     "filter": "Filtre", "all": "Tous", "selection": "Sélection",
     "noFilteredItems": "Aucun élément ne correspond au filtre.", "items": "{{count}} éléments", "inverse": "inversé",
     "sortAlphabetical": "par ordre alphabétique", "sortBookCount": " par nombre de livres",
@@ -44,6 +53,7 @@
     "countGenres": "{{count}} genres", "countLiteraryStyles": "{{count}} styles littéraires"
   },
   "signup": {
+    "modify": "Modifier l'utilisateur",
     "title": "Créer un compte", "allRequired": "Tous les champs sont obligatoires",
     "username": "Nom d'utilisateur", "usernamePlaceholder": "Saisissez un nom d'utilisateur",
     "usernameRequired": "Le nom d'utilisateur est obligatoire", "password": "Mot de passe",
@@ -56,8 +66,9 @@
     "recoveryAnswerRequired": "La réponse à la question est obligatoire", "userLanguage": "Langue de l'utilisateur",
     "chooseLanguage": "Langue :", "languageRequired": "La langue est obligatoire",
     "selectLanguage": "Sélectionnez une langue dans la liste", "languageNotFound": "Langue introuvable",
-    "sending": "Envoi en cours...", "submit": "Envoyer", "usernameExists": "Ce nom d'utilisateur existe déjà.",
+    "sending": "Envoi en cours...", "submit": "Envoyer", "usernameExists": "Le nom d'utilisateur {{name}} existe déjà.",
     "userAdded": "L'utilisateur {{name}} a été ajouté.", "addError": "Une erreur est survenue lors de l'ajout de l'utilisateur.",
+    "userSaved": "L'utilisateur {{name}} a été enregistré.", "saveError": "Une erreur est survenue lors de l'enregistrement de l'utilisateur.",
     "languageLoadError": "Impossible de charger les langues."
   },
   "statistics": {

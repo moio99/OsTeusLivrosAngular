@@ -66,12 +66,12 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
 
   protected getErrorMessage(context: string): string {
     return context === 'obtención'
-      ? 'Nom se puiderom obter os dados da coleçom.'
-      : 'Nom chegarom dados da coleçom';
+      ? 'common.loadDataError'
+      : 'common.noDataReceived';
   }
 
   protected getLivrosErrorMessage(): string {
-    return 'Nom se puiderom obter os Livros da coleçom.';
+    return 'common.books';
   }
 
   protected getNomeElemento(): string {

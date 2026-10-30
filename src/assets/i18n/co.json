@@ -9,7 +9,7 @@
   "nav": {
     "statistics": "Statistiche", "books": "Libri", "authors": "Autori", "publishers": "Editori",
     "genres": "Generi", "libraries": "Bibliuteche", "collections": "Cullizzioni",
-    "literaryStyles": "Stili literarii", "logout": "Disconnette si"
+    "literaryStyles": "Stili literarii", "user": "Utilizatore", "logout": "Disconnette si"
   },
   "common": {
     "list": "Lista", "loading": "Caricamentu...", "name": "Nome", "books": "Libri", "read": "Letti",
@@ -22,6 +22,15 @@
     "confirmDelete": "Site sicuru di vulè sguassà «{{name}}»?",
     "itemDeleted": "«{{name}}» hè statu sguassatu.", "deleteError": "Ùn hè statu pussibule di sguassà «{{name}}».",
     "deleteBlocked": "Ùn si pò sguassà «{{name}}» mentre ch'ellu hà {{count}} libri assuciati.",
+    "nameExists": "U nome {{name}} esiste digià in a basa di dati.",
+    "itemAdded": "Elementu aghjuntu.", "itemSaved": "Cambiamenti salvati.",
+    "addErrorMessage": "Errore durante l'aghjunta di l'elementu.",
+    "saveErrorMessage": "Errore durante u salvamentu di l'elementu.",
+    "loadDataError": "Ùn hè statu pussibule di caricà i dati.", "noDataReceived": "Nisun datu ricevutu.",
+    "loadRelatedError": "Ùn hè statu pussibule di caricà {{name}}.",
+    "loadRereadError": "Ùn hè statu pussibule di caricà i dati di a rilettura.",
+    "authorsUnavailable": "Nisun autore dispunibule.", "genresUnavailable": "Nisun generu dispunibule.",
+    "pendingData": "Tutti i dati ùn sò ancu stati caricati. Aspettate un mumentu.",
     "filter": "Filtru", "all": "Tutti", "selection": "Selezzione",
     "noFilteredItems": "Nisun elementu currisponde à u filtru.", "items": "{{count}} elementi", "inverse": "inversu",
     "sortAlphabetical": "alfabeticamente", "sortBookCount": " per numaru di libri",
@@ -44,6 +53,7 @@
     "countGenres": "{{count}} generi", "countLiteraryStyles": "{{count}} stili literarii"
   },
   "signup": {
+    "modify": "Mudificà l'utilizatore",
     "title": "Creà un contu", "allRequired": "Tutti i campi sò ubligatorii",
     "username": "Nome d'utilizatore", "usernamePlaceholder": "Inserite un nome d'utilizatore",
     "usernameRequired": "U nome d'utilizatore hè ubligatoriu", "password": "Parolla d'intesa",
@@ -56,8 +66,9 @@
     "recoveryAnswerRequired": "A risposta à a quistione hè ubligatoria", "userLanguage": "Lingua di l'utilizatore",
     "chooseLanguage": "Lingua:", "languageRequired": "A lingua hè ubligatoria",
     "selectLanguage": "Sceglite una lingua da a lista", "languageNotFound": "Lingua micca truvata",
-    "sending": "Invia...", "submit": "Invià", "usernameExists": "Stu nome d'utilizatore esiste digià.",
+    "sending": "Invia...", "submit": "Invià", "usernameExists": "Stu nome d'utilizatore {{name}} esiste digià.",
     "userAdded": "L'utilizatore {{name}} hè statu aghjuntu.", "addError": "Errore durante l'aghjunta di l'utilizatore.",
+    "userSaved": "L'utilizatore {{name}} hè statu salvatu.", "saveError": "Errore durante u salvamentu di l'utilizatore.",
     "languageLoadError": "Ùn hè statu pussibule di caricà e lingue."
   },
   "statistics": {

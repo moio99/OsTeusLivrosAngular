@@ -11,6 +11,7 @@ import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { Genero } from '../../../models/genero.interface';
 import { LayoutService } from '../../../services/flow/layout.service';
 import { BaseElementoSignalsComponent } from './base-elemento-signals.component';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   standalone: true,
@@ -70,6 +71,7 @@ describe('BaseElementoSignalsComponent', () => {
         { provide: Location, useValue: locationMock },
         { provide: DadosPaginasService, useValue: dadosPaginasServiceMock },
         { provide: DadosOutrosService, useValue: dadosOutrosServiceMock },
+        { provide: TranslocoService, useValue: { translate: (key: string) => key } },
       ],
     }).compileComponents();
 
@@ -105,12 +107,12 @@ describe('BaseElementoSignalsComponent', () => {
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
     let resultado: unknown;
 
-    component.manexarErro(erro, 'do xénero').subscribe((valor) => resultado = valor);
+    component.manexarErro(erro, 'common.genres').subscribe((valor) => resultado = valor);
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(erro);
     expect(layoutServiceMock.amosarInfo).toHaveBeenCalledWith({
       tipo: InformacomPeTipo.Erro,
-      mensagem: 'Nom se puiderom obter os dados do xénero.',
+      mensagem: 'common.loadRelatedError',
     });
     expect(resultado).toEqual([]);
     consoleErrorSpy.mockRestore();

@@ -9,7 +9,7 @@
   "nav": {
     "statistics": "Ystadegau", "books": "Llyfrau", "authors": "Awduron", "publishers": "Cyhoeddwyr",
     "genres": "Genres", "libraries": "Llyfrgelloedd", "collections": "Casgliadau",
-    "literaryStyles": "Arddulliau llenyddol", "logout": "Allgofnodi"
+    "literaryStyles": "Arddulliau llenyddol", "user": "Defnyddiwr", "logout": "Allgofnodi"
   },
   "common": {
     "list": "Rhestr", "loading": "Yn llwytho...", "name": "Enw", "books": "Llyfrau", "read": "Wedi'u darllen",
@@ -22,6 +22,15 @@
     "confirmDelete": "Ydych chi'n siŵr eich bod am ddileu «{{name}}»?",
     "itemDeleted": "Mae «{{name}}» wedi'i ddileu.", "deleteError": "Methu dileu «{{name}}».",
     "deleteBlocked": "Methu dileu «{{name}}» tra bod {{count}} o lyfrau yn gysylltiedig ag ef.",
+    "nameExists": "Mae'r enw {{name}} eisoes yn bodoli yn y gronfa ddata.",
+    "itemAdded": "Eitem wedi'i hychwanegu.", "itemSaved": "Newidiadau wedi'u cadw.",
+    "addErrorMessage": "Digwyddodd gwall wrth ychwanegu'r eitem.",
+    "saveErrorMessage": "Digwyddodd gwall wrth gadw'r eitem.",
+    "loadDataError": "Methu llwytho'r data.", "noDataReceived": "Ni dderbyniwyd unrhyw ddata.",
+    "loadRelatedError": "Methu llwytho {{name}}.",
+    "loadRereadError": "Methu llwytho data'r ailddarlleniad.",
+    "authorsUnavailable": "Dim awduron ar gael.", "genresUnavailable": "Dim genres ar gael.",
+    "pendingData": "Nid yw'r holl ddata wedi llwytho eto. Arhoswch funud.",
     "filter": "Hidlydd", "all": "Pob un", "selection": "Dewis",
     "noFilteredItems": "Nid oes eitemau'n cyfateb i'r hidlydd.", "items": "{{count}} eitem", "inverse": "wedi'i wrthdroi",
     "sortAlphabetical": "yn nhrefn yr wyddor", "sortBookCount": " yn ôl nifer y llyfrau",
@@ -44,6 +53,7 @@
     "countGenres": "{{count}} genre", "countLiteraryStyles": "{{count}} arddull lenyddol"
   },
   "signup": {
+    "modify": "Addasu defnyddiwr",
     "title": "Creu cyfrif", "allRequired": "Mae angen llenwi pob maes",
     "username": "Enw defnyddiwr", "usernamePlaceholder": "Rhowch enw defnyddiwr",
     "usernameRequired": "Mae angen enw defnyddiwr", "password": "Cyfrinair",
@@ -56,8 +66,9 @@
     "recoveryAnswerRequired": "Mae angen ateb i'r cwestiwn", "userLanguage": "Iaith y defnyddiwr",
     "chooseLanguage": "Iaith:", "languageRequired": "Mae angen dewis iaith",
     "selectLanguage": "Dewiswch iaith o'r rhestr", "languageNotFound": "Heb ganfod yr iaith",
-    "sending": "Yn anfon...", "submit": "Anfon", "usernameExists": "Mae'r enw defnyddiwr hwnnw'n bodoli eisoes.",
+    "sending": "Yn anfon...", "submit": "Anfon", "usernameExists": "Mae'r enw defnyddiwr {{name}} eisoes yn bodoli.",
     "userAdded": "Ychwanegwyd y defnyddiwr {{name}}.", "addError": "Digwyddodd gwall wrth ychwanegu'r defnyddiwr.",
+    "userSaved": "Cadwyd y defnyddiwr {{name}}.", "saveError": "Digwyddodd gwall wrth gadw'r defnyddiwr.",
     "languageLoadError": "Methu llwytho'r ieithoedd."
   },
   "statistics": {
