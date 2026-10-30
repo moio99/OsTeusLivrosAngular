@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BibliotecasService, LivrosService } from '@servizosApi';
@@ -75,6 +75,17 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
     }
   });
 
+  constructor() {
+    super();
+
+    effect(() => {
+      const biblioteca = this.bibliotecaResource.value();
+      if (biblioteca) {
+        this.formState.atualizarFromBiblioteca(biblioteca);   // Establece os datos para o formulario
+      }
+    });
+  }
+
   onSubmit(): void {
     if (this.formState.bibliotecaForm().invalid()) return;
 
@@ -132,9 +143,5 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
         });
       }
     });
-  }
-
-  protected aplicarDatosAoFormulario(datos: Biblioteca): void {
-    this.formState.atualizarFromBiblioteca(datos);
   }
 }

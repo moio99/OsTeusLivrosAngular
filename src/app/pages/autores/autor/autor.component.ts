@@ -39,7 +39,6 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
   private readonly formState = inject(AutorFormStateService);
 
   estadosPagina = EstadosPagina;
-  dadosDoAutor: Autor | undefined = undefined;
   dadosLivrosDoAutor = signal<ListadoLivros[]>([]);
   date = new Date();
 
@@ -135,18 +134,14 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
     effect(() => {
       const autor = this.autorResource.value();
 
-      if (autor && !this.dadosDoAutor) {
-        this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: 'Nom chegarom dados do autor'});
-      }
-
       // Lemos os estados de carga dos outros dous recursos
       const nacionalidadesListas = this.nacionalidadesResource.hasValue();
       const paisesListos = this.paisesResource.hasValue();
 
       // Se o autor chegou, pero os combos aínda non teñen datos, AGARDAMOS.
       // O effect volverá a executarse automaticamente en canto as outras sinais cambien.
-      if (autor && nacionalidadesListas && paisesListos && this.dadosDoAutor) {
-        this.formState.atualizarFromAutor(this.dadosDoAutor); // Establece os datos para o formulario
+      if (autor && nacionalidadesListas && paisesListos) {
+        this.formState.atualizarFromAutor(autor); // Establece os datos para o formulario
       }
     });
 
@@ -181,7 +176,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
       first(),  // Collo o primeiro valor da consulta do nome e pechamos esa canle
       concatMap((autorRepetido) => {  // concatMap asegura que a seguinte chamada agarde a que esta remate sem cancelarse
         if (autorRepetido && autorRepetido.meta.quantidade > 0) {
-          if (botonPremido === EstadosPagina.engadir || autorRepetido.meta.id !== this.dadosDoAutor?.id) {
+          if (botonPremido === EstadosPagina.engadir || autorRepetido.meta.id !== this.autorResource.value()?.id) {
             this.layoutService.amosarInfo({
               tipo: InformacomPeTipo.Aviso,
               mensagem: 'O nome do autor já existe na base de dados'
@@ -190,7 +185,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
           }
         }
 
-        const autor = this.formState.criarObjetoAutor(this.dadosDoAutor?.id);
+        const autor = this.formState.criarObjetoAutor(this.autorResource.value()?.id);
         if (botonPremido === EstadosPagina.engadir) {
           return this.autoresService.postAutor(autor).pipe(
             first(),
@@ -223,10 +218,5 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
         });
       }
     });
-  }
-
-  protected override aplicarDatosAoFormulario(datos: Autor): void {
-    this.dadosDoAutor = datos;
-    // Nom fago isto para aguardar a que chegem os dados dos combos. this.formState.atualizarFromAutor(datos);
   }
 }

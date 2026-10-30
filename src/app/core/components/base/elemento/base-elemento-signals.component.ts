@@ -20,10 +20,6 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
   private dadosPaginasService = inject(DadosPaginasService);
   protected dadosOutrosService = inject(DadosOutrosService);
 
-  // No componhente que herda de BaseElementoSignalsComponent, tem que se implementar esta funçom
-  // é para poder acceder a this.formState.atualizarFromBiblioteca
-  protected abstract aplicarDatosAoFormulario(datos: TElemento): void;
-
   protected dadosLivrosElementoObtidos(data: object): ListadoLivros[] {
     let resultados: ListadoLivros[];
     const dados = <BaseListadoDadosApi<ListadoLivros>>data;
@@ -39,9 +35,6 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
     let resultados: TElemento | undefined;
     if (dados.data != null && dados.data.length > 0) {
       resultados = dados.data[0];
-      if (resultados) {
-        this.aplicarDatosAoFormulario(resultados);
-      }
     }
     else{
       resultados = undefined;
