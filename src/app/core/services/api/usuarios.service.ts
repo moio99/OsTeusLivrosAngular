@@ -25,9 +25,19 @@ export class UsuariosService {
     return this.http.get<UsuarioData<Usuario>>(`${environment.apiUrl}${this.rotaIntermedia}/UsuarioPorNome`, { params });
   }
 
+  getUsuarioPorId(id: number): Observable<UsuarioData<AltaUsuario>> {
+    const params = new HttpParams().set('id', id);
+    return this.http.get<UsuarioData<AltaUsuario>>(`${environment.apiUrl}${this.rotaIntermedia}/UsuarioPorId`, { params });
+  }
+
   postUsuario(usuario: AltaUsuario): Observable<ResultadoMeta> {
     console.debug('engadindo usuario...');
     return this.http.post<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/Usuario`, usuario);
+  }
+
+  putUsuario(usuario: AltaUsuario): Observable<ResultadoMeta> {
+    console.debug(usuario);
+    return this.http.put<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/Usuario`, usuario);
   }
 
   postLogin(usuario: Usuario): Observable<DadosLogueo> {

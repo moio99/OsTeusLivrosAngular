@@ -96,6 +96,11 @@ export const routes: Routes = [
           .then(m => m.childRoutes),
         canActivate: [autorizacomAccessoGuard]
       },
+      {
+        path: 'usuario', title: 'Usuario',
+        component: AltaUsuarioComponent,
+        canActivate: [autorizacomAccessoGuard]
+      },
     ]
   }
 ];

@@ -1,7 +1,7 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LayoutService } from '@servizosFlow';
-import { catchError, concatMap, EMPTY, first, map, of, startWith, tap } from 'rxjs';
+import { AuthService, LayoutService } from '@servizosFlow';
+import { catchError, EMPTY, first, map, of, startWith, switchMap, tap } from 'rxjs';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { DadosOutrosService } from '../../core/services/flow/dados-outros.service';
 import { OutrosService } from '@servizosApi';
@@ -30,7 +30,9 @@ import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
   styleUrls: ['./alta-usuario.component.scss']
 })
 export class AltaUsuarioComponent {
+
   readonly loading = signal<boolean>(false);
+  private readonly authService = inject(AuthService);
   private readonly fb = inject(NonNullableFormBuilder); // Evita que os campos sexan null ao facer reset
   private readonly dadosOutrosService = inject(DadosOutrosService);
   private readonly outrosService = inject(OutrosService);
@@ -38,7 +40,9 @@ export class AltaUsuarioComponent {
   private readonly usuariosService = inject(UsuariosService);
   private readonly translocoService = inject(TranslocoService);
 
-  readonly altaForm = this.fb.group({
+  idUsuario = this.authService.getUsuarioLogado()?.id ?? 0;
+
+  readonly usuarioForm = this.fb.group({
     nome: new FormControl('', [Validators.required, Validators.maxLength(15)]),
     pass: new FormControl('', [Validators.required, Validators.maxLength(15)]),
     pergunta: new FormControl('', [Validators.required, Validators.maxLength(45)]),
@@ -53,7 +57,7 @@ export class AltaUsuarioComponent {
       ValidaconsAMedida.idiomaSeleccionado
     ])
   });
-  get af() { return this.altaForm.controls; }
+  get af() { return this.usuarioForm.controls; }
 
   idiomasResource = rxResource({
     stream: () => {
@@ -75,15 +79,38 @@ export class AltaUsuarioComponent {
     }
   });
 
-  textoBibliotecaFiltro = toSignal(
-    this.altaForm.controls.idIdioma.valueChanges.pipe(
-      startWith(this.altaForm.controls.idIdioma.value ?? '')
+  usuarioResource = rxResource({
+    params: () => this.idUsuario,
+    stream: ({ params: id }) => {
+      const currentId = id;
+
+      // Se o ID é 0 (modo engadir), non facemos petición HTTP e devolvemos null
+      if (!currentId || currentId === 0) return of(null);
+
+      return this.usuariosService.getUsuarioPorId(currentId).pipe(
+        first(),
+        map( dados => {
+        if (dados.data && dados.data.length > 0) {
+          return dados.data[0];
+        }
+        return undefined;
+      }),
+        catchError((e) => {
+          this.manejarErroSoporte(e);
+          return of(null); })
+      );
+    }
+  });
+
+  textoIdiomaFiltro = toSignal(
+    this.usuarioForm.controls.idIdioma.valueChanges.pipe(
+      startWith(this.usuarioForm.controls.idIdioma.value ?? '')
     ),
     { initialValue: '' as string | number }
   );
 
   idiomasFiltrados = computed(() => {
-    const textoBusca = this.amosarIdioma(this.textoBibliotecaFiltro()).trim().toLowerCase();
+    const textoBusca = this.amosarIdioma(this.textoIdiomaFiltro()).trim().toLowerCase();
     const listaCompleta = this.idiomasResource.value() ?? [];
 
     if (!textoBusca) {
@@ -95,6 +122,25 @@ export class AltaUsuarioComponent {
     );
   });
 
+  constructor() {
+    effect(() => {
+      const usuario = this.usuarioResource.value(); // Acceso reactivo ao valor do resource
+
+      if (usuario) {
+        this.usuarioForm.patchValue({
+          nome: usuario.nome,
+          pass: usuario.pass,
+          correio: usuario.correio,
+          pergunta: usuario.pergunta,
+          contestacom: usuario.contestacom,
+          idIdioma: usuario.idIdioma
+        });
+      } else {
+        this.usuarioForm.reset();
+      }
+    });
+  }
+
   amosarIdioma = (id: string | number | null): string => {
     if (typeof id !== 'number') {
       return id ?? '';
@@ -104,42 +150,59 @@ export class AltaUsuarioComponent {
   };
 
   onSubmit(): void {
-    if (this.altaForm.invalid) return;
-    this.loading.set(true);
+    if (this.usuarioForm.invalid) return;
 
-    const novoUsuario = this.createElementoForm();
-    this.usuariosService.getUsuarioPorNome(novoUsuario.nome).pipe(
-      first(),  // Collo o primeiro valor da consulta do nome e pechamos esa canle
-      concatMap((usuario) => {  // concatMap asegura que a seguinte chamada agarde a que esta remate sem cancelarse
-        if (usuario && usuario.meta.quantidade > 0) {
-          this.layoutService.amosarInfo({
-            tipo: InformacomPeTipo.Aviso,
-            mensagem: this.translocoService.translate('signup.usernameExists')
+    let nomeValue = this.usuarioForm.controls.nome.value;
+    if (nomeValue) {
+      nomeValue = nomeValue.trim();
+      const elemento = this.createElementoForm();
+
+      // Encadeamos de xeito reactivo as dúas peticións do servidor
+      this.usuariosService.getUsuarioPorNome(nomeValue).pipe(
+        first(),
+        // O operador switchMap intercepta o resultado de duplicados e decide o seguinte fluxo
+        switchMap((elementoExistente: any) => {
+          const meta = elementoExistente?.meta;
+          const isDuplicate = meta && meta.quantidade > 0 &&
+            (this.idUsuario === 0 || +meta.id !== this.idUsuario);
+
+          if (isDuplicate) {
+            this.layoutService.amosarInfo({
+              tipo: InformacomPeTipo.Aviso,
+              mensagem: `O nome ${nomeValue} já existe na base de dados`
+            });
+            // Cortamos o fluxo devolvendo un observable baleiro sen facer o gardado
+            return EMPTY;
+          }
+
+          if (this.idUsuario === 0) {
+            return this.usuariosService.postUsuario(elemento).pipe(
+              first(),
+              tap(() => {
+                this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Usuario engadido.' });
+              })
+            );
+          } else {
+            elemento.id = this.idUsuario;
+            return this.usuariosService.putUsuario(elemento).pipe(
+              first(),
+              tap(() => {
+                this.layoutService.amosarInfo({ tipo: InformacomPeTipo.Sucesso, mensagem: 'Usuario guardado.' });
+              })
+            );
+          }
+        })
+      ).subscribe({
+        error: (e: unknown) => {
+          console.error(e);
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+            mensagem: this.idUsuario === 0
+              ? 'Houbo um erro ao engadir o usuario.'
+              : 'Houbo um erro ao guardar o usuario.'
           });
-          this.loading.set(false);
-          return EMPTY; // Corta o fluxo de forma segura se está repetido
         }
-
-        return this.usuariosService.postUsuario(novoUsuario).pipe(first());
-      })
-    ).subscribe({
-      next: () => {
-        this.loading.set(false);
-        this.layoutService.amosarInfo({
-          tipo: InformacomPeTipo.Sucesso,
-          mensagem: this.translocoService.translate('signup.userAdded', { name: novoUsuario.nome })
-        });
-        this.altaForm.reset();
-      },
-      error: (e: unknown) => {
-        console.error(e);
-        this.loading.set(false);
-        this.layoutService.amosarInfo({
-          tipo: InformacomPeTipo.Erro,
-          mensagem: this.translocoService.translate('signup.addError')
-        });
-      }
-    });
+      });
+    }
   }
 
   private createElementoForm(): AltaUsuario {

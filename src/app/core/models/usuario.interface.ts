@@ -28,3 +28,7 @@ export interface AltaUsuario extends BaseElemento {
   idIdioma: number | null,
   ativado: boolean,
 }
+
+// export interface ModificacomUsuario extends AltaUsuario {
+//   id: number;
+// }

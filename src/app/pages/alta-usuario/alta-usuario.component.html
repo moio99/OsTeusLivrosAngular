@@ -1,8 +1,14 @@
-<div class="login-container">
-  <h2 class="frase">{{ 'signup.title' | transloco }}</h2>
+<div class="login-container" [class.login-container-borde]="idUsuario === 0">
+  <h2 class="frase">
+    @if (idUsuario === 0) {
+      {{ 'signup.title' | transloco }}
+    } @else {
+      {{ 'signup.modify' | transloco }}
+    }
+  </h2>
   <p class="frase aclaracom">{{ 'signup.allRequired' | transloco }}</p>
 
-  <form [formGroup]="altaForm" (ngSubmit)="onSubmit()" class="login-form">
+  <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()" class="login-form">
     <div class="form-group">
       <label for="nome">{{ 'signup.username' | transloco }}</label>
       <input
@@ -121,7 +127,7 @@
           } @empty {
             <mat-option disabled>Idioma nom atopado</mat-option>
           } -->
-    <button type="submit" color="primary" [disabled]="loading() || altaForm.invalid">
+    <button type="submit" color="primary" [disabled]="loading() || usuarioForm.invalid">
       @if (loading()) {
         <span class="spinner-border spinner-border-sm"></span>
       }
@@ -129,4 +135,6 @@
     </button>
   </form>
 </div>
-<omla-pe class="pe-emergente"></omla-pe>
+@if (idUsuario === 0) {
+  <omla-pe class="pe-emergente"></omla-pe>
+}

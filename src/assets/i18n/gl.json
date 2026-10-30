@@ -15,7 +15,7 @@
   "nav": {
     "statistics": "Estatísticas", "books": "Livros", "authors": "Autores",
     "publishers": "Editoriais", "genres": "Géneros", "libraries": "Bibliotecas",
-    "collections": "Coleçons", "literaryStyles": "Estilos literarios", "logout": "Sair"
+    "collections": "Coleçons", "literaryStyles": "Estilos literarios", "user": "Usuario", "logout": "Sair"
   },
   "common": {
     "list": "Listado",
@@ -51,7 +51,7 @@
     "countGenres": "{{count}} géneros", "countLiteraryStyles": "{{count}} estilos literarios"
   },
   "signup": {
-    "title": "Alta de usuario", "allRequired": "Todos os campos som obrigatorios",
+    "modify": "Modificar o usuario", "title": "Alta de usuario", "allRequired": "Todos os campos som obrigatorios",
     "username": "Nome do usuario", "usernamePlaceholder": "Insire o nome do usuario",
     "usernameRequired": "O nome do usuario é obrigatorio", "password": "Contrasinal",
     "passwordPlaceholder": "Insire o teu contrasinal", "passwordRequired": "O contrasinal é obrigatorio",

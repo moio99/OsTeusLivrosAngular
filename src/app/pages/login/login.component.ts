@@ -67,10 +67,6 @@ export class LoginComponent {
       });
   }
 
-  troco(idioma: string) {
-    this.translocoService.setActiveLang(idioma);
-  }
-
   private setIdioma(idioma: number) {
     switch (idioma) {
       case 1:
@@ -97,6 +93,9 @@ export class LoginComponent {
         break;
       case 9:
         this.translocoService.setActiveLang('fr');
+        break;
+      case 10:
+        this.translocoService.setActiveLang('en');
         break;
       case 15:
         this.translocoService.setActiveLang('it');
@@ -126,7 +125,7 @@ export class LoginComponent {
         this.translocoService.setActiveLang('sco');
         break;
       default:
-        this.translocoService.setActiveLang('gl');
+        this.translocoService.setActiveLang('en');
         break;
     }
   }
