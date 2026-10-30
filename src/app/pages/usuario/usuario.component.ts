@@ -10,11 +10,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Idioma } from '../../shared/models/outros.model';
-import { AltaUsuario, dadosComplementarios } from '@interfaces';
+import { AltaUsuario, dadosComplementarios, Usuario } from '@interfaces';
 import { ValidaconsAMedida } from '../../shared/validators/custom-validators';
 import { UsuariosService } from '../../core/services/api/usuarios.service';
 import { PeComponent } from '@componhentesComuns';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { BaseListadoDadosApi } from '../../shared/models/base-dados';
 
 @Component({
   selector: 'app-alta',
@@ -161,10 +162,10 @@ export class UsuarioComponent {
       this.usuariosService.getUsuarioPorNome(nomeValue).pipe(
         first(),
         // O operador switchMap intercepta o resultado de duplicados e decide o seguinte fluxo
-        switchMap((elementoExistente: any) => {
+        switchMap((elementoExistente: BaseListadoDadosApi<Usuario>) => {
           const meta = elementoExistente?.meta;
           const isDuplicate = meta && meta.quantidade > 0 &&
-            (this.idUsuario === 0 || +meta.id !== this.idUsuario);
+            (this.idUsuario === 0 || meta.id !== this.idUsuario);
 
           if (isDuplicate) {
             this.layoutService.amosarInfo({

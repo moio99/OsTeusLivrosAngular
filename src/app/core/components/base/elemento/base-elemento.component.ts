@@ -1,17 +1,12 @@
 import { Component, computed, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
 import { first } from 'rxjs/operators';
 import { environment, environments } from '../../../../../environments/environment';
-import { DadosComplentarios, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
-import { LayoutService, DadosPaginasService } from '@servizosFlow';
+import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
-import { FormGroup } from '@angular/forms';
 import { BaseApiService } from '@servizosApi';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
-import { SimpleObjet } from '../../../../shared/models/outros.model';
-import { BaseElemento, ParametrosId, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
-import { DadosOutrosService } from '../../../services/flow/dados-outros.service';
+import { BaseElemento, ParametrosId, BaseListadoDadosApi } from '../../../../shared/models/base-dados';
 import { BaseGardarComponent } from './base-gardar.component';
 
 @Component({

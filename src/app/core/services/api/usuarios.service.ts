@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ResultadoMeta } from '../../../shared/models/base-dados';
+import { BaseListadoDadosApi, ResultadoMeta } from '../../../shared/models/base-dados';
 import { Usuario, DadosLogueo, AltaUsuario, UsuarioData } from '@interfaces';
 
 // @Injectable({
@@ -20,9 +20,9 @@ export class UsuariosService {
 
   private http = inject(HttpClient);
 
-  getUsuarioPorNome(nome: string): Observable<UsuarioData<Usuario>> {
+  getUsuarioPorNome(nome: string): Observable<BaseListadoDadosApi<Usuario>> {
     const params = new HttpParams().set('nome', nome);
-    return this.http.get<UsuarioData<Usuario>>(`${environment.apiUrl}${this.rotaIntermedia}/UsuarioPorNome`, { params });
+    return this.http.get<BaseListadoDadosApi<Usuario>>(`${environment.apiUrl}${this.rotaIntermedia}/UsuarioPorNome`, { params });
   }
 
   getUsuarioPorId(id: number): Observable<UsuarioData<AltaUsuario>> {

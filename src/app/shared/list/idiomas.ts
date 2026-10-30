@@ -14,6 +14,7 @@ export const LINGUAS: Linguas[] = [
   { nome: 'Spanish', codigo: 'es', id: 8 },
   { nome: 'French', codigo: 'fr', id: 9 },
   { nome: 'English', codigo: 'en', id: 10 },
+  { nome: 'German', codigo: 'de', id: 0 },
   { nome: 'Italian', codigo: 'it', id: 15 },
   { nome: 'Breton', codigo: 'br', id: 113 },
   { nome: 'Corsican', codigo: 'co', id: 138 },
