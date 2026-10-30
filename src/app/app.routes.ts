@@ -6,7 +6,7 @@ import { LayoutBaleiroComponent } from './layouts/layout-baleiro/layout-baleiro.
 import { LayoutPrincipalComponent } from './layouts/layout-principal/layout-principal.component';
 import { environments } from '../environments/environment';
 import { peticomPendenteRequestGuard } from './peticom-pendente.guard';
-import { AltaUsuarioComponent } from './pages/alta-usuario/alta-usuario.component';
+import { UsuarioComponent } from './pages/usuario/usuario.component';
 
 const rotaPorDefecto = environments.dev || environments.test ? 'estadisticas' : 'login';
 
@@ -20,7 +20,7 @@ export const routes: Routes = [
   {
     path: 'alta',
     component: LayoutBaleiroComponent,
-    children: [{ path: '', component: AltaUsuarioComponent }]
+    children: [{ path: '', component: UsuarioComponent }]
   },
   // { path: 'login', component: LoginComponent, title: 'OTL - Login' },
   {
@@ -98,7 +98,7 @@ export const routes: Routes = [
       },
       {
         path: 'usuario', title: 'Usuario',
-        component: AltaUsuarioComponent,
+        component: UsuarioComponent,
         canActivate: [autorizacomAccessoGuard]
       },
     ]

@@ -26,10 +26,10 @@ import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
     PeComponent,
     TranslocoPipe,
   ],
-  templateUrl: './alta-usuario.component.html',
-  styleUrls: ['./alta-usuario.component.scss']
+  templateUrl: './usuario.component.html',
+  styleUrls: ['./usuario.component.scss']
 })
-export class AltaUsuarioComponent {
+export class UsuarioComponent {
 
   readonly loading = signal<boolean>(false);
   private readonly authService = inject(AuthService);
