@@ -1,12 +1,10 @@
-import { Component, signal, inject, effect, computed } from '@angular/core';
+import { Component, signal, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { catchError, concatMap, EMPTY, first, map, of, tap } from 'rxjs';
+import { catchError, first, map, of } from 'rxjs';
 import { Autor, ListadoLivros } from '@interfaces';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
-import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Nacionalidade, SimpleObjet, Pais } from '../../../shared/models/outros.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,8 +16,6 @@ import { AutorFormStateService } from './autor-form-state.service';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
 import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
-import { environment, environments } from '../../../../environments/environment';
-import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-autor',
@@ -28,18 +24,16 @@ import { TranslocoService } from '@jsverse/transloco';
     MatNativeDateModule, MatAutocompleteModule, AutorFormPresenterComponent, ListadoLivrosElementoComponent ],
   templateUrl: './autor.component.html',
   styleUrls: ['./autor.component.scss'],
-  providers: [AutorFormStateService]
+  providers: [{provide: 'OMeuServizoToken', useClass: AutoresService}, AutorFormStateService]
 })
-export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
+export class AutorComponent extends BaseElementoSignalsComponent<Autor, AutoresService> {
 
-  private route = inject(ActivatedRoute);
   private outrosService = inject(OutrosService);
   private autoresService = inject(AutoresService);
   private livrosService = inject(LivrosService);
 
   private readonly formState = inject(AutorFormStateService);
 
-  estadosPagina = EstadosPagina;
   dadosLivrosDoAutor = signal<ListadoLivros[]>([]);
   date = new Date();
 
@@ -49,12 +43,12 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
     ),
     { initialValue: '0' }
   );
-  modo = computed(() => {
-    if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
-      return EstadosPagina.soVisualizar;
-    };
-    return this.idAutor() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar;
-  });
+  // modo = computed(() => {
+  //   if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+  //     return EstadosPagina.soVisualizar;
+  //   };
+  //   return this.idAutor() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar;
+  // });
 
   nacionalidadesResource = rxResource({
     stream: () => {
@@ -102,7 +96,7 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
       // Se o ID é '0' (modo engadir), non facemos petición HTTP e devolvemos null
       if (!currentId || currentId === '0') return of(null);
 
-      return this.autoresService.getAutor(currentId).pipe(
+      return this.autoresService.getPorId(currentId).pipe(
         first(),
         map(v => this.dadosObtidos(v)),
         catchError((e) => {
@@ -134,6 +128,9 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
     // Sincroniza os datos do autor (Se os necesitas nunha propiedade local)
     effect(() => {
       const autor = this.autorResource.value();
+      if (autor) {
+        this.dadosDoElemento = autor;   // para que BaseGardarComponent tenha o id do elemento
+      }
 
       // Lemos os estados de carga dos outros dous recursos
       const nacionalidadesListas = this.nacionalidadesResource.hasValue();
@@ -170,63 +167,16 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor> {
     }));
   }
 
-  onSubmit(event: SubmitEvent) {
-    if (this.formState.autorForm().invalid()) return;
+  protected isFormValid(): boolean {
+    return !this.formState.autorForm().invalid();
+  }
 
-    const botonPremido = (event.submitter as HTMLButtonElement)?.value;
-    const nomeFormulario = String(this.formState.autorForm.nome().value()).trim();
+  protected createElementoForm(): Autor {
+    const elemento = this.formState.criarObjetoAutor(this.idAutor());
+    return elemento;
+  }
 
-    this.autoresService.getAutorPorNome(nomeFormulario).pipe(
-      first(),  // Collo o primeiro valor da consulta do nome e pechamos esa canle
-      concatMap((autorRepetido) => {  // concatMap asegura que a seguinte chamada agarde a que esta remate sem cancelarse
-        if (autorRepetido && autorRepetido.meta.quantidade > 0) {
-          if (botonPremido === EstadosPagina.engadir || autorRepetido.meta.id !== this.autorResource.value()?.id) {
-            this.layoutService.amosarInfo({
-              tipo: InformacomPeTipo.Aviso,
-              mensagem: this.translocoService.translate('common.nameExists', { name: nomeFormulario })
-            });
-            return EMPTY; // Corta o fluxo de forma segura se está repetido
-          }
-        }
-
-        const autor = this.formState.criarObjetoAutor(this.autorResource.value()?.id);
-        if (botonPremido === EstadosPagina.engadir) {
-          return this.autoresService.postAutor(autor).pipe(
-            first(),
-            tap((v) => {
-              this.gestionarRetroceso(v, autor, DadosComplentarios.Autor);
-              this.layoutService.amosarInfo({
-                tipo: InformacomPeTipo.Sucesso,
-                mensagem: this.translocoService.translate('common.itemAdded')
-              });
-            })
-          );
-        } else {
-          return this.autoresService.putAutor(autor).pipe(
-            first(),
-            tap((v) => {
-              this.gestionarRetroceso(v, autor, DadosComplentarios.Autor);
-              this.layoutService.amosarInfo({
-                tipo: InformacomPeTipo.Sucesso,
-                mensagem: this.translocoService.translate('common.itemSaved')
-              });
-            })
-          );
-        }
-      })
-    ).subscribe({
-      next: () => {
-        console.debug('Proceso finalizado');
-      },
-      error: (e: unknown) => {
-        console.error(e);
-        this.layoutService.amosarInfo({
-          tipo: InformacomPeTipo.Erro,
-          mensagem: botonPremido === EstadosPagina.engadir
-            ? this.translocoService.translate('common.addErrorMessage')
-            : this.translocoService.translate('common.saveErrorMessage')
-        });
-      }
-    });
+  protected getNomeElemento(): string {
+    return String(this.formState.autorModel().nome).trim();
   }
 }

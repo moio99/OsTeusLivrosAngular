@@ -2,7 +2,7 @@ import { FormControl } from "@angular/forms";
 import { Nacionalidade, Pais, Idioma, SerieLivro } from "../../shared/models/outros.model";
 import { Biblioteca } from "./biblioteca.interface";
 import { Colecom } from "./colecom.interface";
-import { Editorial } from "./editorial.interface";
+import { Editorial, EditorialForm } from "./editorial.interface";
 import { EstiloLiterario } from "./estilos-literarios.interface";
 import { Genero } from "./genero.interface";
 import { Autor } from "./autor.interface";

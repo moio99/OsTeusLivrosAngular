@@ -1,5 +1,5 @@
 
-<form [formGroup]="formuario" (ngSubmit)="onSubmit($event, dadosComplentarios.Editorial)">
+<form [formGroup]="editorialForm" (ngSubmit)="onSubmit($event, dadosComplentarios.Editorial)">
   @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
     <button color="primary" type="submit" value="{{modo()}}">
       <i class="icon-disk"></i> {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
@@ -11,13 +11,13 @@
   <div class="formulario-dados">
     <mat-form-field [style.width.px]=500>
       <mat-label>{{ 'common.name' | transloco }}:</mat-label>
-      <input matInput [formControl]="formuario.get('nome')" width="200">
-      @if (formuario.get('nome')?.hasError('maxlength')) {
+      <input matInput [formControl]="editorialForm.controls.nome" width="200">
+      @if (editorialForm.controls.nome?.hasError('maxlength')) {
         <mat-error>
           {{ 'common.lengthAtMost' | transloco: { count: 150 } }}
         </mat-error>
       }
-      @if (formuario.get('nome')?.hasError('required')) {
+      @if (editorialForm.controls.nome?.hasError('required')) {
         <mat-error>
           {{ 'form.nameRequired' | transloco }}
         </mat-error>
@@ -26,8 +26,8 @@
 
     <mat-form-field [style.width.px]=500>
       <mat-label>{{ 'form.direction' | transloco }}:</mat-label>
-      <input matInput [formControl]="formuario.get('direicom')">
-      @if (formuario.get('direicom')?.hasError('maxlength')) {
+      <input matInput [formControl]="editorialForm.controls.direicom">
+      @if (editorialForm.controls.direicom?.hasError('maxlength')) {
         <mat-error>
           {{ 'common.lengthAtMost' | transloco: { count: 150 } }}
         </mat-error>
@@ -36,8 +36,8 @@
 
     <mat-form-field [style.width.px]=500>
       <mat-label>{{ 'common.web' | transloco }}:</mat-label>
-      <input matInput [formControl]="formuario.get('web')">
-      @if (formuario.get('web')?.hasError('maxlength')) {
+      <input matInput [formControl]="editorialForm.controls.web">
+      @if (editorialForm.controls.web?.hasError('maxlength')) {
         <mat-error>
           {{ 'common.lengthAtMost' | transloco: { count: 100 } }}
         </mat-error>
@@ -46,8 +46,8 @@
 
     <mat-form-field [style.width.px]=500>
       <mat-label>{{ 'common.comment' | transloco }}:</mat-label>
-      <textarea matInput [formControl]="formuario.get('comentario')" rows="4"></textarea>
-      @if (formuario.get('comentario')?.hasError('maxlength')) {
+      <textarea matInput [formControl]="editorialForm.controls.comentario" rows="4"></textarea>
+      @if (editorialForm.controls.comentario?.hasError('maxlength')) {
         <mat-error>
           {{ 'common.lengthAtMost' | transloco: { count: 5000 } }}
         </mat-error>

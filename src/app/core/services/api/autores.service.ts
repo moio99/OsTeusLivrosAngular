@@ -6,6 +6,7 @@ import { Observable, of, tap } from 'rxjs';
 import { ListadoAutores, ListadoConcretoAutoresData } from '../../models/listado-autores.interface';
 import { BaseQuantidadesLivros } from '../../models/quantidades.interface';
 import { BaseListadoDadosApi, ResultadoMeta } from '../../../shared/models/base-dados';
+import { BaseApiService } from './base-api.service';
 
 // @Injectable({
 //   providedIn: 'root',
@@ -16,15 +17,17 @@ import { BaseListadoDadosApi, ResultadoMeta } from '../../../shared/models/base-
 // providers: [EstadisticasService],
 // @Service() == @Service({ autoProvided: true })
 @Service()
-export class AutoresService {
+export class AutoresService extends BaseApiService<Autor> {
 
-  private rotaIntermedia = '/Autores';
+  protected rotaIntermedia = '/Autores';
+  protected getEntityName(): string {
+    return 'Autor';
+  }
+
   private cacheListadoAutoresData: BaseListadoDadosApi<ListadoAutores> | undefined = undefined;
   private cacheListadoAutoresParametros: ParametrosAutor | null = null;
   private cacheListadoAutoresPorNacons: ListadoConcretoAutoresData | undefined = undefined;
   private cacheListadoAutoresPorPaises: ListadoConcretoAutoresData | undefined = undefined;
-
-  private http = inject(HttpClient);
 
   /**
    * Quando nom estea em local guarda umha caché
@@ -117,29 +120,29 @@ export class AutoresService {
     }
   }
 
-  getAutor(id: string): Observable<BaseListadoDadosApi<Autor>> {
-    const params = new HttpParams().set('id', id);
-    return this.http.get<BaseListadoDadosApi<Autor>>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, { params });
-  }
+  // getAutor(id: string): Observable<BaseListadoDadosApi<Autor>> {
+  //   const params = new HttpParams().set('id', id);
+  //   return this.http.get<BaseListadoDadosApi<Autor>>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, { params });
+  // }
 
-  getAutorPorNome(nome: string): Observable<AutorData<Autor>> {
-    const params = new HttpParams().set('nome', nome);
-    return this.http.get<AutorData<Autor>>(`${environment.apiUrl}${this.rotaIntermedia}/AutorPorNome`, { params });
-  }
+  // getAutorPorNome(nome: string): Observable<AutorData<Autor>> {
+  //   const params = new HttpParams().set('nome', nome);
+  //   return this.http.get<AutorData<Autor>>(`${environment.apiUrl}${this.rotaIntermedia}/AutorPorNome`, { params });
+  // }
 
-  postAutor(autor: Autor): Observable<ResultadoMeta> {
-    console.debug('engadindo autor...');
-    return this.http.post<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, autor);
-  }
+  // postAutor(autor: Autor): Observable<ResultadoMeta> {
+  //   console.debug('engadindo autor...');
+  //   return this.http.post<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, autor);
+  // }
 
-  putAutor(autor: Autor): Observable<ResultadoMeta> {
-    console.debug(autor);
-    return this.http.put<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, autor);
-  }
+  // putAutor(autor: Autor): Observable<ResultadoMeta> {
+  //   console.debug(autor);
+  //   return this.http.put<ResultadoMeta>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, autor);
+  // }
 
-  borrarAutor(id: number) {
-    console.debug(id);
-    const params = new HttpParams().set('id', id);
-    return this.http.delete<BaseQuantidadesLivros>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, { params });
-  }
+  // borrarAutor(id: number) {
+  //   console.debug(id);
+  //   const params = new HttpParams().set('id', id);
+  //   return this.http.delete<BaseQuantidadesLivros>(`${environment.apiUrl}${this.rotaIntermedia}/Autor`, { params });
+  // }
 }

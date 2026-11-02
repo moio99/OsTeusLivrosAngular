@@ -2,7 +2,7 @@ import { Service } from "@angular/core";
 import { Outros } from "../../models/livro.interface";
 import { Genero } from "../../models/genero.interface";
 import { DadosComplentarios } from "../../../shared/enums/estadisticasTipos";
-import { Autor, Biblioteca, Colecom, Editorial, EstiloLiterario } from "@interfaces";
+import { Autor, Biblioteca, Colecom, EditorialForm, EstiloLiterario } from "@interfaces";
 
 // @Injectable({
 //   providedIn: 'root',

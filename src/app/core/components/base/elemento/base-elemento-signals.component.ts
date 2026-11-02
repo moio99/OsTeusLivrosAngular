@@ -1,26 +1,40 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DadosComplentarios, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
-import { LayoutService, DadosPaginasService } from '@servizosFlow';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { of } from 'rxjs';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
-import { BaseElemento, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
-import { DadosOutrosService } from '../../../services/flow/dados-outros.service';
-import { TranslocoService } from '@jsverse/transloco';
+import { BaseElemento, BaseListadoDadosApi, ParametrosId, ResultadoMeta } from '../../../../shared/models/base-dados';
+import { BaseGardarComponent } from './base-gardar.component';
+import { BaseApiService } from '@servizosApi';
+import { environment, environments } from '../../../../../environments/environment';
+import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 
 @Component({
   template: ''
 })
-export abstract class BaseElementoSignalsComponent<TElemento extends BaseElemento> {
+export abstract class BaseElementoSignalsComponent<TElemento extends BaseElemento, TServico extends BaseApiService<TElemento>>
+  extends BaseGardarComponent<TElemento, TServico> {
 
-  protected layoutService = inject(LayoutService);
+  protected route = inject(ActivatedRoute);
   protected router = inject(Router);
-  private location = inject(Location);
-  private dadosPaginasService = inject(DadosPaginasService);
-  protected dadosOutrosService = inject(DadosOutrosService);
-  protected translocoService = inject(TranslocoService);
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      const parametros = params as ParametrosId;
+      this.elementoId = parametros.id;
+
+      if (parametros.id === '0') {
+        this.modo.set(EstadosPagina.engadir);
+      } else {
+        this.modo.set(EstadosPagina.guardar);
+      }
+
+      if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+        this.modo.set(EstadosPagina.soVisualizar);
+      }
+    });
+  }
 
   protected dadosLivrosElementoObtidos(data: object): ListadoLivros[] {
     let resultados: ListadoLivros[];

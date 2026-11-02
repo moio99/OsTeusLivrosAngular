@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LivrosService, EstilosLiterariosService } from '@servizosApi';
 import { BaseElementoComponent } from '@componhentesComuns';
-import { EstiloLiterario } from '@interfaces';
+import { EstiloLiterario, EstiloLiterarioForm } from '@interfaces';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
@@ -19,26 +19,22 @@ import { TranslocoPipe } from '@jsverse/transloco';
 })
 export class EstiloLiterarioComponent extends BaseElementoComponent<EstiloLiterario, EstilosLiterariosService> {
 
-  ef: FormGroup;
   override dadosDoElemento: EstiloLiterario | undefined = {
     id: 0,
     nome: '',
     comentario: ''
   };
 
-  private livrosService = inject(LivrosService);
-
-  constructor() {
-    super();
-
-    this.ef = new FormGroup({
+  private fb = inject(FormBuilder);
+  estiloLiterarioForm = this.fb.group<EstiloLiterarioForm>({
       nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
       comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
     });
-  }
 
-  protected get formuario(): any {
-    return this.ef;
+  private livrosService = inject(LivrosService);
+
+  protected get formuario(): FormGroup<EstiloLiterarioForm> {
+    return this.estiloLiterarioForm;
   }
 
   protected serviceGetLivros(id: string) {
@@ -46,7 +42,7 @@ export class EstiloLiterarioComponent extends BaseElementoComponent<EstiloLitera
   }
 
   protected updateFormValues(estiloLiterario: EstiloLiterario) {
-    this.ef.patchValue({
+    this.estiloLiterarioForm.patchValue({
       nome: estiloLiterario.nome,
       comentario: estiloLiterario.comentario
     });
@@ -55,16 +51,10 @@ export class EstiloLiterarioComponent extends BaseElementoComponent<EstiloLitera
   protected createElementoForm(): EstiloLiterario {
     const estiloLiterario: EstiloLiterario = {
       id: Number(this.dadosDoElemento?.id),
-      nome: String(this.formuario.get('nome').value),
-      comentario: (this.formuario.get('comentario').value == null) ? null : String(this.formuario.get('comentario').value).trim()
+      nome: String(this.estiloLiterarioForm.controls.nome.value),
+      comentario: (this.estiloLiterarioForm.controls.comentario.value == null) ? null : String(this.estiloLiterarioForm.controls.comentario.value).trim()
     };
     return estiloLiterario;
-  }
-
-  protected getErrorMessage(context: string): string {
-    return context === 'obtención'
-      ? 'common.loadDataError'
-      : 'common.noDataReceived';
   }
 
   protected getLivrosErrorMessage(): string {
@@ -72,6 +62,10 @@ export class EstiloLiterarioComponent extends BaseElementoComponent<EstiloLitera
   }
 
   protected getNomeElemento(): string {
-    return this.ef.controls['nome'].value ?? '';
+    return this.estiloLiterarioForm.controls.nome.value ?? '';
+  }
+
+  protected isFormValid(): boolean {
+    return Object.values(this.formuario.controls).every(control => control.status === 'VALID');
   }
 }

@@ -5,7 +5,7 @@ import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { EstiloLiterarioComponent } from '../estilo-literario/estilo-literario.component';
 import { EstilosLiterariosService } from '@servizosApi';
-import { Editorial, EstiloLiterario, ListadoEstilosLiterarios } from '@interfaces';
+import { EditorialForm, EstiloLiterario, ListadoEstilosLiterarios } from '@interfaces';
 import { Observable } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoDadosApi } from '../../../shared/models/base-dados';

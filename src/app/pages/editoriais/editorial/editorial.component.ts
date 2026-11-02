@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Editorial } from '@interfaces';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Editorial, EditorialForm } from '@interfaces';
 import { EditoriaisService, LivrosService } from '@servizosApi';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,7 +18,6 @@ import { TranslocoPipe } from '@jsverse/transloco';
 })
 export class EditorialComponent extends BaseElementoComponent<Editorial, EditoriaisService> {
 
-  ef: FormGroup;
   override dadosDoElemento: Editorial | undefined = {
     id: 0,
     nome: '',
@@ -27,40 +26,38 @@ export class EditorialComponent extends BaseElementoComponent<Editorial, Editori
     comentario: ''
   };
 
+  private fb = inject(FormBuilder);
+  editorialForm = this.fb.group<EditorialForm>({
+    nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
+    web: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
+    direicom: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
+    comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
+  });
+
   private livrosService = inject(LivrosService);
 
-  constructor() {
-    super();
+  // constructor() {
+  //   super();
 
-    this.ef = new FormGroup({
-      nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
-      direicom: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
-      web: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
-      comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
-    });
-  }
-
-  protected get formuario(): any {
-    return this.ef;
-  }
+  //   this.ef = new FormGroup({
+  //     nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
+  //     direicom: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
+  //     web: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
+  //     comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
+  //   });
+  // }
 
   protected serviceGetLivros(id: string) {
     return this.livrosService.getLivrosPorEditorial(id);
   }
 
   protected updateFormValues(editorial: Editorial) {
-    this.ef.patchValue({
+    this.editorialForm.patchValue({
       nome: editorial.nome,
       direicom: editorial.direicom,
       web: editorial.web,
       comentario: editorial.comentario
     });
-  }
-
-  protected getErrorMessage(context: string): string {
-    return context === 'obtención'
-      ? 'common.loadDataError'
-      : 'common.noDataReceived';
   }
 
   protected getLivrosErrorMessage(): string {
@@ -70,15 +67,19 @@ export class EditorialComponent extends BaseElementoComponent<Editorial, Editori
   protected createElementoForm(): Editorial {
     const editorial: Editorial = {
       id: Number(this.dadosDoElemento?.id),
-      nome: String(this.formuario.get('nome').value),
-      direicom: (this.formuario.get('direicom').value == null) ? null : String(this.formuario.get('direicom').value).trim(),
-      web: (this.formuario.get('web').value == null) ? null : String(this.formuario.get('web').value).trim(),
-      comentario: (this.formuario.get('comentario').value == null) ? null : String(this.formuario.get('comentario').value).trim()
+      nome: String(this.editorialForm.controls.nome.value),
+      direicom: (this.editorialForm.controls.direicom.value == null) ? null : String(this.editorialForm.controls.direicom.value).trim(),
+      web: (this.editorialForm.controls.web.value == null) ? null : String(this.editorialForm.controls.web.value).trim(),
+      comentario: (this.editorialForm.controls.comentario.value == null) ? null : String(this.editorialForm.controls.comentario.value).trim()
     };
     return editorial;
   }
 
   protected getNomeElemento(): string {
-    return this.ef.controls['nome'].value ?? '';
+    return this.editorialForm.controls.nome.value ?? '';
+  }
+
+  protected isFormValid(): boolean {
+    return Object.values(this.editorialForm.controls).every(control => control.status === 'VALID');
   }
 }

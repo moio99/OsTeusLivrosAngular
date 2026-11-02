@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BibliotecasService, LivrosService } from '@servizosApi';
@@ -9,15 +9,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { first, map, catchError, of, switchMap, EMPTY, tap } from 'rxjs';
-import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { first, map, catchError, of } from 'rxjs';
 import { BibliotecaFormPresenterComponent } from './biblioteca-form-presenter.component';
 import { BibliotecaFormStateService } from './biblioteca-form-state.service';
-import { ActivatedRoute } from '@angular/router';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
-import { environment, environments } from '../../../../environments/environment';
-import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'omla-biblioteca',
@@ -28,9 +24,8 @@ import { TranslocoService } from '@jsverse/transloco';
   styleUrls: ['./biblioteca.component.scss'],
   providers: [ {provide: 'OMeuServizoToken', useClass: BibliotecasService}, BibliotecaFormStateService ]
 })
-export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca> {
+export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca, BibliotecasService> {
 
-  private route = inject(ActivatedRoute);
   private livrosService = inject(LivrosService);
   private bibliotecasService = inject(BibliotecasService);
   private formState = inject(BibliotecaFormStateService);
@@ -41,12 +36,6 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
     ),
     { initialValue: '0' }
   );
-  modo = computed(() => {
-    if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
-      return EstadosPagina.soVisualizar;
-    };
-    return this.idBiblioteca() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar;
-  });
 
   bibliotecaResource = rxResource({
     params: () => this.idBiblioteca(),
@@ -82,73 +71,22 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
     effect(() => {
       const biblioteca = this.bibliotecaResource.value();
       if (biblioteca) {
+        this.dadosDoElemento = biblioteca;                    // para que BaseGardarComponent tenha o id do elemento
         this.formState.atualizarFromBiblioteca(biblioteca);   // Establece os datos para o formulario
       }
     });
   }
 
-  onSubmit(): void {
-    if (this.formState.bibliotecaForm().invalid()) return;
+  protected isFormValid(): boolean {
+    return !this.formState.bibliotecaForm().invalid();
+  }
 
-    this.formState.chamandoAPI.set(true);
-    const nomeValue = String(this.formState.bibliotecaModel().nome).trim();
+  protected createElementoForm(): Biblioteca {
     const elemento = this.formState.criarObjetoBiblioteca(this.idBiblioteca());
+    return elemento;
+  }
 
-    // Encadeamos de xeito reactivo as dúas peticións do servidor
-    this.bibliotecasService.getPorNome(nomeValue).pipe(
-      first(),
-      // O operador switchMap intercepta o resultado de duplicados e decide o seguinte fluxo
-      switchMap((elementoExistente: any) => {
-        const isDuplicate = elementoExistente?.meta?.quantidade > 0 &&
-          (this.modo() === EstadosPagina.engadir ||
-          (this.modo() === EstadosPagina.guardar && elementoExistente.meta.id.toString() !== this.idBiblioteca()));
-
-        if (isDuplicate) {
-          this.layoutService.amosarInfo({
-            tipo: InformacomPeTipo.Aviso,
-            mensagem: this.translocoService.translate('common.nameExists', { name: nomeValue })
-          });
-          this.formState.chamandoAPI.set(false);
-          // Cortamos o fluxo devolvendo un observable baleiro sen facer o gardado
-          return EMPTY;
-        }
-
-        if ( this.modo() === EstadosPagina.engadir) {
-          return this.bibliotecasService.create(elemento).pipe(
-            first(),
-            tap(() => {
-              this.layoutService.amosarInfo({
-                tipo: InformacomPeTipo.Sucesso,
-                mensagem: this.translocoService.translate('common.itemAdded')
-              });
-            })
-          );
-        } else {
-          return this.bibliotecasService.update(elemento).pipe(
-            first(),
-            tap(() => {
-              this.layoutService.amosarInfo({
-                tipo: InformacomPeTipo.Sucesso,
-                mensagem: this.translocoService.translate('common.itemSaved')
-              });
-            })
-          );
-        }
-      })
-    ).subscribe({
-      next: (v: any) => {
-        this.formState.chamandoAPI.set(false);
-        this.gestionarRetroceso(v, elemento, DadosComplentarios.Biblioteca);
-      },
-      error: (e: unknown) => {
-        console.error(e);
-        this.formState.chamandoAPI.set(false);
-        this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-          mensagem: this.modo() === EstadosPagina.engadir
-            ? this.translocoService.translate('common.addErrorMessage')
-            : this.translocoService.translate('common.saveErrorMessage')
-        });
-      }
-    });
+  protected getNomeElemento(): string {
+    return String(this.formState.bibliotecaModel().nome).trim();
   }
 }

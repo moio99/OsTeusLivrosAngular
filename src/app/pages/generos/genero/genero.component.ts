@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Genero, GeneroForm } from '@interfaces';
@@ -19,25 +19,21 @@ import { TranslocoPipe } from '@jsverse/transloco';
 })
 export class GeneroComponent extends BaseElementoComponent<Genero, GenerosService> {
 
-  generoForm!: FormGroup<GeneroForm>;
   override dadosDoElemento: Genero | undefined = {
     id: 0,
     nome: '',
     comentario: ''
   };
 
+  private fb = inject(FormBuilder);
+  generoForm = this.fb.group<GeneroForm>({
+      nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
+      comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
+    });
+
   private livrosService = inject(LivrosService);
 
-  constructor() {
-    super();
-
-    this.generoForm = new FormGroup<GeneroForm>({
-      nome: new FormControl({value: '', disabled: this.disabledFormulario}, { validators: [Validators.required, Validators.maxLength(150)]} ),
-      comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
-    })
-  }
-
-  protected get formuario(): any {
+  protected get formuario(): FormGroup<GeneroForm> {
     return this.generoForm;
   }
 
@@ -62,17 +58,15 @@ export class GeneroComponent extends BaseElementoComponent<Genero, GenerosServic
     return genero;
   }
 
-  protected getErrorMessage(context: string): string {
-    return context === 'obtención'
-      ? 'common.loadDataError'
-      : 'common.noDataReceived';
-  }
-
   protected getLivrosErrorMessage(): string {
     return 'common.books';
   }
 
   protected getNomeElemento(): string {
     return this.generoForm.controls.nome.value ?? '';
+  }
+
+  protected isFormValid(): boolean {
+    return Object.values(this.formuario.controls).every(control => control.status === 'VALID');
   }
 }

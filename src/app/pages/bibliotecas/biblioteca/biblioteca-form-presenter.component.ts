@@ -26,7 +26,7 @@ export class BibliotecaFormPresenterComponent {
 
   modo = input(EstadosPagina.soVisualizar);
 
-  submitForm = output<SubmitEvent>();
+  submitForm = output<Event>();
   cancelar = output<void>();
 
   /**

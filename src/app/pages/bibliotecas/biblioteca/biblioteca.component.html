@@ -1,6 +1,6 @@
 <omla-biblioteca-form-presenter
   [modo]="modo()"
-  (submitForm)="onSubmit()"
+  (submitForm)="onSubmit($event, dadosComplentarios.Biblioteca)"
   (cancelar)="onCancelar()" />
 
 <omla-listado-livros-elemento

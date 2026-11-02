@@ -2,7 +2,7 @@ import { Service } from "@angular/core";
 import { Outros } from "../../models/livro.interface";
 import { Genero } from "../../models/genero.interface";
 import { DadosComplentarios } from "../../../shared/enums/estadisticasTipos";
-import { Autor, Biblioteca, Colecom, Editorial, EstiloLiterario } from "@interfaces";
+import { Autor, Biblioteca, Colecom, Editorial, EditorialForm, EstiloLiterario } from "@interfaces";
 
 // @Injectable({
 //   providedIn: 'root',
@@ -40,7 +40,7 @@ export class DadosOutrosService {
    * @param dado autor, genero, biblioteca etc. a engadir ou actualizar
    * @param tipo tipo de dado, podendo ser Autor, Genero, Biblioteca, Editorial, Colecom ou EstiloLiterario
    */
-  setElementoDadosOutrosCache(dado: Autor | Genero | Biblioteca | Editorial | Colecom | EstiloLiterario, tipo: DadosComplentarios) {
+  setElementoDadosOutrosCache(dado: Autor | Genero | Biblioteca | EditorialForm | Colecom | EstiloLiterario, tipo: DadosComplentarios) {
     if (!this.dadosOutrosCache) return;
 
     switch (tipo) {

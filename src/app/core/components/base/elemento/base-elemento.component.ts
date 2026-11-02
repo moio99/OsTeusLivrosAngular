@@ -18,6 +18,7 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
   protected livrosDoElemento = signal<ListadoLivros[]>([]);
   protected readonly temLivros = computed(() => this.livrosDoElemento().length > 0); // só se le umha vez (quando cambia dadosRelecturas) polo que evita a cpu habaliar a expreson cada vez que pinta ou que sucede um evento na página relacionado.
 
+  protected abstract updateFormValues(eleemnto: TElemento): void;
   protected abstract serviceGetLivros(id: string): any;
   protected abstract getLivrosErrorMessage(): string;
 
@@ -113,5 +114,11 @@ export abstract class BaseElementoComponent<TElemento extends BaseElemento, TSer
         },
         complete: () => console.debug('completada a obtençom dos livros')
       });
+  }
+
+  private getErrorMessage(context: string): string {
+    return context === 'obtención'
+      ? 'common.loadDataError'
+      : 'common.noDataReceived';
   }
 }

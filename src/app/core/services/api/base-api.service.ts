@@ -16,7 +16,7 @@ export abstract class BaseApiService<T> {
   protected abstract rotaIntermedia: string;              	// De obrigada implementaçom na clase que a extende
   protected cacheData: BaseListadoDadosApi<T> | undefined = undefined;
 
-  private http = inject(HttpClient);
+  protected http = inject(HttpClient);
 
   // Métodos comuns
   getListado(): Observable<T[]> {

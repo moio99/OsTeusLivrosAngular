@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Colecom, ColecomForm } from '@interfaces';
@@ -36,7 +36,7 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
 
   private livrosService = inject(LivrosService);
 
-  protected get formuario(): any {
+  protected get formuario(): FormGroup<ColecomForm> {
     return this.colecomForm;
   }
 
@@ -64,17 +64,15 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
     return colecom;
   }
 
-  protected getErrorMessage(context: string): string {
-    return context === 'obtención'
-      ? 'common.loadDataError'
-      : 'common.noDataReceived';
-  }
-
   protected getLivrosErrorMessage(): string {
     return 'common.books';
   }
 
   protected getNomeElemento(): string {
     return this.colecomForm.controls.nome.value ?? '';
+  }
+
+  protected isFormValid(): boolean {
+    return Object.values(this.formuario.controls).every(control => control.status === 'VALID');
   }
 }
