@@ -7,11 +7,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BaseElementoComponent } from '@componhentesComuns';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { HtmlCompartilhadoRFComponent } from '../../../core/components/base/html-compartilhado-reactive-forms.component';
 
 @Component({
   selector: 'omla-editorial',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, TranslocoPipe ],
+  imports: [ CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, TranslocoPipe,
+    HtmlCompartilhadoRFComponent
+   ],
   templateUrl: './editorial.component.html',
   styleUrls: ['./editorial.component.scss'],
   providers: [ {provide: 'OMeuServizoToken', useClass: EditoriaisService} ]
@@ -35,17 +38,6 @@ export class EditorialComponent extends BaseElementoComponent<Editorial, Editori
   });
 
   private livrosService = inject(LivrosService);
-
-  // constructor() {
-  //   super();
-
-  //   this.ef = new FormGroup({
-  //     nome: new FormControl({ value: '', disabled: this.disabledFormulario}, [Validators.required, Validators.maxLength(150)]),
-  //     direicom: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
-  //     web: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(150)),
-  //     comentario: new FormControl({ value: '', disabled: this.disabledFormulario}, Validators.maxLength(50000))
-  //   });
-  // }
 
   protected serviceGetLivros(id: string) {
     return this.livrosService.getLivrosPorEditorial(id);

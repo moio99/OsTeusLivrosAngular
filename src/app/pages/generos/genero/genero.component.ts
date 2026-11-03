@@ -7,12 +7,13 @@ import { Genero, GeneroForm } from '@interfaces';
 import { GenerosService, LivrosService} from '@servizosApi';
 import { BaseElementoComponent } from '@componhentesComuns';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { HtmlCompartilhadoRFComponent } from '../../../core/components/base/html-compartilhado-reactive-forms.component';
 
 @Component({
   selector: 'omla-genero',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslocoPipe
-    /* , MatDatepickerModule, MatNativeDateModule */],
+  imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslocoPipe,
+    HtmlCompartilhadoRFComponent /* , MatDatepickerModule, MatNativeDateModule */],
   templateUrl: './genero.component.html',
   styleUrls: ['./genero.component.scss'],
     providers: [ {provide: 'OMeuServizoToken', useClass: GenerosService} ]

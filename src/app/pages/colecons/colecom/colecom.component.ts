@@ -7,11 +7,13 @@ import { Colecom, ColecomForm } from '@interfaces';
 import { ColeconsService, LivrosService } from '@servizosApi';
 import { BaseElementoComponent } from '@componhentesComuns';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { HtmlCompartilhadoRFComponent } from '../../../core/components/base/html-compartilhado-reactive-forms.component';
 
 @Component({
   selector: 'omla-colecom',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslocoPipe ],
+  imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslocoPipe,
+    HtmlCompartilhadoRFComponent ],
   templateUrl: './colecom.component.html',
   styleUrls: ['./colecom.component.scss'],
   providers: [ {provide: 'OMeuServizoToken', useClass: ColeconsService} ]
@@ -74,5 +76,13 @@ export class ColecomComponent extends BaseElementoComponent<Colecom, ColeconsSer
 
   protected isFormValid(): boolean {
     return Object.values(this.formuario.controls).every(control => control.status === 'VALID');
+  }
+
+  saveUser() {
+    console.log('Gardando usuario:');
+  }
+
+  goBack() {
+    console.log('Retrocedendo desde usuario...');
   }
 }

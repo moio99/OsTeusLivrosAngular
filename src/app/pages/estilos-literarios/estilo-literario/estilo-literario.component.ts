@@ -7,12 +7,13 @@ import { LivrosService, EstilosLiterariosService } from '@servizosApi';
 import { BaseElementoComponent } from '@componhentesComuns';
 import { EstiloLiterario, EstiloLiterarioForm } from '@interfaces';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { HtmlCompartilhadoRFComponent } from '../../../core/components/base/html-compartilhado-reactive-forms.component';
 
 @Component({
   selector: 'omla-estilo-literario',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslocoPipe
-    /* , MatDatepickerModule, MatNativeDateModule */],
+  imports: [ CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslocoPipe,
+    HtmlCompartilhadoRFComponent /* , MatDatepickerModule, MatNativeDateModule */],
   templateUrl: './estilo-literario.component.html',
   styleUrls: ['./estilo-literario.component.scss'],
   providers: [ {provide: 'OMeuServizoToken', useClass: EstilosLiterariosService}, EstilosLiterariosService ]

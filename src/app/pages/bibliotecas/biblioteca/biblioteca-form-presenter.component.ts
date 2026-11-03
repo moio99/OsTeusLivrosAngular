@@ -10,12 +10,13 @@ import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { BibliotecaFormStateService } from './biblioteca-form-state.service';
 import { FormField, FormRoot } from '@angular/forms/signals';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { HtmlCompartilhadoSFComponent } from '../../../core/components/base/html-compartilhado-signal-forms.component';
 
 @Component({
   selector: 'omla-biblioteca-form-presenter',
   standalone: true,
   imports: [ CommonModule, FormsModule, FormRoot, FormField, MatFormFieldModule, MatInputModule, MatNativeDateModule,
-    MatDatepickerModule, MatAutocompleteModule, TranslocoPipe ],
+    MatDatepickerModule, MatAutocompleteModule, TranslocoPipe, HtmlCompartilhadoSFComponent ],
   templateUrl: './biblioteca-form-presenter.component.html'
 })
 export class BibliotecaFormPresenterComponent {

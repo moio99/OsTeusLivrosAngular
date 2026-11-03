@@ -1,28 +1,9 @@
-
 <form [formGroup]="editorialForm" (ngSubmit)="onSubmit($event, dadosComplentarios.Editorial)">
-  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
-    <button color="primary" type="submit" value="{{modo()}}">
-      <i class="icon-disk"></i> {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
-    </button>
-    <button color="primary" type="button" (click)="onCancelar()">
-      <i class="icon-disk"></i> {{ 'common.back' | transloco }}
-    </button>
-  }
-  <div class="formulario-dados">
-    <mat-form-field [style.width.px]=500>
-      <mat-label>{{ 'common.name' | transloco }}:</mat-label>
-      <input matInput [formControl]="editorialForm.controls.nome" width="200">
-      @if (editorialForm.controls.nome?.hasError('maxlength')) {
-        <mat-error>
-          {{ 'common.lengthAtMost' | transloco: { count: 150 } }}
-        </mat-error>
-      }
-      @if (editorialForm.controls.nome?.hasError('required')) {
-        <mat-error>
-          {{ 'form.nameRequired' | transloco }}
-        </mat-error>
-      }
-    </mat-form-field>
+  <omla-html-compartilhado-rf
+    [modo]="modo()"
+    [nome]="editorialForm.controls.nome"
+    [comentario]="editorialForm.controls.comentario"
+    (onCancelar)="onCancelar()">
 
     <mat-form-field [style.width.px]=500>
       <mat-label>{{ 'form.direction' | transloco }}:</mat-label>
@@ -44,16 +25,7 @@
       }
     </mat-form-field>
 
-    <mat-form-field [style.width.px]=500>
-      <mat-label>{{ 'common.comment' | transloco }}:</mat-label>
-      <textarea matInput [formControl]="editorialForm.controls.comentario" rows="4"></textarea>
-      @if (editorialForm.controls.comentario?.hasError('maxlength')) {
-        <mat-error>
-          {{ 'common.lengthAtMost' | transloco: { count: 5000 } }}
-        </mat-error>
-      }
-    </mat-form-field>
-  </div>
+  </omla-html-compartilhado-rf>
 </form>
 
 @if (temLivros()) {

@@ -10,12 +10,13 @@ import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutorFormStateService } from './autor-form-state.service';
 import { FormRoot, FormField } from '@angular/forms/signals';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { HtmlCompartilhadoSFComponent } from '../../../core/components/base/html-compartilhado-signal-forms.component';
 
 @Component({
   selector: 'omla-autor-form-presenter',
   standalone: true,
   imports: [ CommonModule, FormsModule, FormRoot, FormField, MatFormFieldModule, MatInputModule, MatNativeDateModule,
-    MatDatepickerModule, MatAutocompleteModule, TranslocoPipe ],
+    MatDatepickerModule, MatAutocompleteModule, TranslocoPipe, HtmlCompartilhadoSFComponent ],
   templateUrl: './autor-form-presenter.component.html'
 })
 export class AutorFormPresenterComponent {

@@ -1,24 +1,11 @@
 <form [formRoot]="formState.autorForm" (ngSubmit)="submitForm.emit($event)">
-  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
-    <button color="primary" type="submit" [value]="modo()">
-      <i class="icon-disk"></i> {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
-    </button>
-    <button color="primary" type="button" (click)="cancelar.emit()">
-      <i class="icon-disk"></i> {{ 'common.back' | transloco }}
-    </button>
-  }
-  <div class="formulario-dados">
-    <div>
-      <mat-form-field [style.width.px]="400">
-        <mat-label>{{ 'common.name' | transloco }}:</mat-label>
-        <input matInput [formField]="formState.autorForm.nome">
-        @for (erro of formState.autorForm.nome().errors(); track erro.kind) {
-          <mat-error>
-            {{ (erro.kind === 'required' ? 'common.required' : erro.kind === 'datasInvalidas' ? 'common.invalidDates' : 'common.tooLong') | transloco }}
-          </mat-error>
-        }
-      </mat-form-field>
+  <omla-html-compartilhado-sf
+    [modo]="modo()"
+    [nome]="formState.autorForm.nome"
+    [comentario]="formState.autorForm.comentario"
+    (onCancelar)="cancelar.emit()">
 
+    <div>
       <mat-form-field [style.width.px]="400">
         <mat-label>{{ 'form.realName' | transloco }}:</mat-label>
         <input matInput [formField]="formState.autorForm.nomeReal">
@@ -105,11 +92,6 @@
         </mat-autocomplete>
       </mat-form-field>
     </div>
-    <div>
-      <mat-form-field [style.width.px]="700">
-        <mat-label>{{ 'common.comment' | transloco }}:</mat-label>
-        <textarea matInput [formField]="formState.autorForm.comentario" rows="4"></textarea>
-      </mat-form-field>
-    </div>
-  </div>
+
+  </omla-html-compartilhado-sf>
 </form>
