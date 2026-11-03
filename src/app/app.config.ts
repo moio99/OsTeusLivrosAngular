@@ -8,6 +8,33 @@ import { desvioJava } from './core/interceptors/desvio-java.interceptor';
 import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@jsverse/transloco';
 import { provideTranslocoMessageformat } from '@jsverse/transloco-messageformat';
+import { environment, environments } from '../environments/environment';
+
+const availableLangs = ['gl', 'es', 'en', 'de', 'ca', 'eu', 'ast', 'pt', 'an', 'ga', 'fr', 'br', 'co', 'cy', 'sco', 'gd', 'it', 'sc', 'roa-gal'];
+
+function getInitialLang(): string {
+  if (typeof navigator === 'undefined' || environment.whereIAm === environments.dev) {
+    return 'gl';
+  }
+
+  const browserLangs = navigator.languages?.length
+    ? navigator.languages
+    : [navigator.language];
+
+  for (const browserLang of browserLangs) {
+    const normalizedLang = browserLang.toLowerCase();
+    const baseLang = normalizedLang.split('-')[0];
+    const match = availableLangs.find(lang =>
+      lang === normalizedLang || lang === baseLang
+    );
+
+    if (match) {
+      return match;
+    }
+  }
+
+  return 'gl';
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,8 +51,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
       provideTransloco({
         config: {
-          availableLangs: ['gl', 'es', 'en', 'de', 'ca', 'eu', 'ast', 'pt', 'an', 'ga', 'fr', 'br', 'co', 'cy', 'sco', 'gd', 'it', 'sc', 'roa-gal'],
-          defaultLang: 'gl',
+          availableLangs,
+          defaultLang: getInitialLang(),
           // Remove this option if your application doesn't support changing language in runtime.
           reRenderOnLangChange: true,
           prodMode: !isDevMode(),
