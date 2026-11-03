@@ -1,11 +1,11 @@
 <div class="login-container" [class.login-container-borde]="idUsuario === 0">
-  <h2 class="frase">
+  <h3 class="frase">
     @if (idUsuario === 0) {
       {{ 'signup.title' | transloco }}
     } @else {
       {{ 'signup.modify' | transloco }}
     }
-  </h2>
+  </h3>
   <p class="frase aclaracom">{{ 'signup.allRequired' | transloco }}</p>
 
   <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()" class="login-form">
@@ -127,12 +127,15 @@
           } @empty {
             <mat-option disabled>Idioma nom atopado</mat-option>
           } -->
-    <button type="submit" color="primary" [disabled]="loading() || usuarioForm.invalid">
-      @if (loading()) {
-        <span class="spinner-border spinner-border-sm"></span>
-      }
-      {{ loading() ? ('signup.sending' | transloco) : ('signup.submit' | transloco) }}
-    </button>
+    <div>
+      <button class="botom-guardar-resgistro" type="submit" color="primary"
+        [disabled]="loading() || usuarioForm.invalid">
+        @if (loading()) {
+          <span class="spinner-border spinner-border-sm"></span>
+        }
+        {{ loading() ? ('signup.sending' | transloco) : ('signup.submit' | transloco) }}
+      </button>
+    </div>
   </form>
 </div>
 @if (idUsuario === 0) {

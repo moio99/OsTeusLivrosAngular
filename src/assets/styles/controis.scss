@@ -36,9 +36,11 @@ button:disabled {
 .botom-guardar-resgistro {
   background: url(../images/guardar.png) no-repeat;
   background-size: 15px;
-  background-position: right;
-  background-color: constantes.$cor-botom;;
-  padding-right: 20px;
+
+   /* Alinha à dereita e separao 10px da borda interna */
+  background-position: right 10px center;
+  background-color: constantes.$cor-botom;
+  padding-right: 35px;
 }
 
 .popup-multiselecom {
