@@ -86,7 +86,7 @@
     "title": "Elenco dei libri", "byLanguage": "Elenco dei libri per lingua",
     "byYear": "Elenco dei libri del {{year}}", "byGenre": "Elenco dei libri per genere",
     "newBook": "Nuovo libro", "inverse": "(letti e non letti)",
-    "filterTitle": "Filtra per titolo...", "filterAuthor": "Filtra per autore...",
+    "filterTitle": "⌕ Filtra per titolo...", "filterAuthor": "⌕ Filtra per autore...",
     "count": "{count, plural, one {# libro} other {# libri}}", "authors": "Autore/i", "rereadsShort": "Riletture",
     "lastRead": "Fine lettura", "loadByLanguageError": "Impossibile caricare i libri per la lingua {{language}}.",
     "loadByYearError": "Impossibile caricare i libri del {{year}}.", "loadByGenreError": "Impossibile caricare i libri del genere {{genre}}.",
@@ -99,7 +99,7 @@
   "authorsList": {
     "title": "Elenco degli autori", "byNationality": "Per nazionalità", "byCountry": "Per paese",
     "count": "{count, plural, one {# autore} other {# autori}}", "newAuthor": "Nuovo autore",
-    "filter": "Filtra per nome...", "nationality": "Nazionalità", "country": "Paese"
+    "filter": "⌕ Filtra per nome...", "nationality": "Nazionalità", "country": "Paese"
   },
   "entityList": {
     "publishers": "Elenco degli editori", "libraries": "Elenco delle biblioteche", "collections": "Elenco delle collezioni",

@@ -5,77 +5,67 @@
     [comentario]="formState.bibliotecaForm.comentario"
     (onCancelar)="cancelar.emit()">
 
-    <div>
-      <mat-form-field [style.width.px]=500>
-        <mat-label>{{ 'common.address' | transloco }}:</mat-label>
-        <input matInput [formField]="formState.bibliotecaForm.endereco">
-        @if (formState.bibliotecaForm.endereco().getError('maxLength'); as erro) {
-          <mat-error>
-            {{ 'common.tooLong' | transloco }}
-          </mat-error>
-        }
-      </mat-form-field>
-    </div>
+    <mat-form-field [style.width.px]=500>
+      <mat-label>{{ 'common.address' | transloco }}:</mat-label>
+      <input matInput [formField]="formState.bibliotecaForm.endereco">
+      @if (formState.bibliotecaForm.endereco().getError('maxLength'); as erro) {
+        <mat-error>
+          {{ 'common.tooLong' | transloco }}
+        </mat-error>
+      }
+    </mat-form-field>
 
-    <div>
-      <mat-form-field [style.width.px]=300>
-        <mat-label>{{ 'common.location' | transloco }}:</mat-label>
-        <input matInput [formField]="formState.bibliotecaForm.localidade">
-        @if (formState.bibliotecaForm.localidade().getError('maxLength'); as erro) {
-          <mat-error>
-            {{ 'common.tooLong' | transloco }}
-          </mat-error>
-        }
-      </mat-form-field>
-    </div>
+    <mat-form-field [style.width.px]=300>
+      <mat-label>{{ 'common.location' | transloco }}:</mat-label>
+      <input matInput [formField]="formState.bibliotecaForm.localidade">
+      @if (formState.bibliotecaForm.localidade().getError('maxLength'); as erro) {
+        <mat-error>
+          {{ 'common.tooLong' | transloco }}
+        </mat-error>
+      }
+    </mat-form-field>
 
-    <div>
-      <mat-form-field [style.width.px]=150>
-        <mat-label>{{ 'common.phone' | transloco }}:</mat-label>
-        <input matInput [formField]="formState.bibliotecaForm.telefone">
-        @if (formState.bibliotecaForm.telefone().getError('maxLength'); as erro) {
-          <mat-error>
-            {{ 'common.tooLong' | transloco }}
-          </mat-error>
-        }
-      </mat-form-field>
-    </div>
+    <mat-form-field [style.width.px]=150>
+      <mat-label>{{ 'common.phone' | transloco }}:</mat-label>
+      <input matInput [formField]="formState.bibliotecaForm.telefone">
+      @if (formState.bibliotecaForm.telefone().getError('maxLength'); as erro) {
+        <mat-error>
+          {{ 'common.tooLong' | transloco }}
+        </mat-error>
+      }
+    </mat-form-field>
 
-    <div class="data-criacom">
-      <mat-form-field class="ancho-inputs" [style.width.px]=170>
-        <mat-label>{{ 'form.membershipDate' | transloco }}</mat-label>
-        <input matInput [matDatepicker]="fDateAso"
-          [formField]="formState.bibliotecaForm.dataAsociamento"
-          (keydown.enter)="onKeyDownImpedirEnvio($event)">
-        @if (modo() !== estadosPagina.soVisualizar) {
-          <mat-datepicker-toggle matSuffix [for]="fDateAso"></mat-datepicker-toggle>
-        }
-        <mat-datepicker #fDateAso></mat-datepicker>
-        @if (formState.bibliotecaForm.dataAsociamento().getError('matDatepickerParse'); as erro) {
-          <mat-error
-            [innerHTML]="'common.validDateFormat' | transloco">
-          </mat-error>
-        }
-      </mat-form-field>
-    </div>
+    <mat-form-field class="ancho-inputs" [style.width.px]=170>
+      <mat-label>{{ 'form.membershipDate' | transloco }}</mat-label>
+      <input matInput [matDatepicker]="fDateAso"
+        [formField]="formState.bibliotecaForm.dataAsociamento"
+        (keydown.enter)="onKeyDownImpedirEnvio($event)">
+      @if (modo() !== estadosPagina.soVisualizar) {
+        <mat-datepicker-toggle matSuffix [for]="fDateAso"></mat-datepicker-toggle>
+      }
+      <mat-datepicker #fDateAso></mat-datepicker>
+      @if (formState.bibliotecaForm.dataAsociamento().getError('matDatepickerParse'); as erro) {
+        <mat-error
+          [innerHTML]="'common.validDateFormat' | transloco">
+        </mat-error>
+      }
+    </mat-form-field>
 
-    <div class="data-criacom">
-      <mat-form-field class="ancho-inputs" [style.width.px]=170>
-        <mat-label>{{ 'entityList.renewalDate' | transloco }}</mat-label>
-        <input matInput [matDatepicker]="fDateRe"
-          [formField]="formState.bibliotecaForm.dataRenovacom"
-          (keydown.enter)="onKeyDownImpedirEnvio($event)">
-        @if (modo() !== estadosPagina.soVisualizar) {
-          <mat-datepicker-toggle matSuffix [for]="fDateRe"></mat-datepicker-toggle>
-        }
-        <mat-datepicker #fDateRe></mat-datepicker>
-        @if (formState.bibliotecaForm.dataRenovacom().getError('matDatepickerParse'); as erro) {
-          <mat-error
-            [innerHTML]="'common.validDateFormat' | transloco">
-          </mat-error>
-        }
-      </mat-form-field>
-    </div>
+    <mat-form-field class="ancho-inputs" [style.width.px]=170>
+      <mat-label>{{ 'entityList.renewalDate' | transloco }}</mat-label>
+      <input matInput [matDatepicker]="fDateRe"
+        [formField]="formState.bibliotecaForm.dataRenovacom"
+        (keydown.enter)="onKeyDownImpedirEnvio($event)">
+      @if (modo() !== estadosPagina.soVisualizar) {
+        <mat-datepicker-toggle matSuffix [for]="fDateRe"></mat-datepicker-toggle>
+      }
+      <mat-datepicker #fDateRe></mat-datepicker>
+      @if (formState.bibliotecaForm.dataRenovacom().getError('matDatepickerParse'); as erro) {
+        <mat-error
+          [innerHTML]="'common.validDateFormat' | transloco">
+        </mat-error>
+      }
+    </mat-form-field>
 
   </omla-html-compartilhado-sf>
 </form>

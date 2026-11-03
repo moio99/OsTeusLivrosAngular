@@ -79,7 +79,7 @@
   "booksList": {
     "title": "Lista di libri", "byLanguage": "Lista di libri per lingua", "byYear": "Lista di libri di {{year}}",
     "byGenre": "Lista di libri per genere", "newBook": "Novu libru", "inverse": "(letti è micca letti)",
-    "filterTitle": "Filtrà per titulu...", "filterAuthor": "Filtrà per autore...",
+    "filterTitle": "⌕ Filtrà per titulu...", "filterAuthor": "⌕ Filtrà per autore...",
     "count": "{count, plural, one {# libru} other {# libri}}", "authors": "Autore(i)", "rereadsShort": "Riletture",
     "lastRead": "Fine di lettura", "loadByLanguageError": "Ùn hè statu pussibule di caricà i libri in lingua {{language}}.",
     "loadByYearError": "Ùn hè statu pussibule di caricà i libri di {{year}}.", "loadByGenreError": "Ùn hè statu pussibule di caricà i libri di u genere {{genre}}.",
@@ -92,7 +92,7 @@
   "authorsList": {
     "title": "Lista d'autori", "byNationality": "Per naziunalità", "byCountry": "Per paese",
     "count": "{count, plural, one {# autore} other {# autori}}", "newAuthor": "Novu autore",
-    "filter": "Filtrà per nome...", "nationality": "Naziunalità", "country": "Paese"
+    "filter": "⌕ Filtrà per nome...", "nationality": "Naziunalità", "country": "Paese"
   },
   "entityList": {
     "publishers": "Lista d'editori", "libraries": "Lista di bibliuteche", "collections": "Lista di cullizzioni",

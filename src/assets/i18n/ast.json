@@ -91,7 +91,7 @@
     "title": "Llistáu de llibros", "byLanguage": "Llistáu de llibros per llingua",
     "byYear": "Llistáu de llibros del añu {{year}}", "byGenre": "Llistáu de llibros per xéneru",
     "newBook": "Llibru nuevu", "inverse": "(lleíos y ensin lleer)",
-    "filterTitle": "Filtrar pel títulu...", "filterAuthor": "Filtrar pol autor...",
+    "filterTitle": "⌕ Filtrar pel títulu...", "filterAuthor": "⌕ Filtrar pol autor...",
     "count": "{count, plural, one {# llibru} other {# llibros}}", "authors": "Autor/es", "rereadsShort": "Relectures",
     "lastRead": "Fin de llectura", "loadByLanguageError": "Nun se pudieron cargar los llibros de la llingua {{language}}.",
     "loadByYearError": "Nun se pudieron cargar los llibros del añu {{year}}.",
@@ -105,7 +105,7 @@
   "authorsList": {
     "title": "Llistáu d'autores", "byNationality": "Per nacionalidá", "byCountry": "Per país",
     "count": "{count, plural, one {# autor} other {# autores}}",
-    "newAuthor": "Autor nuevu", "filter": "Filtrar pol nome...", "nationality": "Nacionalidá", "country": "País"
+    "newAuthor": "Autor nuevu", "filter": "⌕ Filtrar pol nome...", "nationality": "Nacionalidá", "country": "País"
   },
   "entityList": {
     "publishers": "Llistáu d'editoriales", "libraries": "Llistáu de biblioteques", "collections": "Llistáu de coleiciones",

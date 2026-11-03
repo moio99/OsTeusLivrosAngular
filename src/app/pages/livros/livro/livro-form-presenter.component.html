@@ -50,6 +50,7 @@
 
     <div class="biblioteca listado-seleccom">
       <mat-form-field class="ancho-inputs listado-seleccom__input">
+        <mat-label>{{ 'bookForm.library' | transloco }}</mat-label>
         <input type="text" [placeholder]="'bookForm.library' | transloco" [attr.aria-label]="'bookForm.library' | transloco" matInput
           [formControl]="livroForm().controls.idBiblioteca" [matAutocomplete]="idBiblio" />
         <mat-autocomplete #idBiblio="matAutocomplete">
@@ -73,6 +74,7 @@
 
     <div class="editorial listado-seleccom">
       <mat-form-field class="ancho-inputs listado-seleccom__input">
+        <mat-label>{{ 'bookForm.publisher' | transloco }}</mat-label>
         <input type="text" [placeholder]="'bookForm.publisher' | transloco" [attr.aria-label]="'bookForm.publisher' | transloco" matInput
           [formControl]="livroForm().controls.idEditorial" [matAutocomplete]="idedito" />
         <mat-autocomplete #idedito="matAutocomplete">
@@ -96,6 +98,7 @@
 
     <div class="colecom listado-seleccom">
       <mat-form-field class="ancho-inputs listado-seleccom__input">
+        <mat-label>{{ 'bookForm.collection' | transloco }}</mat-label>
         <input
           matInput
           type="text"
@@ -126,6 +129,7 @@
       @if (!modoRelectura()) {
         <div class="estilo listado-seleccom">
           <mat-form-field class="ancho-inputs listado-seleccom__input">
+            <mat-label>{{ 'bookForm.style' | transloco }}</mat-label>
             <input
               matInput
               type="text"
@@ -260,8 +264,9 @@
       ></mat-form-field>
     </div>
     <div class="idioma">
-      <mat-form-field class="ancho-inputs"
-        ><input
+      <mat-form-field class="ancho-inputs">
+        <mat-label>{{ 'common.language' | transloco }}</mat-label>
+        <input
           matInput
           type="text"
           [placeholder]="'common.language' | transloco"
@@ -277,8 +282,9 @@
     </div>
     @if (!modoRelectura()) {
       <div class="idioma-original">
-        <mat-form-field class="ancho-inputs"
-          ><input
+        <mat-form-field class="ancho-inputs">
+          <mat-label>{{ 'common.originalLanguage' | transloco }}</mat-label>
+          <input
             matInput
             type="text"
             [placeholder]="'common.originalLanguage' | transloco"
@@ -304,8 +310,9 @@
       >
     </div>
     <div class="serie-combo">
-      <mat-form-field class="ancho-inputs"
-        ><input
+      <mat-form-field class="ancho-inputs">
+        <mat-label>{{ 'common.series' | transloco }}</mat-label>
+        <input
           matInput
           type="text"
           [placeholder]="'common.series' | transloco"

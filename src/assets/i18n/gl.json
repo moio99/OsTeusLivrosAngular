@@ -89,7 +89,7 @@
   "booksList": {
     "title": "Listado de livros", "byLanguage": "Listado de livros polo idioma", "byYear": "Listado de livros polo ano {{year}}",
     "byGenre": "Listado de livros polo género", "newBook": "Novo Livro", "inverse": "(lidos e nom lidos)",
-    "filterTitle": "Filtra polo título...", "filterAuthor": "Filtra polo autor...",
+    "filterTitle": "⌕ Filtra polo título...", "filterAuthor": "⌕ Filtra polo autor...",
     "count": "{count, plural, one {# livro} other {# livros}}", "authors": "Autor/es", "rereadsShort": "Rel",
     "lastRead": "Fim Leitura", "loadByLanguageError": "Nom se puiderom obter os livros polo idioma {{language}}.",
     "loadByYearError": "Nom se puiderom obter os livros polo ano {{year}}.",
@@ -103,7 +103,7 @@
   "authorsList": {
     "title": "Listado de Autores,", "byNationality": "Por Nacionalidade", "byCountry": "Por País",
     "count": "{count, plural, one {# autor} other {# autores}}",
-    "newAuthor": "Novo Autor", "filter": "Filtra polo nome...", "nationality": "Nacionalidade", "country": "País"
+    "newAuthor": "Novo Autor", "filter": "⌕ Filtra polo nome...", "nationality": "Nacionalidade", "country": "País"
   },
   "entityList": {
     "publishers": "Listado de Editoriais", "libraries": "Listado de Bibliotecas", "collections": "Listado de Coleçons",

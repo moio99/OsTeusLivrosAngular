@@ -45,6 +45,8 @@
 @media (min-width: 650px) {   // Actua com umha resoluçom por riba de 651px
   .formulario-dados {
     display: flex;
+    align-items: flex-start;
     flex-wrap: wrap;
+    column-gap: 5px;
   }
 }

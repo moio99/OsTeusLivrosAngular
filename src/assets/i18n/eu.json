@@ -91,7 +91,7 @@
     "title": "Liburuen zerrenda", "byLanguage": "Liburuen zerrenda hizkuntzaren arabera",
     "byYear": "{{year}} urteko liburuen zerrenda", "byGenre": "Liburuen zerrenda generoaren arabera",
     "newBook": "Liburu berria", "inverse": "(irakurrita eta irakurri gabe)",
-    "filterTitle": "Iragazi izenburuaren arabera...", "filterAuthor": "Iragazi egilearen arabera...",
+    "filterTitle": "⌕ Iragazi izenburuaren arabera...", "filterAuthor": "⌕ Iragazi egilearen arabera...",
     "count": "{count, plural, one {# liburu} other {# liburuak}}", "authors": "Egilea(k)", "rereadsShort": "Berrirakurketak",
     "lastRead": "Irakurketaren amaiera",
     "loadByLanguageError": "Ezin izan dira {{language}} hizkuntzako liburuak eskuratu.",
@@ -106,7 +106,7 @@
   "authorsList": {
     "title": "Egileen zerrenda", "byNationality": "Nazionalitatearen arabera", "byCountry": "Herrialdearen arabera",
     "count": "{count, plural, one {# egilea} other {# egileak}}",
-    "newAuthor": "Egile berria", "filter": "Iragazi izenaren arabera...", "nationality": "Nazionalitatea", "country": "Herrialdea"
+    "newAuthor": "Egile berria", "filter": "⌕ Iragazi izenaren arabera...", "nationality": "Nazionalitatea", "country": "Herrialdea"
   },
   "entityList": {
     "publishers": "Argitaletxeen zerrenda", "libraries": "Liburutegien zerrenda", "collections": "Bildumen zerrenda",

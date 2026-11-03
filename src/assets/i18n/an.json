@@ -90,7 +90,7 @@
     "title": "Lista de libros", "byLanguage": "Lista de libros por idioma",
     "byYear": "Lista de libros de l'anno {{year}}", "byGenre": "Lista de libros por chenero",
     "newBook": "Libro nuevo", "inverse": "(leitos y no leitos)",
-    "filterTitle": "Filtrar por titol...", "filterAuthor": "Filtrar por autor...",
+    "filterTitle": "⌕ Filtrar por titol...", "filterAuthor": "⌕ Filtrar por autor...",
     "count": "{count, plural, one {# libro} other {# libros}}", "authors": "Autor/es", "rereadsShort": "Relecturas",
     "lastRead": "Fin de lectura", "loadByLanguageError": "No s'han puesto obtener os libros de l'idioma {{language}}.",
     "loadByYearError": "No s'han puesto obtener os libros de l'anno {{year}}.",
@@ -104,7 +104,7 @@
   "authorsList": {
     "title": "Lista d'autors", "byNationality": "Por nacionalidat", "byCountry": "Por país",
     "count": "{count, plural, one {# autor} other {# autors}}",
-    "newAuthor": "Autor nuevo", "filter": "Filtrar por nombre...", "nationality": "Nacionalidat", "country": "País"
+    "newAuthor": "Autor nuevo", "filter": "⌕ Filtrar por nombre...", "nationality": "Nacionalidat", "country": "País"
   },
   "entityList": {
     "publishers": "Lista d'editors", "libraries": "Lista de bibliotecas", "collections": "Lista de coleccions",

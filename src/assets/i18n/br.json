@@ -81,7 +81,7 @@
   "booksList": {
     "title": "Roll al levrioù", "byLanguage": "Roll al levrioù dre yezh", "byYear": "Roll al levrioù evit {{year}}",
     "byGenre": "Roll al levrioù dre rummad", "newBook": "Levr nevez", "inverse": "(lennet ha nann-lennet)",
-    "filterTitle": "Silañ dre ditl...", "filterAuthor": "Silañ dre skrivagner...",
+    "filterTitle": "⌕ Silañ dre ditl...", "filterAuthor": "⌕ Silañ dre skrivagner...",
     "count": "{count, plural, one {# levr} other {# levrioù}}", "authors": "Skrivagner(ien)", "rereadsShort": "Adlennadurioù",
     "lastRead": "Dibenn al lenn", "loadByLanguageError": "N'haller ket kargañ al levrioù er yezh {{language}}.",
     "loadByYearError": "N'haller ket kargañ al levrioù evit {{year}}.", "loadByGenreError": "N'haller ket kargañ al levrioù er rummad {{genre}}.",
@@ -94,7 +94,7 @@
   "authorsList": {
     "title": "Roll ar skrivagnerien", "byNationality": "Dre genel", "byCountry": "Dre vro",
     "count": "{count, plural, one {# aozer} other {# oberourien}}", "newAuthor": "Skrivagner nevez",
-    "filter": "Silañ dre anv...", "nationality": "Genel", "country": "Bro"
+    "filter": "⌕ Silañ dre anv...", "nationality": "Genel", "country": "Bro"
   },
   "entityList": {
     "publishers": "Roll an embannerien", "libraries": "Roll al levraouegoù", "collections": "Roll an dastumadoù",

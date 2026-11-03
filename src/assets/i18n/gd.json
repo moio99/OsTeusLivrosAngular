@@ -79,7 +79,7 @@
   "booksList": {
     "title": "Liosta leabhraichean", "byLanguage": "Liosta leabhraichean a rèir cànain", "byYear": "Liosta leabhraichean airson {{year}}",
     "byGenre": "Liosta leabhraichean a rèir gnè", "newBook": "Leabhar ùr", "inverse": "(leughte agus gun leughadh)",
-    "filterTitle": "Criathraich a rèir tiotail...", "filterAuthor": "Criathraich a rèir ùghdair...",
+    "filterTitle": "⌕ Criathraich a rèir tiotail...", "filterAuthor": "⌕ Criathraich a rèir ùghdair...",
     "count": "{count, plural, one {# leabhar} other {# leabhraichean}}", "authors": "Ùghdar(an)", "rereadsShort": "Ath-leughaidhean",
     "lastRead": "Deireadh leughaidh", "loadByLanguageError": "Cha b’ urrainn dhuinn leabhraichean airson a’ chànain {{language}} a luchdadh.",
     "loadByYearError": "Cha b’ urrainn dhuinn leabhraichean airson {{year}} a luchdadh.", "loadByGenreError": "Cha b’ urrainn dhuinn leabhraichean airson a’ ghnè {{genre}} a luchdadh.",
@@ -92,7 +92,7 @@
   "authorsList": {
     "title": "Liosta ùghdaran", "byNationality": "A rèir nàiseantachd", "byCountry": "A rèir dùthcha",
     "count": "{count, plural, one {# ùghdar} other {# ùghdaran}}", "newAuthor": "Ùghdar ùr",
-    "filter": "Criathraich a rèir ainm...", "nationality": "Nàiseantachd", "country": "Dùthaich"
+    "filter": "⌕ Criathraich a rèir ainm...", "nationality": "Nàiseantachd", "country": "Dùthaich"
   },
   "entityList": {
     "publishers": "Liosta fhoillsichearan", "libraries": "Liosta leabharlannan", "collections": "Liosta chruinneachaidhean",

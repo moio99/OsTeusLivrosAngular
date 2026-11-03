@@ -5,93 +5,91 @@
     [comentario]="formState.autorForm.comentario"
     (onCancelar)="cancelar.emit()">
 
-    <div>
-      <mat-form-field [style.width.px]="400">
-        <mat-label>{{ 'form.realName' | transloco }}:</mat-label>
-        <input matInput [formField]="formState.autorForm.nomeReal">
-        @if (formState.autorForm.nomeReal().getError('maxLength'); as erro) {
-          <mat-error>
-            {{ 'common.tooLong' | transloco }}
-          </mat-error>
-        }
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field [style.width.px]="400">
-        <mat-label>{{ 'form.birthPlace' | transloco }}:</mat-label>
-        <input matInput [formField]="formState.autorForm.lugarNacemento">
-        @if (formState.autorForm.lugarNacemento().getError('maxLength'); as erro) {
-          <mat-error>
-            {{ 'common.tooLong' | transloco }}
-          </mat-error>
-        }
-      </mat-form-field>
+    <mat-form-field [style.width.px]="400">
+      <mat-label>{{ 'form.realName' | transloco }}:</mat-label>
+      <input matInput [formField]="formState.autorForm.nomeReal">
+      @if (formState.autorForm.nomeReal().getError('maxLength'); as erro) {
+        <mat-error>
+          {{ 'common.tooLong' | transloco }}
+        </mat-error>
+      }
+    </mat-form-field>
 
-      <mat-form-field [style.width.px]="300">
-        <mat-label>{{ 'common.web' | transloco }}:</mat-label>
-        <input matInput [formField]="formState.autorForm.web">
-        @if (formState.autorForm.web().getError('maxLength'); as erro) {
-          <mat-error>
-            {{ 'common.tooLong' | transloco }}
-          </mat-error>
-        }
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field class="ancho-inputs" [style.width.px]="170">
-        <mat-label>{{ 'form.birthDate' | transloco }}</mat-label>
-        <input matInput [matDatepicker]="fDateN" [formField]="formState.autorForm.dataNacemento">
-        @if (modo() !== estadosPagina.soVisualizar) {
-          <mat-datepicker-toggle matSuffix [for]="fDateN"></mat-datepicker-toggle>
-        }
-        <mat-datepicker #fDateN></mat-datepicker>
-        @for (erro of formState.autorForm.dataNacemento().errors(); track erro.kind) {
-          <mat-error>
-            {{ 'common.invalidDates' | transloco }}
-          </mat-error>
-        }
-      </mat-form-field>
+    <mat-form-field [style.width.px]="400">
+      <mat-label>{{ 'form.birthPlace' | transloco }}:</mat-label>
+      <input matInput [formField]="formState.autorForm.lugarNacemento">
+      @if (formState.autorForm.lugarNacemento().getError('maxLength'); as erro) {
+        <mat-error>
+          {{ 'common.tooLong' | transloco }}
+        </mat-error>
+      }
+    </mat-form-field>
 
-      <mat-form-field class="ancho-inputs" [style.width.px]="170">
-        <mat-label>{{ 'form.deathDate' | transloco }}</mat-label>
-        <input matInput [matDatepicker]="fDateD" [formField]="formState.autorForm.dataDefuncom">
-        @if (modo() !== estadosPagina.soVisualizar) {
-          <mat-datepicker-toggle matSuffix [for]="fDateD"></mat-datepicker-toggle>
-        }
-        <mat-datepicker #fDateD></mat-datepicker>
-        @for (erro of formState.autorForm.dataDefuncom().errors(); track erro.kind) {
-          <mat-error>
-            {{ 'common.invalidDates' | transloco }}
-          </mat-error>
-        }
-      </mat-form-field>
+    <mat-form-field [style.width.px]="300">
+      <mat-label>{{ 'common.web' | transloco }}:</mat-label>
+      <input matInput [formField]="formState.autorForm.web">
+      @if (formState.autorForm.web().getError('maxLength'); as erro) {
+        <mat-error>
+          {{ 'common.tooLong' | transloco }}
+        </mat-error>
+      }
+    </mat-form-field>
 
-      <mat-form-field>
-        <input type="text" [placeholder]="'common.nationality' | transloco" [attr.aria-label]="'common.nationality' | transloco" matInput
-          [formField]="formState.autorForm.nomeNacionalidade" [matAutocomplete]="autoNacionalidades">
-        <mat-autocomplete #autoNacionalidades="matAutocomplete" [displayWith]="formState.amosarNacionalidade"
-          (optionSelected)="formState.seleccionarNacionalidade($event.option.value)">
-          @for (element of formState.nacionalidadesFiltradas(); track element.id) {
-            <mat-option [value]="element.id">{{element.value}}</mat-option>
-          } @empty {
-            <mat-option disabled>{{ 'common.notFound' | transloco }}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
+    <mat-form-field class="ancho-inputs" [style.width.px]="170">
+      <mat-label>{{ 'form.birthDate' | transloco }}</mat-label>
+      <input matInput [matDatepicker]="fDateN" [formField]="formState.autorForm.dataNacemento">
+      @if (modo() !== estadosPagina.soVisualizar) {
+        <mat-datepicker-toggle matSuffix [for]="fDateN"></mat-datepicker-toggle>
+      }
+      <mat-datepicker #fDateN></mat-datepicker>
+      @for (erro of formState.autorForm.dataNacemento().errors(); track erro.kind) {
+        <mat-error>
+          {{ 'common.invalidDates' | transloco }}
+        </mat-error>
+      }
+    </mat-form-field>
 
-      <mat-form-field>
-        <input type="text" [placeholder]="'common.country' | transloco" [attr.aria-label]="'common.country' | transloco" matInput
-          [formField]="formState.autorForm.nomePais" [matAutocomplete]="autoPaises">
-        <mat-autocomplete #autoPaises="matAutocomplete" [displayWith]="formState.amosarPais"
-          (optionSelected)="formState.seleccionarPais($event.option.value)">
-          @for (element of formState.paisesFiltrados(); track element.id) {
-            <mat-option [value]="element.id">{{element.value}}</mat-option>
-          } @empty {
-            <mat-option disabled>{{ 'common.notFound' | transloco }}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
-    </div>
+    <mat-form-field class="ancho-inputs" [style.width.px]="170">
+      <mat-label>{{ 'form.deathDate' | transloco }}</mat-label>
+      <input matInput [matDatepicker]="fDateD" [formField]="formState.autorForm.dataDefuncom">
+      @if (modo() !== estadosPagina.soVisualizar) {
+        <mat-datepicker-toggle matSuffix [for]="fDateD"></mat-datepicker-toggle>
+      }
+      <mat-datepicker #fDateD></mat-datepicker>
+      @for (erro of formState.autorForm.dataDefuncom().errors(); track erro.kind) {
+        <mat-error>
+          {{ 'common.invalidDates' | transloco }}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>{{ 'common.nationality' | transloco }}</mat-label>
+      <input type="text" [placeholder]="'common.nationality' | transloco" [attr.aria-label]="'common.nationality' | transloco" matInput
+        [formField]="formState.autorForm.nomeNacionalidade" [matAutocomplete]="autoNacionalidades">
+      <mat-autocomplete #autoNacionalidades="matAutocomplete" [displayWith]="formState.amosarNacionalidade"
+        (optionSelected)="formState.seleccionarNacionalidade($event.option.value)">
+        @for (element of formState.nacionalidadesFiltradas(); track element.id) {
+          <mat-option [value]="element.id">{{element.value}}</mat-option>
+        } @empty {
+          <mat-option disabled>{{ 'common.notFound' | transloco }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>{{ 'common.country' | transloco }}</mat-label>
+      <input type="text" [placeholder]="'common.country' | transloco" [attr.aria-label]="'common.country' | transloco" matInput
+        [formField]="formState.autorForm.nomePais" [matAutocomplete]="autoPaises">
+      <mat-autocomplete #autoPaises="matAutocomplete" [displayWith]="formState.amosarPais"
+        (optionSelected)="formState.seleccionarPais($event.option.value)">
+        @for (element of formState.paisesFiltrados(); track element.id) {
+          <mat-option [value]="element.id">{{element.value}}</mat-option>
+        } @empty {
+          <mat-option disabled>{{ 'common.notFound' | transloco }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
 
   </omla-html-compartilhado-sf>
 </form>

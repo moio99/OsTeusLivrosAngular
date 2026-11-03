@@ -86,7 +86,7 @@
     "title": "Elencu de libros", "byLanguage": "Elencu de libros pro limba",
     "byYear": "Elencu de libros de {{year}}", "byGenre": "Elencu de libros pro genre",
     "newBook": "Libru nou", "inverse": "(lèghidos e no lèghidos)",
-    "filterTitle": "Filtra pro tìtulu...", "filterAuthor": "Filtra pro autore...",
+    "filterTitle": "⌕ Filtra pro tìtulu...", "filterAuthor": "⌕ Filtra pro autore...",
     "count": "{count, plural, one {# libru} other {# libros}}", "authors": "Autore(s)", "rereadsShort": "Torra-leghidas",
     "lastRead": "Fine de sa lèghida", "loadByLanguageError": "No si podent carrigare sos libros de sa limba {{language}}.",
     "loadByYearError": "No si podent carrigare sos libros de {{year}}.", "loadByGenreError": "No si podent carrigare sos libros de su genre {{genre}}.",
@@ -99,7 +99,7 @@
   "authorsList": {
     "title": "Elencu de sos autores", "byNationality": "Pro natzionalidade", "byCountry": "Pro paisu",
     "count": "{count, plural, one {# autore} other {# autores}}", "newAuthor": "Autore nou",
-    "filter": "Filtra pro nùmene...", "nationality": "Natzionalidade", "country": "Paisu"
+    "filter": "⌕ Filtra pro nùmene...", "nationality": "Natzionalidade", "country": "Paisu"
   },
   "entityList": {
     "publishers": "Elencu de sos editores", "libraries": "Elencu de sas bibliotecas", "collections": "Elencu de sas colletziones",

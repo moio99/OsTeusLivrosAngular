@@ -90,7 +90,7 @@
   "booksList": {
     "title": "Book list", "byLanguage": "Book list by language", "byYear": "Book list for {{year}}",
     "byGenre": "Book list by genre", "newBook": "New book", "inverse": "(read and unread)",
-    "filterTitle": "Filter by title...", "filterAuthor": "Filter by author...",
+    "filterTitle": "⌕ Filter by title...", "filterAuthor": "⌕ Filter by author...",
     "count": "{count, plural, one {# book} other {# books}}", "authors": "Author(s)", "rereadsShort": "Rereads",
     "lastRead": "End of reading", "loadByLanguageError": "Could not load books for language {{language}}.",
     "loadByYearError": "Could not load books for {{year}}.", "loadByGenreError": "Could not load books for genre {{genre}}.",
@@ -103,7 +103,7 @@
   "authorsList": {
     "title": "Author list", "byNationality": "By nationality", "byCountry": "By country",
     "count": "{count, plural, one {# author} other {# authors}}",
-    "newAuthor": "New author", "filter": "Filter by name...", "nationality": "Nationality", "country": "Country"
+    "newAuthor": "New author", "filter": "⌕ Filter by name...", "nationality": "Nationality", "country": "Country"
   },
   "entityList": {
     "publishers": "Publisher list", "libraries": "Library list", "collections": "Collection list",

@@ -79,7 +79,7 @@
   "booksList": {
     "title": "Liosta leabhar", "byLanguage": "Liosta leabhar de réir teanga", "byYear": "Liosta leabhar do {{year}}",
     "byGenre": "Liosta leabhar de réir seánra", "newBook": "Leabhar nua", "inverse": "(léite agus gan léamh)",
-    "filterTitle": "Scag de réir teidil...", "filterAuthor": "Scag de réir údair...",
+    "filterTitle": "⌕ Scag de réir teidil...", "filterAuthor": "⌕ Scag de réir údair...",
     "count": "{count, plural, one {# leabhar} other {# leabhair}}", "authors": "Údar(í)", "rereadsShort": "Athléamh",
     "lastRead": "Deireadh na léitheoireachta", "loadByLanguageError": "Níorbh fhéidir leabhair don teanga {{language}} a luchtú.",
     "loadByYearError": "Níorbh fhéidir leabhair do {{year}} a luchtú.", "loadByGenreError": "Níorbh fhéidir leabhair don seánra {{genre}} a luchtú.",
@@ -92,7 +92,7 @@
   "authorsList": {
     "title": "Liosta údar", "byNationality": "De réir náisiúntachta", "byCountry": "De réir tíre",
     "count": "{count, plural, one {# údar} other {# údair}}", "newAuthor": "Údar nua",
-    "filter": "Scag de réir ainm...", "nationality": "Náisiúntacht", "country": "Tír"
+    "filter": "⌕ Scag de réir ainm...", "nationality": "Náisiúntacht", "country": "Tír"
   },
   "entityList": {
     "publishers": "Liosta foilsitheoirí", "libraries": "Liosta leabharlann", "collections": "Liosta bailiúchán",

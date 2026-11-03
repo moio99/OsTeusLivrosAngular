@@ -89,7 +89,7 @@
   "booksList": {
     "title": "Llista de llibres", "byLanguage": "Llista de llibres per idioma", "byYear": "Llista de llibres de l'any {{year}}",
     "byGenre": "Llista de llibres per gènere", "newBook": "Llibre nou", "inverse": "(llegits i no llegits)",
-    "filterTitle": "Filtra per títol...", "filterAuthor": "Filtra per autor...",
+    "filterTitle": "⌕ Filtra per títol...", "filterAuthor": "⌕ Filtra per autor...",
     "count": "{count, plural, one {# llibre} other {# llibres}}", "authors": "Autor/s", "rereadsShort": "Relectures",
     "lastRead": "Fi de lectura", "loadByLanguageError": "No s'han pogut obtenir els llibres per idioma {{language}}.",
     "loadByYearError": "No s'han pogut obtenir els llibres de l'any {{year}}.",
@@ -103,7 +103,7 @@
   "authorsList": {
     "title": "Llista d'autors", "byNationality": "Per nacionalitat", "byCountry": "Per país",
     "count": "{count, plural, one {# autor} other {# autors}}",
-    "newAuthor": "Autor nou", "filter": "Filtra per nom...", "nationality": "Nacionalitat", "country": "País"
+    "newAuthor": "Autor nou", "⌕ filter": "Filtra per nom...", "nationality": "Nacionalitat", "country": "País"
   },
   "entityList": {
     "publishers": "Llista d'editorials", "libraries": "Llista de biblioteques", "collections": "Llista de col·leccions",

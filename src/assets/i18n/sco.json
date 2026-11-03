@@ -79,7 +79,7 @@
   "booksList": {
     "title": "Buik leet", "byLanguage": "Buik leet bi leid", "byYear": "Buik leet for {{year}}",
     "byGenre": "Buik leet bi genre", "newBook": "New buik", "inverse": "(read an unread)",
-    "filterTitle": "Filter bi title...", "filterAuthor": "Filter bi writer...",
+    "filterTitle": "⌕ Filter bi title...", "filterAuthor": "⌕ Filter bi writer...",
     "count": "{count, plural, one {# buik} other {# buiks}}", "authors": "Writer(s)", "rereadsShort": "Re-reads",
     "lastRead": "End o readin", "loadByLanguageError": "Coudna get buiks for leid {{language}}.",
     "loadByYearError": "Coudna get buiks for {{year}}.", "loadByGenreError": "Coudna get buiks for genre {{genre}}.",
@@ -92,7 +92,7 @@
   "authorsList": {
     "title": "Writer leet", "byNationality": "Bi nationality", "byCountry": "Bi kintra",
     "count": "{count, plural, one {# writer} other {# writers}}", "newAuthor": "New writer",
-    "filter": "Filter bi name...", "nationality": "Nationality", "country": "Kintra"
+    "filter": "⌕ Filter bi name...", "nationality": "Nationality", "country": "Kintra"
   },
   "entityList": {
     "publishers": "Publisher leet", "libraries": "Library leet", "collections": "Collection leet",

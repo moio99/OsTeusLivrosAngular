@@ -79,7 +79,7 @@
   "booksList": {
     "title": "Rhestr lyfrau", "byLanguage": "Rhestr lyfrau yn ôl iaith", "byYear": "Rhestr lyfrau ar gyfer {{year}}",
     "byGenre": "Rhestr lyfrau yn ôl genre", "newBook": "Llyfr newydd", "inverse": "(wedi'u darllen a heb eu darllen)",
-    "filterTitle": "Hidlo yn ôl teitl...", "filterAuthor": "Hidlo yn ôl awdur...",
+    "filterTitle": "⌕ Hidlo yn ôl teitl...", "filterAuthor": "⌕ Hidlo yn ôl awdur...",
     "count": "{count, plural, one {# llyfr} other {# llyfrau}}", "authors": "Awdur(on)", "rereadsShort": "Ailddarlleniadau",
     "lastRead": "Diwedd darllen", "loadByLanguageError": "Methu llwytho llyfrau ar gyfer yr iaith {{language}}.",
     "loadByYearError": "Methu llwytho llyfrau ar gyfer {{year}}.", "loadByGenreError": "Methu llwytho llyfrau ar gyfer y genre {{genre}}.",
@@ -92,7 +92,7 @@
   "authorsList": {
     "title": "Rhestr awduron", "byNationality": "Yn ôl cenedligrwydd", "byCountry": "Yn ôl gwlad",
     "count": "{count, plural, one {# awdur} other {# awduron}}", "newAuthor": "Awdur newydd",
-    "filter": "Hidlo yn ôl enw...", "nationality": "Cenedligrwydd", "country": "Gwlad"
+    "filter": "⌕ Hidlo yn ôl enw...", "nationality": "Cenedligrwydd", "country": "Gwlad"
   },
   "entityList": {
     "publishers": "Rhestr cyhoeddwyr", "libraries": "Rhestr llyfrgelloedd", "collections": "Rhestr casgliadau",
