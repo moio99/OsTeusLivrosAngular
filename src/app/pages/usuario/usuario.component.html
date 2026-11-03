@@ -121,21 +121,32 @@
       }
     </div>
 
-        <!-- <mat-autocomplete #idiomaC="matAutocomplete" panelClass="combo-compacto" [displayWith]="amosarIdioma">
-          @for (option of idiomasFiltrados(); track option.id) {
-            <mat-option [value]="option.id">{{ option.nome }}</mat-option>
-          } @empty {
-            <mat-option disabled>Idioma nom atopado</mat-option>
-          } -->
-    <div>
-      <button class="botom-guardar-resgistro" type="submit" color="primary"
+    <!-- <mat-autocomplete #idiomaC="matAutocomplete" panelClass="combo-compacto" [displayWith]="amosarIdioma">
+      @for (option of idiomasFiltrados(); track option.id) {
+        <mat-option [value]="option.id">{{ option.nome }}</mat-option>
+      } @empty {
+        <mat-option disabled>Idioma nom atopado</mat-option>
+      } -->
+
+    @if (idUsuario !== 0) {
+      <div>
+        <!-- Neste casso ao ponher o div, ele é o que ocupa todo o ancho mentres que o botom vese estreito  -->
+        <ng-container [ngTemplateOutlet]="botomGuardar"></ng-container>
+      </div>
+    } @else {
+      <!-- O botom tem o mesmo ancho cá o resto dos inputs (Alta de usuario) -->
+      <ng-container [ngTemplateOutlet]="botomGuardar"></ng-container>
+    }
+
+    <ng-template #botomGuardar>
+      <button class="botom-guardar-resgistro" type="submit"
         [disabled]="loading() || usuarioForm.invalid">
         @if (loading()) {
           <span class="spinner-border spinner-border-sm"></span>
         }
         {{ loading() ? ('signup.sending' | transloco) : ('signup.submit' | transloco) }}
       </button>
-    </div>
+    </ng-template>
   </form>
 </div>
 @if (idUsuario === 0) {

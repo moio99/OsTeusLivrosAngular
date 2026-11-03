@@ -16,6 +16,7 @@ import { UsuariosService } from '../../core/services/api/usuarios.service';
 import { PeComponent } from '@componhentesComuns';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { BaseListadoDadosApi } from '../../shared/models/base-dados';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-alta',
@@ -26,6 +27,7 @@ import { BaseListadoDadosApi } from '../../shared/models/base-dados';
     MatAutocompleteModule,
     PeComponent,
     TranslocoPipe,
+    NgTemplateOutlet
   ],
   templateUrl: './usuario.component.html',
   styleUrls: ['./usuario.component.scss']

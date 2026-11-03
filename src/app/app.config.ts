@@ -55,7 +55,7 @@ export const appConfig: ApplicationConfig = {
           defaultLang: getInitialLang(),
           // Remove this option if your application doesn't support changing language in runtime.
           reRenderOnLangChange: true,
-          prodMode: !isDevMode(),
+          prodMode: environment.whereIAm === environments.pro //!isDevMode(),
         },
         loader: TranslocoHttpLoader,
       }
