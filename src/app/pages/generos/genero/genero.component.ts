@@ -7,7 +7,7 @@ import { Genero, GeneroForm } from '@interfaces';
 import { GenerosService, LivrosService} from '@servizosApi';
 import { BaseElementoComponent } from '@componhentesComuns';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { HtmlCompartilhadoRFComponent } from '../../../core/components/base/html-compartilhado-reactive-forms.component';
+import { HtmlCompartilhadoRFComponent } from '../../../core/components/base/elemento/html-compartilhado-reactive-forms.component';
 
 @Component({
   selector: 'omla-genero',

@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BaseElementoComponent } from '@componhentesComuns';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { HtmlCompartilhadoRFComponent } from '../../../core/components/base/html-compartilhado-reactive-forms.component';
+import { HtmlCompartilhadoRFComponent } from '../../../core/components/base/elemento/html-compartilhado-reactive-forms.component';
 
 @Component({
   selector: 'omla-editorial',

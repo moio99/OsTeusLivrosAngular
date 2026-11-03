@@ -1,17 +1,19 @@
 import { Component, input, output } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
+import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { FieldTree, FormField } from '@angular/forms/signals';
 
 @Component({
-  selector: 'omla-html-compartilhado-rf',
+  selector: 'omla-html-compartilhado-sf',
   standalone: true,
-  imports: [ MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslocoPipe, TranslocoPipe ],
+  imports: [ MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslocoPipe, TranslocoPipe, FormField ],
   template: `
     @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
       <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{modo()}}">
+        <i class="icon-disk"></i>
         {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
       </button>
       <button color="primary" type="button" (click)="onCancelar.emit()">
@@ -22,13 +24,14 @@ import { MatInputModule } from '@angular/material/input';
     <div class="formulario-dados">
       <mat-form-field [style.width.px]=500>
         <mat-label>{{ 'common.name' | transloco }}:</mat-label>
-        <input matInput [formControl]="nome()!" width="200">
-        @if (nome()?.hasError('maxlength')) {
+        <input matInput [formField]="nome()!" width="200">
+        @let estadoNome = nome()?.();
+        @if (estadoNome?.getError('maxLength'); as erro) {
           <mat-error>
             {{ 'common.lengthAtMost' | transloco: { count: 150 } }}
           </mat-error>
         }
-        @if (nome()?.hasError('required')) {
+        @if (estadoNome?.getError('required'); as erro) {
           <mat-error>
             {{ 'common.required' | transloco }}
           </mat-error>
@@ -39,8 +42,9 @@ import { MatInputModule } from '@angular/material/input';
 
       <mat-form-field [style.width.px]=500>
         <mat-label>{{ 'common.comment' | transloco }}:</mat-label>
-        <textarea matInput [formControl]="comentario()!" rows="4"></textarea>
-        @if (comentario()?.hasError('maxlength')) {
+        <textarea matInput [formField]="comentario()!" rows="4"></textarea>
+        @let estadoComentario = comentario()?.();
+        @if (estadoComentario?.getError('maxLength'); as erro) {
           <mat-error>
             {{ 'common.lengthAtMost' | transloco: { count: 5000 } }}
           </mat-error>
@@ -50,12 +54,12 @@ import { MatInputModule } from '@angular/material/input';
   `,
   styles: []
 })
-export class HtmlCompartilhadoRFComponent {
+export class HtmlCompartilhadoSFComponent {
   estadosPagina = EstadosPagina;
 
   modo = input(EstadosPagina.soVisualizar);
-  nome = input<FormControl<string | null> | undefined>(undefined);
-  comentario = input<FormControl<string | null> | undefined>(undefined);
+  nome = input<FieldTree<string> | undefined>(undefined);
+  comentario = input<FieldTree<string> | undefined>(undefined);
 
   onCancelar = output<void>();
 }

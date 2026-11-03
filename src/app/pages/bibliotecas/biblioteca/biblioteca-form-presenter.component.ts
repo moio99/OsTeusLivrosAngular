@@ -10,7 +10,7 @@ import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { BibliotecaFormStateService } from './biblioteca-form-state.service';
 import { FormField, FormRoot } from '@angular/forms/signals';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { HtmlCompartilhadoSFComponent } from '../../../core/components/base/html-compartilhado-signal-forms.component';
+import { HtmlCompartilhadoSFComponent } from '../../../core/components/base/elemento/html-compartilhado-signal-forms.component';
 
 @Component({
   selector: 'omla-biblioteca-form-presenter',
