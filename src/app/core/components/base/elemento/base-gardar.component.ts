@@ -1,6 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { Location } from '@angular/common';
-import { first } from 'rxjs/operators';
+import { concatMap, first, tap } from 'rxjs/operators';
 import { environment, environments } from '../../../../../environments/environment';
 import { DadosComplentarios, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService, DadosPaginasService } from '@servizosFlow';
@@ -10,6 +10,7 @@ import { SimpleObjet } from '../../../../shared/models/outros.model';
 import { BaseElemento, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
 import { DadosOutrosService } from '../../../services/flow/dados-outros.service';
 import { TranslocoService } from '@jsverse/transloco';
+import { EMPTY } from 'rxjs';
 
 @Component({
   template: ''
@@ -38,51 +39,46 @@ export abstract class BaseGardarComponent<TElemento extends BaseElemento, TServi
   protected servicoElemento = inject<TServico>('OMeuServizoToken' as any);
 
   onSubmit(event: Event, tipo: DadosComplentarios) {
-    if (this.isFormValid()) {
-      this.checkForDuplicates(event, tipo);
-    }
-  }
+    if (!this.isFormValid()) return;
 
-  protected checkForDuplicates(event: Event, tipo: DadosComplentarios) {
-    const nameValue = String(this.getNomeElemento()).trim();
+    // const botonPremido = (event.submitter as HTMLButtonElement)?.value;
+    const nomeFormulario = String(this.getNomeElemento()).trim();
 
-    this.servicoElemento.getPorNome(nameValue)
-      .pipe(first())        // Collo o primeiro valor da consulta do nome e pechamos esa canle
-      .subscribe({
-        next: (v) => this.manejaDuplicadosEGarda(event, v as BaseListadoDadosApi<TElemento>, tipo),
-        error: (e: unknown) => this.handleError(e),
-        complete: () => {}
-      });
-  }
+    this.servicoElemento.getPorNome(nomeFormulario).pipe(
+      first(),  // Collo o primeiro valor da consulta do nome e pechamos esa canle
+      concatMap((elementoExistente) => {  // concatMap asegura que a seguinte chamada agarde a que esta remate sem cancelarse
+        const isDuplicate = elementoExistente?.meta?.quantidade > 0 &&
+          (this.modo() === EstadosPagina.engadir ||
+          (this.modo() === EstadosPagina.guardar && elementoExistente.meta.id !== (this.dadosDoElemento as any)?.id));
 
-  protected manejaDuplicadosEGarda(
-    event: Event, elementoExistente: BaseListadoDadosApi<TElemento>, tipo: DadosComplentarios) {
+        if (isDuplicate) {
+          this.layoutService.amosarInfo({
+            tipo: InformacomPeTipo.Aviso,
+            mensagem: this.translocoService.translate('common.nameExists', { name: this.getNomeElemento() })
+          });
+          return EMPTY;
+        } else {
+          const elemento = this.createElementoForm();
+          const serviceCall =this.modo() === EstadosPagina.engadir
+            ? this.servicoElemento.create(elemento)
+            : this.servicoElemento.update(elemento);
 
-    const isDuplicate = elementoExistente?.meta?.quantidade > 0 &&
-      (this.modo() === EstadosPagina.engadir ||
-      (this.modo() === EstadosPagina.guardar && elementoExistente.meta.id !== (this.dadosDoElemento as any)?.id));
-
-    if (isDuplicate) {
-      this.layoutService.amosarInfo({
-        tipo: InformacomPeTipo.Aviso,
-        mensagem: this.translocoService.translate('common.nameExists', { name: this.getNomeElemento() })
-      });
-    } else {
-      this.saveElemento(event, tipo);
-    }
-  }
-
-  private saveElemento(event: Event, tipo: DadosComplentarios) {
-    const elemento = this.createElementoForm();
-
-    const serviceCall =this.modo() === EstadosPagina.engadir
-      ? this.servicoElemento.create(elemento)
-      : this.servicoElemento.update(elemento);
-
-    serviceCall.pipe(first()).subscribe({
-      next: (v) => this.handleSaveSuccess(v, elemento, tipo),
-      error: (e: unknown) => this.handleSaveError(e),
-      complete: () => this.handleSaveComplete()
+          return serviceCall.pipe(
+            first(),
+            tap({
+              next: (v) => this.handleSaveSuccess(v, elemento, tipo),
+              complete: () => this.handleSaveComplete()
+            })
+          );
+        }
+      })
+    ).subscribe({
+      next: () => {
+        console.debug('Proceso finalizado');
+      },
+      error: (e: unknown) => {
+        this.handleSaveError(e);
+      }
     });
   }
 
@@ -97,14 +93,6 @@ export abstract class BaseGardarComponent<TElemento extends BaseElemento, TServi
       mensagem: this.translocoService.translate(
         this.modo() === EstadosPagina.engadir ? 'common.itemAdded' : 'common.itemSaved'
       )
-    });
-  }
-
-  protected handleError(error: any) {
-    console.error(error);
-    this.layoutService.amosarInfo({
-      tipo: InformacomPeTipo.Erro,
-      mensagem: this.translocoService.translate('common.loadDataError')
     });
   }
 
