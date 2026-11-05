@@ -37,7 +37,7 @@ import { MatInputModule } from '@angular/material/input';
 
       <ng-content></ng-content>
 
-      <mat-form-field [style.width.px]=500>
+      <mat-form-field [style.width]="'100%'">
         <mat-label>{{ 'common.comment' | transloco }}:</mat-label>
         <textarea matInput [formControl]="comentario()!" rows="4"></textarea>
         @if (comentario()?.hasError('maxlength')) {

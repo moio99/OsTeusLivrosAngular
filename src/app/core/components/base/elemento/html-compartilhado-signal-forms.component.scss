@@ -1,0 +1,15 @@
+@media (min-width: 650px) {
+  .matriz-dados {
+    margin-top: 15px;
+    display: grid;
+    width: 100%;
+    gap: 5px;
+    grid-template-columns: repeat(4, 1fr);
+
+    // o vertical começa na 1 e remata na 2
+    // o horizontal começa no 1 e remata no 4 (o último)
+    .nome { grid-area: 1/1/2/3; }
+
+    .comentario { grid-area: 5/1/6/5; }
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { signal, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { concatMap, first, tap } from 'rxjs/operators';
 import { environment, environments } from '../../../../../environments/environment';
@@ -7,14 +7,11 @@ import { LayoutService, DadosPaginasService } from '@servizosFlow';
 import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 import { BaseApiService } from '@servizosApi';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
-import { BaseElemento, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
+import { BaseElemento, ResultadoMeta } from '../../../../shared/models/base-dados';
 import { DadosOutrosService } from '../../../services/flow/dados-outros.service';
 import { TranslocoService } from '@jsverse/transloco';
 import { EMPTY } from 'rxjs';
 
-@Component({
-  template: ''
-})
 export abstract class BaseGardarComponent<TElemento extends BaseElemento, TServico extends BaseApiService<TElemento>> {
 
   disabledFormulario = environment.whereIAm === environments.pre || environment.whereIAm === environments.pro ? true : false;

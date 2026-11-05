@@ -1,0 +1,13 @@
+/* A definiçom da matriz está em src\app\core\components\base\elemento\html-compartilhado-signal-forms.component.scss
+   grid-template-columns: repeat(4, 1fr); */
+
+.nome-real { grid-area: 1/3/2/5; }
+
+.l-nacemento { grid-area: 2/1/3/3; }
+.web { grid-area: 2/3/3/5; }
+
+.d-nacemento { grid-area: 3/1/4/2; }
+.d-defuncom { grid-area: 3/2/4/3; }
+
+.nacionalidade { grid-area: 3/3/4/4; }
+.pais { grid-area: 3/4/4/5; }

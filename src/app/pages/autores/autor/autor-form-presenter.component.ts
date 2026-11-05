@@ -17,7 +17,8 @@ import { HtmlCompartilhadoSFComponent } from '../../../core/components/base/elem
   standalone: true,
   imports: [ CommonModule, FormsModule, FormRoot, FormField, MatFormFieldModule, MatInputModule, MatNativeDateModule,
     MatDatepickerModule, MatAutocompleteModule, TranslocoPipe, HtmlCompartilhadoSFComponent ],
-  templateUrl: './autor-form-presenter.component.html'
+  templateUrl: './autor-form-presenter.component.html',
+  styleUrls: ['./autor-form-presenter.component.scss']
 })
 export class AutorFormPresenterComponent {
 
