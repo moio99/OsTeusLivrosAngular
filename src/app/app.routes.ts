@@ -1,4 +1,4 @@
-import { provideRouter, Routes } from '@angular/router';
+import { provideRouter, Routes, withPreloading } from '@angular/router';
 import { EstadisticasComponent } from './pages/home/estadisticas/estadisticas.component';
 import { autorizacomAccessoGuard } from './auth.guard';
 import { LoginComponent } from './pages/login/login.component';
@@ -7,6 +7,7 @@ import { LayoutPrincipalComponent } from './layouts/layout-principal/layout-prin
 import { environments } from '../environments/environment';
 import { peticomPendenteRequestGuard } from './peticom-pendente.guard';
 import { UsuarioComponent } from './pages/usuario/usuario.component';
+import { CustomPreloadStrategy } from './CustomPreloadStrategy';
 
 const rotaPorDefecto = environments.dev || environments.test ? 'estadisticas' : 'login';
 
@@ -46,7 +47,8 @@ export const routes: Routes = [
         path: 'livros', title: 'OTL - livros',
         loadChildren: () => import('./../app/pages/livros/listado-livros/listado-livros.component')
           .then(m => m.childRoutes),
-        canActivate: [autorizacomAccessoGuard]
+        canActivate: [autorizacomAccessoGuard],
+        data: { preload: true }     // para que se precarregue co primeira carrega da aplicaçom (nas outras por defecto está false)
       },
       {
         path: 'autores', title: 'OTL - Autores',
@@ -106,5 +108,9 @@ export const routes: Routes = [
 ];
 
 export const appRootingProviders = [
-  provideRouter(routes)
+  provideRouter(
+    routes,
+    // engado o seguinte para que o componhente de Livros o precarregue ao finalizar a primeira carrega.
+    withPreloading(CustomPreloadStrategy)
+  )
 ];
