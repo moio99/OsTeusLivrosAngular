@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BibliotecasService, LivrosService } from '@servizosApi';
@@ -14,6 +14,7 @@ import { BibliotecaFormPresenterComponent } from './biblioteca-form-presenter.co
 import { BibliotecaFormStateService } from './biblioteca-form-state.service';
 import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-biblioteca',
@@ -30,7 +31,7 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
   private bibliotecasService = inject(BibliotecasService);
   private formState = inject(BibliotecaFormStateService);
 
-  idBiblioteca = toSignal(
+  readonly idBiblioteca = toSignal(
     this.route.queryParams.pipe(
       map(params => params['id'] ?? '0')
     ),
@@ -38,12 +39,14 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
   );
 
   bibliotecaResource = rxResource({
-    params: () => this.idBiblioteca(),
-    stream: ({ params: id }) => {
-      const currentId = id;
-      if (this.modo() === EstadosPagina.engadir) return of(null);
+    params: () => ({
+      id: this.idBiblioteca(),
+      modo: this.modo()
+    }),
+    stream: ({ params }) => {
+      if (params.modo === EstadosPagina.engadir || params.id === '0') return of(null);
 
-      return this.bibliotecasService.getPorId(currentId).pipe(
+      return this.bibliotecasService.getPorId(params.id).pipe(
         first(),
         map(v => this.dadosObtidos(v)),
         catchError((e) => {
@@ -57,6 +60,8 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
     params: () => this.idBiblioteca(),
     stream: ({ params: id }) => {
       const currentId = id;
+      if (id === '0') return of([]);
+
       return this.livrosService.getLivrosPorBiblioteca(currentId).pipe(
         first(),
         map(v => this.dadosLivrosElementoObtidos(v)),
@@ -67,6 +72,14 @@ export class BibliotecaComponent extends BaseElementoSignalsComponent<Biblioteca
 
   constructor() {
     super();
+
+    effect(() => {
+      if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+        this.modo.set(EstadosPagina.soVisualizar);
+      } else {
+        this.modo.set(this.idBiblioteca() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar);
+      }
+    });
 
     effect(() => {
       const biblioteca = this.bibliotecaResource.value();

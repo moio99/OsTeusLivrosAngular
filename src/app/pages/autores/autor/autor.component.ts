@@ -1,4 +1,4 @@
-import { Component, signal, inject, effect } from '@angular/core';
+import { Component, signal, inject, effect, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { catchError, first, map, of } from 'rxjs';
@@ -16,6 +16,8 @@ import { AutorFormStateService } from './autor-form-state.service';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
 import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
+import { environment, environments } from '../../../../environments/environment';
+import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 
 @Component({
   selector: 'omla-autor',
@@ -34,21 +36,9 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor, AutoresS
 
   private readonly formState = inject(AutorFormStateService);
 
+  idAutor = signal('0')
   dadosLivrosDoAutor = signal<ListadoLivros[]>([]);
   date = new Date();
-
-  idAutor = toSignal(
-    this.route.queryParams.pipe(
-      map(params => params['id'] ?? '0')
-    ),
-    { initialValue: '0' }
-  );
-  // modo = computed(() => {
-  //   if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
-  //     return EstadosPagina.soVisualizar;
-  //   };
-  //   return this.idAutor() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar;
-  // });
 
   nacionalidadesResource = rxResource({
     stream: () => {
@@ -80,6 +70,8 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor, AutoresS
     params: () => this.idAutor(),
     stream: ({ params: id }) => {
       const currentId = id;
+      if (!currentId || currentId === '0') return of([]);
+
       return this.livrosService.getLivrosPorAutor(currentId).pipe(
         first(),
         map(v => this.dadosLivrosElementoObtidos(v)),
@@ -108,6 +100,18 @@ export class AutorComponent extends BaseElementoSignalsComponent<Autor, AutoresS
 
   constructor() {
     super();
+
+    effect(() => {
+      const nav = this.router.lastSuccessfulNavigation();
+      const state = nav?.extras?.state as { id?: string } | undefined;
+      this.idAutor.set(state?.id ?? '0');   // Valor por defecto se nom existe
+
+      if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
+        this.modo.set(EstadosPagina.soVisualizar);
+      } else {
+        this.modo.set(this.idAutor() === '0' ? EstadosPagina.engadir : EstadosPagina.guardar);
+      }
+    });
 
     // Sincroniza as nacionalidades co FormState cando carguen
     effect(() => {

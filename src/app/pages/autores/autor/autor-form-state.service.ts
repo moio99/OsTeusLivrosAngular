@@ -136,7 +136,7 @@ export class AutorFormStateService {
     });
   }
 
-  criarObjetoAutor(id: number | undefined): Autor {
+  criarObjetoAutor(id: string | undefined): Autor {
     const datosForm = this.autorModel();
 
     const dataNacemento = this.converterAData.getData(datosForm.dataNacemento);

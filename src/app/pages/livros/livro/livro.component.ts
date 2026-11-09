@@ -20,7 +20,7 @@ import { SimpleObjet } from '../../../shared/models/outros.model';
 import { MultiDados, MultiSelecomDialogComponent } from '@componhentesComuns';
 import { MatNativeDateModule } from '@angular/material/core';
 import { environment, environments } from '../../../../environments/environment';
-import { datasUltimosAnos, Livro, Outros, Relectura, RelecturaListado, RelecturasData, RelecturaData } from '@interfaces';
+import { datasUltimosAnos, Livro, Outros, Relectura, RelecturaListado, RelecturasData, RelecturaData, ObjetoSimpleIdNome } from '@interfaces';
 import { LivroRelecturasComponent } from './livro-relecturas.component';
 import { LivroFormPresenterComponent } from './livro-form-presenter.component';
 import { LivroFormStateService } from './livro-form-state.service';
@@ -508,37 +508,36 @@ export class LivroComponent implements OnInit {
       const dadoLivro = { id: novoDado.elemento.id, nome: novoDado.elemento.value };
       switch (novoDado.tipo) {
         case DadosComplentarios.Autor: {
-          const indexAtopado = this.dadosDoLivro.autores.findIndex(a => a.nome === 'Anónimo');
-          if (indexAtopado >= 0)
-            this.dadosDoLivro.autores.splice(indexAtopado, 1);
-          this.dadosDoLivro.autores.push(dadoLivro);
-          this.autoresLivro.set(this.dadosDoLivro.autores.map(value => ({ id: value.id, value: value.nome })));
-          break
+          const indexAnonimo = this.dadosDoLivro.autores.findIndex(a => a.nome === 'Anónimo');
+          if (indexAnonimo >= 0)
+            this.dadosDoLivro.autores.splice(indexAnonimo, 1);
+
+          this.actualizarDadosRelacions(this.dadosDoLivro.autores, dadoLivro);
+          break;
         }
         case DadosComplentarios.Genero: {
-          this.dadosDoLivro.generos.push(dadoLivro);
-          this.generosLivro.set(this.dadosDoLivro.generos.map(value => ({ id: value.id, value: value.nome })));
-          break
+          this.actualizarDadosRelacions(this.dadosDoLivro.generos, dadoLivro);
+          break;
         }
         case DadosComplentarios.Biblioteca: {
           this.actualizarCombo(this.formState.todasBibliotecasCombo(), novoDado.elemento);
           this.dadosDoLivro.idBiblioteca = novoDado.elemento.id;
-          break
+          break;
         }
         case DadosComplentarios.Editorial: {
           this.actualizarCombo(this.formState.todasEditoriaisCombo(), novoDado.elemento);
           this.dadosDoLivro.idEditorial = novoDado.elemento.id;
-          break
+          break;
         }
         case DadosComplentarios.Colecom: {
           this.actualizarCombo(this.formState.todasColeconsCombo, novoDado.elemento);
           this.dadosDoLivro.idColecom = novoDado.elemento.id;
-          break
+          break;
         }
         case DadosComplentarios.EstiloLiterario: {
           this.actualizarCombo(this.formState.todosEstilosCombo, novoDado.elemento);
           this.dadosDoLivro.idEstilo = novoDado.elemento.id;
-          break
+          break;
         }
       }
     }
@@ -546,9 +545,26 @@ export class LivroComponent implements OnInit {
   }
 
   /**
+   * Se está no listado dos elementos relacionados o engade, se nom o atualiza, logo ordena.
+   * @param elementosNaRelacom total de elementos
+   * @param elemento elemento a engadir ou atualizar
+   */
+  private actualizarDadosRelacions(elementosNaRelacom: ObjetoSimpleIdNome[], elemento: ObjetoSimpleIdNome): void {
+    if (elemento.id) {
+      const index = elementosNaRelacom.findIndex(item => item.id === elemento.id);
+      if (index < 0) {
+        elementosNaRelacom.push(elemento);
+      } else {
+        elementosNaRelacom.splice(index, 1, elemento);
+      }
+      elementosNaRelacom.sort((a, b) => a.nome.localeCompare(b.nome));
+    }
+  }
+
+  /**
    * Se nom está no listado do combo o engade e ordena.
    * @param elementosCombo total de elementos
-   * @param novoElemento elemento a engadir
+   * @param novoElemento elemento a engadir ou atualizar
    */
   private actualizarCombo(elementosCombo: SimpleObjet[], novoElemento: SimpleObjet): void {
     const index = elementosCombo.findIndex(item => item.id === novoElemento.id);
@@ -630,14 +646,6 @@ export class LivroComponent implements OnInit {
     });
   }
 
-  onIrPagina(rota: string, id: number): void {
-    let livro = this.setDadosLivro();
-    const dadosPagina: DadosPagina = {id: this.idLivro, nomePagina: this.nomePagina, elemento: livro};
-    this.dadosPaginasService.setDadosPagina(dadosPagina);
-    this.layoutService.amosarInfo(undefined);
-    this.router.navigateByUrl(rota + '?id=' + id);
-  }
-
   onIrPaginaBiblioteca(): void{
     this.onIrPaginaGenerico(DadosComplentarios.Biblioteca, '/bibliotecas/biblioteca');
   }
@@ -689,6 +697,31 @@ export class LivroComponent implements OnInit {
     this.router.navigate([rota], {
       state: { id: '0', idRelectura: 'algo mais de probas' },
     });
+  }
+
+  onIrPaginaEditarAutorGenero(rota: string, tipo: DadosComplentarios, id: number): void{
+    this.guardarDadosDoLivro(tipo);
+
+    const dados = this.dadosOutrosService.getDadosOutrosCache();
+    if (dados) {
+      const listado = tipo === DadosComplentarios.Autor ? dados.autores : dados.generos;
+
+      if (listado?.data?.length) {
+        this.layoutService.amosarInfo(undefined);
+        const dado = listado.data
+          .filter(elemento => id === elemento.id)
+          .map(elemento => ({ id: elemento.id, value: elemento.nome }))
+
+        this.dadosPaginasService.setNovoDadoLivro({tipo: tipo, elemento: dado});
+        this.layoutService.amosarInfo(undefined);
+
+        if (tipo === DadosComplentarios.Autor) {
+          this.router.navigate([rota], { state: { id: id, idRelectura: 'algo mais de probas' } });
+        } else {
+          this.router.navigateByUrl(rota + '?id=' + id);
+        }
+      }
+    }
   }
 
   onIrPaginaEngadir(rota: string, tipo: DadosComplentarios): void{

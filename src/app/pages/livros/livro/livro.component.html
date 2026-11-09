@@ -15,11 +15,11 @@
 
   (gestionarAutores)="onGestomMulti(multiGestom.autores)"
   (engadirAutor)="onIrPaginaEngadirAutor('/autores/autor', dadosComplentarios.Autor)"
-  (navegarAutor)="onIrPagina('/autores/autor', $event)"
+  (navegarAutor)="onIrPaginaEditarAutorGenero('/autores/autor', dadosComplentarios.Autor, $event)"
 
   (gestionarGeneros)="onGestomMulti(multiGestom.generos)"
   (engadirGenero)="onIrPaginaEngadir('/generos/genero', dadosComplentarios.Genero)"
-  (navegarGenero)="onIrPagina('/generos/genero', $event)"
+  (navegarGenero)="onIrPaginaEditarAutorGenero('/generos/genero', dadosComplentarios.Genero, $event)"
 
   (engadirComplementario)="onEngadirComplementario($event)"
   (editarBiblioteca)="onIrPaginaBiblioteca()"

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DadosComplentarios, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
@@ -18,23 +18,6 @@ export abstract class BaseElementoSignalsComponent<TElemento extends BaseElement
 
   protected route = inject(ActivatedRoute);
   protected router = inject(Router);
-
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const parametros = params as ParametrosId;
-      this.elementoId = parametros.id;
-
-      if (parametros.id === '0') {
-        this.modo.set(EstadosPagina.engadir);
-      } else {
-        this.modo.set(EstadosPagina.guardar);
-      }
-
-      if (environment.whereIAm === environments.pre || environment.whereIAm === environments.pro) {
-        this.modo.set(EstadosPagina.soVisualizar);
-      }
-    });
-  }
 
   protected dadosLivrosElementoObtidos(data: object): ListadoLivros[] {
     let resultados: ListadoLivros[];
