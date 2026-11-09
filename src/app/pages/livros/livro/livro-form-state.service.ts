@@ -152,7 +152,7 @@ export class LivroFormStateService {
   /**
    * Estavelece os dados no formulario
    */
-  setDadosRelecturaForm(relectura: Relectura): void {
+  setRelecturaForm(relectura: Relectura): void {
     if (relectura) {
       this.livroForm.controls.titulo.setValue(relectura.titulo);
       this.setCombo(relectura.idBiblioteca, this.todasBibliotecasCombo(), this.livroForm.controls.idBiblioteca);
@@ -173,7 +173,7 @@ export class LivroFormStateService {
     }
   }
 
-  criarLivro(id: string, autores: SimpleObjet[], generos: SimpleObjet[],
+  setLivro(id: string, autores: SimpleObjet[], generos: SimpleObjet[],
     idIdiomaEntrada: number | null,
     pontuacom?: number, autorAnonimo?: ObjetoSimpleIdNome): Livro {
 
@@ -207,6 +207,50 @@ export class LivroFormStateService {
       biblioteca: '', editorial: '', colecom: '', estilo: ''
     };
     return livro;
+  }
+
+  setRelectura(idLivro: string, idRelectura: string,
+    idiomaDaEntrada: number | null, pontuacomEstrelas: number | undefined): Relectura {
+
+    let dateConvert = new ConverterAData();
+    let dFL = dateConvert.getData(this.livroForm.controls.dataFimLeiturata.value);
+    let dE = dateConvert.getData(this.livroForm.controls.dataEdicom.value);
+
+    let biblioteca = this.todasBibliotecasCombo().find(option => option.value === this.livroForm.controls.idBiblioteca.value);
+    let editorial = this.todasEditoriaisCombo().find(option => option.value === this.livroForm.controls.idEditorial.value);
+    let colecom = this.todasColeconsCombo.find(option => option.value === this.livroForm.controls.idColecom.value);
+    let idioma = this.todosIdiomasCombo.find(option => option.value === this.livroForm.controls.idioma.value);
+    let serie = this.todasSeriesLivrosCombo.find(option => option.value === this.livroForm.controls.serie.value);
+
+    let relectura: Relectura = {
+      id: idRelectura,
+      idLivro: idLivro,
+      idiomaDaEntrada: idiomaDaEntrada,
+      titulo: String(this.livroForm.controls.titulo.value),
+      idBiblioteca: (biblioteca) ? biblioteca.id : null,
+      idEditorial: (editorial) ? editorial.id : null,
+      idColecom: (colecom) ? colecom.id : null,
+      isbn: (this.livroForm.controls.isbn.value) ? String(this.livroForm.controls.isbn.value) : null,
+      paginas: (this.livroForm.controls.paginas.value) ? String(this.livroForm.controls.paginas.value) : null,
+      paginasLidas: (!this.livroForm.controls.paginasLidas.value) ? null : String(this.livroForm.controls.paginasLidas.value),
+      lido: (!this.livroForm.controls.lido.value) ? false : this.livroForm.controls.lido.value,
+      diasLeitura: (this.livroForm.controls.diasLeitura.value) ? String(this.livroForm.controls.diasLeitura.value) : null,
+      dataFimLeitura: (dFL.year > 0) ? dFL.year + '-' + dFL.month + '-' + dFL.day : '',
+      idIdioma: (idioma) ? idioma.id : null,
+      dataEdicom: (dE.year > 0) ? dE.year + '-' + dE.month + '-' + dE.day : '',
+      numeroEdicom: (this.livroForm.controls.numeroEdicom.value) ? String(this.livroForm.controls.numeroEdicom.value) : null,
+      electronico: (!this.livroForm.controls.electronico.value) ? false : this.livroForm.controls.electronico.value,
+      somSerie: (!this.livroForm.controls.somSerie.value) ? false : this.livroForm.controls.somSerie.value,
+      idSerie: (serie) ? serie.id : null,
+      comentario: (this.livroForm.controls.comentario.value) ? String(this.livroForm.controls.comentario.value) : null,
+      pontuacom: pontuacomEstrelas,
+      // nom necesarios
+      biblioteca: '',
+      editorial: '',
+      colecom: '',
+    };
+
+    return relectura;
   }
 
   setCombo(id: number | null, combo: SimpleObjet[], control: FormControl): void {

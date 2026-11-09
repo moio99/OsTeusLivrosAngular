@@ -342,12 +342,15 @@ export class LivroComponent implements OnInit {
       this.modo.set(EstadosPagina.soVisualizar);
     else
       this.modo.set(EstadosPagina.guardar);
-    this.formState.setDadosRelecturaForm(this.dadosDaRelectura);
+    this.formState.setRelecturaForm(this.dadosDaRelectura);
     this.pontuacomEstrelas = this.dadosDaRelectura.pontuacom;
   }
 
   guardarRelectura(event: any) {
-    let relectura = this.setDadosRelectura();
+    let relectura = this.formState.setRelectura(
+      this.dadosDoLivro!.id,
+      (this.dadosDaRelectura) ? this.dadosDaRelectura.id :'0',
+      this.authService.getUsuarioLogado()?.idioma ?? null, this.pontuacomEstrelas);
 
     if (event.submitter.value === EstadosPagina.engadir) {
       this.relecturasService
@@ -379,48 +382,6 @@ export class LivroComponent implements OnInit {
             console.debug('put completado') }
       });
     }
-  }
-
-  setDadosRelectura(): Relectura {
-    let dateConvert = new ConverterAData();
-    let dFL = dateConvert.getData(this.livroForm.controls.dataFimLeiturata.value);
-    let dE = dateConvert.getData(this.livroForm.controls.dataEdicom.value);
-
-    let biblioteca = this.formState.todasBibliotecasCombo().find(option => option.value === this.livroForm.controls.idBiblioteca.value);
-    let editorial = this.formState.todasEditoriaisCombo().find(option => option.value === this.livroForm.controls.idEditorial.value);
-    let colecom = this.formState.todasColeconsCombo.find(option => option.value === this.livroForm.controls.idColecom.value);
-    let idioma = this.formState.todosIdiomasCombo.find(option => option.value === this.livroForm.controls.idioma.value);
-    let serie = this.formState.todasSeriesLivrosCombo.find(option => option.value === this.livroForm.controls.serie.value);
-
-    let relectura: Relectura = {
-      id: (this.dadosDaRelectura) ? this.dadosDaRelectura.id :'0',
-      idLivro: this.dadosDoLivro!.id,
-      idiomaDaEntrada: this.authService.getUsuarioLogado()?.idioma ?? null,
-      titulo: String(this.livroForm.controls.titulo.value),
-      idBiblioteca: (biblioteca) ? biblioteca.id : null,
-      idEditorial: (editorial) ? editorial.id : null,
-      idColecom: (colecom) ? colecom.id : null,
-      isbn: (this.livroForm.controls.isbn.value) ? String(this.livroForm.controls.isbn.value) : null,
-      paginas: (this.livroForm.controls.paginas.value) ? String(this.livroForm.controls.paginas.value) : null,
-      paginasLidas: (!this.livroForm.controls.paginasLidas.value) ? null : String(this.livroForm.controls.paginasLidas.value),
-      lido: (!this.livroForm.controls.lido.value) ? false : this.livroForm.controls.lido.value,
-      diasLeitura: (this.livroForm.controls.diasLeitura.value) ? String(this.livroForm.controls.diasLeitura.value) : null,
-      dataFimLeitura: (dFL.year > 0) ? dFL.year + '-' + dFL.month + '-' + dFL.day : '',
-      idIdioma: (idioma) ? idioma.id : null,
-      dataEdicom: (dE.year > 0) ? dE.year + '-' + dE.month + '-' + dE.day : '',
-      numeroEdicom: (this.livroForm.controls.numeroEdicom.value) ? String(this.livroForm.controls.numeroEdicom.value) : null,
-      electronico: (!this.livroForm.controls.electronico.value) ? false : this.livroForm.controls.electronico.value,
-      somSerie: (!this.livroForm.controls.somSerie.value) ? false : this.livroForm.controls.somSerie.value,
-      idSerie: (serie) ? serie.id : null,
-      comentario: (this.livroForm.controls.comentario.value) ? String(this.livroForm.controls.comentario.value) : null,
-      pontuacom: this.pontuacomEstrelas,
-      // nom necesarios
-      biblioteca: '',
-      editorial: '',
-      colecom: '',
-    };
-
-    return relectura;
   }
 
   private gestionarExitoRelectura(data: Resultado, relectura: Relectura) {
@@ -837,7 +798,7 @@ export class LivroComponent implements OnInit {
   setDadosLivro(): Livro {
     const dados = this.dadosOutrosService.getDadosOutrosCache();
     const autorAnonimo = dados?.autores?.data.find(autor => autor.nome === 'Anónimo');
-    return this.formState.criarLivro(
+    return this.formState.setLivro(
       this.dadosDoLivro?.id ?? '0',
       this.autoresLivro(),
       this.generosLivro(),
