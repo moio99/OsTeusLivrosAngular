@@ -3,17 +3,17 @@ import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { ListadoAutores, ParametrosAutor } from '@interfaces';
 import { AutoresService } from '@servizosApi';
-import { Ordeacom } from '../../../shared/classes/ordeacom';
-import { DadosComplentarios, InformacomPeTipo, ListadosAutoresTipos } from '../../../shared/enums/estadisticasTipos';
-import { AutorComponent } from '../autor/autor.component';
 import { CommonModule } from '@angular/common';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
-import { environment, environments } from '../../../../environments/environment';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
-import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 import { FormsModule } from '@angular/forms';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { ListadosAutoresTipos, InformacomPeTipo, DadosComplentarios } from '@enumerados';
+import { BaseListadoDadosApi } from '@models';
+import { AutorComponent } from '../autor/autor.component';
+import { DadosOutrosService } from '@servizosFlow';
+import { environment, environments } from '../../../../environments/environment';
+import { Ordeacom } from '../../../shared/classes/ordeacom';
 
 @Component({
   selector: 'omla-listado-autores',

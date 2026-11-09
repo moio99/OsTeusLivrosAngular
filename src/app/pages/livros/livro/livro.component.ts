@@ -10,24 +10,20 @@ import { MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule} from '@angular/material/datepicker';
-import { ConverterAData } from '../../../shared/classes/date-convert';
-import { LayoutService, DadosPaginasService, DadosPagina, AuthService } from '@servizosFlow';
-import { DadosComplentarios, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { Title } from '@angular/platform-browser';
-import { EngadirEditarData } from '../../../shared/models/datas';
-import { SimpleObjet } from '../../../shared/models/outros.model';
 import { MultiDados, MultiSelecomDialogComponent } from '@componhentesComuns';
 import { MatNativeDateModule } from '@angular/material/core';
-import { environment, environments } from '../../../../environments/environment';
 import { datasUltimosAnos, Livro, Outros, Relectura, RelecturaListado, RelecturasData, RelecturaData, ObjetoSimpleIdNome } from '@interfaces';
 import { LivroRelecturasComponent } from './livro-relecturas.component';
 import { LivroFormPresenterComponent } from './livro-form-presenter.component';
 import { LivroFormStateService } from './livro-form-state.service';
-import { BaseListadoDadosApi, Parametros, Resultado } from '../../../shared/models/base-dados';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 import { TranslocoService } from '@jsverse/transloco';
+import { EstadosPagina, DadosComplentarios, InformacomPeTipo } from '@enumerados';
+import { SimpleObjet, Parametros, EngadirEditarData, Resultado, BaseListadoDadosApi } from '@models';
+import { AuthService, LayoutService, DadosOutrosService, DadosPaginasService, DadosPagina } from '@servizosFlow';
+import { environment, environments } from '../../../../environments/environment';
+import { ConverterAData } from '../../../shared/classes/date-convert';
 
 export enum MultiGestom {
   autores = 1,

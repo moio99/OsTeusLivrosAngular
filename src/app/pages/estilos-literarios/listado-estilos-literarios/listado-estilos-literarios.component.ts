@@ -5,13 +5,13 @@ import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { OrdeColunaComponent, BaseListadoComponent } from '@componhentesComuns';
 import { EstiloLiterarioComponent } from '../estilo-literario/estilo-literario.component';
 import { EstilosLiterariosService } from '@servizosApi';
-import { EditorialForm, EstiloLiterario, ListadoEstilosLiterarios } from '@interfaces';
+import { EstiloLiterario, ListadoEstilosLiterarios } from '@interfaces';
 import { Observable } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
-import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
-import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { DadosComplentarios } from '@enumerados';
+import { BaseListadoDadosApi } from '@models';
+import { DadosOutrosService } from '@servizosFlow';
 
 @Component({
   selector: 'omla-listado-estilos-literarios',

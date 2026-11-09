@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { catchError, first, map, of } from 'rxjs';
 import { Autor, ListadoLivros } from '@interfaces';
 import { AutoresService, LivrosService, OutrosService } from '@servizosApi';
-import { InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
 import { Nacionalidade, SimpleObjet, Pais } from '../../../shared/models/outros.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -17,7 +16,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { ListadoLivrosElementoComponent } from '../../../core/components/listado-livros-elemento/listado-livros-elemento.component';
 import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
 import { environment, environments } from '../../../../environments/environment';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
+import { EstadosPagina, InformacomPeTipo } from '@enumerados';
 
 @Component({
   selector: 'omla-autor',

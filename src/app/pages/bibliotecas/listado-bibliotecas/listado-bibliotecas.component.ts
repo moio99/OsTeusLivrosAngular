@@ -4,13 +4,13 @@ import { Biblioteca, ListadoBibliotecas } from '@interfaces';
 import { BibliotecasService } from '@servizosApi';
 import { CommonModule } from '@angular/common';
 import { BibliotecaComponent } from '../biblioteca/biblioteca.component';
-import { environment, environments } from '../../../../environments/environment';
 import { BaseListadoComponent } from '@componhentesComuns';
 import { Observable } from 'rxjs';
-import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
-import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
-import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { DadosComplentarios } from '@enumerados';
+import { BaseListadoDadosApi } from '@models';
+import { DadosOutrosService } from '@servizosFlow';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-listado-bibliotecas',

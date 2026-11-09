@@ -1,4 +1,4 @@
-import { ListadosAutoresTipos } from "../../shared/enums/estadisticasTipos";
+import { ListadosAutoresTipos } from "@enumerados";
 import { BaseListadoDadosApi } from "../../shared/models/base-dados";
 
 export interface ParametrosAutor {

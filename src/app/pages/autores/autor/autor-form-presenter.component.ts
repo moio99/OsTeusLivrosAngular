@@ -6,11 +6,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { AutorFormStateService } from './autor-form-state.service';
 import { FormRoot, FormField } from '@angular/forms/signals';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { HtmlCompartilhadoSFComponent } from '../../../core/components/base/elemento/html-compartilhado-signal-forms.component';
+import { EstadosPagina } from '@enumerados';
 
 @Component({
   selector: 'omla-autor-form-presenter',

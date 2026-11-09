@@ -12,9 +12,9 @@ import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { first, map, catchError, of } from 'rxjs';
 import { BibliotecaFormPresenterComponent } from './biblioteca-form-presenter.component';
 import { BibliotecaFormStateService } from './biblioteca-form-state.service';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
-import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
+import { EstadosPagina } from '@enumerados';
 import { environment, environments } from '../../../../environments/environment';
+import { BaseElementoSignalsComponent } from '../../../core/components/base/elemento/base-elemento-signals.component';
 
 @Component({
   selector: 'omla-biblioteca',

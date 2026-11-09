@@ -1,11 +1,11 @@
 import { Component, input, output } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { FieldTree, FormField } from '@angular/forms/signals';
 import { CommonModule } from '@angular/common';
+import { EstadosPagina } from '@enumerados';
 
 @Component({
   selector: 'omla-html-compartilhado-sf',

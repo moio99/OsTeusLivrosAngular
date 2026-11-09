@@ -2,17 +2,16 @@ import { Component, computed, ElementRef, inject, OnInit, signal, ViewChild  } f
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { EstadisticasService, GraficosService, OutrosService} from '@servizosApi';
-import { LayoutService } from '@servizosFlow';
-import { Ordeacom } from '../../../shared/classes/ordeacom';
-import { EstadisticasTipo, InformacomPeTipo } from '../../../shared/enums/estadisticasTipos';
+import { DadosOutrosService, LayoutService } from '@servizosFlow';
 import { OrdeColunaComponent } from '@componhentesComuns';
 import { Estadisticas, GraficosData, Outros } from '@interfaces';
-import { PeticomPendenteComponent } from '../../../peticom-pendente.guard';
-import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { forkJoin } from 'rxjs';
-import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { EstadisticasTipo, InformacomPeTipo } from '@enumerados';
+import { BaseListadoDadosApi } from '@models';
+import { PeticomPendenteComponent } from '../../../peticom-pendente.guard';
+import { Ordeacom } from '../../../shared/classes/ordeacom';
 
 @Component({
   selector: 'omla-estadisticas',

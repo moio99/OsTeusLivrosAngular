@@ -1,10 +1,9 @@
-import { ListadosAutoresTipos } from "../../shared/enums/estadisticasTipos";
-import { BaseListado, BaseElemento } from "../../shared/models/base-dados";
+import { BaseListado, BaseElemento } from "@models";
 import { BaseQuantidadesLivros } from "./quantidades.interface";
 
 export interface ParametrosAutorListado {
   id: string;
-  tipo: ListadosAutoresTipos;
+  tipo: ListadoAutores;
 }
 
 export interface ListadoAutores extends BaseListado, BaseQuantidadesLivros {

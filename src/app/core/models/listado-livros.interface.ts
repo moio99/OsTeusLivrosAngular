@@ -1,4 +1,4 @@
-import { EstadisticasTipo } from "../../shared/enums/estadisticasTipos";
+import { EstadisticasTipo } from "@enumerados";
 
 export interface ParametrosLivroListado {
   id: string;

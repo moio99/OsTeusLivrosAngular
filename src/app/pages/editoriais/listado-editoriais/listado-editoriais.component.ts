@@ -8,10 +8,10 @@ import { Ordeacom } from '../../../shared/classes/ordeacom';
 import { EditorialComponent } from '../editorial/editorial.component';
 import { Observable } from 'rxjs';
 import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
-import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
-import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { DadosComplentarios } from '@enumerados';
+import { BaseListadoDadosApi } from '@models';
+import { DadosOutrosService } from '@servizosFlow';
 
 @Component({
   selector: 'omla-listado-editoriais',

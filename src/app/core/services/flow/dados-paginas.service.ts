@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { DadosComplentarios } from "../../../shared/enums/estadisticasTipos";
-import { SimpleObjet } from "../../../shared/models/outros.model";
+import { DadosComplentarios } from "@enumerados";
+import { SimpleObjet } from "@models";
 
 export interface DadosPagina {
   id: string;

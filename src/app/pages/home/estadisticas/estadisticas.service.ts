@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { environment, environments } from '../../../../environments/environment';
-import { EstadisticasTipo } from '../../../shared/enums/estadisticasTipos';
 import { inject, Service } from '@angular/core';
+import { EstadisticasTipo } from '@enumerados';
+import { Estadisticas } from '@interfaces';
+import { BaseListadoDadosApi } from '@models';
 import { of } from 'rxjs';
-import { Estadisticas } from '../../../core/models/estadisticas.interface';
-import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
+import { environment, environments } from '../../../../environments/environment';
 
 // @Injectable({
 //   providedIn: 'root',

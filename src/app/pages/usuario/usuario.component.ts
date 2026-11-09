@@ -1,22 +1,20 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService, LayoutService } from '@servizosFlow';
+import { AuthService, DadosOutrosService, LayoutService } from '@servizosFlow';
 import { catchError, EMPTY, first, map, of, startWith, switchMap, tap } from 'rxjs';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { DadosOutrosService } from '../../core/services/flow/dados-outros.service';
-import { OutrosService } from '@servizosApi';
-import { InformacomPeTipo } from '../../shared/enums/estadisticasTipos';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Idioma } from '../../shared/models/outros.model';
 import { AltaUsuario, dadosComplementarios, Usuario } from '@interfaces';
-import { ValidaconsAMedida } from '../../shared/validators/custom-validators';
-import { UsuariosService } from '../../core/services/api/usuarios.service';
 import { PeComponent } from '@componhentesComuns';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { BaseListadoDadosApi } from '../../shared/models/base-dados';
 import { NgTemplateOutlet } from '@angular/common';
+import { InformacomPeTipo } from '@enumerados';
+import { Idioma, BaseListadoDadosApi } from '@models';
+import { OutrosService } from '@servizosApi';
+import { UsuariosService } from '../../core/services/api/usuarios.service';
+import { ValidaconsAMedida } from '../../shared/validators/custom-validators';
 
 @Component({
   selector: 'app-alta',

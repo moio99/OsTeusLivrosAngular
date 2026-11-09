@@ -1,9 +1,9 @@
 import { Component, computed, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
-import { SimpleObjet } from '../../../shared/models/outros.model';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { EstadosPagina } from '@enumerados';
+import { SimpleObjet } from '@models';
 
 @Component({
   selector: 'omla-livro-relacions',

@@ -1,14 +1,12 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DadosComplentarios, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { of } from 'rxjs';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
-import { BaseElemento, BaseListadoDadosApi, ParametrosId, ResultadoMeta } from '../../../../shared/models/base-dados';
+import { BaseElemento, BaseListadoDadosApi, ResultadoMeta } from '../../../../shared/models/base-dados';
 import { BaseGardarComponent } from './base-gardar.component';
 import { BaseApiService } from '@servizosApi';
-import { environment, environments } from '../../../../../environments/environment';
-import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
+import { DadosComplentarios, InformacomPeTipo } from '@enumerados';
 
 @Component({
   template: ''

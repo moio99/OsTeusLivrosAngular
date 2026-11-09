@@ -17,7 +17,9 @@
       "@servizosApi": ["./src/app/core/services/api/index.ts"],
       "@servizosFlow": ["./src/app/core/services/flow/index.ts"],
       "@componhentesComuns": ["./src/app/core/components/index.ts"],
-      "@interfaces": ["./src/app/core/models/index.ts"]
+      "@interfaces": ["./src/app/core/models/index.ts"],
+      "@models": ["./src/app/shared/models"],
+      "@enumerados": ["./src/app/shared/enums"]
     }
   },
   "angularCompilerOptions": {

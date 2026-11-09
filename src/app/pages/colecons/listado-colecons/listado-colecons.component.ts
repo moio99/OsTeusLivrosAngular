@@ -6,11 +6,11 @@ import { Colecom, ListadoColecons } from '@interfaces';
 import { ColeconsService } from '@servizosApi';
 import { BaseListadoComponent } from '@componhentesComuns';
 import { Observable } from 'rxjs';
-import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
-import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
-import { DadosOutrosService } from '../../../core/services/flow/dados-outros.service';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { DadosComplentarios } from '@enumerados';
+import { BaseListadoDadosApi } from '@models';
+import { DadosOutrosService } from '@servizosFlow';
+import { environment, environments } from '../../../../environments/environment';
 
 @Component({
   selector: 'omla-listado-colecons',

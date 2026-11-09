@@ -6,10 +6,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
 import { BibliotecaFormStateService } from './biblioteca-form-state.service';
 import { FormField, FormRoot } from '@angular/forms/signals';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { EstadosPagina } from '@enumerados';
 import { HtmlCompartilhadoSFComponent } from '../../../core/components/base/elemento/html-compartilhado-signal-forms.component';
 
 @Component({

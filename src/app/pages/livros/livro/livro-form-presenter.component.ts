@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,12 +10,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatNativeDateModule } from '@angular/material/core';
 import { EstrelasPontuacomComponent } from '@componhentesComuns';
 import { LivroForm } from '@interfaces';
-import { EstadosPagina } from '../../../shared/enums/estadosPagina';
-import { DadosComplentarios } from '../../../shared/enums/estadisticasTipos';
-import { SimpleObjet } from '../../../shared/models/outros.model';
 import { LivroRelacionsComponent } from './livro-relacions.component';
 import { LivroFormStateService } from './livro-form-state.service';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { EstadosPagina, DadosComplentarios } from '@enumerados';
+import { SimpleObjet } from '@models';
 
 @Component({
   selector: 'omla-livro-form-presenter',

@@ -1,13 +1,12 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { first, tap } from 'rxjs/operators';
-import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService } from '@servizosFlow';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { BaseListadoDadosApi } from '../../../../shared/models/base-dados';
-import { ParametrosAutor } from '@interfaces';
 import { TranslocoService } from '@jsverse/transloco';
+import { InformacomPeTipo } from '@enumerados';
 
 @Component({
   template: '' // Componente abstracto, nom precisa template

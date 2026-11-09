@@ -3,19 +3,19 @@ import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { first, map, tap } from 'rxjs/operators';
 import { GenerosService, LivrosService, OutrosService } from '@servizosApi';
 import { LayoutService, DadosPaginasService, CoresIdiomasService, DadosPagina } from '@servizosFlow';
-import { Ordeacom } from '../../../shared/classes/ordeacom';
-import { EstadisticasTipo, InformacomPeTipo, ListadosLivrosTipos } from '../../../shared/enums/estadisticasTipos';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule} from '@angular/material/tooltip';
-import { OrdeColunaComponent } from '../../../core/components/orde-coluna/orde-coluna.component';
 import { ListadoLivros, ParametrosLivroListado } from '@interfaces';
-import { LivroComponent } from '../livro/livro.component';
 import { ChartComponent, NgApexchartsModule } from "ng-apexcharts";
-import { TartaChartOptions } from '../../../core/types/chart.options';
-import { environment, environments } from '../../../../environments/environment';
-import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { FormsModule } from '@angular/forms';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { OrdeColunaComponent } from '@componhentesComuns';
+import { ListadosLivrosTipos, EstadisticasTipo, InformacomPeTipo } from '@enumerados';
+import { BaseListadoDadosApi } from '@models';
+import { environment, environments } from '../../../../environments/environment';
+import { TartaChartOptions } from '../../../core/types/chart.options';
+import { Ordeacom } from '../../../shared/classes/ordeacom';
+import { LivroComponent } from '../livro/livro.component';
 
 @Component({
   selector: 'omla-listado-livros',

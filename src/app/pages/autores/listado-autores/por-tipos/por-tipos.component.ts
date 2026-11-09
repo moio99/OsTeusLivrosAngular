@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
 import { ListadoConcretoAutores, ListadoConcretoAutoresData } from '@interfaces';
 import { AutoresService } from '@servizosApi';
 import { LayoutService } from '@servizosFlow';
-import { ListadosAutoresTipos, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { TranslocoService } from '@jsverse/transloco';
+import { ListadosAutoresTipos, InformacomPeTipo } from '@enumerados';
 
 @Component({
   selector: 'omla-por-tipos',

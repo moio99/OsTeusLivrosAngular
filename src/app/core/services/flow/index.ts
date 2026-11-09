@@ -1,5 +1,6 @@
 export * from './auth.service'
 export * from './cores-idiomas.service'
+export * from './dados-outros.service'
 export * from './dados-paginas.service'
 export * from './layout.service'
 export * from './usuario-app.service'

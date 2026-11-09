@@ -2,12 +2,11 @@ import { Component, computed, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { environment, environments } from '../../../../../environments/environment';
-import { InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
-import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 import { BaseApiService } from '@servizosApi';
 import { ListadoLivros } from '../../../models/listado-livros.interface';
 import { BaseElemento, ParametrosId, BaseListadoDadosApi } from '../../../../shared/models/base-dados';
 import { BaseGardarComponent } from './base-gardar.component';
+import { EstadosPagina, InformacomPeTipo } from '@enumerados';
 
 @Component({
   template: ''

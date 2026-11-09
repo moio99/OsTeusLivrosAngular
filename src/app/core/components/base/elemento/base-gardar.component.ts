@@ -2,15 +2,14 @@ import { signal, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { concatMap, first, tap } from 'rxjs/operators';
 import { environment, environments } from '../../../../../environments/environment';
-import { DadosComplentarios, InformacomPeTipo } from '../../../../shared/enums/estadisticasTipos';
 import { LayoutService, DadosPaginasService } from '@servizosFlow';
-import { EstadosPagina } from '../../../../shared/enums/estadosPagina';
 import { BaseApiService } from '@servizosApi';
 import { SimpleObjet } from '../../../../shared/models/outros.model';
 import { BaseElemento, ResultadoMeta } from '../../../../shared/models/base-dados';
 import { DadosOutrosService } from '../../../services/flow/dados-outros.service';
 import { TranslocoService } from '@jsverse/transloco';
 import { EMPTY } from 'rxjs';
+import { DadosComplentarios, EstadosPagina, InformacomPeTipo } from '@enumerados';
 
 export abstract class BaseGardarComponent<TElemento extends BaseElemento, TServico extends BaseApiService<TElemento>> {
 
