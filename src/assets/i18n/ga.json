@@ -12,6 +12,7 @@
     "literaryStyles": "Stíleanna liteartha", "user": "Úsáideoir", "logout": "Logáil amach"
   },
   "common": {
+    "firstInSeries": "An chéad leabhar sa tsraith",
     "list": "Liosta", "loading": "Á lódáil...", "name": "Ainm", "books": "Leabhair", "read": "Léite",
     "title": "Teideal", "originalTitle": "Bunteideal", "author": "Údar", "authors": "Údair",
     "genre": "Seánra", "genres": "Seánraí", "pages": "Leathanaigh", "rereads": "Athléamh",

@@ -18,6 +18,7 @@
     "collections": "Colletziones", "literaryStyles": "Istyles literàrios", "user": "Utente", "logout": "Essi"
   },
   "common": {
+    "firstInSeries": "Primu libru de sa sèrie",
     "list": "Elencu", "loading": "Carrigamentu...", "name": "Nùmene", "books": "Libros", "read": "Lèghidos",
     "title": "Tìtulu", "originalTitle": "Tìtulu originale", "author": "Autore", "authors": "Autores",
     "genre": "Genere", "genres": "Genres", "pages": "Pàginas", "rereads": "Torra-leghidas",

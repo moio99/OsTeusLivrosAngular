@@ -12,6 +12,7 @@
     "literaryStyles": "Stili literarii", "user": "Utilizatore", "logout": "Disconnette si"
   },
   "common": {
+    "firstInSeries": "Primu libru di a seria",
     "list": "Lista", "loading": "Caricamentu...", "name": "Nome", "books": "Libri", "read": "Letti",
     "title": "Titulu", "originalTitle": "Titulu uriginale", "author": "Autore", "authors": "Autori",
     "genre": "Genere", "genres": "Generi", "pages": "Pagine", "rereads": "Riletture",

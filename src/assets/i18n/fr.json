@@ -12,6 +12,7 @@
     "literaryStyles": "Styles littéraires", "user": "Utilisateur", "logout": "Se déconnecter"
   },
   "common": {
+    "firstInSeries": "Premier livre de la série",
     "list": "Liste", "loading": "Chargement...", "name": "Nom", "books": "Livres", "read": "Lus",
     "title": "Titre", "originalTitle": "Titre original", "author": "Auteur", "authors": "Auteurs",
     "genre": "Genre", "genres": "Genres", "pages": "Pages", "rereads": "Relectures",

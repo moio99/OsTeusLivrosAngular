@@ -18,6 +18,7 @@
     "collections": "Collections", "literaryStyles": "Literary styles", "user": "User", "logout": "Log out"
   },
   "common": {
+    "firstInSeries": "First book in the series",
     "list": "List",
     "loading": "Loading...", "name": "Name", "books": "Books", "read": "Read",
     "title": "Title", "originalTitle": "Original title", "author": "Author", "authors": "Authors",

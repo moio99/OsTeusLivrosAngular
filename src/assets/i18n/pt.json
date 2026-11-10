@@ -18,6 +18,7 @@
     "collections": "Coleções", "literaryStyles": "Estilos literários", "user": "Utilizador", "logout": "Terminar sessão"
   },
   "common": {
+    "firstInSeries": "Primeiro livro da série",
     "list": "Lista", "loading": "A carregar...", "name": "Nome", "books": "Livros", "read": "Lidos",
     "title": "Título", "originalTitle": "Título original", "author": "Autor", "authors": "Autores",
     "genre": "Género", "genres": "Géneros", "pages": "Páginas", "rereads": "Releituras",

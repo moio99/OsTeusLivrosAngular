@@ -18,6 +18,7 @@
     "collections": "Collections", "literaryStyles": "Manières littéraires", "user": "Utilisaire", "logout": "Sôrti"
   },
   "common": {
+    "firstInSeries": "Premier livre de la série",
     "list": "Liste", "loading": "En train de charger...", "name": "Nom", "books": "Livres", "read": "Leus",
     "title": "Titre", "originalTitle": "Titre d'origine", "author": "Auteur", "authors": "Auteurs",
     "genre": "Genre", "genres": "Genres", "pages": "Pages", "rereads": "Relectures",

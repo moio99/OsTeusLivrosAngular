@@ -12,6 +12,7 @@
     "literaryStyles": "Literar styles", "user": "Uiser", "logout": "Sign oot"
   },
   "common": {
+    "firstInSeries": "First buik in the series",
     "list": "Leet", "loading": "Loadin...", "name": "Name", "books": "Buiks", "read": "Read",
     "title": "Title", "originalTitle": "Original title", "author": "Writer", "authors": "Writers",
     "genre": "Genre", "genres": "Genres", "pages": "Pages", "rereads": "Re-reads",

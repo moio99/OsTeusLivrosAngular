@@ -18,6 +18,7 @@
     "collections": "Col·leccions", "literaryStyles": "Estils literaris", "user": "Usuari", "logout": "Tanca la sessió"
   },
   "common": {
+    "firstInSeries": "Primer llibre de la sèrie",
     "loading": "Carregant...", "name": "Nom", "books": "Llibres", "read": "Llegits",
     "title": "Títol", "originalTitle": "Títol original", "author": "Autor", "authors": "Autors",
     "genre": "Gènere", "genres": "Gèneres", "pages": "Pàgines", "rereads": "Relectures",

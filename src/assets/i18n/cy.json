@@ -12,6 +12,7 @@
     "literaryStyles": "Arddulliau llenyddol", "user": "Defnyddiwr", "logout": "Allgofnodi"
   },
   "common": {
+    "firstInSeries": "Llyfr cyntaf y gyfres",
     "list": "Rhestr", "loading": "Yn llwytho...", "name": "Enw", "books": "Llyfrau", "read": "Wedi'u darllen",
     "title": "Teitl", "originalTitle": "Teitl gwreiddiol", "author": "Awdur", "authors": "Awduron",
     "genre": "Genre", "genres": "Genres", "pages": "Tudalennau", "rereads": "Ailddarlleniadau",

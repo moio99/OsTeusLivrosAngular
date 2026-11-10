@@ -18,6 +18,7 @@
     "collections": "Coleçons", "literaryStyles": "Estilos literarios", "user": "Usuario", "logout": "Sair"
   },
   "common": {
+    "firstInSeries": "Primeiro livro da serie",
     "list": "Listado",
     "loading": "Carregando...", "name": "Nome", "books": "Livros", "read": "Lidos",
     "title": "Título", "originalTitle": "Título original", "author": "Autor", "authors": "Autores",

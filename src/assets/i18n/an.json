@@ -18,6 +18,7 @@
     "collections": "Coleccions", "literaryStyles": "Estilos literarios", "user": "Usuario", "logout": "Zarrar sesión"
   },
   "common": {
+    "firstInSeries": "Primer libro d'a serie",
     "list": "Lista", "loading": "Cargando...", "name": "Nombre", "books": "Libros", "read": "Leitos",
     "title": "Titol", "originalTitle": "Titol orichinal", "author": "Autor", "authors": "Autors",
     "genre": "Chenero", "genres": "Cheneros", "pages": "Pachinas", "rereads": "Relecturas",

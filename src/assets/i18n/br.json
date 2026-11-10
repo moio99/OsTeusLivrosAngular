@@ -12,6 +12,7 @@
     "literaryStyles": "Stiloù lennegel", "user": "Implijer", "logout": "Digevreañ"
   },
   "common": {
+    "firstInSeries": "Levr kentañ an heuliad",
     "list": "Roll", "loading": "O kargañ...", "name": "Anv", "books": "Levrioù", "read": "Lennet",
     "title": "Titl", "originalTitle": "Titl orin", "author": "Skrivagner", "authors": "Skrivagnerien",
     "genre": "Rummad", "genres": "Rummadoù", "pages": "Pajennoù", "rereads": "Adlennadurioù",

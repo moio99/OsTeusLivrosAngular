@@ -18,6 +18,7 @@
     "collections": "Coleiciones", "literaryStyles": "Estilos lliterarios", "user": "Usuariu", "logout": "Zarrar sesión"
   },
   "common": {
+    "firstInSeries": "Primer llibru de la serie",
     "list": "Llistáu",
     "loading": "Cargando...", "name": "Nome", "books": "Llibros", "read": "Lleíos",
     "title": "Títulu", "originalTitle": "Títulu orixinal", "author": "Autor", "authors": "Autores",

@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, inject, effect } from '@angular/core';
-import { catchError, EMPTY, first, of, tap } from 'rxjs';
+import { catchError, EMPTY, first, Observable, of, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GraficosService, LivrosService, OutrosService, RelecturasService } from '@servizosApi';
 import { CommonModule } from '@angular/common';
@@ -20,7 +20,7 @@ import { LivroFormStateService } from './livro-form-state.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoService } from '@jsverse/transloco';
 import { EstadosPagina, DadosComplentarios, InformacomPeTipo } from '@enumerados';
-import { SimpleObjet, Parametros, EngadirEditarData, Resultado, BaseListadoDadosApi } from '@models';
+import { SimpleObjet, Parametros, EngadirEditarData, Resultado, BaseListadoDadosApi, SerieLivro } from '@models';
 import { AuthService, LayoutService, DadosOutrosService, DadosPaginasService, DadosPagina } from '@servizosFlow';
 import { environment, environments } from '../../../../environments/environment';
 import { ConverterAData } from '../../../shared/classes/date-convert';
@@ -206,7 +206,7 @@ export class LivroComponent implements OnInit {
         const dadosSeries = dados.seriesLivro.data.map(s => ({id: s.id, nome: s.titulo}))
           .sort((a, b) => a.nome.localeCompare(b.nome));
         const result = this.formState.processarDadosCombo(
-          [{id: 0, nome: 'Som o primeiro'}, ...dadosSeries],
+          [{id: 0, nome: this.translocoService.translate('common.firstInSeries')}, ...dadosSeries],
           this.livroForm.controls.serie, false
         );
         this.formState.todasSeriesLivrosCombo = result.combo;
@@ -347,48 +347,48 @@ export class LivroComponent implements OnInit {
   }
 
   guardarRelectura(event: any) {
-    let relectura = this.formState.setRelectura(
+    const relectura = this.formState.setRelectura(
       this.dadosDoLivro!.id,
       (this.dadosDaRelectura) ? this.dadosDaRelectura.id :'0',
       this.authService.getUsuarioLogado()?.idioma ?? null, this.pontuacomEstrelas);
 
-    if (event.submitter.value === EstadosPagina.engadir) {
-      this.relecturasService
-        .postRelectura(relectura)
-        .pipe(first())
-        .subscribe({
-          next: (v) => {console.debug(v), this.gestionarExitoRelectura(v, relectura)},
-          error: (e: unknown) => {
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.addErrorMessage'), duracom: 10});
-            console.error(e) },
-            complete: () => {
-              this.modo.set(EstadosPagina.guardar);
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: this.translocoService.translate('common.itemAdded')});
-              // console.debug('post completado');
-            }
-      });
-    }
-    else {
-      this.relecturasService
-        .putRelectura(relectura)
-        .pipe(first())
-        .subscribe({
-          next: (v) => {console.debug(v), this.gestionarExitoRelectura(v, relectura)},
-          error: (e: unknown) => {
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.saveErrorMessage'), duracom: 10});
-            console.error(e) },
-            complete: () => {
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: this.translocoService.translate('common.itemSaved')});
-            console.debug('put completado') }
-      });
-    }
+    const engadindo = event.submitter.value === EstadosPagina.engadir;
+    const servicoChamada = engadindo
+      ? this.relecturasService.postRelectura(relectura)
+      : this.relecturasService.putRelectura(relectura);
+
+    this.guardar(engadindo, servicoChamada, relectura,
+      (data, elemento) => this.gestionarExitoRelectura(data, elemento));
   }
 
-  private gestionarExitoRelectura(data: Resultado, relectura: Relectura) {
+  private guardar(engadindo: boolean, servicoChamada: Observable<Resultado>,
+    elemento: Livro | Relectura, gestionarExito: (data: Resultado, elemento: Livro | Relectura) => void) {
+
+    servicoChamada.pipe(
+      first(),
+      tap({
+        next: (v) => {console.debug(v), gestionarExito(v, elemento)},
+        error: (e: unknown) => {
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+            mensagem: this.translocoService.translate(engadindo ? 'common.addErrorMessage' : 'common.saveErrorMessage'), duracom: 10});
+          console.error(e) },
+        complete: () => {
+          this.modo.set(EstadosPagina.guardar);
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso,
+            mensagem: this.translocoService.translate(engadindo ? 'common.itemAdded' : 'common.itemSaved')});
+        }
+      })
+    ).subscribe();  // Se nom ponho isto nen o put nen post nunca se chegaram a enviar.
+                    // Em RxJS: os Observables som vagos (lazy) e nom fam nada a menos que te subscribas a eles.
+  }
+
+  private gestionarExitoRelectura(data: Resultado, relectura: Livro | Relectura) {
     if (data) {
       let info = <{idResult: string}>data;
       relectura.id = info.idResult;
-      this.dadosDaRelectura = relectura;
+      this.dadosDaRelectura = relectura as Relectura;
+
+      this.elementoSerieCache(this.dadosDaRelectura.idSerie, this.dadosDaRelectura.id, this.dadosDaRelectura.titulo);
       this.obterDadosRelecturasELivro(this.idLivro);
 
       this.setDadosLivroForm();
@@ -423,7 +423,7 @@ export class LivroComponent implements OnInit {
   //#endregion
 
   private obterDadosDoLivro(id: string): void {
-    let livro = this.dadosPaginasService.getDadosPagina(id, this.nomePagina);
+    const livro = this.dadosPaginasService.getDadosPagina(id, this.nomePagina);
     if (livro && livro.elemento) {
       this.dadosDoLivro = livro.elemento;
       this.setDadoEngadido();
@@ -760,38 +760,14 @@ export class LivroComponent implements OnInit {
       this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: this.translocoService.translate('common.nameExists', { name: String(this.livroForm.controls.titulo.value).trim() })});
     }
     else {
-      let livro = this.setDadosLivro();
+      const livro = this.setDadosLivro();
+      const engadindo = event.submitter.value === EstadosPagina.engadir;
+      const servicoChamada = engadindo
+        ? this.livrosService.postLivro(livro)
+        : this.livrosService.putLivro(livro);
 
-      if (event.submitter.value === EstadosPagina.engadir) {
-        this.livrosService
-          .postLivro(livro)
-          .pipe(first())
-          .subscribe({
-            next: (v) => {console.debug(v), this.gestionarExito(v, livro)},
-            error: (e: unknown) => {
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.addErrorMessage'), duracom: 10});
-              console.error(e) },
-              complete: () => {
-                this.modo.set(EstadosPagina.guardar);
-                this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: this.translocoService.translate('common.itemAdded')});
-                // console.debug('post completado');
-              }
-        });
-      }
-      else {
-        this.livrosService
-          .putLivro(livro)
-          .pipe(first())
-          .subscribe({
-            next: (v) => {console.debug(v), this.gestionarExito(v, livro)},
-            error: (e: unknown) => {
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.saveErrorMessage'), duracom: 10});
-              console.error(e) },
-              complete: () => {
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: this.translocoService.translate('common.itemSaved')});
-              console.debug('put completado') }
-        });
-      }
+      this.guardar(engadindo, servicoChamada, livro,
+        (data, elemento) => this.gestionarExito(data, elemento));
     }
   }
 
@@ -808,11 +784,21 @@ export class LivroComponent implements OnInit {
     );
   }
 
-  private gestionarExito(data: Resultado, livro: Livro) {
+  private gestionarExito(data: Resultado, livro: Livro | Relectura) {
     if (data) {
-      livro.id = data.idResult;
-      this.dadosDoLivro = livro;
+      this.dadosDoLivro = livro as Livro;
+      this.dadosDoLivro.id = data.idResult;
+      this.elementoSerieCache(this.dadosDoLivro.idSerie, this.dadosDoLivro.id, this.dadosDoLivro.titulo);
       this.graficosService.setHaNovosDados(); // Para que se vai aos gráficos nom use os dados da caché.
+    }
+  }
+
+  private elementoSerieCache(idSerie: number | null, idLibro: string, titulo: string) {
+    if (idSerie === 0) {    // O primeiro da serie sempre leva o 0
+      const serie: SerieLivro = { id: +idLibro, titulo: titulo };
+      this.dadosOutrosService.setElementoDadosOutrosCache(serie, DadosComplentarios.SeriesLivro);
+    } else {
+      this.dadosOutrosService.removerElementoDadosOutrosCache(idLibro, DadosComplentarios.SeriesLivro);
     }
   }
 }

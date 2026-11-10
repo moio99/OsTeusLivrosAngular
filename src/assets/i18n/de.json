@@ -19,6 +19,7 @@
     "user": "Benutzer", "logout": "Abmelden"
   },
   "common": {
+    "firstInSeries": "Erster Band der Reihe",
     "list": "Liste",
     "loading": "Wird geladen...", "name": "Name", "books": "Bücher", "read": "Gelesen",
     "title": "Titel", "originalTitle": "Originaltitel", "author": "Autor", "authors": "Autoren",

@@ -19,7 +19,8 @@ export enum DadosComplentarios {
   Biblioteca = 3,
   Editorial = 4,
   Colecom = 5,
-  EstiloLiterario = 6
+  EstiloLiterario = 6,
+  SeriesLivro = 7     // Os livros podem formar parte dumha saga
 };
 
 export enum ListadosAutoresTipos {

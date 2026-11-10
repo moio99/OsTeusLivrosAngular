@@ -18,6 +18,7 @@
     "collections": "Bildumak", "literaryStyles": "Literatura-estiloak", "user": "Erabiltzailea", "logout": "Amaitu saioa"
   },
   "common": {
+    "firstInSeries": "Bildumako lehen liburua",
     "loading": "Kargatzen...", "name": "Izena", "books": "Liburuak", "read": "Irakurrita",
     "title": "Izenburua", "originalTitle": "Jatorrizko izenburua", "author": "Egilea", "authors": "Egileak",
     "genre": "Generoa", "genres": "Generoak", "pages": "Orriak", "rereads": "Berrirakurketak",

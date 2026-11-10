@@ -27,6 +27,7 @@
     "logout": "Cerrar sesión"
   },
   "common": {
+    "firstInSeries": "Primer libro de la serie",
     "loading": "Cargando...",
     "name": "Nombre",
     "books": "Libros",

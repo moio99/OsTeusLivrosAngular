@@ -12,6 +12,7 @@
     "literaryStyles": "Stoidhlichean litreachais", "user": "Cleachdaiche", "logout": "Log a-mach"
   },
   "common": {
+    "firstInSeries": "A’ chiad leabhar san t-sreath",
     "list": "Liosta", "loading": "A’ luchdadh...", "name": "Ainm", "books": "Leabhraichean", "read": "Leughte",
     "title": "Tiotal", "originalTitle": "Tiotal tùsail", "author": "Ùghdar", "authors": "Ùghdaran",
     "genre": "Gnè", "genres": "Gnèithean", "pages": "Duilleagan", "rereads": "Ath-leughaidhean",

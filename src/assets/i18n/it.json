@@ -18,6 +18,7 @@
     "collections": "Collezioni", "literaryStyles": "Stili letterari", "user": "Utente", "logout": "Esci"
   },
   "common": {
+    "firstInSeries": "Primo libro della serie",
     "list": "Elenco", "loading": "Caricamento...", "name": "Nome", "books": "Libri", "read": "Letti",
     "title": "Titolo", "originalTitle": "Titolo originale", "author": "Autore", "authors": "Autori",
     "genre": "Genere", "genres": "Generi", "pages": "Pagine", "rereads": "Riletture",
