@@ -57,9 +57,9 @@
     </tr>
       @for (entrada of listadoDadosOrdenados(); track entrada.id) {
       <tr class="listado-accom">
-        <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.nome}}</td>
-        <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLivros}}</td>
-        <td (click)="onIrPagina('/autores/autor', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>
+        <td (click)="onIrPaginaState('/autores/autor', entrada.id)">{{entrada.nome}}</td>
+        <td (click)="onIrPaginaState('/autores/autor', entrada.id)">{{entrada.quantidadeLivros}}</td>
+        <td (click)="onIrPaginaState('/autores/autor', entrada.id)">{{entrada.quantidadeLidos || '0'}}</td>
         @if (!soVisualizar) {
           <td (click)="$event.stopPropagation()">
             <img src="../../../../assets/images/cubo-lixo.png" [alt]="'common.delete' | transloco"

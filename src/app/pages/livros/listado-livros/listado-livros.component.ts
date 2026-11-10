@@ -335,7 +335,7 @@ export class ListadoLivrosComponent implements OnInit {
       this.dadosPaginasService.setDadosPagina(dadosPagina);
       this.router.navigateByUrl(`${rota}?id=${id}&idRelectura=${idRelectura}`);
     } else {
-      this.router.navigateByUrl(`/autores/autor?id=${id}`);
+      this.router.navigate(['/autores/autor'], { state: { id: id, outraCousa: 'algo mais de probas' } });
     }
   }
 

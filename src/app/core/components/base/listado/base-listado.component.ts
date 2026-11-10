@@ -153,4 +153,8 @@ export abstract class BaseListadoComponent<T extends { id: string }> {
     // this.router.navigate([rota], {relativeTo: id});
     // this.router.navigate([rota], {dadoQueVai: id});
   }
+
+  onIrPaginaState(rota: string, id: string): void{
+    this.router.navigate([rota], { state: { id: id, outraCousa: 'algo mais de probas' } });
+  }
 }
