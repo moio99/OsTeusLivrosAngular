@@ -7,7 +7,7 @@ import { LayoutPrincipalComponent } from './layouts/layout-principal/layout-prin
 import { environments } from '../environments/environment';
 import { peticomPendenteRequestGuard } from './peticom-pendente.guard';
 import { UsuarioComponent } from './pages/usuario/usuario.component';
-import { CustomPreloadStrategy } from './CustomPreloadStrategy';
+import { MeuPreloadStrategy } from './CustomPreloadStrategy';
 
 const rotaPorDefecto = environments.dev || environments.test ? 'estadisticas' : 'login';
 
@@ -48,7 +48,7 @@ export const routes: Routes = [
         loadChildren: () => import('./../app/pages/livros/listado-livros/listado-livros.component')
           .then(m => m.childRoutes),
         canActivate: [autorizacomAccessoGuard],
-        data: { preload: true }     // para que se precarregue co primeira carrega da aplicaçom (nas outras por defecto está false)
+        data: { precarregaDoComponhente: true }     // para que se precarregue co primeira carrega da aplicaçom (nas outras por defecto está false)
       },
       {
         path: 'autores', title: 'OTL - Autores',
@@ -111,6 +111,6 @@ export const appRootingProviders = [
   provideRouter(
     routes,
     // engado o seguinte para que o componhente de Livros o precarregue ao finalizar a primeira carrega.
-    withPreloading(CustomPreloadStrategy)
+    withPreloading(MeuPreloadStrategy)
   )
 ];
