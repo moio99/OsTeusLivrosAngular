@@ -94,6 +94,10 @@ export class LivrosService {
       + '/LivroPorTitulo?titulo=' + titulo);
   }
 
+  getLivrosSerie(id: string): Observable<BaseListadoDadosApi<Livro>> {
+    return this.http.get<BaseListadoDadosApi<Livro>>(environment.apiUrl + this.rotaIntermedia
+      + '/PorIdSerie?id=' + id);
+  }
 
   postLivro(livro: Livro): Observable<Resultado> {
     console.debug('engadindo');

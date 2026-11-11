@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, inject, effect } from '@angular/core';
-import { catchError, EMPTY, first, Observable, of, tap } from 'rxjs';
+import { catchError, EMPTY, first, forkJoin, Observable, of, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GraficosService, LivrosService, OutrosService, RelecturasService } from '@servizosApi';
 import { CommonModule } from '@angular/common';
@@ -346,42 +346,6 @@ export class LivroComponent implements OnInit {
     this.pontuacomEstrelas = this.dadosDaRelectura.pontuacom;
   }
 
-  guardarRelectura(event: any) {
-    const relectura = this.formState.setRelectura(
-      this.dadosDoLivro!.id,
-      (this.dadosDaRelectura) ? this.dadosDaRelectura.id :'0',
-      this.authService.getUsuarioLogado()?.idioma ?? null, this.pontuacomEstrelas);
-
-    const engadindo = event.submitter.value === EstadosPagina.engadir;
-    const servicoChamada = engadindo
-      ? this.relecturasService.postRelectura(relectura)
-      : this.relecturasService.putRelectura(relectura);
-
-    this.guardar(engadindo, servicoChamada, relectura,
-      (data, elemento) => this.gestionarExitoRelectura(data, elemento));
-  }
-
-  private guardar(engadindo: boolean, servicoChamada: Observable<Resultado>,
-    elemento: Livro | Relectura, gestionarExito: (data: Resultado, elemento: Livro | Relectura) => void) {
-
-    servicoChamada.pipe(
-      first(),
-      tap({
-        next: (v) => {console.debug(v), gestionarExito(v, elemento)},
-        error: (e: unknown) => {
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
-            mensagem: this.translocoService.translate(engadindo ? 'common.addErrorMessage' : 'common.saveErrorMessage'), duracom: 10});
-          console.error(e) },
-        complete: () => {
-          this.modo.set(EstadosPagina.guardar);
-          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso,
-            mensagem: this.translocoService.translate(engadindo ? 'common.itemAdded' : 'common.itemSaved')});
-        }
-      })
-    ).subscribe();  // Se nom ponho isto nen o put nen post nunca se chegaram a enviar.
-                    // Em RxJS: os Observables som vagos (lazy) e nom fam nada a menos que te subscribas a eles.
-  }
-
   private gestionarExitoRelectura(data: Resultado, relectura: Livro | Relectura) {
     if (data) {
       let info = <{idResult: string}>data;
@@ -450,6 +414,9 @@ export class LivroComponent implements OnInit {
       this.generosLivro.set(this.dadosDoLivro.generos.map(value => ({ id: value.id, value: value.nome })));
       this.autoresLivro.set(this.dadosDoLivro.autores.map(value => ({ id: value.id, value: value.nome })));
       this.formState.setDadosLivroForm(this.dadosDoLivro);        // Formulario
+      if (!this.dadosDoLivro.somSerie)
+        this.livroForm.controls.serie.disable();
+
       this.pontuacomEstrelas = this.dadosDoLivro.pontuacom;       // Estrelas
     }
     else
@@ -733,45 +700,113 @@ export class LivroComponent implements OnInit {
   }
 
   onSubmit(event: any) {
+    const engadindo = event.submitter.value === EstadosPagina.engadir;
     if (this.modoRelectura()) {
-      this.guardarRelectura(event);
+      const idElemento = (this.dadosDaRelectura) ? this.dadosDaRelectura.id : '0';
+      const relectura = this.formState.setRelectura(
+        this.dadosDoLivro!.id, idElemento,
+        this.authService.getUsuarioLogado()?.idioma ?? null, this.pontuacomEstrelas);
+
+      const consultaTitulos$ = this.relecturasService.getRelecturasPorTitulo(this.dadosDoLivro!.id, relectura.titulo);
+      const consultaSeries$ = idElemento !== '0'
+          ? this.relecturasService.getRelecturasSerie(idElemento)        // Ejecútase no servidor
+          : of({ meta: { quantidade: 0, info: '', id: 0 }, data: [] } ); // Nom vai ao servidor porque é a primeria, devolve um dado simulado
+      const servicoChamada$ = engadindo
+        ? this.relecturasService.postRelectura(relectura)
+        : this.relecturasService.putRelectura(relectura);
+
+      this.comprobaconsGuardar(engadindo, true, idElemento, consultaTitulos$, consultaSeries$, servicoChamada$, relectura,
+        (data, elemento) => this.gestionarExitoRelectura(data, elemento));
     }
     else {
       if (this.livroForm.valid) {
-        let livroRepetido: BaseListadoDadosApi<Livro>;
-        this.livrosService
-          .getLivroPorTitulo(String(this.livroForm.controls.titulo.value).trim())
-          .pipe(first())
-          .subscribe({
-            next: (v) => livroRepetido = v,
-            error: (e: unknown) => { console.error(e),
-              this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.loadDataError')}); },
-              complete: () => this.guardarLivro(event, livroRepetido)
-        });
+        const idElemento = this.dadosDoLivro?.id ?? '0';
+        const livro = this.setDadosLivro();
+
+        const consultaTitulos$ = this.livrosService.getLivroPorTitulo(livro.titulo);
+        const consultaSeries$ = idElemento !== '0'
+          ? this.livrosService.getLivrosSerie(idElemento)                // Ejecútase no servidor
+          : of({ meta: { quantidade: 0, info: '', id: 0 }, data: [] } ); // Nom vai ao servidor porque é a primeria, devolve um dado simulado
+        const servicoChamada$ = engadindo
+          ? this.livrosService.postLivro(livro)
+          : this.livrosService.putLivro(livro);
+
+        this.comprobaconsGuardar(engadindo, false, idElemento, consultaTitulos$, consultaSeries$, servicoChamada$,
+          livro, (data, elemento) => this.gestionarExito(data, elemento));
       }
     }
   }
 
-  guardarLivro(event: any, livroRepetido: BaseListadoDadosApi<Livro>) {
-    if (livroRepetido != undefined && livroRepetido.meta.quantidade > 0 && (
-      (event.submitter.value === EstadosPagina.engadir)
-      ||
-      (event.submitter.value !== EstadosPagina.engadir && livroRepetido.meta.id.toString() !== this.dadosDoLivro?.id))) { // se está actualizando os ids deben ser inguais
-      this.layoutService.amosarInfo({tipo: InformacomPeTipo.Aviso, mensagem: this.translocoService.translate('common.nameExists', { name: String(this.livroForm.controls.titulo.value).trim() })});
-    }
-    else {
-      const livro = this.setDadosLivro();
-      const engadindo = event.submitter.value === EstadosPagina.engadir;
-      const servicoChamada = engadindo
-        ? this.livrosService.postLivro(livro)
-        : this.livrosService.putLivro(livro);
+  private comprobaconsGuardar(
+    engadindo: boolean, eRelectura: boolean,
+    idElemento: string,
+    consultaTitulos$: Observable<BaseListadoDadosApi<Livro | RelecturaData>>,
+    consultaSeries$: Observable<BaseListadoDadosApi<Livro | RelecturaData>> | undefined,
+    servicoChamada$: Observable<Resultado>,
+    elemento: Livro | Relectura,
+    gestionarExito: (data: Resultado, elemento: Livro | Relectura) => void) {
 
-      this.guardar(engadindo, servicoChamada, livro,
-        (data, elemento) => this.gestionarExito(data, elemento));
-    }
+    // TODO: O texto nameExists deberia ser titleExists
+
+    const consultaSeriesFinal$ = consultaSeries$ ?? of({
+      meta: { quantidade: 0, info: '', id: 0 },
+      data: []
+    } as BaseListadoDadosApi<Livro | RelecturaData>);
+
+    forkJoin([consultaTitulos$, consultaSeriesFinal$]).pipe(
+      switchMap(([resGetPorTitulo, resGetSeries]) => {
+
+        const tituloExiste = resGetPorTitulo !== undefined && resGetPorTitulo.meta.quantidade > 0;
+        const idDistinto = resGetPorTitulo?.meta.id?.toString() !== idElemento;
+
+        if (tituloExiste && (engadindo || (!engadindo && idDistinto))) {
+          this.layoutService.amosarInfo({
+            tipo: InformacomPeTipo.Aviso,
+            mensagem: this.translocoService.translate('common.alertSave')
+          });
+          alert(this.translocoService.translate(eRelectura ? 'common.rereadTitleExists' : 'common.titleExists', { titulo: elemento.titulo }));
+          return EMPTY; // Detem o flujo porque a validación fallou
+        }
+
+        if (resGetSeries.meta.quantidade > 0 && !elemento.somSerie) {
+          this.layoutService.amosarInfo({
+            tipo: InformacomPeTipo.Aviso,
+            mensagem: this.translocoService.translate('common.alertSave')
+          });
+          alert(this.translocoService.translate('common.noFirstElement'));
+          return EMPTY; // Detem o flujo porque a validación fallou
+        }
+
+        return this.guardar(engadindo, servicoChamada$, elemento, gestionarExito);
+      })
+    ).subscribe({
+      error: (e: unknown) => this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.loadDataError')})
+    });
   }
 
-  setDadosLivro(): Livro {
+  private guardar(engadindo: boolean,
+    servicoChamada: Observable<Resultado>,
+    elemento: Livro | Relectura,
+    gestionarExito: (data: Resultado, elemento: Livro | Relectura) => void): Observable<Resultado> {
+
+    return servicoChamada.pipe(
+      first(),
+      tap({
+        next: (v) => {console.debug(v), gestionarExito(v, elemento)},
+        error: (e: unknown) => {
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+            mensagem: this.translocoService.translate(engadindo ? 'common.addErrorMessage' : 'common.saveErrorMessage'), duracom: 10});
+          console.error(e) },
+        complete: () => {
+          this.modo.set(EstadosPagina.guardar);
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso,
+            mensagem: this.translocoService.translate(engadindo ? 'common.itemAdded' : 'common.itemSaved')});
+        }
+      })
+    )
+  }
+
+  private setDadosLivro(): Livro {
     const dados = this.dadosOutrosService.getDadosOutrosCache();
     const autorAnonimo = dados?.autores?.data.find(autor => autor.nome === 'Anónimo');
     return this.formState.setLivro(

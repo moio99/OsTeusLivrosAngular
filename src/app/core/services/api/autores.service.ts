@@ -1,11 +1,10 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { environment, environments } from '../../../../environments/environment';
-import { inject, Service } from '@angular/core';
-import { Autor, AutorData, ParametrosAutor } from '../../models/autor.interface';
+import { Service } from '@angular/core';
+import { Autor, ParametrosAutor } from '../../models/autor.interface';
 import { Observable, of, tap } from 'rxjs';
 import { ListadoAutores, ListadoConcretoAutoresData } from '../../models/listado-autores.interface';
-import { BaseQuantidadesLivros } from '../../models/quantidades.interface';
-import { BaseListadoDadosApi, ResultadoMeta } from '../../../shared/models/base-dados';
+import { BaseListadoDadosApi } from '../../../shared/models/base-dados';
 import { BaseApiService } from './base-api.service';
 
 // @Injectable({

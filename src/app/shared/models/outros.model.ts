@@ -37,8 +37,11 @@ export interface SerieLivro {
   titulo: string;
 }
 
+/*
+duracom: em milisegundos
+*/
 export interface InformacomPe {
   tipo: InformacomPeTipo;
   mensagem: string;
-  duracom?: number;
+  duracom?: number; // em milisegundos
 }

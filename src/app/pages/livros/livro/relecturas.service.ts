@@ -3,7 +3,7 @@ import { inject, Service } from '@angular/core';
 import { Relectura, RelecturaData } from '@interfaces';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { Resultado } from '../../../shared/models/base-dados';
+import { BaseListadoDadosApi, Resultado } from '../../../shared/models/base-dados';
 
 // @Injectable({
 //   providedIn: 'root',
@@ -21,15 +21,23 @@ export class RelecturasService {
   private http = inject(HttpClient);
 
   getRelectura(id: string): Observable<RelecturaData> {
-    console.log('relecturas id', id);
     return this.http.get<RelecturaData>(environment.apiUrl + this.rotaIntermedia
       + '/Relectura?id=' + id);
   }
 
   getRelecturas(idLivro: string) {
-    console.log('relecturas idLivro', idLivro);
     return this.http.get(environment.apiUrl + this.rotaIntermedia
       + '/Relecturas?id=' + idLivro);
+  }
+
+  getRelecturasPorTitulo(idLivro: string, titulo: string): Observable<BaseListadoDadosApi<RelecturaData>> {
+    return this.http.get<BaseListadoDadosApi<RelecturaData>>(environment.apiUrl + this.rotaIntermedia
+      + `/RelecturasPorTitulo?idLivro=${idLivro}&titulo=${titulo}`);
+  }
+
+  getRelecturasSerie(id: string): Observable<BaseListadoDadosApi<RelecturaData>> {
+    return this.http.get<BaseListadoDadosApi<RelecturaData>>(environment.apiUrl + this.rotaIntermedia
+      + '/PorIdSerie?id=' + id);
   }
 
   postRelectura(relectura: Relectura): Observable<Resultado> {
@@ -38,13 +46,11 @@ export class RelecturasService {
   }
 
   putRelectura(relectura: Relectura): Observable<Resultado> {
-    console.debug('atualizando');
     return this.http.put<Resultado>(environment.apiUrl + this.rotaIntermedia
       + '/Relectura', relectura);
   }
 
   borrarRelectura(id: string) {
-    console.debug(id);
     return this.http.delete(environment.apiUrl + this.rotaIntermedia
       + '/Relectura?id=' + id);
   }
