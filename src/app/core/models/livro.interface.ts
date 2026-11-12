@@ -103,6 +103,7 @@ export interface Outros {
   estilos: dadosComplementarios<EstiloLiterario>,
   idiomas: dadosComplementarios<Idioma>,
   seriesLivro: dadosComplementarios<SerieLivro>,
+  seriesRelectura: dadosComplementarios<SerieLivro>,
   ultimaLeitura: string,
   ultimasLeituras: datasUltimosAnos[]
 }

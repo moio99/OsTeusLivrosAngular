@@ -213,6 +213,17 @@ export class LivroComponent implements OnInit {
         this.formState.seriesLivro = result.signalFiltrado;
       }
 
+      if (dados.seriesRelectura?.data) {
+        const dadosSeries = dados.seriesRelectura.data.map(s => ({id: s.id, nome: s.titulo}))
+          .sort((a, b) => a.nome.localeCompare(b.nome));
+        const result = this.formState.processarDadosCombo(
+          [{id: 0, nome: this.translocoService.translate('common.firstInSeries')}, ...dadosSeries],
+          this.livroForm.controls.serie, false
+        );
+        this.formState.todasSeriesRelecturasCombo = result.combo;
+        this.formState.seriesRelectura = result.signalFiltrado;
+      }
+
       /* if (idLivro == 0 && dados.ultimaLeitura) {
         let dateConvert = new DateConvert();
         let data = dateConvert.getDateFromMySQL(dados.ultimaLeitura);
@@ -300,17 +311,16 @@ export class LivroComponent implements OnInit {
       .getRelecturas(idLivro)
       .pipe(first())
       .subscribe({
-        next: (v: object) => this.dadosRelecturasObtidos(v),
+        next: (v) => this.dadosRelecturasObtidos(v),
         error: (e: unknown) => { console.error(e),
           this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.loadRelatedError', { name: this.translocoService.translate('common.rereads') }), duracom: 10}); },
-          complete: () => this.obterDadosDoLivro(idLivro)       // Dados do livro
+        complete: () => this.obterDadosDoLivro(idLivro)       // Dados do livro
     });
   }
 
-  private dadosRelecturasObtidos(dadosChegando: object) {
-    const dados = <RelecturasData>dadosChegando;
-    if (dados && dados.data.length > 0) {
-      this.dadosRelecturas.set(dados.data);
+  private dadosRelecturasObtidos(dadosChegando: BaseListadoDadosApi<RelecturaListado>) {
+    if (dadosChegando && dadosChegando.data.length > 0) {
+      this.dadosRelecturas.set(dadosChegando.data);
     }
     else
       this.dadosRelecturas.set([]);
@@ -326,7 +336,7 @@ export class LivroComponent implements OnInit {
           this.layoutService.amosarInfo({
             tipo: InformacomPeTipo.Erro,
             mensagem: this.translocoService.translate('common.loadRereadError')}); },
-          complete: () => console.debug('completada a obtençom da relectura do livro')
+        complete: () => console.debug('completada a obtençom da relectura do livro')
     });
   }
 
@@ -352,7 +362,7 @@ export class LivroComponent implements OnInit {
       relectura.id = info.idResult;
       this.dadosDaRelectura = relectura as Relectura;
 
-      this.elementoSerieCache(this.dadosDaRelectura.idSerie, this.dadosDaRelectura.id, this.dadosDaRelectura.titulo);
+      this.elementoSerieRelecturaCache(this.dadosDaRelectura.idSerie, this.dadosDaRelectura.id, this.dadosDaRelectura.titulo);
       this.obterDadosRelecturasELivro(this.idLivro);
 
       this.setDadosLivroForm();
@@ -378,7 +388,7 @@ export class LivroComponent implements OnInit {
               next: (v: object) => console.debug(v),
               error: (e: unknown) => { console.error(e),
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.deleteError', { name: this.translocoService.translate('common.rereads') })}); },
-                complete: () => { // console.debug('Borrado feito');
+              complete: () => { // console.debug('Borrado feito');
                 this.obterDadosRelecturasELivro(this.idLivro);
                 this.layoutService.amosarInfo({tipo: InformacomPeTipo.Sucesso, mensagem: this.translocoService.translate('common.itemDeleted', { name: relectura.titulo })}); }
           });
@@ -387,7 +397,7 @@ export class LivroComponent implements OnInit {
   //#endregion
 
   private obterDadosDoLivro(id: string): void {
-    const livro = this.dadosPaginasService.getDadosPagina(id, this.nomePagina);
+    const livro = this.dadosPaginasService.getDadosPagina(id, this.nomePagina); // Existirá se se está retornando ao livro (estaba em relecturas)
     if (livro && livro.elemento) {
       this.dadosDoLivro = livro.elemento;
       this.setDadoEngadido();
@@ -401,7 +411,7 @@ export class LivroComponent implements OnInit {
           next: (v: object) => this.dadosObtidosDoLivro(v),
           error: (e: unknown) => { console.error(e),
             this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.loadDataError'), duracom: 10}); },
-            complete: () => console.debug('completada a obtençom dos dados do livro')
+          complete: () => console.debug('completada a obtençom dos dados do livro')
       });
     }
   }
@@ -702,7 +712,7 @@ export class LivroComponent implements OnInit {
   onSubmit(event: any) {
     const engadindo = event.submitter.value === EstadosPagina.engadir;
     if (this.modoRelectura()) {
-      const idElemento = (this.dadosDaRelectura) ? this.dadosDaRelectura.id : '0';
+      const idElemento = (this.dadosDaRelectura) ? this.dadosDaRelectura.id.toString() : '0';
       const relectura = this.formState.setRelectura(
         this.dadosDoLivro!.id, idElemento,
         this.authService.getUsuarioLogado()?.idioma ?? null, this.pontuacomEstrelas);
@@ -834,6 +844,15 @@ export class LivroComponent implements OnInit {
       this.dadosOutrosService.setElementoDadosOutrosCache(serie, DadosComplentarios.SeriesLivro);
     } else {
       this.dadosOutrosService.removerElementoDadosOutrosCache(idLibro, DadosComplentarios.SeriesLivro);
+    }
+  }
+
+  private elementoSerieRelecturaCache(idSerie: number | null, idLibro: string, titulo: string) {
+    if (idSerie === 0) {    // O primeiro da serie sempre leva o 0
+      const serie: SerieLivro = { id: +idLibro, titulo: titulo };
+      this.dadosOutrosService.setElementoDadosOutrosCache(serie, DadosComplentarios.seriesRelectura);
+    } else {
+      this.dadosOutrosService.removerElementoDadosOutrosCache(idLibro, DadosComplentarios.seriesRelectura);
     }
   }
 }

@@ -320,7 +320,7 @@
           [matAutocomplete]="serieLivro"
         />
         <mat-autocomplete #serieLivro="matAutocomplete">
-          @for (option of formState.seriesLivro(); track option.id) {
+          @for (option of modoRelectura() ? formState.seriesRelectura() : formState.seriesLivro(); track option.id) {
             <mat-option [value]="option.value">{{ option.value }}</mat-option>
           }
         </mat-autocomplete></mat-form-field

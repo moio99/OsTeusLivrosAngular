@@ -93,6 +93,8 @@ export class LivroFormStateService {
   idiomasOriginais: Signal<SimpleObjet[]> = signal([]);
   todasSeriesLivrosCombo: SimpleObjet[] = [];
   seriesLivro: Signal<SimpleObjet[]> = signal([]);
+  todasSeriesRelecturasCombo: SimpleObjet[] = [];
+  seriesRelectura: Signal<SimpleObjet[]> = signal([]);
   todasBibliotecasCombo2: any;
 
   processarDadosCombo(
@@ -168,7 +170,7 @@ export class LivroFormStateService {
       this.livroForm.controls.electronico.setValue(relectura.electronico);
       this.setData(relectura.dataEdicom, this.livroForm.controls.dataEdicom);
       this.livroForm.controls.somSerie.setValue(relectura.somSerie);
-      this.setCombo(relectura.idSerie, this.todasSeriesLivrosCombo, this.livroForm.controls.serie);
+      this.setCombo(relectura.idSerie, this.todasSeriesRelecturasCombo, this.livroForm.controls.serie);
       this.livroForm.controls.comentario.setValue(relectura.comentario);
     }
   }
@@ -220,7 +222,7 @@ export class LivroFormStateService {
     let editorial = this.todasEditoriaisCombo().find(option => option.value === this.livroForm.controls.idEditorial.value);
     let colecom = this.todasColeconsCombo.find(option => option.value === this.livroForm.controls.idColecom.value);
     let idioma = this.todosIdiomasCombo.find(option => option.value === this.livroForm.controls.idioma.value);
-    let serie = this.todasSeriesLivrosCombo.find(option => option.value === this.livroForm.controls.serie.value);
+    let serie = this.todasSeriesRelecturasCombo.find(option => option.value === this.livroForm.controls.serie.value);
 
     let relectura: Relectura = {
       id: idRelectura,

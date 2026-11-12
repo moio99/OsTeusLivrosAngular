@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { Relectura, RelecturaData } from '@interfaces';
+import { Relectura, RelecturaData, RelecturaListado } from '@interfaces';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { BaseListadoDadosApi, Resultado } from '../../../shared/models/base-dados';
@@ -25,8 +25,8 @@ export class RelecturasService {
       + '/Relectura?id=' + id);
   }
 
-  getRelecturas(idLivro: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getRelecturas(idLivro: string): Observable<BaseListadoDadosApi<RelecturaListado>> {
+    return this.http.get<BaseListadoDadosApi<RelecturaListado>>(environment.apiUrl + this.rotaIntermedia
       + '/Relecturas?id=' + idLivro);
   }
 

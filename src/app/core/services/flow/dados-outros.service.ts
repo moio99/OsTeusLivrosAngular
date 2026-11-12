@@ -37,7 +37,7 @@ export class DadosOutrosService {
    * Engade ou actualiza un autor, genero, biblioteca etc. nos datos do usuario.
    * Se já existe, actualiza o seu registro. Se nom existe, engade o novo registro.
    * @param dado autor, genero, biblioteca etc. a engadir ou actualizar
-   * @param tipo tipo de dado, podendo ser Autor, Genero, Biblioteca, Editorial, Colecom, EstiloLiterario ou SerieLivro
+   * @param tipo tipo de dado, podendo ser Autor, Genero, Biblioteca, Editorial, Colecom, EstiloLiterario, SerieLivro ou seriesRelectura
    */
   setElementoDadosOutrosCache(dado: Autor | Genero | Biblioteca | EditorialForm | Colecom |
     EstiloLiterario | SerieLivro, tipo: DadosComplentarios) {
@@ -171,13 +171,31 @@ export class DadosOutrosService {
         };
         break;
       }
+      case DadosComplentarios.seriesRelectura: {      // As relecturas podem formar parte dumha saga
+        const serieRelecturaElemento = dado as SerieLivro;
+        const dataActual = this.dadosOutrosCache.seriesRelectura?.data || [];
+        const existe = dataActual.some(ele => ele.id === serieRelecturaElemento.id);
+
+        const novaData = existe
+          ? dataActual.map(ele => ele.id === serieRelecturaElemento.id ? serieRelecturaElemento : ele)
+          : [...dataActual, serieRelecturaElemento];
+
+        this.dadosOutrosCache = {
+          ...this.dadosOutrosCache,
+          seriesRelectura: {
+            ...this.dadosOutrosCache.seriesRelectura,
+            data: novaData  // se se já existía en this.dadosOutrosCache.seriesRelectura actualiza, se nom o engade
+          }
+        };
+        break;
+      }
     }
   }
 
   /**
    * Elimina um registro dum autor, genero, biblioteca etc. do usuario.
    * @param id Identificador do autor, genero, biblioteca etc. a eliminar
-   * @param tipo tipo de dado, podendo ser Autor, Genero, Biblioteca, Editorial, Colecom, EstiloLiterario ou SerieLivro
+   * @param tipo tipo de dado, podendo ser Autor, Genero, Biblioteca, Editorial, Colecom, EstiloLiterario, SerieLivro ou seriesRelectura
    */
   removerElementoDadosOutrosCache(id: string, tipo: DadosComplentarios) {
     if (!this.dadosOutrosCache) return;
@@ -229,6 +247,13 @@ export class DadosOutrosService {
         if (!this.dadosOutrosCache.seriesLivro?.data) return;
 
         this.dadosOutrosCache.seriesLivro.data = this.dadosOutrosCache.seriesLivro.data.filter(
+          ele => ele.id !== +id
+        );
+        break;
+      case DadosComplentarios.seriesRelectura:
+        if (!this.dadosOutrosCache.seriesRelectura?.data) return;
+
+        this.dadosOutrosCache.seriesRelectura.data = this.dadosOutrosCache.seriesRelectura.data.filter(
           ele => ele.id !== +id
         );
         break;
