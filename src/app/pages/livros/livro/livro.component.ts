@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject, effect } from '@angular/core';
+import { Component, OnInit, signal, inject, effect, DestroyRef } from '@angular/core';
 import { catchError, EMPTY, first, forkJoin, Observable, of, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GraficosService, LivrosService, OutrosService, RelecturasService } from '@servizosApi';
@@ -13,11 +13,11 @@ import { MatDatepickerModule} from '@angular/material/datepicker';
 import { Title } from '@angular/platform-browser';
 import { MultiDados, MultiSelecomDialogComponent } from '@componhentesComuns';
 import { MatNativeDateModule } from '@angular/material/core';
-import { datasUltimosAnos, Livro, Outros, Relectura, RelecturaListado, RelecturasData, RelecturaData, ObjetoSimpleIdNome } from '@interfaces';
+import { datasUltimosAnos, Livro, Relectura, RelecturaListado, RelecturaData, ObjetoSimpleIdNome } from '@interfaces';
 import { LivroRelecturasComponent } from './livro-relecturas.component';
 import { LivroFormPresenterComponent } from './livro-form-presenter.component';
 import { LivroFormStateService } from './livro-form-state.service';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslocoService } from '@jsverse/transloco';
 import { EstadosPagina, DadosComplentarios, InformacomPeTipo } from '@enumerados';
 import { SimpleObjet, Parametros, EngadirEditarData, Resultado, BaseListadoDadosApi, SerieLivro } from '@models';
@@ -75,8 +75,9 @@ export class LivroComponent implements OnInit {
   private dadosPaginasService = inject(DadosPaginasService);
   private readonly graficosService = inject(GraficosService);
   private readonly translocoService = inject(TranslocoService);
+  private destroyRef = inject(DestroyRef);
 
-  dadosApiResource = rxResource({
+  dadosApiResource = rxResource({   // para o ejemplo de combo com signals
     stream: () => {
       const dados = this.dadosOutrosService.getDadosOutrosCache();
       if (dados) {
@@ -97,7 +98,7 @@ export class LivroComponent implements OnInit {
   });
 
   constructor() {
-    effect(() => {
+    effect(() => {        // para o ejemplo de combo com signals
       const dados = this.dadosApiResource.value();
       if (!dados?.bibliotecas?.data) return;
 
@@ -109,7 +110,7 @@ export class LivroComponent implements OnInit {
       );
     });
 
-    effect(() => {
+    effect(() => {        // para o ejemplo de combo com signals
       const dados = this.dadosApiResource.value();
       if (!dados?.editoriais?.data) return;
 
@@ -138,34 +139,57 @@ export class LivroComponent implements OnInit {
           this.modo.set(EstadosPagina.soVisualizar);
         id = parametros.id;
         this.idRelectura = parametros.idRelectura === undefined ? '0' : parametros.idRelectura;
-        this.obterOutrosDados(parametros.id);
+        this.obterDados(parametros.id);
       }
     );
     this.idLivro = id;
   }
 
-  private obterOutrosDados(idLivro: string): void {
-    const dados = this.dadosOutrosService.getDadosOutrosCache();
-    if (dados) {                                            // Já os tinhamos
-      this.dadosOutrosObtidos(dados);
-      this.obterDadosRelecturasELivro(idLivro);
-    } else {
-      this.outrosService
-        .getTodo()          // Dados complementarios
-        .pipe(first())
-        .subscribe({
-          next: (v: Outros) => {
-            this.dadosOutrosService.setDadosOutrosCache(v);
-            this.dadosOutrosObtidos(this.dadosOutrosService.getDadosOutrosCache());
-            this.obterDadosRelecturasELivro(idLivro)
-          },
-          error: (e: unknown) => { console.error(e),
-            this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro, mensagem: this.translocoService.translate('common.loadDataError'), duracom: 10}); },
-      });
-    }
+  private obterDados(idLivro: string) {
+
+    const dadosOutrosCache = this.dadosOutrosService.getDadosOutrosCache();
+    const observavel1 = dadosOutrosCache
+      ? of(dadosOutrosCache)
+      : this.outrosService.getTodo().pipe(
+          tap((res) => this.dadosOutrosService.setDadosOutrosCache(res))
+        );
+
+    const observavel2 = this.relecturasService.getRelecturas(idLivro);
+
+    const dadosPagina = this.dadosPaginasService.getDadosPagina(idLivro, this.nomePagina);
+    const observavel3 = dadosPagina?.elemento
+      ? of({ data: [dadosPagina.elemento], meta: { id: Number(idLivro) } } as BaseListadoDadosApi<Livro>)
+      : this.livrosService.getLivro(idLivro);
+
+    forkJoin([observavel1, observavel2, observavel3])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: ([res1, res2, res3]) => {
+          this.dadosOutrosService.setDadosOutrosCache(res1);
+          this.dadosOutrosObtidos();
+
+          this.dadosRelecturasObtidos(res2);
+
+          if (dadosPagina && dadosPagina.elemento) {
+            this.dadosDoLivro = dadosPagina.elemento;
+            this.setDadoEngadido();
+            this.setDadosLivroForm();
+          } else {
+            this.dadosObtidosDoLivro(res3);
+          }
+        },
+        error: (err) => {
+          this.layoutService.amosarInfo({tipo: InformacomPeTipo.Erro,
+            mensagem: this.translocoService.translate('common.loadDataError')});
+        },
+        complete: () => {
+          console.log('Completada a obtençom dos dados.');
+        }
+    });
   }
 
-  private dadosOutrosObtidos(dados: Outros | null) {
+  private dadosOutrosObtidos() {
+    const dados = this.dadosOutrosService.getDadosOutrosCache();
     if (dados) {
 
       if (dados.colecons?.data) {

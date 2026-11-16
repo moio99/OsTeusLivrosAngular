@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { DadosComplentarios } from "@enumerados";
+import { Livro } from "@interfaces";
 import { SimpleObjet } from "@models";
 
 export interface DadosPagina {
   id: string;
   nomePagina: string;
-  elemento: any;
+  elemento: Livro;
 }
 
 export interface NovoDado {

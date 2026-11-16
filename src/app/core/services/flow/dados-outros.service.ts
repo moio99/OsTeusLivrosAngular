@@ -21,7 +21,7 @@ export class DadosOutrosService {
       this.dadosOutrosCache = data;
   }
 
-  getDadosOutrosCache() {
+  getDadosOutrosCache(): Outros | null {
     return this.dadosOutrosCache;
   }
 

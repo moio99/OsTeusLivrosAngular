@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { environment, environments } from '../../../../environments/environment';
 import { inject, Injectable } from '@angular/core';
-import { Livro } from '../../models/livro.interface';
+import { dadosLivro, Livro } from '../../models/livro.interface';
 import { Observable, of } from 'rxjs';
 import { ListadoLivros } from '../../models/listado-livros.interface';
 import { BaseListadoDadosApi, Resultado } from '../../../shared/models/base-dados';
@@ -84,8 +84,8 @@ export class LivrosService {
       + '/PorEstiloLiterario?id=' + id);
   }
 
-  getLivro(id: string) {
-    return this.http.get(environment.apiUrl + this.rotaIntermedia
+  getLivro(id: string): Observable<BaseListadoDadosApi<Livro>> {
+    return this.http.get<BaseListadoDadosApi<Livro>>(environment.apiUrl + this.rotaIntermedia
       + '/Livro?id=' + id);
   }
 
