@@ -1,18 +1,20 @@
 <form [formGroup]="livroForm()" (ngSubmit)="submitForm.emit($event)">
-  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
-    <button class="botom-guardar-resgistro" color="primary" type="submit" [value]="modo()">
-      {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
-    </button>
-    @if (!modoRelectura() && modo() !== estadosPagina.engadir) {
-      <button type="button" (click)="novaRelectura.emit()">{{ 'common.newReread' | transloco }}</button>
-    } @else if (modoRelectura()) {
-      <button type="button" (click)="cancelarRelectura.emit()">
-        {{ modo() === estadosPagina.engadir ? ('common.cancelNewReread' | transloco) : ('common.cancelEditReread' | transloco) }}
+  <div class="botons-guardar">
+    @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+      <button class="botom-guardar-resgistro" color="primary" type="submit" [value]="modo()">
+        {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
       </button>
+      @if (!modoRelectura() && modo() !== estadosPagina.engadir) {
+        <button type="button" (click)="novaRelectura.emit()">{{ 'common.newReread' | transloco }}</button>
+      } @else if (modoRelectura()) {
+        <button type="button" (click)="cancelarRelectura.emit()">
+          {{ modo() === estadosPagina.engadir ? ('common.cancelNewReread' | transloco) : ('common.cancelEditReread' | transloco) }}
+        </button>
+      }
     }
-  }
+  </div>
 
-  <div class="dadosLivro">
+  <div class="formulario-livro comum-formulario">
     <div class="titulo">
       <mat-form-field class="ancho-inputs">
         <mat-label>{{ 'common.title' | transloco }}</mat-label>
@@ -365,16 +367,18 @@
     </div>
   </div>
 
-  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
-    <button class="botom-guardar-resgistro" color="primary" type="submit" [value]="modo()">
-      {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
-    </button>
-    @if (!modoRelectura()) {
-      <button type="button" (click)="novaRelectura.emit()">{{ 'common.newReread' | transloco }}</button>
-    } @else {
-      <button type="button" (click)="cancelarRelectura.emit()">
-        {{ modo() === estadosPagina.engadir ? ('common.cancelNewReread' | transloco) : ('common.cancelEditReread' | transloco) }}
+  <div class="botons-guardar">
+    @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+      <button class="botom-guardar-resgistro" color="primary" type="submit" [value]="modo()">
+        {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
       </button>
+      @if (!modoRelectura()) {
+        <button type="button" (click)="novaRelectura.emit()">{{ 'common.newReread' | transloco }}</button>
+      } @else {
+        <button type="button" (click)="cancelarRelectura.emit()">
+          {{ modo() === estadosPagina.engadir ? ('common.cancelNewReread' | transloco) : ('common.cancelEditReread' | transloco) }}
+        </button>
+      }
     }
-  }
+  </div>
 </form>

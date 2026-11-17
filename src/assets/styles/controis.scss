@@ -1,6 +1,22 @@
 
 @use "./constantes.scss";
 
+.botons-guardar {
+  margin-bottom: 15px;
+  margin-left: constantes.$separacom-pequena;
+
+  button {
+    margin-right: constantes.$separacom-pequena;
+  }
+}
+
+.procurador {
+  margin-left: constantes.$separacom-pequena;
+  input {
+    margin-right: constantes.$separacom-pequena;
+  }
+}
+
 button {
   background-color: constantes.$cor-botom;
   border: 2px solid #095b0b;

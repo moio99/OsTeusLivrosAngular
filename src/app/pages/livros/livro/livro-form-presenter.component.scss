@@ -1,8 +1,12 @@
+@use "constantes.scss";
+
 :host {
   display: contents;
 }
 
-.dadosLivro {
+.formulario-livro {
+  gap: constantes.$separacom-minima;
+
   .lista-etiqueta {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     display: flex;
@@ -18,6 +22,7 @@
 
     &__botons {
       display: flex;
+      gap: constantes.$separacom-minima;
       flex-flow: column;
       align-items: flex-start;
     }
@@ -30,14 +35,12 @@
 }
 
 @media (min-width: 650px) {
-  .dadosLivro {
+  .formulario-livro {
     display: grid;
     width: 100%;
     grid-template-columns: repeat(4, 1fr);
     // grid-template-rows: repeat(12, 1fr); // Isto tem o problema que todas filas midem o mesmo, fazendo que as de comentarios fagam medrar o resto
     grid-template-rows: auto;     // correçom do anterior
-
-    > div { margin-left: 5px; }     // busca só os fillos directos que sexan un div
 
     // o vertical começa na 1 e remata na 2
     // o horizontal começa no 1 e remata no 4 (o último)

@@ -6,7 +6,7 @@ import { SimpleObjet } from "@models";
 export interface DadosPagina {
   id: string;
   nomePagina: string;
-  elemento: Livro;
+  elemento: Livro | undefined;
 }
 
 export interface NovoDado {

@@ -1,4 +1,4 @@
-<h3 class="separacom-spans">
+<h3 class="separacom-spans-titulo">
   <span>{{ 'authorsList.title' | transloco }}</span>
   @if (tipoListadoTitulo()) {
     <span>{{ tipoListadoTitulo() | transloco }}</span>
@@ -9,7 +9,7 @@
   }
 </h3>
 
-<div class="botoneira">
+<div class="botoneira separacom-inferior">
   <ul>
     <li><a routerLink="/autores/porNacionalidade">{{ 'authorsList.byNationality' | transloco }}</a></li>
     <li><a routerLink="/autores/porPais">{{ 'authorsList.byCountry' | transloco }}</a></li>
@@ -23,7 +23,7 @@
   </ul>
 </div>
 
-<div class="procurador">
+<div class="procurador separacom-inferior">
   <!-- Caixa de texto conectada ao Signal do filtro -->
   <input
     type="text"
@@ -31,7 +31,7 @@
     [ngModel]="autorFiltro()"
     (ngModelChange)="autorFiltro.set($event)"
   />
-  <span class="separacom-cantidade">
+  <span>
     @if(listadoResource.isLoading()) {
       {{ 'common.loading' | transloco }}
     } @else {

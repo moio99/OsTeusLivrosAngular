@@ -1,5 +1,8 @@
+@use "constantes.scss";
 
 .botoneira {
+  margin-left: constantes.$separacom-pequena;
+
   a:hover {
     cursor: pointer;
   }
@@ -24,4 +27,8 @@
 
 th {
   min-width: 80px;
+}
+
+.separacom-inferior {
+  margin-bottom: 6px;
 }

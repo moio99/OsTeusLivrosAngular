@@ -1,14 +1,16 @@
-@if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
-  <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{modo()}}">
-    <i class="icon-disk"></i>
-    {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
-  </button>
-  <button color="primary" type="button" (click)="onCancelar.emit()">
-    {{ 'common.back' | transloco }}
-  </button>
-}
+<div class="botons-guardar">
+  @if (modo() === estadosPagina.engadir || modo() === estadosPagina.guardar) {
+    <button class="botom-guardar-resgistro" color="primary" type="submit" value="{{modo()}}">
+      <i class="icon-disk"></i>
+      {{ modo() === estadosPagina.engadir ? ('common.add' | transloco) : ('common.save' | transloco) }}
+    </button>
+    <button color="primary" type="button" (click)="onCancelar.emit()">
+      {{ 'common.back' | transloco }}
+    </button>
+  }
+</div>
 
-<div class="matriz-dados">
+<div class="matriz-dados comum-formulario">
   <mat-form-field class="nome">
     <mat-label>{{ 'common.name' | transloco }}:</mat-label>
     <input matInput [formField]="nome()!" width="200">

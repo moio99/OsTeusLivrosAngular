@@ -1,9 +1,16 @@
-.separacom-spans {
+@use "./constantes.scss";
+
+h3 {
+  margin-bottom: constantes.$separacom-pequena;
+}
+
+.separacom-spans-titulo {
   display: flex;
   gap: 5px;
 }
-.separacom-cantidade {
-  margin-left: 5px;
+
+.comum-formulario {
+  margin-left: constantes.$separacom-pequena;
 }
 
 .lista-com-comas {

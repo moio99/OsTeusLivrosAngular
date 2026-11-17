@@ -2,7 +2,7 @@
   <div class="lista-etiqueta">
     <div>{{ (temAutoresLivro() ? 'common.authors' : 'common.author') | transloco }}:</div>
     @if (modo() !== estadosPagina.soVisualizar) {
-      <div>
+      <div class="botons-accons">
         <button type="button" (click)="gestionarAutores.emit()">{{ 'common.manage' | transloco }}</button>
         <button type="button" (click)="engadirAutor.emit()">{{ 'common.add' | transloco }}</button>
       </div>
@@ -21,7 +21,7 @@
   <div class="lista-etiqueta">
     <div>{{ (temGenerosLivro() ? 'common.genres' : 'common.genre') | transloco }}:</div>
     @if (modo() !== estadosPagina.soVisualizar) {
-      <div>
+      <div class="botons-accons">
         <button type="button" (click)="gestionarGeneros.emit()">{{ 'common.manage' | transloco }}</button>
         <button type="button" (click)="engadirGenero.emit()">{{ 'common.add' | transloco }}</button>
       </div>

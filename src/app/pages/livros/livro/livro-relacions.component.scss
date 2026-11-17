@@ -1,3 +1,5 @@
+@use "constantes.scss";
+
 :host {
   display: contents;
 }
@@ -12,7 +14,20 @@
   }
 }
 
+@media (max-width: 649px) {
+  .genero {
+    margin-top: 5px;
+    border-top: 1px solid grey;
+    padding-top: 5px;
+  }
+}
+
 .lista-etiqueta {
   display: flex;
   justify-content: space-between;
+
+  .botons-accons {
+    display: flex;
+    gap: constantes.$separacom-minima;
+  }
 }

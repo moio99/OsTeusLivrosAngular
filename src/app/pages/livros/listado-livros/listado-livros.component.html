@@ -1,5 +1,5 @@
 
-<h3 class="separacom-spans">
+<h3 class="separacom-spans-titulo">
   <span>{{titulo()}}{{ tipoOrdeacom() | transloco }}</span>
   @if (inverso()) {
     <span>{{ 'common.inverse' | transloco }}</span>
@@ -8,7 +8,7 @@
 </h3>
 
 @if (!soVisualizar) {
-  <div class="botoneira">
+  <div class="botoneira botons-guardar">
     <button class="botom-novo-resgistro" (click)="onIrPagina('livros/livro', '0')">
       {{ 'booksList.newBook' | transloco }}
     </button>
@@ -41,7 +41,7 @@
     [ngModel]="autorFiltro()"
     (ngModelChange)="autorFiltro.set($event)"
   />
-  <span class="separacom-cantidade">{{ 'booksList.count' | transloco: { count: listadoFiltrado().length } }}</span>
+  <span>{{ 'booksList.count' | transloco: { count: listadoFiltrado().length } }}</span>
 </div>
 
 @if (listadoDados().length > 0) {
